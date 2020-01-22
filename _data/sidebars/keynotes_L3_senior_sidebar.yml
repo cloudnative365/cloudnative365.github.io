@@ -1,0 +1,69 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  product: 高级课程
+  version: 
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: 1.0tlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+  - title: 课前准备
+    output: web, pdf
+    folderitems:
+
+    - title: 需要准备的环境
+      url: /index.html
+      output: web, pdf
+      type: homepage
+
+    - title: 配置环境
+      url: /mydoc_introduction.html
+      output: web, pdf
+
+    - title: 预备知识
+      url: /mydoc_supported_features.html
+      output: web, pdf
+
+  - title: 第一章 容器化
+    output: web, pdf
+    folderitems:
+
+    - title: 第一节 复习Linux知识
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+  - title: 第二章 持续交付
+    output: web, pdf
+    folderitems:
+
+    - title: 第一节 服务器虚拟化
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+  - title: 第三章 DevOps
+    output: web, pdf
+    folderitems:
+
+    - title: 第一节 服务器虚拟化
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+  - title: 第四章 微服务
+    output: web, pdf
+    folderitems:
+
+    - title: 第一节 服务器虚拟化
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
