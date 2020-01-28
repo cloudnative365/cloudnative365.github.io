@@ -5,6 +5,7 @@ keywords: gitpage
 last_updated: July 3, 2016
 sidebar: keynotes_L1_basic_sidebar
 permalink: keynotes_L1_basic_gitpage_blog.html
+typora-root-url: ../../../../cloudnative365.github.io
 ---
 
 # 使用GitPages和Jekyll搭建免费的个人博客
