@@ -40,15 +40,121 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 复习Linux知识
-      url: /mydoc_release_notes_60.html
+    - title: 第一节 大话Kubernetes
+      url: /keynotes_L2_advanced_1_kubernetes_1_about_kubernetes.html
       output: web, pdf
+
+      subfolders:
+      - title: 第二节 运维人员的认证CKA
+        output: web, pdf
+        subfolderitems:
+
+        - title: 1 课程介绍
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 2 Kubernetes基础知识
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 3 安装和配置
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 4 Kubernetes架构
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 5 API和权限管理
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 6 API Objects对象
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 7 管理Deployment的状态
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 8 Services
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 9 卷组Volumes和数据Data
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 10 Ingress入栈
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 11 Scheduling调度
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 12 Logging日志和Troubleshooting定位问题
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 13 自定义资源
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 14 Helm
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 15 安全
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 16 高可用
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        
+      - title: 第三节 开发人员的认证CKAD
+        output: web, pdf
+        subfolderitems:
+
+        - title: 1 课程介绍
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_1_Introduction.html
+          output: web, pdf
+
+        - title: 2 Kubernetes架构
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          output: web, pdf
+
+        - title: 3 Build构建
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          output: web, pdf
+
+        - title: 4 设计
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          output: web, pdf
+
+        - title: 5 配置Deployment
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          output: web, pdf
+
+        - title: 6 安全
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          output: web, pdf
+
+        - title: 7 暴露（exposing）应用
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          output: web, pdf
+
+        - title: 8 Troubleshotting排错
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          output: web, pdf
 
   - title: 第二章 Kubernetes系列工具与生态
     output: web, pdf
     folderitems:
 
-    - title: 第一节 服务器虚拟化
+    - title: 第一节 CloudNative Roadmap
       url: /mydoc_release_notes_60.html
       output: web, pdf
 

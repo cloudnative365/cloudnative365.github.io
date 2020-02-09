@@ -23,27 +23,27 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 6.0 Release notes
+    - title: Linux基础课程
       url: /mydoc_release_notes_60.html
-      output: web, pdf
-
-    - title: 5.0 Release notes
-      url: /mydoc_release_notes_50.html
       output: web, pdf
 
   - title: 进阶课程
     output: web, pdf
     folderitems:
 
-    - title: About Ruby, Gems, Bundler, etc.
+    - title: Kubernetes系列讲座
       url: /mydoc_about_ruby_gems_etc.html
       output: web, pdf
 
-    - title: Install Jekyll on Mac
+    - title: Kubernetes系列工具与生态
       url: /mydoc_install_jekyll_on_mac.html
       output: web, pdf
 
-    - title: Install Jekyll on Windows
+    - title: Prometheus从入门到精通
+      url: /mydoc_install_jekyll_on_windows.html
+      output: web, pdf
+
+    - title: Fluentd从入门到精通
       url: /mydoc_install_jekyll_on_windows.html
       output: web, pdf
 

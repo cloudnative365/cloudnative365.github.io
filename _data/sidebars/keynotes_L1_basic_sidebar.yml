@@ -29,7 +29,7 @@ entries:
 
       subfolders:
       - title: 配置环境
-        url: /keynotes_L1_basic.html
+#        url: /keynotes_L1_basic.html
         output: web, pdf
         subfolderitems:
 
