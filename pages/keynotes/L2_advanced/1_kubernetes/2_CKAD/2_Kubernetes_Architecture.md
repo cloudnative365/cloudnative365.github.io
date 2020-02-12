@@ -7,8 +7,6 @@ typora-copy-images-to: ./pics/2_Kubernetes_Architecture
 typora-root-url: ../../../../../../cloudnative365.github.io
 ---
 
-# Kubernetes架构
-
 ## 1. 课程目标
 
 - 了解Kubernetes术语
@@ -146,4 +144,169 @@ Kubernetes的Master运行着多个服务，并且管理着集群的进程。Mast
 所有的工作节点都会运行kubelet和kube-proxy，当然还有容器的引擎，比如Docker或者cri-o。其他用来管理的守护进程都是用来监控这些进程（agents）或者给kubernetes提供自身没有的服务。
 
 我们也可以去运行一些Docker引擎同类的产品，比如CoreOS的rkt。想要知道怎么用的话，请自己去查询文档。：）在未来的版本当中，kubernetes很有可能集成容器运行的引擎。
+
+Supervisord是一个轻量级的进程监控工具，用来监控和通知传统Linux环境上的其他进程。集群中，这个进程监控kubelet和docker进程。如果他们出现意外，这个进程就会重启他们，并且把日志记录下来。
+
+kubernetes目前没有能够覆盖整个集群的日志系统。但是，我们使用另外一个CNCF项目叫Fluentd。他为集群提供了一个统一的日志管理解决方案，包括过滤，缓存还有路由消息。
+
+### 2.10. 工作节点的组件
+
++ kubelet
+  kubelet和底层的Docer引擎进行交互，确保需要运行的容器处于正常运行的状态。
+  worker节点承担了大部分的变更和配置工作。Pod的spec（spacifications）文件通过API调用传递给worker节点。worker节点就开始操作本地的节点，直到满足spce文件的所有需求。
+  如果Pod需要其他资源，比如storage，secrets或者configMaps，kubelet会确保Pod可以访问他们，如果没有，就创建。然后把最终结果返回给kube-apiserver。
++ kube-proxy
+  kube-proxy负责管理容器之间的网络连接。他是通过iptables来管理网络的。他通过用户用户空间（userspace）的方式，通过一个很高数字的随机端口，给Services和Endpoint转发流量
++ Container Runtime
+  容器的运行环境就是指那些运行容器的软件。容器不等于Docker，Docker是软件，容器是技术，Docker实现了容器技术。Kubernetes支持多种容器运行环境：Docker，containerd，cri-o，rktlet和很多种的实现方式。[Kubernetes CRI (Container Runtime Interface)](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-node/container-runtime-interface.md)。
+
+### 2.11.  Pods
+
+Kubernetes的关键就是要编排容器的整个生命周期。我们不会针对某一个特殊的容器进行交互。我们通常把最小的一个单元叫做[Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod/)。有些人会把他想象成一群鲸鱼的集合（Docker的形象就是鲸鱼）或者是一个豌豆荚。基于资源共享的设计，一个Pod一般会遵循一个容器跑一个进程的架构。
+
+Pod中的容器，默认是同时启动的。这样会导致没法判断Pod中哪个容器是第一个启动的。我们可以使用initContainers来确保某些容器先于其他在同一个Pod中的容器启动。为了支撑容器中的某个进程，我们可以需要记日志logging，代理proxy，或者其他的适配器adapter。这些任务通常由同一个Pod中的其他容器来负责。
+
+大部分的网络模型中，一个pod只有一个IP地址。（HPE实验室发明了一个插件，可以让一个Pod拥有不止一个IP地址）这样的话，如果一个Pod中有不止一个容器，他们就必须共享IP。想要和其他容器沟通，就必须使用IPC（Inter-Process Communication），loopback接口或者是共享文件系统。
+
+一般来说一个容器中只有一个应用，通常有多个容器的情况中，都会有一个容器是用来记日志的。尽管主要的应用也会有这些功能，但是我们通常会使用sidecar来辅助，例如记日志，或者响应请求。
+
+Pods和其他的对象可以使用多种方式去创建。他们通常使用生成器（generator）去创建。但是生成器的版本会随着新版本的发布而改变。
+
+```bash
+$ kubectl run newpod --image=nginx --generator=run-pod/v1
+```
+
+或者我们也可以使用应用文件的方式来创建和删除（这也是我最推荐的方式）
+
+```bash
+$ kubectl create -f newpod.yaml
+
+$ kubectl delete -f newpod.yaml
+```
+
+其他资源则使用**operators/watch-loops**来保证spec文件和当前的状态保持一致。
+
+### 2.12. Services
+
+随着对象object（pod）和代理agent（kube-proxy）的解耦，我们需要一个灵活的，可扩展的代理在Pod死掉或者被替换之后，把资源整合在一起，并且支持重新连接。每个服务都是一个微服务，负责处理一部分的流量，就好像一个NodePort或者一个LoadBalancer把入栈流量分发给多个Pods。
+
+Service也负责处理入栈的规则，比如资源的控制和安全控制。
+
+Service和kubectl命令一样，都使用selector来判断应该和哪个对象去链接。目前版本支持两个selector：
+
++ Equality-based
+  通过标签的键和值来过滤。我们可以使用三种符号，**=**，**==**，**!=**。如果有很多的键值，必须满足所有的条件。
++ Set-based
+  通过集合来过滤。我们可以使用**in**，**notin**和**exists**。比如`status notin (dev, test, maint)`会选择键**status**的值是**dev**，**test**，或者**maint**。
+
+### 2.13. Controllers/Operators
+
+在编排中一个很重要的概念就是使用控制器controllers。他们负责监视和具体的操作。他们查询当前的状态，然后和spec中的状态做比较，然后去填补他们不同的那部分。kubernetes当中有非常多的控制器，也可以开发自己的控制器。我们可以吧控制器简单的认为是一个代理，一个通知器，还有一个下游的存储。他们使用DeltaFIFO队列，用来比较源头和下游的状态。一个循环的进程从FIFO的队列中接受一个对象，对象中含有一个数组，包含了delta（不同的部分）。只要delta不是Deleted（删除）类型的，逻辑控制器就开始创建或者修改相应的对象，直到他满足spec中的定义。
+
+通知器从API server接受请求，并且查询某个对象的状态。为了减少API server的负载，数据都是被缓存的。当一个对象被很多其他的对象复用时，kubernetes会使用SharedInformer。他可以创建一个共享的缓存，用来存储多个请求的状态。
+
+每个工作队列都是独立的，用来处理多个工作节点的任务。标准的Go工作队列workqueues都是有使用限制的，并且有延时，而时间队列就是最典型的应用。
+
+**endpoint**，**namespace**和**serviceaccounts**控制器分别控制与他们同名的资源，也就是说，有endpoint资源，也有endpoint控制器。
+
+### 2.14. Pod的独立IP
+
+一个Pod代表着一组互相协助的容器，他们共享着数据卷。Pod中所有的容器共享一个相同的网络名称空间。
+
+下面的图表显示了一个Pod带着两个容器，A和B，和两个数据卷，1和2。容器AB与第三个容器共享一个网络名称空间，第三个容器叫做Pause容器，他是用来获取IP地址的，然后所有Pod内的容器都去使用它的网络名称空间。他们和卷组1，2组成了一个完整的Pod。
+
+![hl3vukvzmyl3-APod](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/hl3vukvzmyl3-APod.png)
+
+为了互相通信，容器可以使用loopback接口，把文件写在文件系统上，或者通过inter-process communication（IPC）的方式。如果把协作的应用都放在一个pod中会产生问题。目前只有一个网络插件可以让pod拥有多个IP地址，他是由HPE实验室开发的项目。
+
+![image-20200212144428013](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/image-20200212144428013.png)
+
+### 2.15. 网络是怎么工作的
+
+我们前面说到的组件对于习惯于配置管理的系统管理员来说可能就是一些普通的任务。但是，想让kubernetes集群获得所有的功能，还需要合理的配置网络。
+
+如果有在IaaS平台部署过虚拟机，其实这个非常的相似。唯一不同的是，在kubernetes中，最小的计算单元不是容器，而是Pod。
+
+Pod是一组协作的容器，他们公用一个IP地址。从网络的角度出发，pod可以被看作是一个物理机上的虚拟机。网络需要把IP分配给Pod，然后在所有节点上提供网络流量的路由。
+
+在容器编排系统中，我们需要解决的问题有：
+
++ 容器和容器之间的耦合（这个已经用pod解决了）
++ pod和pod之间的通信
++ 外部和pod之间的通信
+
+kubernetes期望网络可以实现pod和pod之间的通信，但是他自己是没办法实现的。pod在容器启动的时候就会获得IP。对于内部网络通信，Service通过ClusterIP的方式，对于外部的通信，通过NodePort的方式，并且可以通过LoadBalancer去配置负载均衡。
+
+详细的网络模型解释，可以参考官方文档，[Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/)。
+
+下面我们来研究一下Service的工作流。
+
+![rs7sj920kkap-NetworkingSetup-3](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/rs7sj920kkap-NetworkingSetup-3.png)
+
+下面是整个的集群网络的工作流。
+
+![rs7sj920kkap-NetworkingSetup-4](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/rs7sj920kkap-NetworkingSetup-4.png)
+
+带领大家开发Kubernetes的领导之一Tim Hockin，写了一个非常实用的slide来帮助我们了解kubernetes的网络，[An illustrated Guide to Kubernetes Networking](https://speakerdeck.com/thockin/illustrated-guide-to-kubernetes-networking).
+
+### 2.16. CNI网络配置文件
+
+为了给容器提供网络，kubernetes需要用到[Container Network Interface (CNI)](https://github.com/containernetworking/cni)配置文件。从v1.6.0开始，kubeadm实用CNI作为默认的网络接口机制。
+
+CNI是一个非常重要的spec文件，因为他内部含有大量的库，这些库是用来支持管理容器的插件所准备的，这些插件可以在容器被删除后重新配置或者删除已经分配的资源。它的目的是在不同的网络解决方案（calico，flannel）和不同的容器运行环境（docker，containerd，rkt）之间提供一个通用接口。因为CNI的规则和他的插件的开发语言相关，所以有很多插件，比如Amazon ECS，SR-IOV，到Cloud Foundry等等。
+
+使用CNI，我们可以使用下面的网络配置文件
+
+```JSON
+{
+   "cniVersion": "0.2.0",
+   "name": "mynet",
+   "type": "bridge",
+   "bridge": "cni0",
+   "isGateway": true,
+   "ipMasq": true,
+   "ipam": {
+       "type": "host-local",
+       "subnet": "10.22.0.0/16",
+       "routes": [
+           { "dst": "0.0.0.0/0" }
+            ]
+   }
+}
+```
+
+这个配置定义了一个标准的Linux bridge，叫cni0，他可以在子网10.22.0.0/16网段下分配IP地址。这个桥接插件会在合适的名称空间中，为容器定义适当的网络和网络接口。详细信息我们可以参考[CNI GitHub repository](https://github.com/containernetworking/cni)的README文件
+
+### 2.17. pod间通信
+
+尽管CNI插件可以用来配置pod的网络，并且为pod提供一个独立的IP，但是他并不能帮助你实现跨node的pod间通信。
+
+早期的kubernetes需求有下面这几个：
+
++ 所有的pod可以和其他任何节点上的node通信
++ 所有的node可以和任意的pod通信
++ 没有NAT（Network Address Translation）网络地址映射
+
+一般来说，所有的IP地址，包括node和pod的，都是通过路由表，而不是NAT。当我们访问他们的时候，就好像是在访问物理的网络架构。否则，要不然，我们就需要用一些软件定义的overlay解决方案，比如：
+
++ [Weave](https://www.weave.works/oss/net/)
++ [Flannel](https://coreos.com/flannel/docs/latest/)
++ [Calico](https://www.projectcalico.org/)
++ [Romana](https://romana.io/)
+
+大多数的网络插件目前都支持使用网络策略（Network Policies），他就好像内部防火墙，控制入栈和出栈的流量。
+
+更多的信息请参考[Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/) 和 [networking add-ons](https://kubernetes.io/docs/concepts/cluster-administration/addons/).
+
+### 2.18. 扩展阅读
+
+报告：["Large-Scale Cluster Management at Google with Borg"](https://ai.google/research/pubs/pub43438)
+
+听一下：[John Wilkes talking about Borg and Kubernetes](https://www.gcppodcast.com/post/episode-46-borg-and-k8s-with-john-wilkes/)
+
+参加交流会：[community hangout](https://github.com/kubernetes/community) 
+
+加入Slack社区：[Slack](http://slack.kubernetes.io/)的**#kubernetes-users**的频道
+
+Stack Overflow社区：[Stack Overflow community](https://stackoverflow.com/search?q=kubernetes)
 

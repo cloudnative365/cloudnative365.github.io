@@ -40,15 +40,18 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 复习Linux知识
+    - title: 第一节 监控
       url: /mydoc_release_notes_60.html
       output: web, pdf
+
+    - title: 第二节 日志
+      url: /mydoc_release_notes_60.html
 
   - title: 第二章 SRE
     output: web, pdf
     folderitems:
 
-    - title: 第一节 服务器虚拟化
+    - title: 第一节 解读《SRE Google运维解密》
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
@@ -56,7 +59,7 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 服务器虚拟化
+    - title: 第一节 Rancher
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
@@ -64,7 +67,7 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 服务器虚拟化
+    - title: 第一节 terraform
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
@@ -72,6 +75,6 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 服务器虚拟化
+    - title: 第一节 
       url: /mydoc_release_notes_60.html
       output: web, pdf
