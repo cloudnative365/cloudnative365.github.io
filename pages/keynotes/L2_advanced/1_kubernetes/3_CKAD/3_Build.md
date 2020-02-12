@@ -1,7 +1,7 @@
 ---
 title: 创建Kubernetes资源
 keywords: keynotes, L2_advanced, 1_kubernetes, 3_CKAD, 2_Build
-permalink: keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Build.html
+permalink: keynotes_L2_advanced_1_kubernetes_3_CKAD_3_Build.html
 sidebar: keynotes_L2_advenced_sidebar
 typora-copy-images-to: ./pics/3_Build
 typora-root-url: ../../../../../../cloudnative365.github.io

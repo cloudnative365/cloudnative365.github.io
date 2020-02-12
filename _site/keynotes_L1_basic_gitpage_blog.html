@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content="formatting,  gitpage">
+<title>keynotes_L1_basic_gitpage_blog | CloudNative knowledge</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="cloudnative365.gitpage.io" href="http://0.0.0.0:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> 云原生技术课堂</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="lessons_syllabus.html">教学大纲</a></li>
+                        
+                        
+                        
+                        <li><a href="lessons_plans.html">开课计划</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂笔记<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="keynotes_L1_basic.html">基础课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L2_advanced.html">进阶课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L3_senior.html">高级课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L4_architect.html">架构师课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L5_bigmaster.html">跟上时代的脚步</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂风采<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="classes_teachers.html">讲师风采</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_aboutus.html">关于我们</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_successd.html">优秀学员作品</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">follow us<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://github.com/cloudnative365" target="_blank" rel="noopener">on Github</a></li>
+                        
+                        
+                        
+                        <li><a href="">on wechat</a></li>
+                        
+                        
+                        
+                        <li><a href="">on QQ</a></li>
+                        
+                        
+                        
+                        <li><a href="">on 腾讯课堂</a></li>
+                        
+                        
+                        
+                        <li><a href="">on bilibili</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用链接<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">Linux Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://cd.foundation/" target="_blank" rel="noopener">CD Foundation</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="keynotes_L1_basic_gitpage_blog">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">进阶课程 </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="课前准备" href="#">课前准备</a>
+      <ul>
+          
+          
+          
+          <li><a title="需要准备的环境" href="">需要准备的环境</a></li>
+          
+          
+          
+          <li class="subfolders">
+              <a title="配置环境" href="#">配置环境</a>
+              <ul>
+                  
+                  
+                  
+                  <li class="active"><a title="使用GitPages搭建免费的个人博客" href="keynotes_L1_basic_gitpage_blog.html">使用GitPages搭建免费的个人博客</a></li>
+                  
+                  
+                  
+              </ul>
+          </li>
+          
+          
+          
+          
+          
+          
+          <li><a title="预备知识" href="">预备知识</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第一章 Linux基础" href="#">第一章 Linux基础</a>
+      <ul>
+          
+          
+          
+          <li><a title="第一节 复习Linux知识" href="">第一节 复习Linux知识</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第二章 虚拟化基础" href="#">第二章 虚拟化基础</a>
+      <ul>
+          
+          
+          
+          <li><a title="第一节 服务器虚拟化" href="mydoc_release_notes_60.html">第一节 服务器虚拟化</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第三章 公有云基础" href="#">第三章 公有云基础</a>
+      <ul>
+          
+          
+          
+          <li><a title="第一节 服务器虚拟化" href="mydoc_release_notes_60.html">第一节 服务器虚拟化</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">keynotes_L1_basic_gitpage_blog</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <h1 id="使用gitpages和jekyll搭建免费的个人博客">使用GitPages和Jekyll搭建免费的个人博客</h1>
+
+<h2 id="1-简介">1. 简介</h2>
+
+<h3 id="11-gitpages">1.1. gitpages</h3>
+
+<ul>
+  <li>
+    <p>gitpages是github的一项服务，可以让github用户使用自己的github名字作为域名前缀，创建自己的个人博客。</p>
+
+    <p>比如，我的Github名字是github.com/zhangke0516，那么，我的个人主页就是zhangke0516.github.io。</p>
+  </li>
+  <li>
+    <p>完全免费，如果只是为了上传静态内容，或者作为个人主页/博客使用，gitpages完全可以满足需求，而且可以自己编写HTML，JS，CSS，实现完全定制</p>
+  </li>
+</ul>
+
+<p>详细介绍请看官网网站：https://pages.github.com/</p>
+
+<h3 id="12-jekyll">1.2. Jekyll</h3>
+
+<ul>
+  <li>如果各位不是有特殊需求，使用Jekyll生成网站框架，并且利用现有的模板修修改改，足够美观且实用。如果各位有前端基础的话，可以加入自己的创意。</li>
+  <li>Jekyll是一个框架，好像django一样，需要从网络上下载别人的模板，然后使用Jekyll来读取模板中的内容来启动网页服务。</li>
+  <li>Jekyll是由Ruby写成的，所以在安装的时候，最重要的三个组件就是ruby，gem和bundle，ruby是编程语言，gem是ruby的包管理器，bundle是可以通过读取Lockfile来自动加载包的工具。所以三者是依赖关系，bundle依赖gem，gem依赖ruby。如果有兴趣的同学可以自行搜索深入学习，碰到其他ruby框架的程序或者碰到ruby框架的问题的时候会更加快速的解决问题</li>
+</ul>
+
+<p>详细介绍看这个：http://jekyllcn.com/</p>
+
+<h2 id="2-申请gitpages">2. 申请gitpages</h2>
+
+<h3 id="21-申请github">2.1. 申请github</h3>
+
+<h4 id="211-打开github网站点击sign-up">2.1.1. 打开<a href="https://github.com/">github</a>网站，点击sign up</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120171618791.png" alt="image-20200120171618791" /></p>
+
+<h4 id="212-填写必要信息注意密码规则">2.1.2. 填写必要信息，注意密码规则</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120171848891.png" alt="image-20200120171848891" /></p>
+
+<h4 id="213-点击验证">2.1.3. 点击验证</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120172033018.png" alt="image-20200120172033018" /></p>
+
+<h4 id="214-验证你不是机器人">2.1.4. 验证你不是机器人</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120172302885.png" alt="image-20200120172302885" /></p>
+
+<h4 id="215-点击next">2.1.5. 点击<code class="highlighter-rouge">Next</code></h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120172553917.png" alt="image-20200120172553917" /></p>
+
+<h4 id="216-free的就够了">2.1.6. <code class="highlighter-rouge">free</code>的就够了</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120172709299.png" alt="image-20200120172709299" /></p>
+
+<h4 id="217-随便填就好了点击compete-setup">2.1.7. 随便填就好了，点击<code class="highlighter-rouge">Compete setup</code></h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120172851663.png" alt="image-20200120172851663" /></p>
+
+<h4 id="218-需要邮箱验证">2.1.8. 需要邮箱验证</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120211833758.png" alt="image-20200120211833758" /></p>
+
+<h4 id="219-打开邮箱点击verify">2.1.9. 打开邮箱，点击<code class="highlighter-rouge">Verify</code></h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120173423338.png" alt="image-20200120173423338" /></p>
+
+<h4 id="2110-第一次登陆有可能会要验证码">2.1.10. 第一次登陆有可能会要验证码</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120190042050.png" alt="image-20200120190042050" /></p>
+
+<h4 id="2111-这个是验证码">2.1.11. 这个是验证码</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120190134028.png" alt="image-20200120190134028" /></p>
+
+<h3 id="22-申请gitpages">2.2. 申请Gitpages</h3>
+
+<h4 id="221-点击主页右上角创建一个新的repository">2.2.1. 点击主页右上角，创建一个新的repository</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120190459549.png" alt="image-20200120190459549" /></p>
+
+<h4 id="222-repo的名字一定要是自己的账户githubio比如cloudnative365githubio">2.2.2. repo的名字一定要是自己的账户.github.io，比如CloudNative365.github.io</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120191130998.png" alt="image-20200120191130998" /></p>
+
+<h4 id="223-随便在仓库里面写点东西没有东西的话后面的选项是看不见的可以按照官方指导来做或者直接点击creating-a-new-file编辑一个文件这里我就不赘述了">2.2.3. 随便在仓库里面写点东西（没有东西的话，后面的选项是看不见的），可以按照官方指导来做，或者直接点击<code class="highlighter-rouge">creating a new file</code>编辑一个文件，这里我就不赘述了</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120191720808.png" alt="image-20200120191720808" /></p>
+
+<h4 id="224-点击仓库打开setting选项卡">2.2.4. 点击仓库，打开setting选项卡</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120193708446.png" alt="image-20200120193708446" /></p>
+
+<h4 id="225-这个时候发现系统已经为我们配置好了这个theme-chooser不用管点开也是提供几个链接而已他提供的模板实在太少了我们后面会介绍其他的模板">2.2.5. 这个时候发现系统已经为我们配置好了（这个Theme Chooser不用管，点开也是提供几个链接而已，他提供的模板实在太少了，我们后面会介绍其他的模板）</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120193927284.png" alt="image-20200120193927284" /></p>
+
+<h4 id="226-访问一下试试虽然是空的囧">2.2.6. 访问一下试试，虽然是空的（囧）</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120194024145.png" alt="image-20200120194024145" /></p>
+
+<h2 id="3-jekyll安装">3. jekyll安装</h2>
+
+<h3 id="31-在本地安装调试环境">3.1. 在本地安装调试环境</h3>
+
+<h4 id="311-windows环境下">3.1.1. Windows环境下</h4>
+
+<ul>
+  <li>
+    <p>到<a href="https://rubyinstaller.org/">RubyInstaller</a>网站下载Ruby</p>
+
+    <p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120201859184.png" alt="image-20200120201859184" /></p>
+  </li>
+  <li>
+    <p>选他推荐的就好，一般来说目前系统都是64位，32位的同学注意下选32位就好</p>
+
+    <p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120202300309.png" alt="image-20200120202300309" /></p>
+
+    <ul>
+      <li>
+        <p>默认安装就好，但是要记得安装目录</p>
+
+        <p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120202433865.png" alt="image-20200120202433865" /></p>
+      </li>
+      <li>
+        <p>目前的安装程序安装完成后都会默认配置，所以不用手动配置，打开CMD测试一下gem是否好用</p>
+
+        <p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120203515111.png" alt="image-20200120203515111" /></p>
+      </li>
+      <li>
+        <p>可以输出帮助信息就算是成功了</p>
+
+        <p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120203603725.png" alt="image-20200120203603725" /></p>
+      </li>
+      <li>
+        <p>执行<code class="highlighter-rouge">gem install jekyll bundler</code></p>
+
+        <p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120203700749.png" alt="image-20200120203700749" /></p>
+      </li>
+      <li>
+        <p>没有报错就是成功了</p>
+
+        <p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120203743087.png" alt="image-20200120203743087" /></p>
+      </li>
+      <li>
+        <p>创建一个测试的站点，<code class="highlighter-rouge">jekyll new sitedemo</code></p>
+
+        <p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120204116774.png" alt="image-20200120204116774" /></p>
+      </li>
+      <li>
+        <p>启动站点<code class="highlighter-rouge">jekyll server</code></p>
+
+        <p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120204205835.png" alt="image-20200120204205835" /></p>
+      </li>
+      <li>
+        <p>在浏览器中输入http://127.0.0.1:4000 测试一下</p>
+
+        <p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120204351726.png" alt="image-20200120204351726" /></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="312-macos环境下">3.1.2. MacOS环境下</h4>
+
+<ul>
+  <li>安装brew</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+</code></pre></div></div>
+
+<ul>
+  <li>安装ruby，gem，jekyll和bundler</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>brew install ruby
+<span class="nv">$ </span>brew install gem
+<span class="nv">$ </span>gem install jekyll bundler
+</code></pre></div></div>
+
+<ul>
+  <li>创建项目和windows相同，不再赘述</li>
+</ul>
+
+<h3 id="32-jekyll-theme">3.2. jekyll-theme</h3>
+
+<h3 id="321-从这里或者这里找一个模板有兴趣可以自己google网上的模板多得是这里推荐的不是官方的网站我选择的是这个模板效果是这样的">3.2.1. 从<a href="http://jekyllthemes.org/">这里</a>或者<a href="http://themes.jekyllrc.org/">这里</a>找一个模板（有兴趣可以自己google，网上的模板多得是，这里推荐的不是官方的网站），我选择的是这个<a href="https://idratherbewriting.com/documentation-theme-jekyll/">模板</a>，效果是这样的。</h3>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120200139956.png" alt="image-20200120200139956" /></p>
+
+<h4 id="322-下载这个git仓库的zip包">3.2.2. 下载这个<a href="https://github.com/tomjoht/documentation-theme-jekyll">git仓库</a>的zip包</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120200602088.png" alt="image-20200120200602088" /></p>
+
+<h4 id="323-解压文件夹到桌面">3.2.3. 解压文件夹到桌面</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120205526757.png" alt="image-20200120205526757" /></p>
+
+<h4 id="324-下载刚才创建的gitpage仓库">3.2.4. 下载刚才创建的gitpage仓库</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120205415527.png" alt="image-20200120205415527" /></p>
+
+<h4 id="325-复制documentation-theme-jekyll-gh-pages的内容到本地的cloudnative365githubio文件夹">3.2.5. 复制<code class="highlighter-rouge">documentation-theme-jekyll-gh-pages</code>的内容到本地的<code class="highlighter-rouge">CloudNative365.github.io</code>文件夹</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120210319364.png" alt="image-20200120210319364" /></p>
+
+<h4 id="326-使用git命令吧改动推送到仓库">3.2.6. 使用git命令吧改动推送到仓库</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add .
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+git commit -m "add blog"
+git push
+</code></pre></div></div>
+
+<h4 id="327-可以看到页面了">3.2.7. 可以看到页面了</h4>
+
+<p><img src="/pages/keynotes/L1_basic/pics/keynotes_L1_basic_gitpage_blog/image-20200120211040779.png" alt="image-20200120211040779" /></p>
+
+<h2 id="4-认识这个模板的常用功能">4. 认识这个模板的常用功能</h2>
+
+<h3 id="41-删除没有用的文件">4.1. 删除没有用的文件</h3>
+
+<ul>
+  <li><code class="highlighter-rouge">docker-compose.yml</code> 这是用来创建docker-compose的
++</li>
+</ul>
+
+<h2 id="5-对模板进行个性化定制">5. 对模板进行个性化定制</h2>
+
+<h3 id="41">4.1.</h3>
+
+
+    <div class="tags">
+        
+        <b>Tags: </b>
+        
+        
+        
+        <a href="tag_formatting.html" class="btn btn-default navbar-btn cursorNorm" role="button">formatting</a>
+        
+        
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://cdn.commento.io/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 原生云技术. All rights reserved. <br />
+<span>Page last updated:</span> July 3, 2016<br/> Site last generated: Feb 12, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>
