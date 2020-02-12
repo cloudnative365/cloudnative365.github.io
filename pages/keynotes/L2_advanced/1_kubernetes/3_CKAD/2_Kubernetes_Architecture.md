@@ -19,7 +19,7 @@ typora-root-url: ../../../../../../cloudnative365.github.io
 
 ### 2.1. 什么是Kubernetes
 
-![image-20200203171941290](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/image-20200203171941290.png)
+![image-20200203171941290](/pages/keynotes/L2_advanced/1_kubernetes/3_CKAD/pics/2_Kubernetes_Architecture/image-20200203171941290.png)
 
 在笔记本上独立运行一个容器是非常简单的。在多个主机上部署和衔接多个容器，扩展容器，无缝部署应用和全局服务发现是非常复杂的。
 
@@ -72,7 +72,7 @@ Kubernetes与其他系统相比的优势还是他的历史非常悠久。Kuberne
 
 随着谷歌倾注了15年来大量的开发和运维Borg的经验才产生了Kubernetes，这让Kubernetes成为了一个非常安全，用来管理容器的方案。随着大量工具的产生，目前的kubernetes非常易于管理，大量的重复性工作在Google的数据中心已经消失。
 
-![8h5c5pp0snna-Kuberneteslineage](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/8h5c5pp0snna-Kuberneteslineage.jpg)
+![8h5c5pp0snna-Kuberneteslineage](/pages/keynotes/L2_advanced/1_kubernetes/3_CKAD/pics/2_Kubernetes_Architecture/8h5c5pp0snna-Kuberneteslineage.jpg)
 
 + Kubernetes的族谱
 
@@ -90,7 +90,7 @@ Cloud Foundry Foundation严格遵守着12条铁律[twelve-factor application pri
 
 为了更好的理解Kubernetes，让我们来看一看架构图，这是一个全局的架构图，包含了系统的组件。
 
-![himie4w8ap52-KubernetesArchitecture](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/himie4w8ap52-KubernetesArchitecture.png)
+![himie4w8ap52-KubernetesArchitecture](/pages/keynotes/L2_advanced/1_kubernetes/3_CKAD/pics/2_Kubernetes_Architecture/himie4w8ap52-KubernetesArchitecture.png)
 
 在这个最简单的模型里，Kubernetes有一个中心控制器，和一些工作节点。这个管理器上运行着一个API server，一个scheduler，多种的控制器和一个存储系统，还有容器和网络配置。
 
@@ -215,11 +215,11 @@ Service和kubectl命令一样，都使用selector来判断应该和哪个对象�
 
 下面的图表显示了一个Pod带着两个容器，A和B，和两个数据卷，1和2。容器AB与第三个容器共享一个网络名称空间，第三个容器叫做Pause容器，他是用来获取IP地址的，然后所有Pod内的容器都去使用它的网络名称空间。他们和卷组1，2组成了一个完整的Pod。
 
-![hl3vukvzmyl3-APod](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/hl3vukvzmyl3-APod.png)
+![hl3vukvzmyl3-APod](/pages/keynotes/L2_advanced/1_kubernetes/3_CKAD/pics/2_Kubernetes_Architecture/hl3vukvzmyl3-APod.png)
 
 为了互相通信，容器可以使用loopback接口，把文件写在文件系统上，或者通过inter-process communication（IPC）的方式。如果把协作的应用都放在一个pod中会产生问题。目前只有一个网络插件可以让pod拥有多个IP地址，他是由HPE实验室开发的项目。
 
-![image-20200212144428013](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/image-20200212144428013.png)
+![image-20200212144428013](/pages/keynotes/L2_advanced/1_kubernetes/3_CKAD/pics/2_Kubernetes_Architecture/image-20200212144428013.png)
 
 ### 2.15. 网络是怎么工作的
 
@@ -241,7 +241,7 @@ kubernetes期望网络可以实现pod和pod之间的通信，但是他自己是�
 
 下面我们来研究一下Service的工作流。
 
-![rs7sj920kkap-NetworkingSetup-3](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/rs7sj920kkap-NetworkingSetup-3.png)
+![rs7sj920kkap-NetworkingSetup-3](/pages/keynotes/L2_advanced/1_kubernetes/3_CKAD/pics/2_Kubernetes_Architecture/rs7sj920kkap-NetworkingSetup-3.png)
 
 下面是整个的集群网络的工作流。
 
