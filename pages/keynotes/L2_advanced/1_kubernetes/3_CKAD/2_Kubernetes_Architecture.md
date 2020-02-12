@@ -275,38 +275,4 @@ CNI是一个非常重要的spec文件，因为他内部含有大量的库，这�
 }
 ```
 
-这个配置定义了一个标准的Linux bridge，叫cni0，他可以在子网10.22.0.0/16网段下分配IP地址。这个桥接插件会在合适的名称空间中，为容器定义适当的网络和网络接口。详细信息我们可以参考[CNI GitHub repository](https://github.com/containernetworking/cni)的README文件
-
-### 2.17. pod间通信
-
-尽管CNI插件可以用来配置pod的网络，并且为pod提供一个独立的IP，但是他并不能帮助你实现跨node的pod间通信。
-
-早期的kubernetes需求有下面这几个：
-
-+ 所有的pod可以和其他任何节点上的node通信
-+ 所有的node可以和任意的pod通信
-+ 没有NAT（Network Address Translation）网络地址映射
-
-一般来说，所有的IP地址，包括node和pod的，都是通过路由表，而不是NAT。当我们访问他们的时候，就好像是在访问物理的网络架构。否则，要不然，我们就需要用一些软件定义的overlay解决方案，比如：
-
-+ [Weave](https://www.weave.works/oss/net/)
-+ [Flannel](https://coreos.com/flannel/docs/latest/)
-+ [Calico](https://www.projectcalico.org/)
-+ [Romana](https://romana.io/)
-
-大多数的网络插件目前都支持使用网络策略（Network Policies），他就好像内部防火墙，控制入栈和出栈的流量。
-
-更多的信息请参考[Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/) 和 [networking add-ons](https://kubernetes.io/docs/concepts/cluster-administration/addons/).
-
-### 2.18. 扩展阅读
-
-报告：["Large-Scale Cluster Management at Google with Borg"](https://ai.google/research/pubs/pub43438)
-
-听一下：[John Wilkes talking about Borg and Kubernetes](https://www.gcppodcast.com/post/episode-46-borg-and-k8s-with-john-wilkes/)
-
-参加交流会：[community hangout](https://github.com/kubernetes/community) 
-
-加入Slack社区：[Slack](http://slack.kubernetes.io/)的**#kubernetes-users**的频道
-
-Stack Overflow社区：[Stack Overflow community](https://stackoverflow.com/search?q=kubernetes)
-
+这个配置定义了一个标准的Linux bridge，叫cni0，他可以在子网10.22.0.0/16网段下分配IP地址。这个桥接插件会在合适的名称空间中，为容器定义适当的网络和网络接口。

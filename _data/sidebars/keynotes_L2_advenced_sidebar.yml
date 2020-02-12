@@ -127,27 +127,27 @@ entries:
           output: web, pdf
 
         - title: 3 Build构建
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_3_Build.html
           output: web, pdf
 
         - title: 4 设计
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_4_Design.html
           output: web, pdf
 
         - title: 5 配置Deployment
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_5_Deployment_Configuration.html
           output: web, pdf
 
         - title: 6 安全
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_6_Security.html
           output: web, pdf
 
         - title: 7 暴露（exposing）应用
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_7_Exposing_Application.html
           output: web, pdf
 
         - title: 8 Troubleshotting排错
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
+          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
           output: web, pdf
 
   - title: 第二章 Kubernetes系列工具与生态
