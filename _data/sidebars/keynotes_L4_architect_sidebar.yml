@@ -40,12 +40,32 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 监控
+    - title: 第一节 方法论：我们需要哪些系统？
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第二节 日志
-      url: /mydoc_release_notes_60.html
+    subfolders:
+      - title: 第二节 监控
+        url: /mydoc_release_notes_60.html
+        output: web, pdf
+        subfolderitems:
+
+        - title: 1 TIGK
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+        - title: 2 Prometheus系列
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+      - title: 第三节 日志
+        url: /mydoc_release_notes_60.html
+        output: web, pdf
+        subfolderitems:
+
+        - title: 1 ELK
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
 
   - title: 第二章 SRE
     output: web, pdf
@@ -67,14 +87,26 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 terraform
+    - title: 第一节 聊一聊IaC
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-  - title: 第五章 产品分析
-    output: web, pdf
-    folderitems:
+    subfolders:
+      - title: 第二节 ansible
+        url: /mydoc_release_notes_60.html
+        output: web, pdf
+        subfolderitems:
 
-    - title: 第一节 
-      url: /mydoc_release_notes_60.html
-      output: web, pdf
+        - title: 1 TIGK
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
+      - title: 第三节 terraform
+        url: /mydoc_release_notes_60.html
+        output: web, pdf
+        subfolderitems:
+
+        - title: 1 TIGK
+          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+          output: web, pdf
+
