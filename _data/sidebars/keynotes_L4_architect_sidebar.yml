@@ -44,7 +44,7 @@ entries:
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    subfolders:
+      subfolders:
       - title: 第二节 监控
         url: /mydoc_release_notes_60.html
         output: web, pdf
@@ -91,7 +91,7 @@ entries:
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    subfolders:
+      subfolders:
       - title: 第二节 ansible
         url: /mydoc_release_notes_60.html
         output: web, pdf
