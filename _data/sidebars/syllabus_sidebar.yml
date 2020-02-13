@@ -87,30 +87,3 @@ entries:
       url: /mydoc_series.html
       output: web, pdf
 
-    - title: 产品分析
-      url: /mydoc_series.html
-      output: web, pdf
-
-  - title: 跟上时代的脚步
-    output: web, pdf
-
-    folderitems:
-    - title: Ingress与Envoy
-      url: /mydoc_adding_tooltips.html
-      output: web, pdf
-
-    - title: ServiceMash与Jeager
-      url: /mydoc_alerts.html
-      output: web, pdf
-
-    - title: 容器化与Containerd
-      url: /mydoc_icons.html
-      output: web, pdf
-
-    - title: 自动化部署与Helm
-      url: /mydoc_images.html
-      output: web, pdf
-
-    - title: 存储与Rook
-      url: /mydoc_code_samples.html
-      output: web, pdf

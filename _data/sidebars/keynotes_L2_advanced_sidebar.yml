@@ -19,23 +19,6 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: 课前准备
-    output: web, pdf
-    folderitems:
-
-    - title: 需要准备的环境
-      url: /index.html
-      output: web, pdf
-      type: homepage
-
-    - title: 配置环境
-      url: /mydoc_introduction.html
-      output: web, pdf
-
-    - title: 预备知识
-      url: /mydoc_supported_features.html
-      output: web, pdf
-
   - title: 第一章 Kubernetes系列讲座
     output: web, pdf
     folderitems:
