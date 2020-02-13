@@ -19,8 +19,6 @@ topnav_dropdowns:
           url: /keynotes_L3_senior.html
         - title: 架构师课程
           url: /keynotes_L4_architect.html
-        - title: 跟上时代的脚步
-          url: /keynotes_L5_bigmaster.html
 
     - title: 课堂风采
       folderitems:
