@@ -284,7 +284,7 @@ Kapacitor是时序数据分析、处理引擎。它可以处理来自InfluxDB的
   $ yum install https://dl.influxdata.com/kapacitor/releases/kapacitor-1.5.4-1.x86_64.rpm
   ```
 
-+ 配置：
++ 配置文件位置：`/etc/`， 如果没有特殊的需求，不需要配置任何的参数
 
 + 启动服务并且开机自动运行
 
@@ -292,4 +292,21 @@ Kapacitor是时序数据分析、处理引擎。它可以处理来自InfluxDB的
   $ systemctl start kapacitor && systemctl enable kapacitor
   ```
 
++ 创建规则`cpu_alert.tick`
+
+  ```
+  
+  ```
+
+  
+
 + 参考[官方文档](https://docs.influxdata.com/kapacitor/v1.5/introduction/getting-started)，[详细文档](https://docs.influxdata.com/kapacitor/v1.5/)
+
+## 5. 总结
+
++ InfluxData是以InfluxDB出名的，个人感觉InfluxDB在时序数据库角度是超越Prometheus的，稳定性非常强，且占用资源非常少，而且http写入的方式也让数据库的兼容性非常好。
++ 但是InfluxDB的社区版并不支持集群，这就让他在生产系统上上线成为了最大的障碍，花钱总是让那个老板肉疼的一件事。
++ Telegraf作为Agent和Influx的结合还是非常完美的，但是Telegraf的社区并不活跃，在这个开源软件活跃的时代，光靠公司的力量想从头维护一款软件是非常困难的，最好提供统一的接口或者广泛的兼容性，或者有个好靠山：）。
++ Chronograf本次没有涉及，从软件选择的时候就舍弃了，因为他只可以和InfluxDB兼容，不像Grafana兼容性广泛，在生产上使用的机会不多。
++ Kapacitor的用户体现并不是很好，也许是没有买商用版的原因，报警规则非常的繁琐，报警的消息模板也非常不友好。感觉还不如Grafana自带的规则好用。
++ Grafana目前真的挑不出毛病，硬要说的话，就是报警规则需要自己创建，让一般用户上手有点困难。

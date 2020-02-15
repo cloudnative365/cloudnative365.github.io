@@ -245,7 +245,7 @@ kubernetes期望网络可以实现pod和pod之间的通信，但是他自己是�
 
 下面是整个的集群网络的工作流。
 
-![rs7sj920kkap-NetworkingSetup-4](/pages/keynotes/L2_advanced/1_kubernetes/2_CKAD/pics/2_Kubernetes_Architecture/rs7sj920kkap-NetworkingSetup-4.png)
+![rs7sj920kkap-NetworkingSetup-4](/pages/keynotes/L2_advanced/1_kubernetes/3_CKAD/pics/2_Kubernetes_Architecture/rs7sj920kkap-NetworkingSetup-4.png)
 
 带领大家开发Kubernetes的领导之一Tim Hockin，写了一个非常实用的slide来帮助我们了解kubernetes的网络，[An illustrated Guide to Kubernetes Networking](https://speakerdeck.com/thockin/illustrated-guide-to-kubernetes-networking).
 
@@ -310,3 +310,20 @@ CNI是一个非常重要的spec文件，因为他内部含有大量的库，这�
 
 Stack Overflow社区：[Stack Overflow community](https://stackoverflow.com/search?q=kubernetes)
 
+## 3. 实验
+
+PDF版：[点这里](https://github.com/cloudnative365/cloudnative365.github.io/raw/master/pages/keynotes/L2_advanced/1_kubernetes/3_CKAD/CKAD_LinuxFoundationTrainingFiles/Kubernetes_for_Developers-LFD259-labs_V2019-11-05.pdf)
+
+### Exercise 1: Overview and Preliminaries
+
++ 官方建议大家使用ubuntu操作系统，Ubuntu 18.04，但是考试使用的是ubuntu16.04，但是对于咱们的实验区别不大
++ 为了保证系统运行速速，建议使用2C8G的配置
++ 不管你使用什么系统，SELinux，AppArmor软件记得关闭，检查硬件防火墙，安全组的规则，操作系统上的防火墙的规则要为空
+
+### Exercise 2: Deploy a New Cluster
+
+### Exercise 3: Create a Basic Pod
+
+### Exercise 4: Multi-Container Pods
+
+### Exercise 5: Create a Simple Deployment
