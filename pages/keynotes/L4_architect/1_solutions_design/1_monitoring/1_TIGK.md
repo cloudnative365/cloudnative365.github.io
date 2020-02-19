@@ -295,10 +295,37 @@ Kapacitor是时序数据分析、处理引擎。它可以处理来自InfluxDB的
 + 创建规则`cpu_alert.tick`
 
   ```
+  dbrp "telegraf"."autogen"
   
+  stream
+      // Select just the cpu measurement from our example database.
+      |from()
+          .measurement('cpu')
+      |alert()
+          .crit(lambda: int("usage_idle") <  70)
+          // Whenever we get an alert write it to a file.
+          .log('/tmp/alerts.log')
   ```
 
++ 加载规则`kapacitor define cpu_alert -tick cpu_alert.tick`
+
++ 查看规则
+
+  ```
+  $ kapacitor list tasks
+  ID        Type      Status    Executing Databases and Retention Policies
+  cpu_alert stream    disabled  false     ["telegraf"."autogen"]
   
+  $ kapacitor show cpu_alert
+  ID: cpu_alert
+  Error:
+  Template:
+  Type: stream
+  Status: disabled
+  Executing: false
+  ```
+
++ 启用规则`kapacitor enable cpu_alert`
 
 + 参考[官方文档](https://docs.influxdata.com/kapacitor/v1.5/introduction/getting-started)，[详细文档](https://docs.influxdata.com/kapacitor/v1.5/)
 
