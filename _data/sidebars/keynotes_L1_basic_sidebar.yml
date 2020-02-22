@@ -52,13 +52,26 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 复习Linux基础知识
+    - title: 第一节 学习Linux之前的琐碎知识
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第二节 Linux系统管理
-      url: /mydoc_release_notes_60.html
-      output: web, pdf
+      subfolders:
+      - title: 第二节 操作系统基础知识
+        output: web, pdf
+        subfolderitems:
+
+        - title: CPU
+          url: /keynotes_L1_basic_gitpage_blog.html
+          output: web, pdf
+
+      - title: 第三节 Linux系统管理
+        output: web, pdf
+        subfolderitems:
+
+        - title: Linux软件包管理
+          url: /keynotes_L1_basic_gitpage_blog.html
+          output: web, pdf
 
   - title: 第二章 虚拟化基础
     output: web, pdf
