@@ -28,9 +28,18 @@ entries:
       output: web, pdf
       type: homepage
 
-    - title: CNCF知识普及
-      url: /mydoc_introduction.html
-      output: web, pdf
+      subfolders
+      - title: 云原生知识普及
+        output: web, pdf
+        subfolderitems:
+
+        - title: 云原生的身世之谜
+          url: /mydoc_supported_features.html
+          output: web, pdf
+        
+        - title: 如何与CNCF愉快的玩耍
+          url: /mydoc_supported_features.html
+          output: web, pdf
 
     - title: Infrastructure As Code
       url: /mydoc_supported_features.html
