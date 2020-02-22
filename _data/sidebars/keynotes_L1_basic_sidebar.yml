@@ -56,6 +56,10 @@ entries:
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
+    - title: 第二节 Linux系统管理
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
   - title: 第二章 虚拟化基础
     output: web, pdf
     folderitems:
