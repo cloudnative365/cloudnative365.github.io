@@ -28,7 +28,7 @@ entries:
       output: web, pdf
       type: homepage
 
-      subfolders
+      subfolders:
       - title: 云原生知识普及
         output: web, pdf
         subfolderitems:
