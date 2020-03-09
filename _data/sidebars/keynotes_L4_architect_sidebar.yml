@@ -48,6 +48,14 @@ entries:
           url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
           output: web, pdf
 
+      - title: 第四节 负载均衡
+        output: web, pdf
+        subfolderitems:
+
+        - title: 1 使用公有云的负载均衡作为k8s的负载均衡
+          url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
+          output: web, pdf
+
   - title: 第二章 SRE
     output: web, pdf
     folderitems:

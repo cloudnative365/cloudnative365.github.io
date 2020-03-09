@@ -289,7 +289,7 @@ Kapacitor是时序数据分析、处理引擎。它可以处理来自InfluxDB的
 + 启动服务并且开机自动运行
 
   ```BASH
-  $ systemctl start kapacitor && systemctl enable kapacitor
+  $ service kapacitor start && chkconfig kapacitor on
   ```
 
 + 创建规则`cpu_alert.tick`
