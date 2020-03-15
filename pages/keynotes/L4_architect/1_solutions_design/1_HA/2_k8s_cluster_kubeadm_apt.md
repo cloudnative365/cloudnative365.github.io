@@ -1,7 +1,7 @@
 ---
 title: 用kubeadm搭建k8s高可用（apt版）
 keywords: keynotes, architect, solutions_design, HA, k8s_cluster_kubeadm_apt
-permalink: keynotes_L4_architect_1_solutions_design_5_HA_1_k8s_cluster_kubeadm_apt.html
+permalink: keynotes_L4_architect_1_solutions_design_1_HA_2_k8s_cluster_kubeadm_apt.html
 sidebar: keynotes_L4_architect_sidebar
 typora-copy-images-to: ./pics/2_k8s_cluster_kubeadm_apt
 typora-root-url: ../../../../../../cloudnative365.github.io

@@ -23,11 +23,23 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 方法论：我们需要哪些系统？
+    - title: 方法论：我们需要哪些系统？
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
       subfolders:
+      - title: 第一节 高可用
+        output: web, pdf
+        subfolderitems:
+
+        - title: 1 用kubeadm搭建k8s高可用（yum版）
+          url: /keynotes_L4_architect_1_solutions_design_1_HA_1_k8s_cluster_kubeadm_yum.html
+          output: web, pdf
+
+        - title: 2 用kubeadm搭建k8s高可用（apt版）
+          url: /keynotes_L4_architect_1_solutions_design_1_HA_2_k8s_cluster_kubeadm_apt.html
+          output: web, pdf
+
       - title: 第二节 监控
         output: web, pdf
         subfolderitems:
@@ -56,23 +68,12 @@ entries:
           url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
           output: web, pdf
 
-      - title: 第五节 高可用
-        output: web, pdf
-        subfolderitems:
-
-        - title: 1 用kubeadm搭建k8s高可用（yum版）
-          url: /keynotes_L4_architect_1_solutions_design_5_HA_1_k8s_cluster_kubeadm_yum.html
-          output: web, pdf
-
-        - title: 2 用kubeadm搭建k8s高可用（apt版）
-          url: /keynotes_L4_architect_1_solutions_design_5_HA_2_k8s_cluster_kubeadm_apt.html
-          output: web, pdf
 
   - title: 第二章 SRE
     output: web, pdf
     folderitems:
 
-    - title: 第一节 解读《SRE Google运维解密》
+    - title: 方法论 解读《SRE Google运维解密》
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
@@ -88,7 +89,7 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 聊一聊IaC
+    - title: 方法论 聊一聊IaC
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
