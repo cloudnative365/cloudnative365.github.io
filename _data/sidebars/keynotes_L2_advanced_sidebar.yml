@@ -225,9 +225,22 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 CloudNative Roadmap
+    - title: CloudNative Roadmap
       url: /mydoc_release_notes_60.html
       output: web, pdf
+
+      subfolders:
+      - title: 第一节 安装kubernetes
+        output: web, pdf
+        subfolderitems:
+
+        - title: 1 在MacOS上安装Minikube
+          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_1_minikube_macos.html
+          output: web, pdf
+
+        - title: 2 在Windows上安装Minikube
+          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_1_minikube_windows.html
+          output: web, pdf
 
   - title: 第三章 Prometheus从入门到精通
     output: web, pdf

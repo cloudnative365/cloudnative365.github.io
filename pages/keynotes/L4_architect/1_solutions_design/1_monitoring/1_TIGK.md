@@ -127,7 +127,7 @@ Kapacitor是时序数据分析、处理引擎。它可以处理来自InfluxDB的
 + 下载与安装：
 
   ```BASH
-  $ yum install https://dl.influxdata.com/influxdb/releases/influxdb-1.7.9.x86_64.rpm
+  $ yum install -y https://dl.influxdata.com/influxdb/releases/influxdb-1.7.9.x86_64.rpm
   ```
 
   
@@ -178,7 +178,7 @@ Kapacitor是时序数据分析、处理引擎。它可以处理来自InfluxDB的
 + 下载与安装：
 
   ```BASH
-  $ yum install https://dl.influxdata.com/telegraf/releases/telegraf-1.13.3-1.x86_64.rpm
+  $ yum install -yhttps://dl.influxdata.com/telegraf/releases/telegraf-1.13.3-1.x86_64.rpm
   ```
 
 + 配置文件位置：`/etc/telegraf/telegraf.conf`，里面的配置文件默认收集cpu，disk的信息，并写入influxdb，如果有其他的需求，请各位自行修改。
@@ -232,7 +232,7 @@ Kapacitor是时序数据分析、处理引擎。它可以处理来自InfluxDB的
 + 下载与安装：
 
   ```BASH
-  $ yum install https://dl.grafana.com/oss/release/grafana-6.6.1-1.x86_64.rpm
+  $ yum install -y https://dl.grafana.com/oss/release/grafana-6.6.1-1.x86_64.rpm
   ```
 
 + 配置文件位置：`/etc/grafana/grafana.ini`
