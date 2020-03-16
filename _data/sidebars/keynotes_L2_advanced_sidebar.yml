@@ -239,7 +239,23 @@ entries:
           output: web, pdf
 
         - title: 2 在Windows上安装Minikube
-          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_1_minikube_windows.html
+          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_2_minikube_windows.html
+          output: web, pdf
+
+        - title: 3 使用kops在aws上创建集群
+          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_3_kops_AWS.html
+          output: web, pdf
+
+        - title: 4 使用Rancher在公有云上创建集群
+          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_4_rancher_AWS.html
+          output: web, pdf
+
+        - title: 5 使用kubespray创建集群
+          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_5_kubespray_ubuntu.html
+          output: web, pdf
+
+        - title: 6 二进制方法安装kubernetes集群
+          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
           output: web, pdf
 
   - title: 第三章 Prometheus从入门到精通

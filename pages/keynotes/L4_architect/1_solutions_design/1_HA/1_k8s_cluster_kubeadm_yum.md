@@ -19,7 +19,7 @@ typora-root-url: ../../../../../../cloudnative365.github.io
 
 ### 2.1. 整体架构图
 
-![ha-master-gce](/pages/keynotes/L4_architect/1_solutions_design/1_HA/pics/1_k8s_cluster_kubeadm_yum/ha-master-gce.png)
+![ha-master-gce](/../../../../Desktop/ha-master-gce.png)
 
 ## 3. 资源清单
 

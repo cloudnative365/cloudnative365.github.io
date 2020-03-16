@@ -3,11 +3,11 @@ title: MacOS上安装MiniKube
 keywords: keynotes, advanced, kubernetes_tools, install_kubernetes, minikube_macos
 permalink: keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_1_minikube_macos.html
 sidebar: keynotes_L2_advanced_sidebar
-typora-copy-images-to: ./pics/1_minikube_macos.html
+typora-copy-images-to: ./pics/1_minikube_macos
 typora-root-url: ../../../../../../cloudnative365.github.io
-
-
 ---
+
+
 
 ## 1. 环境的准备
 
