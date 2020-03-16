@@ -29,19 +29,6 @@ topnav_dropdowns:
         - title: 优秀学员作品
           url: /classes_successd.html
 
-    - title: follow us
-      folderitems:
-        - title: on Github
-          external_url: https://github.com/cloudnative365
-        - title: on wechat
-          external_url: 
-        - title: on QQ
-          external_url: 
-        - title: on 腾讯课堂
-          external: https://jormun.ke.qq.com/
-        - title: on bilibili
-          external: 
-
     - title: 常用链接
       folderitems:
         - title: CNCF Foundation

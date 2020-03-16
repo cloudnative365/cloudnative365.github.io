@@ -19,20 +19,20 @@ typora-root-url: ../../../../../../cloudnative365.github.io
 
 ### 2.1. 整体架构图
 
-![ha-master-gce](/pages/keynotes/L4_architect/1_solutions_design/5_HA/pics/1_k8s_cluster_kubeadm_yum/ha-master-gce.png)
+![ha-master-gce](/pages/keynotes/L4_architect/1_solutions_design/1_HA/pics/1_k8s_cluster_kubeadm_yum/ha-master-gce.png)
 
 ## 3. 资源清单
 
 ### 3.1. 测试环境
 
-| 主机        | 组件           | CPU  | 内存 | 磁盘 | 操作系统      |
-| ----------- | -------------- | ---- | ---- | ---- | ------------- |
-| 10.0.11.228 | etcd1，master1 | 2C   | 4G   | 10G  | RHEL7/CentOS7 |
-| 10.0.12.92  | etcd2，master2 | 2C   | 4G   | 10G  | RHEL7/CentOS7 |
-| 10.0.13.58  | etcd3，master3 | 2C   | 4G   | 10G  | RHEL7/CentOS7 |
-| 10.0.12.214 | worker1        | 2C   | 4G   | 10G  | RHEL7/CentOS7 |
-| 10.0.13.21  | worker2        | 2C   | 4G   | 10G  | RHEL7/CentOS7 |
-| 10.0.1.156  | loadbalancer   | 2C   | 4G   | 10G  | RHEL7/CentOS7 |
+| 主机       | 组件           | CPU  | 内存 | 磁盘 | 操作系统           |
+| ---------- | -------------- | ---- | ---- | ---- | ------------------ |
+| 10.0.11.18 | etcd1，master1 | 2C   | 4G   | 10G  | RHEL7/8，CentOS7/8 |
+| 10.0.12.55 | etcd2，master2 | 2C   | 4G   | 10G  | RHEL7/8，CentOS7/8 |
+| 10.0.13.22 | etcd3，master3 | 2C   | 4G   | 10G  | RHEL7/8，CentOS7/8 |
+| 10.0.12.16 | worker1        | 2C   | 4G   | 10G  | RHEL7/8，CentOS7/8 |
+| 10.0.13.37 | worker2        | 2C   | 4G   | 10G  | RHEL7/8，CentOS7/8 |
+| 10.0.1.157 | loadbalancer   | 2C   | 4G   | 10G  | RHEL7/8，CentOS7/8 |
 
 
 
@@ -51,12 +51,12 @@ typora-root-url: ../../../../../../cloudnative365.github.io
 + 配置host文件/etc/hosts，在生产系统中，我们通常会使用DNS服务器，但是为了简化，我们这里就使用本地的解析
 
   ``` bash
-  10.0.11.176 master1
-  10.0.12.228 master2
-  10.0.13.118 master3
-  10.0.12.192 worker1
-  10.0.13.76 worker2
-  10.0.1.162 master-lb
+  10.0.11.18 master1
+  10.0.12.55 master2
+  10.0.13.22 master3
+  10.0.12.16 worker1
+  10.0.13.37 worker2
+  10.0.1.157 master-lb
   ```
 
 + 关闭防火墙
@@ -249,7 +249,153 @@ EOF
 
 这里，我们就使用最常见，最容器实现的nginx来做负载均衡。
 
+***下面的步骤在负载均衡节点master-lb上做***
+
++ 安装nginx
+
 ``` bash
 $ yum -y install nginx
 ```
+
++ 在`/etc/nginx/nginx.conf`里面添加一个include，让nginx读取目录下的配置文件
+
+``` bash
+include /etc/nginx/conf.d/tcp.d/*.conf;
+```
+
++ 添加kubernetes的4层代理配置文件`/etc/nginx/conf.d/tcp.d/kube-api-server.conf`
+
+``` bash
+stream {
+    log_format main '$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent';
+    access_log /var/log/nginx/k8s-access.log main;
+    upstream k8s-apiserver {
+        server 10.1.1.11:6443;
+        server 10.1.1.12:6443;
+        server 10.1.1.13:6443;
+    }
+    server {
+        listen 10.1.1.10:6443;
+        proxy_pass k8s-apiserver;
+    }
+}
+```
+
++ 查看端口是否在监听了
+
+``` bash
+netstat -untlp|grep 6443
+tcp        0      0 10.0.1.157:6443         0.0.0.0:*               LISTEN      15787/nginx: master
+```
+
+***上面的步骤在负载均衡节点master-lb上做***
+
+### 4.6. 使用kubeadm初始化第一个master节点
+
++ 检查网络是否通畅(使用telnet也可以)
+
+``` bash
+nc -v 10.0.1.157 6443
+Ncat: Version 7.70 ( https://nmap.org/ncat )
+Ncat: Connected to 10.0.1.157:6443.
+```
+
++ 把LOAD_BALANCER_DNS:LOAD_BALANCER_PORT替换成刚才nginx的IP和端口
+
+``` bash
+kubeadm init --control-plane-endpoint "LOAD_BALANCER_DNS:LOAD_BALANCER_PORT" --upload-certs
+```
+
+
+
+``` bash
+kubeadm init --control-plane-endpoint "10.0.1.157:6443" --upload-certs --pod-network-cidr=192.168.0.0/16
+```
+
+成功之后，会有下面的提示，找个小本本记下来吧
+
+``` bash
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of the control-plane node running the following command on each as root:
+
+  kubeadm join 10.0.1.157:6443 --token yww7fd.oxn7vj6484ye5amq \
+    --discovery-token-ca-cert-hash sha256:94f5eaf1fcd4c32d52084515d5917561fd94b2e5489798e3d2a7edd615fe892b \
+    --control-plane --certificate-key ac9317ed86ae2132d172f3dae66163f156aa13eaba299c6d00c7228abbaec9d4
+
+Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
+As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use
+"kubeadm init phase upload-certs --upload-certs" to reload certs afterward.
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 10.0.1.157:6443 --token yww7fd.oxn7vj6484ye5amq \
+    --discovery-token-ca-cert-hash sha256:94f5eaf1fcd4c32d52084515d5917561fd94b2e5489798e3d2a7edd615fe892b
+```
+
+### 4.7. 初始化master2和master3
+
+``` bash
+kubeadm join 10.0.1.157:6443 --token yww7fd.oxn7vj6484ye5amq \
+    --discovery-token-ca-cert-hash sha256:94f5eaf1fcd4c32d52084515d5917561fd94b2e5489798e3d2a7edd615fe892b \
+    --control-plane --certificate-key ac9317ed86ae2132d172f3dae66163f156aa13eaba299c6d00c7228abbaec9d4
+```
+
+### 4.8. 初始化worker1和worker2
+
+``` bash
+kubeadm join 10.0.1.157:6443 --token yww7fd.oxn7vj6484ye5amq \
+    --discovery-token-ca-cert-hash sha256:94f5eaf1fcd4c32d52084515d5917561fd94b2e5489798e3d2a7edd615fe892b
+```
+
+### 4.9. 选择一个网络方案
+
+我们这里就选用flannel了
+
+``` bash
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+```
+
+### 4.10. 验证一下成果
+
+``` bash
+[root@master-lb .kube]# kubectl get pod -A
+NAMESPACE     NAME                              READY   STATUS    RESTARTS   AGE
+kube-system   coredns-6955765f44-6w7hn          1/1     Running   0          59m
+kube-system   coredns-6955765f44-vpdfg          1/1     Running   0          59m
+kube-system   etcd-master1                      1/1     Running   0          59m
+kube-system   etcd-master2                      1/1     Running   0          49m
+kube-system   etcd-master3                      1/1     Running   0          48m
+kube-system   kube-apiserver-master1            1/1     Running   0          59m
+kube-system   kube-apiserver-master2            1/1     Running   0          49m
+kube-system   kube-apiserver-master3            1/1     Running   0          47m
+kube-system   kube-controller-manager-master1   1/1     Running   1          59m
+kube-system   kube-controller-manager-master2   1/1     Running   0          49m
+kube-system   kube-controller-manager-master3   1/1     Running   0          47m
+kube-system   kube-flannel-ds-amd64-fkgbb       1/1     Running   0          11s
+kube-system   kube-flannel-ds-amd64-l6rx4       1/1     Running   0          11s
+kube-system   kube-flannel-ds-amd64-lhg9p       1/1     Running   0          11s
+kube-system   kube-flannel-ds-amd64-rjr9x       1/1     Running   0          11s
+kube-system   kube-flannel-ds-amd64-sb955       1/1     Running   0          11s
+kube-system   kube-proxy-2h4dt                  1/1     Running   0          49m
+kube-system   kube-proxy-67f8b                  1/1     Running   0          59m
+kube-system   kube-proxy-f9774                  1/1     Running   0          50m
+kube-system   kube-proxy-sw4k5                  1/1     Running   0          48m
+kube-system   kube-proxy-tst5s                  1/1     Running   0          51m
+kube-system   kube-scheduler-master1            1/1     Running   1          59m
+kube-system   kube-scheduler-master2            1/1     Running   0          49m
+kube-system   kube-scheduler-master3            1/1     Running   0          47m
+```
+
+
 

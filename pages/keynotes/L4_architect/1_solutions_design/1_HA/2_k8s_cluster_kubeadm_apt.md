@@ -7,7 +7,6 @@ typora-copy-images-to: ./pics/2_k8s_cluster_kubeadm_apt
 typora-root-url: ../../../../../../cloudnative365.github.io
 
 
-
 ---
 
 ## 1. 介绍
@@ -20,21 +19,20 @@ typora-root-url: ../../../../../../cloudnative365.github.io
 
 ### 2.1. 整体架构图
 
-![ha-master-gce](/pages/keynotes/L4_architect/1_solutions_design/5_HA/pics/2_k8s_cluster_kubeadm_apt/ha-master-gce.png)
+![ha-master-gce](/pages/keynotes/L4_architect/1_solutions_design/1_HA/pics/2_k8s_cluster_kubeadm_apt/ha-master-gce.png)
 
 ## 3. 资源清单
 
 ### 3.1. 测试环境
 
-| 机器名    | IP        | 组件                  | CPU  | 内存 | 磁盘 | 操作系统                      |
-| --------- | --------- | --------------------- | ---- | ---- | ---- | ----------------------------- |
-| master1   | 10.1.1.11 | etcd1，master1        | 2C   | 4G   | 64G  | RHEL7/CentOS7                 |
-| master2   | 10.1.1.12 | etcd2，master2        | 2C   | 4G   | 64G  | ubuntu16/ubuntu18/raspberryPi |
-| master3   | 10.1.1.13 | etcd3，master3        | 2C   | 4G   | 64G  | ubuntu16/ubuntu18/raspberryPi |
-| worker1   | 10.1.1.21 | worker1               | 2C   | 4G   | 128G | ubuntu16/ubuntu18/raspberryPi |
-| worker2   | 10.1.1.22 | worker2               | 2C   | 4G   | 128G | ubuntu16/ubuntu18/raspberryPi |
-| mgtserver | 10.1.1.10 | loadbalancer（nginx） | 1C   | 2G   | 64G  | ubuntu16/ubuntu18/raspberryPi |
-| master    | 10.1.1.10 | 虚拟IP                |      |      |      |                               |
+| 机器名  | IP          | 组件                  | CPU  | 内存 | 磁盘 | 操作系统                      |
+| ------- | ----------- | --------------------- | ---- | ---- | ---- | ----------------------------- |
+| master1 | 10.0.11.73  | etcd1，master1        | 2C   | 4G   | 64G  | ubuntu16/ubuntu18/raspberryPi |
+| master2 | 10.0.12.20  | etcd2，master2        | 2C   | 4G   | 64G  | ubuntu16/ubuntu18/raspberryPi |
+| master3 | 10.0.13.199 | etcd3，master3        | 2C   | 4G   | 64G  | ubuntu16/ubuntu18/raspberryPi |
+| worker1 | 10.0.12.91  | worker1               | 2C   | 4G   | 128G | ubuntu16/ubuntu18/raspberryPi |
+| worker2 | 10.0.13.162 | worker2               | 2C   | 4G   | 128G | ubuntu16/ubuntu18/raspberryPi |
+| lb      | 10.0.1.152  | loadbalancer（nginx） | 1C   | 2G   | 64G  | ubuntu16/ubuntu18/raspberryPi |
 
 
 
@@ -66,12 +64,12 @@ firewall-cmd --state
 + 配置host文件/etc/hosts，在生产系统中，我们通常会使用DNS服务器，但是为了简化，我们这里就使用本地的解析
 
 ``` bash
-10.1.1.11 master1
-10.1.1.12 master2
-10.1.1.13 master3
-10.1.1.21 worker1
-10.1.1.22 worker2
-10.1.1.10 mgtserver
+10.0.11.73 master1
+10.0.12.20 master2
+10.0.13.199 master3
+10.0.12.91 worker1
+10.0.13.162 worker2
+10.0.1.152 lb-server
 ```
 
 + （有的系统已经配置好了，检查一下就好）桥接网络配置
@@ -172,6 +170,8 @@ EOF
 
 这里，我们就使用最常见，最容器实现的nginx来做负载均衡。
 
+***下面的步骤在负载均衡节点master-lb上做***
+
 ``` bash
 $ apt-get install -y nginx
 ```
@@ -182,23 +182,101 @@ $ apt-get install -y nginx
 include /etc/nginx/conf.d/tcp.d/*.conf;
 ```
 
-添加kubernetes的4层代理配置文件`kube-api-server.conf`
+添加kubernetes的4层代理配置文件`/etc/nginx/conf.d/tcp.d/kube-api-server.conf`
 
 ``` bash
-cat <<EOF >/etc/nginx/conf.d/tcp.d/kube-api-server.conf
 stream {
     log_format main '$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent';
     access_log /var/log/nginx/k8s-access.log main;
     upstream k8s-apiserver {
-        server 10.1.1.11:6443;
-        server 10.1.1.12:6443;
-        server 10.1.1.13:6443;
+        server 10.0.11.73:6443;
+        server 10.0.12.20:6443;
+        server 10.0.13.199:6443;
     }
     server {
-        listen 10.1.1.10:6443;
+        listen 10.0.1.152:6443;
         proxy_pass k8s-apiserver;
     }
 }
-EOF
+```
+
++ 查看端口是否在监听了
+
+``` bash
+netstat -untlp|grep 6443
+tcp        0      0 10.0.1.152:6443         0.0.0.0:*               LISTEN      15105/nginx: master
+```
+
+***上面的步骤在负载均衡节点master-lb上做***
+
+### 4.6. 使用kubeadm初始化第一个master节点
+
++ 检查网络是否通畅(使用telnet也可以)
+
+``` bash
+nc -v 10.0.1.152 6443
+Connection to 10.0.1.152 6443 port [tcp/*] succeeded!
+```
+
++ 把LOAD_BALANCER_DNS:LOAD_BALANCER_PORT替换成刚才nginx的IP和端口
+
+``` bash
+kubeadm init --control-plane-endpoint "LOAD_BALANCER_DNS:LOAD_BALANCER_PORT" --upload-certs
+```
+
+``` bash
+kubeadm init --control-plane-endpoint "10.0.1.152:6443" --upload-certs --pod-network-cidr=192.168.0.0/16
+```
+
+成功之后，会有下面的提示，找个小本本记下来吧
+
+``` bash
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of the control-plane node running the following command on each as root:
+
+  kubeadm join 10.0.1.152:6443 --token bh7okr.gp161f6cdrfgx1o3 \
+    --discovery-token-ca-cert-hash sha256:f0845e17f83581113fb3643a6f30c07cb6e3e8145fb5795c4ce483387bf0eaf5 \
+    --control-plane --certificate-key c999218aecb003e11bcc36fea534c1439fcbab4290380d7b2260c626cf778bbf
+
+Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
+As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use
+"kubeadm init phase upload-certs --upload-certs" to reload certs afterward.
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 10.0.1.152:6443 --token bh7okr.gp161f6cdrfgx1o3 \
+    --discovery-token-ca-cert-hash sha256:f0845e17f83581113fb3643a6f30c07cb6e3e8145fb5795c4ce483387bf0eaf5
+```
+
+### 4.7. 初始化master2和master3
+
+``` bash
+kubeadm join 10.0.1.152:6443 --token bh7okr.gp161f6cdrfgx1o3 \
+    --discovery-token-ca-cert-hash sha256:f0845e17f83581113fb3643a6f30c07cb6e3e8145fb5795c4ce483387bf0eaf5 \
+    --control-plane --certificate-key c999218aecb003e11bcc36fea534c1439fcbab4290380d7b2260c626cf778bbf
+```
+
+### 4.8. 初始化worker1和worker2
+
+``` bash
+kubeadm join 10.0.1.152:6443 --token bh7okr.gp161f6cdrfgx1o3 \
+    --discovery-token-ca-cert-hash sha256:f0845e17f83581113fb3643a6f30c07cb6e3e8145fb5795c4ce483387bf0eaf5
+```
+
+### 4.9. 最后是网络方案，这次我们用calico
+
+``` bash
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 ```
 
