@@ -246,8 +246,8 @@ entries:
           url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_3_kops_AWS.html
           output: web, pdf
 
-        - title: 4 使用Rancher在公有云上创建集群
-          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_4_rancher_AWS.html
+        - title: 4 使用Rancher管理我们的集群
+          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_4_rancher.html
           output: web, pdf
 
         - title: 5 使用kubespray创建集群

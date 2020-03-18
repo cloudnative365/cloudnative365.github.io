@@ -225,8 +225,10 @@ kubeadm init --control-plane-endpoint "LOAD_BALANCER_DNS:LOAD_BALANCER_PORT" --u
 ```
 
 ``` bash
-kubeadm init --control-plane-endpoint "10.0.1.152:6443" --upload-certs --pod-network-cidr=192.168.0.0/16
+kubeadm init --control-plane-endpoint "10.0.1.152:6443" --upload-certs --pod-network-cidr=192.168.0.0/16 --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
+
++ 注意：在国内是没办法直接下载的，我们需要先把镜像拉下来再做的这种方法是`不正确的！！`，新版的kubeadm命令支持在初始化的时候直接指定镜像仓库的方法`--image-repository`
 
 成功之后，会有下面的提示，找个小本本记下来吧
 
