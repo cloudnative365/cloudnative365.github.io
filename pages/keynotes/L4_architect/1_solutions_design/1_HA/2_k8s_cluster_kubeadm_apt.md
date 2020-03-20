@@ -101,13 +101,25 @@ bridge-nf-call-ip6tables  bridge-nf-filter-pppoe-tagged  bridge-nf-pass-vlan-inp
 
 + (可选，apt的国外源也OK，就是稍微有点慢)更换apt源为国内源
 
-修改/etc/apt/sources.list.d中的内容，把原来的注释掉，添加国内源，例如，ubuntu更换阿里云的源，[看这里](https://developer.aliyun.com/mirror/ubuntu)。
+修改/etc/apt/sources.list中的内容，把原来的注释掉，添加国内源，例如，ubuntu更换阿里云的源，[看这里](https://developer.aliyun.com/mirror/ubuntu)。
 
 我使用的是树莓派，所以我更换了下面的源
 
 ``` bash
-deb https://mirrors.aliyun.com/raspbian/raspbian/ buster main non-free contrib
-deb-src https://mirrors.aliyun.com/raspbian/raspbian/ buster main non-free contrib
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
 ```
 
 + 添加docker国内源，例如，添加阿里云的docker源，可以[参考这个](https://developer.aliyun.com/mirror/docker-ce)
