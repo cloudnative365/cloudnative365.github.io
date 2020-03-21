@@ -19,7 +19,7 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: 课前准备
+  - title: 云原生RoadMap
     output: web, pdf
     folderitems:
 
@@ -28,42 +28,30 @@ entries:
       output: web, pdf
       type: homepage
 
-    - title: 配置环境
+    - title: 监控-prometheus
       url: /mydoc_introduction.html
       output: web, pdf
 
-    - title: 预备知识
-      url: /mydoc_supported_features.html
+    - title: 日志-EFK
+      url: /mydoc_introduction.html
       output: web, pdf
 
-  - title: 第一章 容器化
-    output: web, pdf
-    folderitems:
-
-    - title: 第一节 复习Linux知识
-      url: /mydoc_release_notes_60.html
+    - title: 负载均衡
+      url: /mydoc_introduction.html
       output: web, pdf
 
-  - title: 第二章 持续交付
-    output: web, pdf
-    folderitems:
-
-    - title: 第一节 服务器虚拟化
-      url: /mydoc_release_notes_60.html
+    - title: 持久存储
+      url: /mydoc_introduction.html
       output: web, pdf
 
-  - title: 第三章 DevOps
-    output: web, pdf
-    folderitems:
-
-    - title: 第一节 服务器虚拟化
-      url: /mydoc_release_notes_60.html
+    - title: 微服务-istio
+      url: /mydoc_introduction.html
       output: web, pdf
 
-  - title: 第四章 微服务
-    output: web, pdf
-    folderitems:
+    - title: 持续集成工具-jinkens
+      url: /mydoc_introduction.html
+      output: web, pdf
 
-    - title: 第一节 服务器虚拟化
-      url: /mydoc_release_notes_60.html
+    - title: IaC工具-Terraform
+      url: /mydoc_introduction.html
       output: web, pdf

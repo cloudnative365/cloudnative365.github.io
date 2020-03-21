@@ -23,205 +23,91 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 使用kubeadm搭建kubernetes环境
-      url: /keynotes_L2_advanced_1_kubernetes_1_about_kubernetes.html
+    - title: 1 kubernetes架构
+      url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_1_Introduction.html
       output: web, pdf
 
-      subfolders:
-      - title: 第二节 运维人员的认证CKA
-        output: web, pdf
-        subfolderitems:
+    - title: 2 Kubernetes基础概念
+      url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_2_Kubernetes_Architecture.html
+      output: web, pdf
 
-        - title: 1 课程介绍
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 3 应用快速入门
+      url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_3_install_kubernetes.html
+      output: web, pdf
 
-        - title: 2 Kubernetes基础知识
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 4 资源清单定义入门
+      url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_3_kubectl_get.html
+      output: web, pdf
 
-        - title: 3 安装和配置
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 5 Pod控制器
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_5_Deployment_Configuration.html
+      output: web, pdf
 
-        - title: 4 Kubernetes架构
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 6 Pod控制器进阶
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_6_Security.html
+      output: web, pdf
 
-        - title: 5 API和权限管理
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 7 Service资源
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_7_Exposing_Application.html
+      output: web, pdf
 
-        - title: 6 API Objects对象
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 8 Ingress和Ingress控制器
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 7 管理Deployment的状态
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 9 存储卷
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 8 Services
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 10 pv，pvc，configmap和secret
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 9 卷组Volumes和数据Data
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 11 statefulset控制器
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 10 Ingress入栈
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 12 kubernetes认证及serviceaccount
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 11 Scheduling调度
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 13 配置网络插件flannel
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 12 Logging日志和Troubleshooting定位问题
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 14 基于canal的网络策略
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 13 自定义资源
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 15 调度器、预选策略及优选函数
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 14 Helm
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 16 kubernetes高级调度方式
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 15 安全
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 17 容器资源需求、资源限制及HeapSter
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 16 高可用
-          url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
-          output: web, pdf
+    - title: 18 资源指标API及自定义指标API
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        
-      - title: 第三节 开发人员的认证CKAD
-        output: web, pdf
-        subfolderitems:
+    - title: 19 helm入门
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 1 课程介绍
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_1_Introduction.html
-          output: web, pdf
+    - title: 20 创建自定义Chart及部署efk日志系统
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 2 Kubernetes架构
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_2_Kubernetes_Architecture.html
-          output: web, pdf
+    - title: 21 基于kubernetes的PaaS概述
+      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+      output: web, pdf
 
-        - title: 3 Build构建
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_3_Build.html
-          output: web, pdf
-
-        - title: 4 设计
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_4_Design.html
-          output: web, pdf
-
-        - title: 5 配置Deployment
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_5_Deployment_Configuration.html
-          output: web, pdf
-
-        - title: 6 安全
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_6_Security.html
-          output: web, pdf
-
-        - title: 7 暴露（exposing）应用
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_7_Exposing_Application.html
-          output: web, pdf
-
-        - title: 8 Troubleshotting排错
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-      - title: 第四节 认认真真的学习Kubernetes
-        output: web, pdf
-        subfolderitems:
-
-        - title: 1 kubernetes架构
-          url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_1_Introduction.html
-          output: web, pdf
-
-        - title: 2 Kubernetes基础概念
-          url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_2_Kubernetes_Architecture.html
-          output: web, pdf
-
-        - title: 3 应用快速入门
-          url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_3_install_kubernetes.html
-          output: web, pdf
-
-        - title: 4 资源清单定义入门
-          url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_3_kubectl_get.html
-          output: web, pdf
-
-        - title: 5 Pod控制器
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_5_Deployment_Configuration.html
-          output: web, pdf
-
-        - title: 6 Pod控制器进阶
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_6_Security.html
-          output: web, pdf
-
-        - title: 7 Service资源
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_7_Exposing_Application.html
-          output: web, pdf
-
-        - title: 8 Ingress和Ingress控制器
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 9 存储卷
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 10 pv，pvc，configmap和secret
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 11 statefulset控制器
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 12 kubernetes认证及serviceaccount
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 13 配置网络插件flannel
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 14 基于canal的网络策略
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 15 调度器、预选策略及优选函数
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 16 kubernetes高级调度方式
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 17 容器资源需求、资源限制及HeapSter
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 18 资源指标API及自定义指标API
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 19 helm入门
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 20 创建自定义Chart及部署efk日志系统
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-        - title: 21 基于kubernetes的PaaS概述
-          url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-          output: web, pdf
-
-  - title: 第二章 Kubernetes系列工具与生态
+  - title: 第二章 Kubernetes管理与配置工具
     output: web, pdf
     folderitems:
 
@@ -229,47 +115,26 @@ entries:
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-      subfolders:
-      - title: 第一节 安装kubernetes
-        output: web, pdf
-        subfolderitems:
-
-        - title: 1 在MacOS上安装Minikube
-          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_1_minikube_macos.html
-          output: web, pdf
-
-        - title: 2 在Windows上安装Minikube
-          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_2_minikube_windows.html
-          output: web, pdf
-
-        - title: 3 使用kops在aws上创建集群
-          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_3_kops_AWS.html
-          output: web, pdf
-
-        - title: 4 使用Rancher管理我们的集群
-          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_4_rancher.html
-          output: web, pdf
-
-        - title: 5 使用kubespray创建集群
-          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_5_kubespray_ubuntu.html
-          output: web, pdf
-
-        - title: 6 二进制方法安装kubernetes集群
-          url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-          output: web, pdf
-
-  - title: 第三章 Prometheus从入门到精通
-    output: web, pdf
-    folderitems:
-
-    - title: 第一节 服务器虚拟化
-      url: /mydoc_release_notes_60.html
+    - title: 1 在MacOS上安装Minikube
+      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_1_minikube_macos.html
       output: web, pdf
 
-  - title: 第四章 Fluentd从入门到精通
-    output: web, pdf
-    folderitems:
+    - title: 2 在Windows上安装Minikube
+      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_2_minikube_windows.html
+      output: web, pdf
 
-    - title: 第一节 服务器虚拟化
-      url: /mydoc_release_notes_60.html
+    - title: 3 使用kops在aws上创建集群
+      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_3_kops_AWS.html
+      output: web, pdf
+
+    - title: 4 使用Rancher管理我们的集群
+      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_4_rancher.html
+      output: web, pdf
+
+    - title: 5 使用kubespray创建集群
+      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_5_kubespray_ubuntu.html
+      output: web, pdf
+
+    - title: 6 二进制方法安装kubernetes集群
+      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
       output: web, pdf
