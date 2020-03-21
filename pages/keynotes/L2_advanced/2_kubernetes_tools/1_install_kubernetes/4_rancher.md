@@ -62,68 +62,68 @@ docker run -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher:lates
 
 + 点击右上角的Add Cluster
 
-![img](https://graph.baidu.com/resource/222784b060f5140cff4b101584676012.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/222784b060f5140cff4b101584676012.png)
 
 + 会出现很多种方式
 
-![img](https://graph.baidu.com/resource/2225f60535b4bd66a902301584676030.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/2225f60535b4bd66a902301584676030.png)
 
 + 我推荐的是使用Import an existing cluster方式
 
-![img](https://graph.baidu.com/resource/222806558c6f3bc47759801584676057.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/222806558c6f3bc47759801584676057.png)
 
 + 还记得我们前几天用kubeadm创建集群的时候使用的apt方式么？这个在树莓派上同样适用
 
-![img](https://graph.baidu.com/resource/222485f8af7c4f4d66f9301584676090.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/222485f8af7c4f4d66f9301584676090.png)
 
 + 他会生成一些语句，我们只要在被导入的集群中运行命令就好了
 
-![img](https://graph.baidu.com/resource/222bb554ec600be5143d001584676094.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/222bb554ec600be5143d001584676094.png)
 
 ## 4. 选择AWS作为provider快速创建集群
 
 + 创建集群，选择AWS
 
-![img](https://graph.baidu.com/resource/222a0c7fb2a181f85335e01584676380.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/222a0c7fb2a181f85335e01584676380.png)
 
 + 填写一些信息
 
-![img](https://graph.baidu.com/resource/222841979c6940b0ba38901584676858.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/222841979c6940b0ba38901584676858.png)
 
 + 点击`Add Node Template`，添加节点的模板
 
-![img](https://graph.baidu.com/resource/22257b57203122012a83101584688457.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/22257b57203122012a83101584688457.png)
 
 + 第一次使用的话需要填入AWS的认证信息
 
-![img](https://graph.baidu.com/resource/2223eb57203122012a83101584688652.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/2223eb57203122012a83101584688652.png)
 
 + 选择VPC和网络
 
-![img](https://graph.baidu.com/resource/222ca2d72f2e0bc64267601584688790.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/222ca2d72f2e0bc64267601584688790.png)
 
 + 选择安全组
 
-![img](https://graph.baidu.com/resource/22211da2a3c54f2cdcd8101584688818.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/22211da2a3c54f2cdcd8101584688818.png)
 
 + 其他的一些信息
 
-![img](https://graph.baidu.com/resource/222713bb9ffac58de4fb101584688982.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/222713bb9ffac58de4fb101584688982.png)
 
 + 创建完成之后就可以使用模板了
 
-![img](https://graph.baidu.com/resource/22289060dd95943d4ca0101584689078.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/22289060dd95943d4ca0101584689078.png)
 
 + 其他选项默认就好，云供应商选AWS，这样方便使用一些AWS的功能，比如使用nlb作为集群的负载均衡器等
 
-![img](https://graph.baidu.com/resource/222415dec83d923b6ba5101584689203.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/222415dec83d923b6ba5101584689203.png)
 
 + 后面就是一段时间的耐心等待了
 
-![img](https://graph.baidu.com/resource/222b7af706dfe7f48dae801584689252.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/222b7af706dfe7f48dae801584689252.png)
 
 + 完成的状态下，就可以点进去看状态了
 
-![img](https://graph.baidu.com/resource/22272247fe6d39d4beb0401584697776.png)
+![img](/pages/keynotes/L2_advanced/2_kubernetes_tools/1_install_kubernetes/pics/4_rancher/22272247fe6d39d4beb0401584697776.png)
 
 其他的功能大家就看图形界面自己发掘吧，我就不给大家剧透了。毕竟我们不是做产品宣传。

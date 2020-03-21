@@ -4,7 +4,7 @@ categories: 树莓派
 permalink: install_kubernetes_on_reapberryPi4.html
 tags: [news]
 typora-copy-images-to: ./pics/2020-03-18-install-kubernetes-on-raspberryPi4
-typora-root-url: ../../cloudnative365.github.io
+typora-root-url: ../cloudnative365.github.io
 ---
 
 ## 1. 简介
