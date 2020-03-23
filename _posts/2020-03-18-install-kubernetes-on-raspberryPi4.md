@@ -11,17 +11,17 @@ typora-root-url: ../cloudnative365.github.io
 
 使用树莓派创建kubernetes集群的灵感来自于CNCF大会上一些极客们在展示自己公司的产品时候，把产品搭建在装有kubernetes集群的树莓派上，然后带到会场去做现场演示。
 
-![IMG_3885](/_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_3885.png)
+![IMG_3885](/../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_3885.png)
 
 上图中使用的是最新的树莓派4，我也模仿这个做了一个（请忽略凌乱的布线）
 
-![IMG_4212](/_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4212.png)
+![img](/_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4212.png)
 
 ## 2. 架构图
 
 这个就是一个标准的3master-2node+外部LB的架构，前面带屏幕的机器是负载均衡器和跳板机。
 
-![ha-master-gce](/_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/ha-master-gce.png)
+![ha-master-gce](../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/ha-master-gce.png)
 
 ## 3. 硬件清单
 
@@ -36,17 +36,17 @@ typora-root-url: ../cloudnative365.github.io
 | 树莓派4B  | 10.1.1.15                                              | master1   | 4G   | kube-worker/etcd        |
 | 树莓派3B+ | 10.1.1.10<br />192.168.18.17（连接无线网DHCP到的地址） | mgtserver | 4G   | dhcp，loadbalancer，dns |
 
-![IMG_4218](/_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4218.JPG)
+![IMG_4218](../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4218.JPG)
 
-![20190626094948762](/_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/20190626094948762.png)
+![20190626094948762](../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/20190626094948762.png)
 
 + 路由器：TP-LINK8口路由器
 
-  ![IMG_4220](/_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4220.JPG)
+  ![IMG_4220](../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4220.JPG)
 
 + 电源适配器：小米6口充电器，官方要求树莓派4B+的电流是3A，但是目前大部分USB充电都是最大2.4A，而且多口同时供电会产生电流不到2A的情况，我实了很多种方法，最后还是小米的这个最稳定，虽然到不了3A，但是机器可以正常运转，我还没有压力测试，所以不知道满负荷的情况下会不会断电，但是这个已经是家庭级别最稳定的方式了。
 
-  ![IMG_4219](/_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4219.JPG)
+  ![IMG_4219](../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4219.JPG)
 
 + 其他：6类千兆线若干，USB转typeA线1根（树莓派3B+），USB转typeC线若干（树莓派4B），一般来说typeC的线都可以达到5A，只要不是质量太差的。一个tf卡读卡器，其他转换器（我用mac系统就需要有typeC扩展USB的转换器）
 
