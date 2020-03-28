@@ -23,68 +23,58 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 为啥要学云原生的知识
+    - title: Git的安装配置和使用
+      url: /keynotes_L1_basic_git_blog.html
       output: web, pdf
-      type: homepage
 
-      subfolders:
-      - title: 配置环境
-        output: web, pdf
-        subfolderitems:
+    - title: MarkDown语言的使用
+      url: /keynotes_L1_basic_markdown_blog.html
+      output: web, pdf
 
-        - title: Git的安装配置和使用
-          url: /keynotes_L1_basic_git_blog.html
-          output: web, pdf
+    - title: 使用GitPages搭建免费的个人博客
+      url: /keynotes_L1_basic_gitpage_blog.html
+      output: web, pdf
 
-        - title: MarkDown语言的使用
-          url: /keynotes_L1_basic_markdown_blog.html
-          output: web, pdf
+    - title: 薅aws的羊毛
+      url: /keynotes_L1_basic_aws_blog.html
+      output: web, pdf
 
-        - title: 使用GitPages搭建免费的个人博客
-          url: /keynotes_L1_basic_gitpage_blog.html
-          output: web, pdf
-
-        - title: 薅aws的羊毛
-          url: /keynotes_L1_basic_aws_blog.html
-          output: web, pdf
-
-  - title: 第一章 Linux基础
+  - title: 第一章 容器化基础
     output: web, pdf
     folderitems:
 
-    - title: 第一节 学习Linux之前的琐碎知识
+    - title: 第一节 Docker容器技术基础入门
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-      subfolders:
-      - title: 第二节 操作系统基础知识
-        output: web, pdf
-        subfolderitems:
-
-        - title: CPU
-          url: /keynotes_L1_basic_gitpage_blog.html
-          output: web, pdf
-
-      - title: 第三节 Linux系统管理
-        output: web, pdf
-        subfolderitems:
-
-        - title: Linux软件包管理
-          url: /keynotes_L1_basic_gitpage_blog.html
-          output: web, pdf
-
-  - title: 第二章 虚拟化基础
-    output: web, pdf
-    folderitems:
-
-    - title: 第一节 服务器虚拟化与KVM
+    - title: 第二节 Docker基础用法
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第二节 容器虚拟化与Docker
+    - title: 第三节 Docker镜像管理基础
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第三节 平台虚拟化与JVM
+    - title: 第四节 容器虚拟化网络概述
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第五节 Docker容器网络
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第六节 Docker存储卷
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第七节 Dockerfile详解
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第八节 Docker私有registry
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第九节 Docker的系统资源限制以及验证
       url: /mydoc_release_notes_60.html
       output: web, pdf

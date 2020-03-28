@@ -23,11 +23,6 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 需要准备的环境
-      url: /index.html
-      output: web, pdf
-      type: homepage
-
     - title: 监控-prometheus
       url: /mydoc_introduction.html
       output: web, pdf
@@ -41,17 +36,5 @@ entries:
       output: web, pdf
 
     - title: 持久存储
-      url: /mydoc_introduction.html
-      output: web, pdf
-
-    - title: 微服务-istio
-      url: /mydoc_introduction.html
-      output: web, pdf
-
-    - title: 持续集成工具-jinkens
-      url: /mydoc_introduction.html
-      output: web, pdf
-
-    - title: IaC工具-Terraform
       url: /mydoc_introduction.html
       output: web, pdf

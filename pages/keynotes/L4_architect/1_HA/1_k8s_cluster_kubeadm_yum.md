@@ -165,10 +165,10 @@ $ rpm -ivh https://mirrors.aliyun.com/epel/epel-release-latest-8.noarch.rpm
 k8s源
 
 ``` bash
-$ cat <<EOF >  /etc/yum.repos.d/kubernetes.repo
+$ cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
+baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
 enabled=1
 gpgcheck=1
 repo_gpgcheck=1
@@ -230,6 +230,14 @@ $ dnf -y install https://download.docker.com/linux/centos/7/x86_64/stable/Packag
 ```bash
 $ yum -y install kubectl kubelet kubeadm
 ```
+
+有可能出现gpg检查失败的情况，使用下面的命令安装
+
+``` bash
+$ yum install -y --nogpgcheck kubelet kubeadm kubectl
+```
+
+
 
 ### 4.4. 修改Docker的源为国内的源
 
@@ -309,7 +317,7 @@ kubeadm init --control-plane-endpoint "LOAD_BALANCER_DNS:LOAD_BALANCER_PORT" --u
 
 
 ``` bash
-kubeadm init --control-plane-endpoint "10.0.1.157:6443" --upload-certs --pod-network-cidr=192.168.0.0/16
+kubeadm init --control-plane-endpoint "10.0.1.157:6443" --upload-certs --pod-network-cidr=192.168.0.0/16 --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
 成功之后，会有下面的提示，找个小本本记下来吧
