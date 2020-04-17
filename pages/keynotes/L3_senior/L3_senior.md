@@ -1,5 +1,5 @@
 ---
-title: 高级课程大纲
+title: 高级课程
 keywords: keynotes, senior, 
 permalink: keynotes_L3_senior.html
 sidebar: keynotes_L3_senior_sidebar
@@ -9,7 +9,9 @@ typora-root-url: ../../../cloudnative365.github.io
 
 ---
 
-## 1. 云原生roadmap
+## 课程大纲
+
+### 云原生roadmap
 
 + 监控-prometheus
 + 日志-elk/efk
