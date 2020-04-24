@@ -1,9 +1,22 @@
 ---
-title: classes_teachers
+title: 讲师介绍
 keywords: classes, teachers
 permalink: classes_teachers.html
 sidebar: syllabus_sidebar
 folder: classes
 ---
 
-classes_teachers homepage
+首席讲师：
+
+中文名：张克
+
+花名：腾蛇
+
+工作经历：从事运维工作十余年，擅长各种虚拟化，云计算以及架构设计，曾经就职于多家欧美企业，拥有丰富的从业经验和钻研的精神，曾就职于世界500强通信企业，维护过9000+多个节点，负责维护的软件ECCD也获得CNCF的Certificated Kuberentes认证。目前投入大量精力在Cloud Native云原生领域，致力于容器化，Devops，持续交付CD，容器编排，无服务器化ServerLess等技术的研究。
+
+课程特色：
+
++ 理论部分内容详细，适合新手，主讲在线课程，由于没办法看到大家的反应，只好从头讲到尾，没法根据大家的反应来决定课程速度，观看视频的同学请自己调整速度。
+
++ 非常前卫，我们的课程基本没有什么课件，官方文档就是我们的课件，因为云原生技术的更新速度实在太快了，kubernetes每年要更新4次，有写课件的时间，不如多录点干货，所以讲课以**授人以渔**为主，带领大家通读技术文档，快速入门。
++ 实战部分动手为主，视频中会做演示，视频之后提供免费的线下服务，由于是免费服务，所以老师会在业余时间提供解答。

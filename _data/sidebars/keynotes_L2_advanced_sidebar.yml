@@ -23,88 +23,68 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 1 kubernetes架构
-      url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_1_Introduction.html
+    - title: 1 COURSE_INTRODUCTION
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_1_COURSE_INTRODUCTION.html
       output: web, pdf
 
-    - title: 2 Kubernetes基础概念
-      url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_2_Kubernetes_Architecture.html
+    - title: 2 BASICS_OF_KUBERNETES
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html
       output: web, pdf
 
-    - title: 3 应用快速入门
-      url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_3_install_kubernetes.html
+    - title: 3 INSTALLATION_AND_CONFIGURATION
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html
       output: web, pdf
 
-    - title: 4 资源清单定义入门
-      url: /keynotes_L2_advanced_1_kubernetes_4_learn_kubernetes_3_kubectl_get.html
+    - title: 4 KUBERNETES_ARCHITECTURE
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html
       output: web, pdf
 
-    - title: 5 Pod控制器
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_5_Deployment_Configuration.html
+    - title: 5 APIS_AND_ACCESS
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html
       output: web, pdf
 
-    - title: 6 Pod控制器进阶
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_6_Security.html
+    - title: 6 API_OBJECTS
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html
       output: web, pdf
 
-    - title: 7 Service资源
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_7_Exposing_Application.html
+    - title: 7 MANAGING_STATE_WITH_DEPLOYMENTS
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html
       output: web, pdf
 
-    - title: 8 Ingress和Ingress控制器
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+    - title: 8 SERVICES
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html
       output: web, pdf
 
-    - title: 9 存储卷
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+    - title: 9 VOLUMES_AND_DATA
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html
       output: web, pdf
 
-    - title: 10 pv，pvc，configmap和secret
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+    - title: 10 INGRESS
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html
       output: web, pdf
 
-    - title: 11 statefulset控制器
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+    - title: 11 SCHEDULING
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html
       output: web, pdf
 
-    - title: 12 kubernetes认证及serviceaccount
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+    - title: 12 LOGGING_AND_TROUBLESHOOTING
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html
       output: web, pdf
 
-    - title: 13 配置网络插件flannel
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+    - title: 13 CUSTOM_RESOURCE_DEFINITIONS
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html
       output: web, pdf
 
-    - title: 14 基于canal的网络策略
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+    - title: 14 HELM
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html
       output: web, pdf
 
-    - title: 15 调度器、预选策略及优选函数
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+    - title: 15 SECURITY
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html
       output: web, pdf
 
-    - title: 16 kubernetes高级调度方式
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-      output: web, pdf
-
-    - title: 17 容器资源需求、资源限制及HeapSter
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-      output: web, pdf
-
-    - title: 18 资源指标API及自定义指标API
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-      output: web, pdf
-
-    - title: 19 helm入门
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-      output: web, pdf
-
-    - title: 20 创建自定义Chart及部署efk日志系统
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
-      output: web, pdf
-
-    - title: 21 基于kubernetes的PaaS概述
-      url: /keynotes_L2_advanced_1_kubernetes_3_CKAD_8_Troubleshooting.html
+    - title: 16 HIGH_AVAILABILITY
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html
       output: web, pdf
 
   - title: 第二章 Kubernetes管理与配置工具

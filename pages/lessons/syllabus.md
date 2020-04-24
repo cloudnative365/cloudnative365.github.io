@@ -16,23 +16,38 @@ folder: lessons
 
 + kubernetes系列讲座：全面理解kubernetes知识，穿插CKAD和CKA考试的内容
 + kubernetes系列工具与生态：介绍CNCF旗下的项目和生产系统中会用到的工具
-+ Prometheus从入门到精通：CNCF毕业项目之一，大量生产系统应用这个系统来监控Kubernetes性能
-+ Fluentd从入门到精通：CNCF毕业项目之一，轻量级数据收集工具
+  + Helm
+  + Harbor
+  + CoreDNS从入门到精通：CNCF毕业项目之一，从DNS到CoreDNS
+  + etcd从入门到精通：CNCF毕业项目之一，从KV存储到etcd
+  + Gitlab
 
 ### 3. 高级课程
 
 + 云原生Roadmap：介绍云原生的相关工具
 
+  + Prometheus从入门到精通：CNCF毕业项目之一，从监控系统到Prometheus
+
+  + Containerd从入门到精通：CNCF毕业项目之一，从容器化到Containerd
+
 ### 4. 架构师课程
 
 + 高可用：搭建高可用的kubernetes
 + 监控：介绍多种监控方案
+  + Jaeger从入门到精通：CNCF毕业项目之一，从服务跟踪到Jaeger
 + 日志：介绍多种日志采集方案
+  + Fluentd从入门到精通：CNCF毕业项目之一，轻量级数据收集工具
 + 负载均衡：介绍多种负载均衡方案
+  + Envoy从入门到精通：CNCF毕业项目之一，从负载均衡到Envoy
 + 持久存储：介绍多种持久存储方案
+  + ROOK
 + 微服务治理：介绍多种微服务治理方案
+  + Istio
 + DevOps工具：介绍多种DevOps工具
+  + Jenkins
+  + Spinnaker
 + IaC：介绍多种IaC工具
+  + Terraform
 
 ## 主讲人
 
