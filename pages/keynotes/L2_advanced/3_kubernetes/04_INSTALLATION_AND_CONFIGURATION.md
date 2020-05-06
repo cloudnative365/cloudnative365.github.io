@@ -1,7 +1,7 @@
 ---
-title: INSTALLATION_AND_CONFIGURATION
+title: 安装和配置kubernetes实验环境
 keywords: keynotes, L2_advanced, kubernetes, CKA, INSTALLATION_AND_CONFIGURATION
-permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html
+permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/3_INSTALLATION_AND_CONFIGURATION
 typora-root-url: ../../../../../cloudnative365.github.io

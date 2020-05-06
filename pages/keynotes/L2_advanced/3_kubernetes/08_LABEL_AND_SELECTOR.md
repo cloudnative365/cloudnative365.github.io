@@ -1,7 +1,7 @@
 ---
 title: 标签和标签选择器
 keywords: keynotes, L2_advanced, kubernetes, CKA, LABEL_AND_SELECTOR
-permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_8_LABEL_AND_SELECTOR.html
+permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_8_LABEL_AND_SELECTOR.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/8_LABEL_AND_SELECTOR
 typora-root-url: ../../../../../cloudnative365.github.io

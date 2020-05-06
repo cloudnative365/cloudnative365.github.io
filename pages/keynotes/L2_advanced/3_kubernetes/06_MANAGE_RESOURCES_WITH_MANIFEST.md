@@ -1,7 +1,7 @@
 ---
-title: MANAGE_RESOURCES_WITH_MANIFEST
+title: 使用清单文件管理资源
 keywords: keynotes, L2_advanced, kubernetes, CKA, MANAGE_RESOURCES_WITH_MANIFEST
-permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_5_MANAGE_RESOURCES_WITH_MANIFEST.html
+permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/5_MANAGE_RESOURCES_WITH_MANIFEST
 typora-root-url: ../../../../../cloudnative365.github.io

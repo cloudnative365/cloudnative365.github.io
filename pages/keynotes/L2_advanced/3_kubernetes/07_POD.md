@@ -1,7 +1,7 @@
 ---
 title: POD
 keywords: keynotes, L2_advanced, kubernetes, CKA, POD
-permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_7_POD.html
+permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_7_POD.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/7_POD
 typora-root-url: ../../../../../cloudnative365.github.io

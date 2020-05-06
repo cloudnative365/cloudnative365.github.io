@@ -19,7 +19,7 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: 第一章 Kubernetes系列讲座
+  - title: 第一章 CKA官方教程
     output: web, pdf
     folderitems:
 
@@ -87,7 +87,51 @@ entries:
       url: /keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html
       output: web, pdf
 
-  - title: 第二章 Kubernetes管理与配置工具
+  - title: 第二章 CKAD官方教程
+    output: web, pdf
+    folderitems:
+
+    - title: CloudNative Roadmap
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+  - title: 第三章 kubernetes系列讲座
+    output: web, pdf
+    folderitems:
+
+    - title: 1. 课程介绍
+      url: /keynotes_L2_advanced_1_kubernetes_3_kubernetes_1_COURSE_INTRODUCTION.html
+      output: web, pdf
+
+    - title: 2. 认识kubernetes
+      url: /keynotes_L2_advanced_1_kubernetes_3_kubernetes_2_BASICS_OF_KUBERNETES.html
+      output: web, pdf
+
+    - title: 3. kubernetes架构和基础概念
+      url: /keynotes_L2_advanced_1_kubernetes_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html
+      output: web, pdf
+
+    - title: 4. 安装和配置kubernetes实验环境
+      url: /keynotes_L2_advanced_1_kubernetes_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html
+      output: web, pdf
+
+    - title: 5. 使用命令行管理资源
+      url: /keynotes_L2_advanced_1_kubernetes_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html
+      output: web, pdf
+
+    - title: 6. 使用清单文件管理资源
+      url: /keynotes_L2_advanced_1_kubernetes_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html
+      output: web, pdf
+
+    - title: 7. POD
+      url: /keynotes_L2_advanced_1_kubernetes_3_kubernetes_7_POD.html
+      output: web, pdf
+
+    - title: 8. 标签和标签选择器
+      url: /keynotes_L2_advanced_1_kubernetes_3_kubernetes_8_LABEL_AND_SELECTOR.html
+      output: web, pdf
+
+  - title: 第四章 kubernetes生态和常用工具
     output: web, pdf
     folderitems:
 

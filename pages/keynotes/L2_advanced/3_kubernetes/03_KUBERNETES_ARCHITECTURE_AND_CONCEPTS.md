@@ -1,7 +1,7 @@
 ---
 title: kubernetes架构和基础概念
 keywords: keynotes, L2_advanced, kubernetes, CKA, KUBERNETES_ARCHITECTURE
-permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html
+permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/4_KUBERNETES_ARCHITECTURE
 typora-root-url: ../../../../../cloudnative365.github.io

@@ -1,7 +1,7 @@
 ---
 title: 认识kubernetes
 keywords: keynotes, L2_advanced, kubernetes, CKA, BASICS_OF_KUBERNETES
-permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html
+permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_2_BASICS_OF_KUBERNETES.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/2_BASICS_OF_KUBERNETES
 typora-root-url: ../../../../../cloudnative365.github.io
