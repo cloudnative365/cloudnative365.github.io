@@ -15,9 +15,30 @@ folder: lessons
 ### 2. 进阶课程
 
 + kubernetes系列讲座：全面理解kubernetes知识，穿插CKAD和CKA考试的内容
+  + kubernetes讲座（上）-- CKA考试指南
+    1. kubernete课程简介
+    2. kubernetes基础知识
+    3. kubernetes架构和基础概念
+    4. 使用kubeadm安装kubernetes
+    5. 使用命令行定义资源
+    6. 使用清单文件manifest文件定义资源
+    7. 标签和标签选择器
+    8. 深入理解Pod
+    9. 深入理解Deployment
+    10. 深入理解Service
+    11. 存储卷
+    12. configmap和secret
+  + kubernetes讲座（下）-- kubernetes其他知识
+    1. stateful控制器
+    2. Ingress控制器
+    3. 权限控制和RBAC
+    4. 网络和网络策略
+    5. 调度器
+    6. 资源需求和限制
+    7. 资源指标
 + kubernetes系列工具与生态：介绍CNCF旗下的项目和生产系统中会用到的工具
-  + Helm
-  + Harbor
+  + Helm：CNCF孵化项目之一
+  + Harbor：
   + CoreDNS从入门到精通：CNCF毕业项目之一，从DNS到CoreDNS
   + etcd从入门到精通：CNCF毕业项目之一，从KV存储到etcd
   + Gitlab

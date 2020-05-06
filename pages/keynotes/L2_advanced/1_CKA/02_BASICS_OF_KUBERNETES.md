@@ -81,13 +81,11 @@ What primarily distinguishes Kubernetes from other systems is its heritage. Kube
 
 With Google pouring the valuable lessons they learned from writing and operating Borg for over 15 years into Kubernetes, this makes Kubernetes a safe choice when having to decide on what system to use to manage containers. While a powerful tool, part of the current growth in Kubernetes is making it easier to work with and handle workloads not found in a Google data center. 
 
-To learn more about the ideas behind Kubernetes, you can read the [*Large-scale cluster management at Google with Borg*](https://ai.google/research/pubs/pub43438) paper.
+
 
 ![The Kubernetes Lineage](https://d36ai2hkxl16us.cloudfront.net/course-uploads/e0df7fbf-a057-42af-8a1f-590912be5460/cfhkkbh42zcw-Kuberneteslineage.jpg)
 
 **The Kubernetes Lineage**
-Chip Childers, Cloud Foundry Foundation
-Retrieved from [*The Platform for Forking Cloud Native Applications*](https://www.slideshare.net/chipchilders/cloud-foundry-the-platform-for-forging-cloud-native-applications) presentation
 
  
 
@@ -157,19 +155,5 @@ CNCF is not just about Kubernetes, it serves as the governing body for open sour
 
 CNCF has many corporate members that collaborate, such as Cisco, the Cloud Foundry Foundation, AT&T, Box, Goldman Sachs, and many others.
 
-### Resource Recommendations
 
-If you want to go beyond this general introduction to Kubernetes, here are a few things we recommend:
-
-Read the [Borg paper](https://ai.google/research/pubs/pub43438)
-
-Listen to [John Wilkes talking about Borg and Kubernetes](https://www.gcppodcast.com/post/episode-46-borg-and-k8s-with-john-wilkes/)
-
-Add the Kubernetes [community hangout](https://github.com/kubernetes/community) to your calendar, and attend at least once.
-
-Join the community on [Slack](http://slack.kubernetes.io/) and go in the **#kubernetes-users** channel.
-
-Check out the very active [Stack Overflow community](https://stackoverflow.com/search?q=kubernetes).
-
-## Lab 2.1 - View Online Resources
 
