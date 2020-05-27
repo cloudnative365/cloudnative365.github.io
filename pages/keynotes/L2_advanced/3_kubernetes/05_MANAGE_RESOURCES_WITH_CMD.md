@@ -1,7 +1,7 @@
 ---
 title: 使用命令行管理资源
 keywords: keynotes, L2_advanced, kubernetes, CKA, MANAGE_RESOURCES_WITH_CMD
-permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html
+permalink: keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/5_MANAGE_RESOURCES_WITH_CMD
 typora-root-url: ../../../../../cloudnative365.github.io
@@ -26,7 +26,7 @@ kubernetes的常用资源也就是我们常说的kubernetes概念，我们昨天
 
 我们这里先来说第一类，CKA考试会考到的资源
 1.  Namespaces
-2.  Lables和Selectors
+2.  Labels和Selectors
 3.  Field Selectors
 4.  Nodes
 5.  Pods

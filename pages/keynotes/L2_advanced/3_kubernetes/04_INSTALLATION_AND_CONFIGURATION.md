@@ -1,9 +1,9 @@
 ---
 title: 安装和配置kubernetes实验环境
 keywords: keynotes, L2_advanced, kubernetes, CKA, INSTALLATION_AND_CONFIGURATION
-permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html
+permalink: keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html
 sidebar: keynotes_L2_advanced_sidebar
-typora-copy-images-to: ./pics/3_INSTALLATION_AND_CONFIGURATION
+typora-copy-images-to: ./pics/4_INSTALLATION_AND_CONFIGURATION
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 
@@ -21,25 +21,25 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 自1.4版以来，Kubeadm是Kubernetes发行工具。该工具有助于在现有基础架构上引导最佳实践的Kubernetes集群。但是，Kubeadm无法为你配置基础结构。它的主要优势是能够在任何地方启动最少可行的Kubernetes集群。但是，附件和网络设置都不在Kubeadm的范围内，因此你将需要手动或使用其他工具来安装它。尽管如此，亲儿子就是亲儿子，有了kubernetes官方的支持，不怕没有市场。
 
-![See the source image](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_INSTALLATION_AND_CONFIGURATION/OIP.cR34-5z71jjWK_Jx7eqlYwHaId)
+![See the source image](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/OIP.cR34-5z71jjWK_Jx7eqlYwHaId)
 
 ## 1.2. rancher
 
 国人最喜欢的工具之一，友好的图形界面，起步也非常早，最近Rancher的创始人更是成为了CNCF的TOC之一，可谓如日中天。他的功能也非常完善，从一键部署k8s到后期的集群管控，一气呵成。而且非常接地气的在改进自己的版本，如今，已经到了2.4时代，是很多刚开始接触k8s的人的不二之选。但是，由于他在k8s上包装了非常多自己的东西，所以很多底层的东西并不很透明，需要对Rancher有非常深入的研究才能在生产系统上驾驭。
 
-![img](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_INSTALLATION_AND_CONFIGURATION/rancher.png)
+![img](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/rancher.png)
 
 ### 1.3. Kops
 
 Kops可帮助你从命令行创建，销毁，升级和维护生产级别的高可用性Kubernetes集群。当前已支持AWS，GCE提供beta测试支持，VMware vSphere提供alpha测试，并计划提供其他平台支持。Kops允许控制整个Kubernetes集群生命周期；从基础架构配置到集群删除。后期之秀，但是生的晚了一点。虽然很有后劲，但是其他的软件也不是停滞不前。所以说排在第三位吧。
 
-![image-20200420145624898](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_INSTALLATION_AND_CONFIGURATION/image-20200420145624898-8571316.png)
+![image-20200420145624898](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/image-20200420145624898-8571316.png)
 
 ### 1.4. kubespray
 
 Kubespray为Kubernetes部署和配置提供了一组Ansible角色。Kubespray可以使用AWS，GCE，Azure，OpenStack或裸机基础架构即服务（IaaS）平台。Kubespray是具有开放开发模型的开源项目。对于已经了解Ansible的人们来说，该工具是一个不错的选择，因为无需使用其他工具进行预配和编排。
 
-![image-20200420145611037](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_INSTALLATION_AND_CONFIGURATION/image-20200420145611037-8571303.png)
+![image-20200420145611037](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/image-20200420145611037-8571303.png)
 
 
 
@@ -49,7 +49,7 @@ Kubespray为Kubernetes部署和配置提供了一组Ansible角色。Kubespray可
 
 Minikube允许在本地安装和试用Kubernetes。该工具是开始Kubernetes的一个很好起点。可在虚拟机（VM）内轻松启动单节点Kubernetes集群。Minikube在Windows，Linux和OSX上可用。可在短短5分钟内，将能够使用Kubernetes的主要功能。而且只需一个命令即可直接启动Minikube仪表板。这个东西简单方面，适合在本地测试，但是上生产还是不要了。
 
-![See the source image](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_INSTALLATION_AND_CONFIGURATION/OIP.qxsK_a2YWWt6vi_7kXdtoQHaCG)
+![See the source image](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/OIP.qxsK_a2YWWt6vi_7kXdtoQHaCG)
 
 
 
@@ -59,9 +59,9 @@ Minikube允许在本地安装和试用Kubernetes。该工具是开始Kubernetes�
 
 ### 1.7. 其他的方案
 
-![image-20200420145641248](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_INSTALLATION_AND_CONFIGURATION/image-20200420145641248-8571353.png)
+![image-20200420145641248](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/image-20200420145641248-8571353.png)
 
-![image-20200420145659128](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_INSTALLATION_AND_CONFIGURATION/image-20200420145659128-8571374.png)
+![image-20200420145659128](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/image-20200420145659128-8571374.png)
 
 
 
@@ -69,11 +69,11 @@ Minikube允许在本地安装和试用Kubernetes。该工具是开始Kubernetes�
 
 我们知道，一般的集群架构是这个样子的
 
-![See the source image](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_INSTALLATION_AND_CONFIGURATION/kubernetes.jpg)
+![See the source image](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/kubernetes.jpg)
 
 但是，我们知道，etcd，api-server，scheduler和controller-manager这四个组件实际上就是4个进程，我们其实也可以把他运行为容器，也就是使用docker来管理，而在集群中，创建容器是由kubelet调用docker来完成的，所以说，我们就需要在master上也安装上kubelet和docker。而kubeadm在初始化集群的时候，就会使用kubelet的静态pod功能，把关键进程以容器的方式启动。但是这种方式有个缺陷，如果kubelet挂了，那么集群就会不正常，所以，我们需要把kubelet托管给操作系统的systemd来管理。最终，就是下面这个样子了。
 
-![image-20200505184348280](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_INSTALLATION_AND_CONFIGURATION/image-20200505184348280.png)
+![image-20200505184348280](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/image-20200505184348280.png)
 
 当然，我们可以把所有的工具都使用kubelet的静态pod的方式，把他托管给kubernetes集群，比如kube-proxy，CoreDNS之类
 
@@ -90,7 +90,7 @@ Minikube允许在本地安装和试用Kubernetes。该工具是开始Kubernetes�
 
 
 
-![See the source image](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_INSTALLATION_AND_CONFIGURATION/kube-install.png)
+![See the source image](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/kube-install.png)
 
 我们需要在每个节点上安装的软件有docker，kubelet，kubeadm，kubectl，并且我们还需要在安装软件之前执行一些初始化操作。
 
@@ -149,6 +149,8 @@ bridge-nf-call-ip6tables  bridge-nf-filter-pppoe-tagged  bridge-nf-pass-vlan-inp
 ```
 
 ### 3.2. 安装docker
+
++ 通用安装方式：https://docs.docker.com/engine/install/ubuntu/
 
 + 添加docker国内源，例如，添加阿里云的docker源，可以[参考这个](https://developer.aliyun.com/mirror/docker-ce)
 
@@ -272,13 +274,13 @@ kubeadm join <control-plane-host>:<control-plane-port> --token <token> --discove
 
 许多项目都会提到容器网络接口（CNI），这是一个CNCF项目。目前有几个容器运行时使用CNI。CNI作为处理网络资源部署管理和清理的标准，会越来越流行。
 
-![image-20200420145238669](/pages/keynotes/L2_advanced/1_CKA/pics/3_INSTALLATION_AND_CONFIGURATION/image-20200420145238669.png)
+![image-20200420145238669](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/image-20200420145238669-8951148.png)
 
-![image-20200420145320616](/pages/keynotes/L2_advanced/1_CKA/pics/3_INSTALLATION_AND_CONFIGURATION/image-20200420145320616.png)
+![image-20200420145320616](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/image-20200420145320616.png)
 
-![image-20200420145336238](/pages/keynotes/L2_advanced/1_CKA/pics/3_INSTALLATION_AND_CONFIGURATION/image-20200420145336238.png)
+![image-20200420145336238](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/image-20200420145336238.png)
 
-![image-20200420145353789](/pages/keynotes/L2_advanced/1_CKA/pics/3_INSTALLATION_AND_CONFIGURATION/image-20200420145353789.png)
+![image-20200420145353789](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/image-20200420145353789.png)
 
-![image-20200420145412668](/pages/keynotes/L2_advanced/1_CKA/pics/3_INSTALLATION_AND_CONFIGURATION/image-20200420145412668.png)
+![image-20200420145412668](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_INSTALLATION_AND_CONFIGURATION/image-20200420145412668.png)
 

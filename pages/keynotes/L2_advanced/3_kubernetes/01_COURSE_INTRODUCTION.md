@@ -1,7 +1,7 @@
 ---
 title: 课程介绍
 keywords: keynotes, L2_advanced, kubernetes, CKA, COURSE_INTRODUCTION
-permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_1_COURSE_INTRODUCTION.html
+permalink: keynotes_L2_advanced_3_kubernetes_1_COURSE_INTRODUCTION.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/1_COURSE_INTRODUCTION
 typora-root-url: ../../../../../cloudnative365.github.io
@@ -49,6 +49,9 @@ typora-root-url: ../../../../../cloudnative365.github.io
 + 认证和RBAC
 + 资源限制
 + 调度
++ ingress
++ 网络和网络策略
++ helm
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -56,15 +59,13 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ===================================
 
-+ 容器化
-+ ingress
-+ 网络和网络策略
++ CKA考试冲刺
++ 容器化与镜像
++ 存储卷系统
 + 资源指标，监控，prometheus
-+ helm
-+ 镜像与Harbor
-+ CoreDNS
-+ etcd
-+ gitlab
++ DNS基础和CoreDNS
++ 日志收集和fluentd
++ service mesh和istio
 
 
 
@@ -78,7 +79,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ### 课程适用于
 
-本课程面向开始使用容器并想知道如何在生产中管理容器的Linux管理员或软件开发人员。在本课程中，您将学习将使您踏上管理生产中的集装箱化应用程序之旅的关键原则。
+本课程面向开始使用容器并想知道如何在生产中管理容器的Linux管理员或软件开发人员。在本课程中，您将学习到使您踏上管理生产中的容器化化应用程序之旅的关键原则。
 
 #### 预备知识
 
@@ -119,17 +120,17 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 **个人微信**
 
-![img](https://mmbiz.qpic.cn/mmbiz_jpg/DwdUsIwOFxsQF43G4OW2rrSvBko4cN5k65PzQ7xNAQCz0vF7qTarWT7CcQeBsJ8NmvxSK8iaO2AEjuTCva4aNEA/640?wx_fmt=jpeg)
+![img](/pages/keynotes/L2_advanced/3_kubernetes/pics/1_COURSE_INTRODUCTION/640.jpeg)
 
 
 
 **腾讯课堂**
 
-![img](https://mmbiz.qpic.cn/mmbiz_jpg/DwdUsIwOFxsQF43G4OW2rrSvBko4cN5kOV9HeI2vHKjNVxGRYTqT7Rm8uicsWiaMXlfrCwsLkbmz1omW3CEZxZVQ/640?wx_fmt=jpeg)
+![img](/pages/keynotes/L2_advanced/3_kubernetes/pics/1_COURSE_INTRODUCTION/640-20200506145837072.jpeg)
 
 **微信公众平台**
 
-![img](https://mmbiz.qpic.cn/mmbiz_jpg/DwdUsIwOFxsQF43G4OW2rrSvBko4cN5k7ueibekAPUo32rUqfJX1DFdQLnd1Ls5T0ibRdFFGS8via5zxyUlDFicnqA/640?wx_fmt=jpeg)
+![img](/pages/keynotes/L2_advanced/3_kubernetes/pics/1_COURSE_INTRODUCTION/640-20200506145842007.jpeg)
 
 
 

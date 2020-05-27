@@ -1,9 +1,9 @@
 ---
 title: kubernetes架构和基础概念
 keywords: keynotes, L2_advanced, kubernetes, CKA, KUBERNETES_ARCHITECTURE
-permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html
+permalink: keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html
 sidebar: keynotes_L2_advanced_sidebar
-typora-copy-images-to: ./pics/4_KUBERNETES_ARCHITECTURE
+typora-copy-images-to: ./pics/3_KUBERNETES_ARCHITECTURE
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---
@@ -178,7 +178,7 @@ Supervisord是一个轻量级的进程监视器，用于传统Linux环境中监�
 
   虽然Pod通常在部署时每个应用程序容器中都有一个，但是Pod中有多个容器的一个常见原因是用于日志记录。您可能会发现术语**sidecar**是指专用于执行帮助器任务（如处理日志和响应请求）的容器，因为主应用程序容器可能不具备此功能。术语**sidecar**与**ambassador**和**adapter**一样，没有特殊的设置，但指的是包含二级吊舱的概念。
 
-![image-20200420154642789](/pages/keynotes/L2_advanced/1_CKA/pics/4_KUBERNETES_ARCHITECTURE/image-20200420154642789.png)
+![image-20200420154642789](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_KUBERNETES_ARCHITECTURE/image-20200420154642789-8947941.png)
 
 
 
@@ -186,11 +186,11 @@ Supervisord是一个轻量级的进程监视器，用于传统Linux环境中监�
 
   `教务主任的主要任务，就是安排学生们的学习，主任会对同类的学生分配一定的学习任务。`
 
-  编排的一个重要概念是使用控制器。各种控制器与Kubernetes一起发布，您也可以创建自己的控制器。控制器的简单来说就是是agent（或称为*Informer*）和下游存储。使用DeltaFIFO队列比较源和下游数据。循环进程接收一个**obj**或对象，它是来自FIFO队列的delta数组。只要delta不是**Deleted**类型，控制器的逻辑就用于创建或修改某个对象，直到它与规范匹配为止。
+  编排的一个重要概念是使用控制器。各种控制器与Kubernetes一起发布，您也可以创建自己的控制器。控制器的简单来说就是是agent（或称为*Informer*）和downsteam存储。使用DeltaFIFO队列比较源和downsteam数据。循环进程接收一个**obj**或对象，它是来自FIFO队列的delta数组。只要delta不是**Deleted**类型，控制器的逻辑控制器就会创建或修改某个对象，直到它与规范匹配为止。
 
-  使用API服务器作为源的*Informer*通过API调用请求对象的状态。缓存数据以最小化API服务器事务。类似的代理是*SharedInformer*；对象通常由多个其他对象使用。它为多个请求创建状态的共享缓存。
+  使用API-server作为源的*Informer*通过API调用请求对象的状态。数据会被缓存，来最小化API-server的负载。类似的agent是*SharedInformer*；对象通常由多个其他对象使用。它为多个请求创建状态的共享缓存。
 
-  工作队列*使用一个键将任务分发给不同的工作人员。通常使用速率限制、延迟和时间队列的标准Go工作队列。
+  工作队列workqueue使用一个键将任务分发给不同的worker。通常使用go语言内置的队列（queue）来做资源限制、延迟和时间队列。
 
   **endpoint**、**namespace**和**serviceaccount**控制器分别管理pod的同名资源。
 
@@ -202,18 +202,21 @@ Supervisord是一个轻量级的进程监视器，用于传统Linux环境中监�
 
   由于每个对象和代理都是分离的，所以我们需要一个灵活的、可伸缩的代理，它将资源连接在一起，如果有什么东西死了，产生了替代品，它就会重新连接。每个服务都是一个微服务，处理特定的通信量，例如单个NodePort或LoadBalancer，以在多个pod之间分发入站请求。
 
-  服务还处理入站请求的访问策略，这对于资源控制和安全性都很有用。
+  ![7bsdyahn0rbx-Servicesuserspaceoverview](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_KUBERNETES_ARCHITECTURE/7bsdyahn0rbx-Servicesuserspaceoverview.svg)
+  
+
+服务还处理入站请求的访问策略，这对于资源控制和安全性都很有用。
   + 把Pod连接在一起
 
   + 向Internet公开播客
 
   + 解耦配置
-
+  
   + 定义Pod访问策略。
 
 
 
-![Service Network](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_KUBERNETES_ARCHITECTURE/2937p0785z15-Service_Network.png)
+![Service Network](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_KUBERNETES_ARCHITECTURE/2937p0785z15-Service_Network.png)
 
 **Service Network**（做卫生）
 
@@ -237,7 +240,7 @@ NodePort的方式，老师把值班表贴在的班级的门口。
 
 ### API Call Flow
 
-![img](/pages/keynotes/L2_advanced/3_kubernetes/pics/4_KUBERNETES_ARCHITECTURE/api-call.jpg)
+![img](/pages/keynotes/L2_advanced/3_kubernetes/pics/3_KUBERNETES_ARCHITECTURE/api-call.jpg)
 
 
 

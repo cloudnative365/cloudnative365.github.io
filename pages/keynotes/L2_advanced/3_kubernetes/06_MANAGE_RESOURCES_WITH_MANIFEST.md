@@ -1,14 +1,14 @@
 ---
 title: 使用清单文件管理资源
 keywords: keynotes, L2_advanced, kubernetes, CKA, MANAGE_RESOURCES_WITH_MANIFEST
-permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html
+permalink: keynotes_L2_advanced_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/5_MANAGE_RESOURCES_WITH_MANIFEST
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 
 ## 1. 课程目标
-- 认识最简单的资源清单
+- 认识最简单的资源清单manifest
 - 认识apiVersion
 - 认识kind
 - 认识metadata
@@ -82,14 +82,14 @@ v1
 
 ### 2.3. metadata
 元数据，这个对于大多数的类型都是相似的。
-+ name：pod的名称
++ name：资源的名称
 + namespace：在哪个名称空间
 + labels：标签
 + annotations：声明，这个声明一般是给第三方的应用使用的label
 + selflink：每个资源的引用PATH，/api/GROUP/VERSION/namespaces/NAMESPACE（资源所在的名称空间）/TYPE(资源类别)/NAME
 
 ### 2.4. spec
-specification的缩写，用来定义我们接下来要创建的对象应该有什么样的对象，或者有什么样的规范。他是非常重要的类型，不同的资源，使用的spec各不相同。如果spec的字段被标记为require就是必须的。他是用来定义期望的状态的，disired state。刚开始创建资源的时候，有可以当前状态（下面的status）并不满足期望期望状态，那么控制器就会让当前状态不停的向期望状态靠近。如果副本数不满足，就会增减pod数量，如果版本数不符合，就会更换新的镜像。
+specification的缩写，用来定义我们接下来要创建的对象应该有什么样的属性，或者有什么样的规范。他是非常重要的类型，不同的资源，使用的spec各不相同。如果spec的字段被标记为require就是必须的。他是用来定义期望的状态的，disired state。刚开始创建资源的时候，有可以当前状态（下面的status）并不满足期望期望状态，那么控制器就会让当前状态不停的向期望状态靠近。如果副本数不满足，就会增减pod数量，如果版本数不符合，就会更换新的镜像。
 
 spec中的选项非常的多，如果我们想查看某一个选项的话，可以使用`kubectl explain`命令，比如
 ```bash
@@ -110,6 +110,6 @@ spec:
 	  image: kubernetes/myapp:v1
 ```
 文件创建好了最后，就可以使用`kubectl apply/create`命令来让文件生效了。
-+ create一般是第一次创建资源，而如果文件有改动，
-+ 第二次在让改动生效的时候，就需要使用apply命令。如果是第一次创建资源，也可以使用apply命令。
-+ 如果想要比较两个文件是否相同，或者有何不同之处，就要使用kubectl diff命令
++ create一般是第一次创建资源
++ 而如果文件有改动, 第二次在让改动生效的时候，就需要使用apply命令。如果是第一次创建资源，也可以使用apply命令。
+

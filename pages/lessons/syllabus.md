@@ -11,59 +11,101 @@ folder: lessons
 ### 1. 基础课程
 
 + 容器虚拟化：容器化知识与Docker的使用
+  + 容器化基础
+  + 使用Docker
+  + Docker的网络
+  + Docker的存储卷
+  + Docker资源限制
++ 容器与镜像：dockerfile和harbor
+  + Docker镜像
+  + Dockerfile
+  + 镜像仓库与harbor
++ 容器运行时：
+  + containerd
+  + cri-o
 
 ### 2. 进阶课程
 
-+ kubernetes系列讲座：全面理解kubernetes知识，穿插CKAD和CKA考试的内容
-  + kubernetes讲座（上）-- CKA考试指南
-    1. kubernete课程简介
-    2. kubernetes基础知识
-    3. kubernetes架构和基础概念
-    4. 使用kubeadm安装kubernetes
-    5. 使用命令行定义资源
-    6. 使用清单文件manifest文件定义资源
-    7. 标签和标签选择器
-    8. 深入理解Pod
-    9. 深入理解Deployment
-    10. 深入理解Service
-    11. 存储卷
-    12. configmap和secret
-  + kubernetes讲座（下）-- kubernetes其他知识
-    1. stateful控制器
-    2. Ingress控制器
-    3. 权限控制和RBAC
-    4. 网络和网络策略
-    5. 调度器
-    6. 资源需求和限制
-    7. 资源指标
-+ kubernetes系列工具与生态：介绍CNCF旗下的项目和生产系统中会用到的工具
-  + Helm：CNCF孵化项目之一
-  + Harbor：
-  + CoreDNS从入门到精通：CNCF毕业项目之一，从DNS到CoreDNS
-  + etcd从入门到精通：CNCF毕业项目之一，从KV存储到etcd
-  + Gitlab
++ kubernetes入门讲座（CKA考试指南）
+  1. kubernete课程简介
+  2. kubernetes基础知识
+  3. kubernetes架构和基础概念
+  4. 使用kubeadm安装kubernetes
+  5. 使用命令行定义资源
+  6. 使用清单文件manifest文件定义资源
+  7. 标签和标签选择器
+  8. 深入理解Pod
+  9. 深入理解Deployment
+  10. 深入理解Service
+  11. 存储卷
+  12. configmap和secret
++ kubernetes从入门到精通
+  1. kubernete课程简介
+  2. kubernetes基础知识
+  3. kubernetes架构和基础概念
+  4. 使用kubeadm安装kubernetes
+  5. API和准入控制
+  6. API对象
+  7. 使用Deployment管理pod状态
+  8. Service
+  9. 卷组和数据
+  10. Ingress
+  11. 调度
+  12. 排查错误
+  13. 自定义资源
+  14. HELM
+  15. 安全
+  16. 高可用
 
 ### 3. 高级课程
 
-+ 云原生Roadmap：介绍云原生的相关工具
-
-  + Prometheus从入门到精通：CNCF毕业项目之一，从监控系统到Prometheus
-
-  + Containerd从入门到精通：CNCF毕业项目之一，从容器化到Containerd
++ Prometheus从入门到精通：CNCF毕业项目之一，从监控系统到Prometheus
++ etcd从入门到精通：
++ rancher：
 
 ### 4. 架构师课程
 
 + 高可用：搭建高可用的kubernetes
+  + kubeadm
+  + rke
+  + kubespray
+  + 二进制
+  + minikube
+  + kops
 + 监控：介绍多种监控方案
+  + Prometheus：
+  + Influxdb：
   + Jaeger从入门到精通：CNCF毕业项目之一，从服务跟踪到Jaeger
 + 日志：介绍多种日志采集方案
+  + ELK系列产品：filebeat，apm，logstash，elasticsearch，kibana
   + Fluentd从入门到精通：CNCF毕业项目之一，轻量级数据收集工具
 + 负载均衡：介绍多种负载均衡方案
-  + Envoy从入门到精通：CNCF毕业项目之一，从负载均衡到Envoy
+  + Service
+    + iptables
+    + lvs
+  + Ingress
+    + nginx
+    + envoy
+    + traefik
+  + 外部负载均衡
+    + nginx
+    + haproxy
+    + consul
+    + AWS nlb/elb
+  + 外部负载均衡：nginx，ELB，consul
++ DNS解决方案：
+  + DNS解析原理
+  + Bind：
+  + CoreDNS：
 + 持久存储：介绍多种持久存储方案
-  + ROOK
+  + Ceph
+  + rbd-provisioner
+  + nfs-provisioner
+  + rook
+  + openEBS
 + 微服务治理：介绍多种微服务治理方案
   + Istio
+  + linkerd
 + DevOps工具：介绍多种DevOps工具
   + Jenkins
   + Spinnaker

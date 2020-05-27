@@ -1,7 +1,7 @@
 ---
 title: POD
 keywords: keynotes, L2_advanced, kubernetes, CKA, POD
-permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_7_POD.html
+permalink: keynotes_L2_advanced_3_kubernetes_7_POD.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/7_POD
 typora-root-url: ../../../../../cloudnative365.github.io
@@ -48,7 +48,7 @@ Kubernetes编排的主要对象就是编排容器的生命周期。我们不单�
 
 我们一般会在一个pod中部署一个容器，如果有多容器的pod，另外一个容器一般是日志容器。我们把这种辅助容器叫做sidecar。sidecar的作用一般来说都是帮助主容器完成一些任务，而不影响主容器内应用的。那么，官方把这种辅助容器分成了三种
 
-+ sidecar：日志类的辅助容器，当我们需要添加一些主容器中没有的功能的时候，我们会使用sidecar模式，这样既不会改变原有程序的代码，添加一些部署中不需要的东西，我们的容器还可以扩展原有容器的功能，并且保持了解耦和扩展性。比如：filebeats，logstash，fluentd，exporter
++ sidecar：日志类的辅助容器，当我们需要添加一些主容器中没有的功能的时候，我们会使用sidecar模式，这样既不会改变原有程序的代码，添加一些部署中不需要的东西，我们的容器还可以扩展原有容器的功能，并且保持了解耦和扩展性。比如：filebeats，logstash，fluentd，fluent-bit，exporter
 + ambassador：这有两重含义，一个是指微服务架构上的API gateway模式，比如envoy（Istio的代理），spring cloud gateway或者是更早的Zuul这类微服务治理相关软件所使用的模式，他们不使用kubenetes自身提供的代理功能，而是使用容器内部的代理来转发请求。我们以后讲Istio的时候再说这类微服务治理相关的知识。而另一重含义就是软件 ambassador，他同样是一款微服务治理软件，和Linkerd一样，都是这类软件的后期之秀。
 + adapter：这种容器的作用是修改入栈和出栈的数据来满足我们其他的需求。举例来说，我们有一个非常专业的监控系统，这个监控系统的数据格式要求非常特殊。想获得这种格式化之后的数据，我们通常会借助adapter模式，这是最有效的方式去格式化主容器所产生的监控数据，而不是去修改监控系统本身或者已经容器化的应用。adapter容器用来把多种应用都输出成统一的格式。
 
@@ -56,11 +56,11 @@ Kubernetes编排的主要对象就是编排容器的生命周期。我们不单�
 
 ![Pod Network](/pages/keynotes/L2_advanced/3_kubernetes/pics/7_POD/bfd5haac3htu-Kubernetes-Network-Pod-2.png)
 
-在多个容器共享同一个共同的**网络名称空间**。共享底层的net，uts和ipc三个网络名称空间，但是，另外三个，互相隔离。user，pid，mnt。这样一来，一个pod内的多个容器，共享主机名之类的名称空间，他更像是一个宿主机上运行了多个虚拟机。一个宿主机上运行了多个虚拟机，这个虚拟机上运行了应用程序，这些虚拟机使用同一个IPC（inter-process communication），或者lo接口，或者共同的文件系统进行通讯。这就是kubernes在组织容器的时候，使用的一个非常精巧的办法，使得我们可以构建较为精细的容器间通讯了。
+多个容器共享同一个共同的**网络名称空间**。共享底层的net，uts和ipc三个网络名称空间，但是，另外三个，互相隔离。user，pid，mnt。这样一来，一个pod内的多个容器，共享主机名之类的名称空间，他更像是一个宿主机上运行了多个虚拟机。一个宿主机上运行了多个虚拟机，这个虚拟机上运行了应用程序，这些虚拟机使用同一个IPC（inter-process communication），或者lo接口，或者共同的文件系统进行通讯。这就是kubernes在组织容器的时候，使用的一个非常精巧的办法，使得我们可以构建较为精细的容器间通讯了。
 
 同一个pod内的容器还共享第二个资源，**存储卷**，假如我们定义了一个存储卷，让第一个容器可以访问，那么，第二个容器也同样可以访问。存储卷不再属于容器，而属于pod。
 
-原生的kubernetes当中，一个pod只有一个IP地址。这个地址有由Pause容器来管理的。或者我们也可以理解为所有的pod其实都是多容器pod，只不过有一个默认的容器叫PAUSE。也有组织在研发多个IP地址的pod，目前只有vmware公司在开发具有多个IP地址的POD。不过这种需求不是很多，我们就不详细讨论这个了。
+原生的kubernetes当中，一个pod只有一个IP地址。这个地址由Pause容器来管理的。或者我们也可以理解为所有的pod其实都是多容器pod，只不过有一个默认的容器叫PAUSE。也有组织在研发多个IP地址的pod，目前只有vmware公司在开发具有多个IP地址的POD。不过这种需求不是很多，我们就不详细讨论这个了。
 
 ### 1.4. 容器的对外通信
 
@@ -78,7 +78,7 @@ pod内的主容器在运行之前需要做一些环境设定，一般来说，�
 
 主容器在执行的时候可能也需要一些初始化，比如entry point，加载配置文件。而主容器在刚刚启动的时候，用户还可以嵌入一些操作，叫post start，这个命令只执行一次，执行完成就退出。在结束之前，也可以做一些操作，我们叫pre stop。无论是启动后，还是结束前的命令，我们称他们为hook，钩子，勾住一些命令来执行。
 
-在整个主容器的过程中，我们还有两类操作，health check，他会在post start执行完成之后，会执行liveness probe。我们说过程序运行并不一定代表程序是健康的，也许他早就已经陷入了死循环，不能提供服务，但是他并不会退出。每一个pod内，我们需要对主容器的健康与否和就绪与否做监测，分别叫liveness probe和readiness probe。
+在整个主容器的运行过程中，我们还有两类操作，health check，他会在post start执行完成之后，会执行liveness probe。我们说过程序运行并不一定代表程序是健康的，也许他早就已经陷入了死循环，不能提供服务，但是他并不会退出。每一个pod内，我们需要对主容器的健康与否和就绪与否做监测，分别叫liveness probe和readiness probe。
 
 ![img](/pages/keynotes/L2_advanced/3_kubernetes/pics/7_POD/POD_LIFE.jpg)
 
@@ -88,7 +88,7 @@ pod内的主容器在运行之前需要做一些环境设定，一般来说，�
 
 Pod 的 `status` 定义在 `PodStatus` 对象中，其中有一个 `phase` 字段。
 
-Pod 的运行阶段（phase）是 Pod 在其生命周期中的简单宏观概述。该阶段并不是对容器或 Pod 的综合汇总，也不是为了做为综合状态机。
+Pod 的运行阶段（phase）是 Pod 在其生命周期中的简单宏观概述。该阶段并不是对容器或 Pod 的综合汇总，也不是为了做为综合状态机制。
 
 Pod 相位的数量和含义是严格指定的。除了本文档中列举的内容外，不应该再假定 Pod 有其他的 `phase` 值。
 
@@ -104,7 +104,7 @@ Pod 相位的数量和含义是严格指定的。除了本文档中列举的内�
 
 ### 2.2. POD的存活时间（lifetime）
 
-一般来说，Pod 不会消失，除非人为销毁他们。这可能是一个人或控制器。这个规则的唯一例外是成功或失败的 phase 超过一段时间（由 master 确定）的Pod将过期并被自动销毁。也就是说，如果pod启动其实，控制器会尝试重新启动pod，再失败，再重新启动，而且每次从失败到重新启动的时间间隔，都会比上一次长。最长是5分钟。
+一般来说，Pod 不会消失，除非人为销毁他们。这可能是一个人或控制器。这个规则的唯一例外是成功或失败的 phase 超过一段时间（由 master 确定）的Pod将过期并被自动销毁。也就是说，如果pod启动失败，控制器会尝试重新启动pod，再失败，再重新启动，而且每次从失败到重新启动的时间间隔，都会比上一次长。最长是5分钟。
 
 有三种可用的控制器：
 
@@ -124,7 +124,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
 
 Pod 可以包含多个容器，应用运行在这些容器里面，同时 Pod 也可以有一个或多个先于应用容器启动的 Init 容器。Init 容器与普通的容器非常像，除了如下两点：
 
-+ 它们总是运行到完成。
++ 总是运行到完成，总是顺序执行到结束。
 + 每个都必须在下一个启动之前成功完成。
 
 如果 Pod 的 Init 容器失败，Kubernetes 会不断地重启该 Pod，直到 Init 容器成功为止。然而，如果 Pod 对应的 restartPolicy 值为 Never，它不会重新启动。
@@ -487,7 +487,7 @@ PodSpec 中有一个 `restartPolicy` 字段，可能的值为 Always、OnFailure
 
 对于一次 TCP 探测，kubelet 在节点上（不是在 Pod 里面）建立探测连接，这意味着你不能在 `host` 参数上配置 service name，因为 kubelet 不能解析 service name。
 
-## 5. Pod readiness（1.14 stable）
+## 5. Pod readinessgGate（1.14 stable）
 
 可以把外部的回复信息或者信号注入到我们的应用当中，使用Pod readiness。我们需要在Pod的spec文件中定义`readinessGates`，并且在其中定义一些条件，供kubelet来判定pod是否就绪。
 
