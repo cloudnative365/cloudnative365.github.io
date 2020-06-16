@@ -43,38 +43,55 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 第一节 Docker容器技术基础入门
+    - title: 第一节 容器化基础
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第二节 Docker基础用法
+    - title: 第二节 使用Docker
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第三节 Docker镜像管理基础
+    - title: 第三节 Docker的网络
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第四节 容器虚拟化网络概述
+    - title: 第四节 Docker的存储卷
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第五节 Docker容器网络
+    - title: 第五节 Docker资源限制
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第六节 Docker存储卷
+
+  - title: 第二章 容器化基础
+    output: web, pdf
+    folderitems:
+
+    - title: 第一节 Docker镜像
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第七节 Dockerfile详解
+    - title: 第二节 私有镜像仓库
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第八节 Docker私有registry
+    - title: 第三节 Dockerfile
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-    - title: 第九节 Docker的系统资源限制以及验证
+    - title: 第四节 harbor
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+  - title: 第三章 容器运行时
+    output: web, pdf
+    folderitems:
+
+    - title: 第一节 containerd
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第二节 cri-o
       url: /mydoc_release_notes_60.html
       output: web, pdf

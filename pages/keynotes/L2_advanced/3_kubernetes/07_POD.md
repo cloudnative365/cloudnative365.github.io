@@ -1,6 +1,6 @@
 ---
 title: POD
-keywords: keynotes, L2_advanced, kubernetes, CKA, POD
+keywords: keynotes, advanced, kubernetes, CKA, POD
 permalink: keynotes_L2_advanced_3_kubernetes_7_POD.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/7_POD

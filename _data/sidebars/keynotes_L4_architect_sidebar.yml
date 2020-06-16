@@ -23,24 +23,48 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 1 用kubeadm搭建k8s高可用（yum版）
-      url: /keynotes_L4_architect_1_solutions_design_1_HA_1_k8s_cluster_kubeadm_yum.html
+    - title: 1. 用kubeadm搭建k8s高可用（yum版）
+      url: /keynotes_L4_architect_1_HA_1_k8s_cluster_kubeadm_yum.html
       output: web, pdf
 
-    - title: 2 用kubeadm搭建k8s高可用（apt版）
-      url: /keynotes_L4_architect_1_solutions_design_1_HA_2_k8s_cluster_kubeadm_apt.html
+    - title: 2. 用kubeadm搭建k8s高可用（apt版）
+      url: /keynotes_L4_architect_1_HA_2_k8s_cluster_kubeadm_apt.html
+      output: web, pdf
+
+    - title: 3. 使用kops在aws上创建集群
+      url: /keynotes_L4_architect_1_HA_3_kops_AWS.html
+      output: web, pdf
+
+    - title: 4. 使用Rancher管理我们的集群
+      url: /keynotes_L4_architect_1_HA_4_rancher.html
+      output: web, pdf
+
+    - title: 5. 使用kubespray创建集群
+      url: /keynotes_L4_architect_1_HA_5_kubespray_ubuntu.html
+      output: web, pdf
+
+    - title: 6. minikube
+      url: /keynotes_L4_architect_1_HA_6_minikube_macos.html
       output: web, pdf
 
   - title: 第二章 监控
     output: web, pdf
     subfolderitems:
 
-    - title: 1 TIGK
-      url: /keynotes_L4_architect_1_solutions_design_2_monitoring_1_TIGK.html
+    - title: 1 监控概述
+      url: /keynotes_L4_architect_2_monitoring_1_monitoring_overview.html
       output: web, pdf
 
     - title: 2 Prometheus系列
-      url: /keynotes_L4_architect_1_solutions_design_2_monitoring_1_Prometheus.html
+      url: /keynotes_L4_architect_2_monitoring_2_Prometheus_overview.html
+      output: web, pdf
+
+    - title: 3 exporter概览
+      url: /keynotes_L4_architect_2_monitoring_3_exporter_overview.html
+      output: web, pdf
+
+    - title: 4 查询
+      url: /keynotes_L4_architect_2_monitoring_4_querying.html
       output: web, pdf
 
   - title: 第三章 日志
@@ -48,66 +72,10 @@ entries:
     subfolderitems:
 
     - title: 1 ELK
-      url: /keynotes_L2_advanced_1_kubernetes_2_CKA_1_Course_Introduction.html
+      url: /keynotes_L4_architect_3_logging_1_Course_Introduction.html
       output: web, pdf
 
-  - title: 第四章 负载均衡
-    output: web, pdf
-    subfolderitems:
-
-    - title: 1 使用公有云的负载均衡作为k8s的负载均衡
-      url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
-      output: web, pdf
-
-  - title: 第五章 持久存储
-    output: web, pdf
-    subfolderitems:
-
-    - title: 1 Rook
-      url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
-      output: web, pdf
-
-    - title: 2 openEBS
-      url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
-      output: web, pdf
-
-  - title: 第六章 微服务治理
-    output: web, pdf
-    subfolderitems:
-
-    - title: 1 Istio
-      url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
-      output: web, pdf
-
-  - title: 第七章 DevOps工具
-    output: web, pdf
-    subfolderitems:
-
-    - title: 1 GitLab
-      url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
-      output: web, pdf
-
-    - title: 2 Harbor
-      url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
-      output: web, pdf
-
-    - title: 3 Jenkins
-      url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
-      output: web, pdf
-
-    - title: 4 Spinnaker
-      url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
-      output: web, pdf
-
-  - title: 第八节 IaC
-    output: web, pdf
-    subfolderitems:
-
-    - title: 1 Ansible
-      url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
-      output: web, pdf
-
-    - title: 2 Terraform
-      url: /keynotes_L4_architect_1_solutions_design_4_LB_1_Public_cloud_LB.html
+    - title: 2 fluentd
+      url: /keynotes_L4_architect_3_logging_1_Course_Introduction.html
       output: web, pdf
 

@@ -1,6 +1,6 @@
 ---
 title: kubernetes架构和基础概念
-keywords: keynotes, L2_advanced, kubernetes, CKA, KUBERNETES_ARCHITECTURE
+keywords: keynotes, advanced, kubernetes, CKA, KUBERNETES_ARCHITECTURE
 permalink: keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/3_KUBERNETES_ARCHITECTURE

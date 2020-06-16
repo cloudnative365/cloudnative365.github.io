@@ -1,6 +1,6 @@
 ---
 title: MANAGING STATE WITH DEPLOYMENTS
-keywords: keynotes, L2_advanced, kubernetes, CKA, MANAGING_STATE_WITH_DEPLOYMENTS
+keywords: keynotes, advanced, kubernetes, CKA, MANAGING_STATE_WITH_DEPLOYMENTS
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/7_MANAGING_STATE_WITH_DEPLOYMENTS

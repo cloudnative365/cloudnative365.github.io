@@ -1,6 +1,6 @@
 ---
 title: INSTALLATION_AND_CONFIGURATION
-keywords: keynotes, L2_advanced, kubernetes, CKA, INSTALLATION_AND_CONFIGURATION
+keywords: keynotes, advanced, kubernetes, CKA, INSTALLATION_AND_CONFIGURATION
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/3_INSTALLATION_AND_CONFIGURATION

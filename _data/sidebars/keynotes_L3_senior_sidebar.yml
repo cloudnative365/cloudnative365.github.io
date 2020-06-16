@@ -19,15 +19,47 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: 云原生RoadMap
+  - title: etcd
     output: web, pdf
     folderitems:
 
-    - title: 监控-prometheus
+    - title: etcd概览
+      url: /keynotes_L3_senior_1_etcd_1_etcd_overview.html
+      output: web, pdf
+
+    - title: 安装etcd
+      url: /keynotes_L3_senior_1_etcd_2_install_etcd.html
+      output: web, pdf
+
+    - title: 使用kubeadm安装etcd
+      url: /keynotes_L3_senior_1_etcd_3_install_etcd_with_kubeadm.html
+      output: web, pdf
+
+    - title: 管理etcd集群
+      url: /keynotes_L3_senior_1_etcd_4_manage_etcd.html
+      output: web, pdf
+
+  - title: kubernetes集群管理
+    output: web, pdf
+    folderitems:
+
+    - title: 比hard way还hard的方式安装kubernetes集群
       url: /mydoc_introduction.html
       output: web, pdf
 
-    - title: 日志-EFK
+    - title: 持久存储
+      url: /mydoc_introduction.html
+      output: web, pdf
+
+  - title: 使用工具管理kubernetes集群
+    output: web, pdf
+    folderitems:
+
+    - title: kubeadm
+      url: /mydoc_introduction.html
+      output: web, pdf
+
+    - title: Helm
       url: /mydoc_introduction.html
       output: web, pdf
 
@@ -35,6 +67,3 @@ entries:
       url: /mydoc_introduction.html
       output: web, pdf
 
-    - title: 持久存储
-      url: /mydoc_introduction.html
-      output: web, pdf

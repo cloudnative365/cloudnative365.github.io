@@ -1,6 +1,6 @@
 ---
 title: APIS_AND_ACCESS
-keywords: keynotes, L2_advanced, kubernetes, CKA, APIS_AND_ACCESS
+keywords: keynotes, advanced, kubernetes, CKA, APIS_AND_ACCESS
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/5_APIS_AND_ACCESS

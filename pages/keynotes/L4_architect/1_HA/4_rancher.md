@@ -1,8 +1,8 @@
 ---
 title: 使用Rancher管理我们的集群
-keywords: keynotes, advanced, kubernetes_tools, install_kubernetes, ranche
-permalink: keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_4_rancher.html
-sidebar: keynotes_L2_advanced_sidebar
+keywords: keynotes, architect, HA, rancher
+permalink: keynotes_L4_architect_1_HA_4_rancher.html
+sidebar: keynotes_L4_architect_sidebar
 typora-copy-images-to: ./pics/4_rancher
 typora-root-url: ../../../../../cloudnative365.github.io
 ---

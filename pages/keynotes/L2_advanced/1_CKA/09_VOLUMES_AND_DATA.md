@@ -1,6 +1,6 @@
 ---
 title: VOLUMES AND DATA
-keywords: keynotes, L2_advanced, kubernetes, CKA, VOLUMES_AND_DATA
+keywords: keynotes, advanced, kubernetes, CKA, VOLUMES_AND_DATA
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/9_VOLUMES_AND_DATA

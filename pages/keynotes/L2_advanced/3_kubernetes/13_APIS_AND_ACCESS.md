@@ -1,6 +1,6 @@
 ---
 title: API
-keywords: keynotes, L2_advanced, kubernetes, CKA, API
+keywords: keynotes, advanced, kubernetes, CKA, API
 permalink: keynotes_L2_advanced_3_kubernetes_13_APIS_AND_ACCESS.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/13_APIS_AND_ACCESS

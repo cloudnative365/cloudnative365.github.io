@@ -1,6 +1,6 @@
 ---
 title: CUSTOM_RESOURCE_DEFINITIONS
-keywords: keynotes, L2_advanced, kubernetes, CKA, CUSTOM_RESOURCE_DEFINITIONS
+keywords: keynotes, advanced, kubernetes, CKA, CUSTOM_RESOURCE_DEFINITIONS
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/13_CUSTOM_RESOURCE_DEFINITIONS

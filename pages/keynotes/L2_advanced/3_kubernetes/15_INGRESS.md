@@ -1,6 +1,6 @@
 ---
 title: INGRESS和INGRESS控制器
-keywords: keynotes, L2_advanced, kubernetes, CKA, INGRESS
+keywords: keynotes, advanced, kubernetes, CKA, INGRESS
 permalink: keynotes_L2_advanced_3_kubernetes_15_INGRESS.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/15_INGRESS

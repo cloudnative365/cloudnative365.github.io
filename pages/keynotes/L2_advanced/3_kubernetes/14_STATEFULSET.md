@@ -1,6 +1,6 @@
 ---
 title: StatefulSets
-keywords: keynotes, L2_advanced, kubernetes, CKA, STATEFULSETS
+keywords: keynotes, advanced, kubernetes, CKA, STATEFULSETS
 permalink: keynotes_L2_advanced_3_kubernetes_14_STATEFULSETS.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/14_STATEFULSETS

@@ -1,6 +1,6 @@
 ---
 title: 认识kubernetes
-keywords: keynotes, L2_advanced, kubernetes, CKA, BASICS_OF_KUBERNETES
+keywords: keynotes, advanced, kubernetes, CKA, BASICS_OF_KUBERNETES
 permalink: keynotes_L2_advanced_3_kubernetes_2_BASICS_OF_KUBERNETES.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/2_BASICS_OF_KUBERNETES

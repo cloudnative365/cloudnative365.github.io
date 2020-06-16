@@ -1,6 +1,6 @@
 ---
 title: LOGGING_AND_TROUBLESHOOTING
-keywords: keynotes, L2_advanced, kubernetes, CKA, LOGGING_AND_TROUBLESHOOTING
+keywords: keynotes, advanced, kubernetes, CKA, LOGGING_AND_TROUBLESHOOTING
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/12_LOGGING_AND_TROUBLESHOOTING

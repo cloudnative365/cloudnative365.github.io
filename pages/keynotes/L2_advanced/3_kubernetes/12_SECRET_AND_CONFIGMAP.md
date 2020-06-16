@@ -1,6 +1,6 @@
 ---
 title: ConfigMap和Secret
-keywords: keynotes, L2_advanced, kubernetes, CKA, SECRET_AND_CONFIGMAP
+keywords: keynotes, advanced, kubernetes, CKA, SECRET_AND_CONFIGMAP
 permalink: keynotes_L2_advanced_3_kubernetes_11_SECRET_AND_CONFIGMAP.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/12_SECRET_AND_CONFIGMAP

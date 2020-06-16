@@ -1,6 +1,6 @@
 ---
 title: INGRESS
-keywords: keynotes, L2_advanced, kubernetes, CKA, INGRESS
+keywords: keynotes, advanced, kubernetes, CKA, INGRESS
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/10_INGRESS

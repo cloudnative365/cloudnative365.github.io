@@ -1,6 +1,6 @@
 ---
 title: 使用命令行管理资源
-keywords: keynotes, L2_advanced, kubernetes, CKA, MANAGE_RESOURCES_WITH_CMD
+keywords: keynotes, advanced, kubernetes, CKA, MANAGE_RESOURCES_WITH_CMD
 permalink: keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/5_MANAGE_RESOURCES_WITH_CMD

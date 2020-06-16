@@ -1,6 +1,6 @@
 ---
 title: HIGH AVAILABILITY
-keywords: keynotes, L2_advanced, kubernetes, CKA, HIGH_AVAILABILITY
+keywords: keynotes, advanced, kubernetes, CKA, HIGH_AVAILABILITY
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/16_HIGH_AVAILABILITY

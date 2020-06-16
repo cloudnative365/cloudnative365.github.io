@@ -18,8 +18,9 @@ folder: lessons
   + Docker资源限制
 + 容器与镜像：dockerfile和harbor
   + Docker镜像
+  + 私有镜像仓库
   + Dockerfile
-  + 镜像仓库与harbor
+  + harbor
 + 容器运行时：
   + containerd
   + cri-o

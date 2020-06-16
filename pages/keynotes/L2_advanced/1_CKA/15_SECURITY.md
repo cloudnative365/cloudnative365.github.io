@@ -1,6 +1,6 @@
 ---
 title: SECURITY
-keywords: keynotes, L2_advanced, kubernetes, CKA, SECURITY
+keywords: keynotes, advanced, kubernetes, CKA, SECURITY
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/15_SECURITY

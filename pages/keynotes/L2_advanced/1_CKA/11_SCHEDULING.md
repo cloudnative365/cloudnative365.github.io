@@ -1,6 +1,6 @@
 ---
 title: SCHEDULING
-keywords: keynotes, L2_advanced, kubernetes, CKA, SCHEDULING
+keywords: keynotes, advanced, kubernetes, CKA, SCHEDULING
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/11_SCHEDULING

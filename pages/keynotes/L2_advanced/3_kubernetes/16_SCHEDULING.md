@@ -1,6 +1,6 @@
 ---
 title: 调度
-keywords: keynotes, L2_advanced, kubernetes, CKA, SCHEDULING
+keywords: keynotes, advanced, kubernetes, CKA, SCHEDULING
 permalink: keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/16_SCHEDULING

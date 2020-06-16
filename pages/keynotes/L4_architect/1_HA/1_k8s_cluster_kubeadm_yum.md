@@ -1,12 +1,10 @@
 ---
 title: 用kubeadm搭建k8s高可用（yum版）
-keywords: keynotes, architect, solutions_design, HA, k8s_cluster_kubeadm_yum
-permalink: keynotes_L4_architect_1_solutions_design_1_HA_1_k8s_cluster_kubeadm_yum.html
+keywords: keynotes, architect, HA, k8s_cluster_kubeadm_yum
+permalink: keynotes_L4_architect_1_HA_1_k8s_cluster_kubeadm_yum.html
 sidebar: keynotes_L4_architect_sidebar
 typora-copy-images-to: ./pics/1_k8s_cluster_kubeadm_yum
 typora-root-url: ../../../../../cloudnative365.github.io
-
-
 ---
 
 ## 1. 介绍

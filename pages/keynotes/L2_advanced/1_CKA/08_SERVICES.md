@@ -1,6 +1,6 @@
 ---
 title: SERVICES
-keywords: keynotes, L2_advanced, kubernetes, CKA, SERVICES
+keywords: keynotes, advanced, kubernetes, CKA, SERVICES
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/8_SERVICES

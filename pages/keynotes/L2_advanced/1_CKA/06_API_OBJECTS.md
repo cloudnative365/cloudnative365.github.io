@@ -1,6 +1,6 @@
 ---
 title: API OBJECTS
-keywords: keynotes, L2_advanced, kubernetes, CKA, API_OBJECTS
+keywords: keynotes, advanced, kubernetes, CKA, API_OBJECTS
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/6_API_OBJECTS

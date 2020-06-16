@@ -1,6 +1,6 @@
 ---
 title: KUBERNETES ARCHITECTURE
-keywords: keynotes, L2_advanced, kubernetes, CKA, KUBERNETES_ARCHITECTURE
+keywords: keynotes, advanced, kubernetes, CKA, KUBERNETES_ARCHITECTURE
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/4_KUBERNETES_ARCHITECTURE

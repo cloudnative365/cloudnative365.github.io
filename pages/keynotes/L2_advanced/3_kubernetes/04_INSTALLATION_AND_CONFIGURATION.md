@@ -1,6 +1,6 @@
 ---
 title: 安装和配置kubernetes实验环境
-keywords: keynotes, L2_advanced, kubernetes, CKA, INSTALLATION_AND_CONFIGURATION
+keywords: keynotes, advanced, kubernetes, CKA, INSTALLATION_AND_CONFIGURATION
 permalink: keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/4_INSTALLATION_AND_CONFIGURATION

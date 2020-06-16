@@ -1,6 +1,6 @@
 ---
 title: 标签和标签选择器
-keywords: keynotes, L2_advanced, kubernetes, CKA, LABEL_AND_SELECTOR
+keywords: keynotes, advanced, kubernetes, CKA, LABEL_AND_SELECTOR
 permalink: keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/8_LABEL_AND_SELECTOR

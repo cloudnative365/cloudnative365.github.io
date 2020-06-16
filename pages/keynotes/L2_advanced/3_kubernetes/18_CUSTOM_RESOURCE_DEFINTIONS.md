@@ -1,6 +1,6 @@
 ---
 title: 自定义资源
-keywords: keynotes, L2_advanced, kubernetes, CKA, CUSTOM_RESOURCE_DEFINTIONS
+keywords: keynotes, advanced, kubernetes, CKA, CUSTOM_RESOURCE_DEFINTIONS
 permalink: keynotes_L2_advanced_3_kubernetes_18_CUSTOM_RESOURCE_DEFINTIONS.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/18_CUSTOM_RESOURCE_DEFINTIONS
@@ -64,31 +64,33 @@ spec:
 
 + kind: CustomResourceDefinition
 
-这个对象类型是由kube-apiserver插入的
+这个对象类型是由kube-apiserver给定的
 
 + name: backups.stable.linux.com
 
-The name must match the **spec** field declared later. The syntax must be \<plural name>\.\<group>
+名称必须匹配下面spec字段中的内容（group和name中的plural）。语法应该是\<plural name>\.\<group>
 
 + group: stable.linux.com
 
-The group name will become part of the REST API under **/apis/\<group>/\<version>** or **/apis/stable/v1** in this case with the version set to v1.
+组名字会变成REST API的一部分，**/apis/\<group>/\<version>**。比如稳定版:**/apis/stable/v1**
 
 + scope
 
-Determines if the object exists in a single namespace or is cluster-wide.
+定义这个资源是存在某个namespace中还是整个集群
 
 + plural
 
-Defines the last part of the API URL, such as **apis/stable/v1/backups**.
+定义API URL的最后一部分，比如**apis/stable/v1/backups**.
 
 + singular and shortNames
 
-They represent the name displayed and make CLI usage easier.
+singular：定义了显示的名字
+
+shortNames：让命令在使用的时候更简单
 
 + kind
 
-A CamelCased singular type used in resource manifests.
+在定义资源清单的时候，他的kind类型，是一个驼峰式大小写的单数形式
 
 ### 2.3. 配置新的对象
 
@@ -103,13 +105,13 @@ spec:
 replicas: 5
 ```
 
-Note that the **apiVersion** and **kind** match the CRD we created in a previous step. The **spec** parameters depend on the controller.
+注意**apiVersion**和**kind**与我们在上一步中创建的CRD匹配。**spec**参数取决于控制器。
 
-The object will be evaluated by the controller. If the syntax, such as **timeSpec**, does not match the expected value, you will receive and error, should validation be configured. Without validation, only the existence of the variable is checked, not its details.
+对象将由控制器去验证。如果语法（如**timeSpec**）与预期值不匹配，则在配置验证时将收到错误信息。如果不进行验证，则只检查变量的存在性，而不检查其详细信息。
 
 ### 2.4. 可选的hooks
 
-Just as with built-in objects, you can use an asynchronous pre-delete hook known as a **Finalizer**. If an API **delete** request is received, the object metadata field **metadata.deletionTimestamp** is updated. The controller then triggers whichever finalizer has been configured. When the finalizer completes, it is removed from the list. The controller continues to complete and remove finalizers until the string is empty. Then, the object itself is deleted.
+与内置对象一样，您可以使用一个称为**Finalizer**的异步预删除挂钩。如果API接收到**delete**请求，则对象元数据字段**metadata.deletionTimestamp**会更新。然后，控制器触发已配置的终结器。当终结器完成时，它将从列表中删除。控制器继续完成并删除终结器，直到字符串为空。然后，对象本身被删除。
 
 Finalizer:
 
@@ -136,12 +138,12 @@ validation:
               maximum: 10
 ```
 
-A feature in beta starting with v1.9 allows for validation of custom objects via the OpenAPI v3 schema. This will check various properties of the object configuration being passed by the API server. In the example above, the **timeSpec** must be a string matching a particular pattern and the number of allowed replicas is between 1 and 10. If the validation does not match, the error returned is the failed line of validation.
+从v1.9开始的beta特性允许通过OpenAPI v3模式验证自定义对象。这将检查API服务器传递的对象中配置的各种属性。在上面的示例中，**timeSpec**必须是与特定模式匹配的字符串，并且允许的副本数在1到10之间。如果验证不匹配，则返回的错误是验证的失败行。
 
 ## 3. API聚合
 
-The use of Aggregated APIs allows adding additional Kubernetes-type API servers to the cluster. The added server acts as a subordinate to kube-apiserver, which, as of v1.7, runs the aggregation layer in-process. When an extension resource is registered, the aggregation layer watches a passed URL path and proxies any requests to the newly registered API service. 
+聚合API的使用允许向集群添加其他Kubernetes类型的API服务器。添加的服务器充当kube apiserver的从属服务器，从v1.7开始，kube apiserver在进程中运行聚合层。注册扩展资源时，聚合层监视传递的URL路径，并将任何请求代理到新注册的API服务。
 
-The aggregation layer is easy to enable. Edit the flags passed during startup of the kube-apiserver to include **--enable-aggregator-routing=true**. Some vendors enable this feature by default. 
+聚合层很容易启用。编辑kube apiserver启动期间传递的标志以包括**--enable aggregator routing=true**。一些供应商默认启用此功能。
 
-The creation of the exterior can be done via YAML configuration files or APIs. Configuring TLS authorization between components and RBAC rules for various new objects is also required. A [sample API server](https://github.com/kubernetes/sample-apiserver) is available on GitHub. A project currently in the incubation stage is an [API server builder](https://github.com/kubernetes-sigs/apiserver-builder-alpha) which should handle much of the security and connection configuration.
+外部的创建可以通过YAML配置文件或api完成。还需要为各种新对象在组件和RBAC规则之间配置TLS授权。[示例API服务器](https://github.com/kubernetes/sample-apiserver网站)在GitHub上可用。目前处于孵化阶段的项目是一个[API服务器生成器](https://github.com/kubernetes-sigs/apiserver-builder-alpha)它应该处理很多安全和连接配置。

@@ -1,6 +1,6 @@
 ---
 title: 日志和错误定位
-keywords: keynotes, L2_advanced, kubernetes, CKA, LOGGING_AND_TROUBLESHOOTING
+keywords: keynotes, advanced, kubernetes, CKA, LOGGING_AND_TROUBLESHOOTING
 permalink: keynotes_L2_advanced_3_kubernetes_17_LOGGING_AND_TROUBLESHOOTING.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/17_LOGGING_AND_TROUBLESHOOTING

@@ -1,6 +1,6 @@
 ---
 title: HELM
-keywords: keynotes, L2_advanced, kubernetes, CKA, HELM
+keywords: keynotes, advanced, kubernetes, CKA, HELM
 permalink: keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/14_HELM
