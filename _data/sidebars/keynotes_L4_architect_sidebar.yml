@@ -49,7 +49,7 @@ entries:
 
   - title: 第二章 监控
     output: web, pdf
-    subfolderitems:
+    folderitems:
 
     - title: 1 监控概述
       url: /keynotes_L4_architect_2_monitoring_1_monitoring_overview.html
@@ -69,7 +69,7 @@ entries:
 
   - title: 第三章 日志
     output: web, pdf
-    subfolderitems:
+    folderitems:
 
     - title: 1 ELK
       url: /keynotes_L4_architect_3_logging_1_Course_Introduction.html
