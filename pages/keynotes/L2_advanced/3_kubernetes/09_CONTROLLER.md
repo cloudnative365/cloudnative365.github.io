@@ -1,7 +1,7 @@
 ---
 title: 控制器
 keywords: keynotes, advanced, kubernetes, CKA, CONTROLLER
-permalink: keynotes_L2_advanced_1_kubernetes_3_kubernetes_9_CONTROLLER.html
+permalink: keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/9_CONTROLLER
 typora-root-url: ../../../../../cloudnative365.github.io

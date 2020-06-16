@@ -95,7 +95,7 @@ entries:
       url: /mydoc_release_notes_60.html
       output: web, pdf
 
-  - title: 第三章 kubernetes入门讲座（CKA考试指南）
+  - title: 第三章 kubernetes入门讲座
     output: web, pdf
     folderitems:
 
@@ -131,15 +131,15 @@ entries:
       url: /keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html
       output: web, pdf
 
-    - title: 9. 深入理解Pod
+    - title: 9. Deployment
       url: /keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html
       output: web, pdf
 
-    - title: 10. 深入理解Deployment
+    - title: 10. Service
       url: /keynotes_L2_advanced_3_kubernetes_10_SERVICE.html
       output: web, pdf
 
-    - title: 11. 深入理解Service
+    - title: 11. pv
       url: /keynotes_L2_advanced_3_kubernetes_11_PV.html
       output: web, pdf
 
@@ -179,71 +179,3 @@ entries:
       url: /keynotes_L2_advanced_3_kubernetes_20_SECURITY.html
       output: web, pdf
 
-
-  - title: 第四章 kubernetes从入门到精通
-    output: web, pdf
-    folderitems:
-
-    - title: 1. kubernete课程简介
-      url: /mydoc_release_notes_60.html
-      output: web, pdf
-
-    - title: 2. kubernetes基础知识
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_1_minikube_macos.html
-      output: web, pdf
-
-    - title: 3. kubernetes架构和基础概念
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_2_minikube_windows.html
-      output: web, pdf
-
-    - title: 4. 使用kubeadm安装kubernetes
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_3_kops_AWS.html
-      output: web, pdf
-
-    - title: 5. API和准入控制
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_4_rancher.html
-      output: web, pdf
-
-    - title: 6. API对象
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_5_kubespray_ubuntu.html
-      output: web, pdf
-
-    - title: 7. 使用Deployment管理pod状态
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-      output: web, pdf
-
-    - title: 8. Service
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-      output: web, pdf
-
-    - title: 9. 卷组和数据
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-      output: web, pdf
-
-    - title: 10. Ingress
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-      output: web, pdf
-
-    - title: 11. 调度
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-      output: web, pdf
-
-    - title: 12. 排查错误
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-      output: web, pdf
-
-    - title: 13. 自定义资源
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-      output: web, pdf
-
-    - title: 14. HELM
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-      output: web, pdf
-
-    - title: 15. 安全
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-      output: web, pdf
-
-    - title: 16. 高可用
-      url: /keynotes_L2_advanced_2_kubernetes_tools_1_install_kubernetes_6_binary_install.html
-      output: web, pdf
