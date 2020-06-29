@@ -1,9 +1,9 @@
 ---
 title: 最困难的方式安装k8s集群
 keywords: keynotes, senior, kubernetes, hardest_way
-permalink: keynotes_L3_senior_2_kubernetes_1_hardest_way.html
+permalink: keynotes_L3_senior_2_kubernetes_2_hardest_way.html
 sidebar: keynotes_L3_advanced_sidebar
-typora-copy-images-to: ./pics/1_hardest_way
+typora-copy-images-to: ./pics/2_hardest_way
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---
@@ -25,7 +25,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 3. 架构图
 
-![External etcd topology](https://d33wubrfki0l68.cloudfront.net/ad49fffce42d5a35ae0d0cc1186b97209d86b99c/5a6ae/images/kubeadm/kubeadm-ha-topology-external-etcd.svg)来自[网站](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/)
+![External etcd topology](/pages/keynotes/L3_senior/2_kubernetes/pics/2_hardest_way/kubeadm-ha-topology-external-etcd.svg)来自[网站](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/ha-topology/)
 
 
 
