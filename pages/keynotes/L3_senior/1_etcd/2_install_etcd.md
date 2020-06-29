@@ -84,38 +84,39 @@ Example application workload: A 3,000 node Kubernetes cluster
 + 下载和解压
 
   [这里](https://github.com/etcd-io/etcd/releases/)有下载的向导，也可以点这里直接下载[v3.4.9](https://github.com/etcd-io/etcd/releases/download/v3.4.9/etcd-v3.4.9-linux-amd64.tar.gz)
-
-``` bash
-#设置要下载的版本
-ETCD_VER=v3.4.9
-INSTALL_DIR=/opt
-
-# 也可以从google下载，鉴于国内无法访问，就注释掉了
-# GOOGLE_URL=https://storage.googleapis.com/etcd
-GITHUB_URL=https://github.com/etcd-io/etcd/releases/download
-DOWNLOAD_URL=${GITHUB_URL}
-
-# 清理原来下载过的
-rm -f ${INSTALL_DIR}/etcd-${ETCD_VER}-linux-amd64.tar.gz
-rm -rf ${INSTALL_DIR}/etcd && mkdir -p ${INSTALL_DIR}/etcd
-
-# 下载
-curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o ${INSTALL_DIR}/etcd-${ETCD_VER}-linux-amd64.tar.gz
-# 解压
-tar xzvf ${INSTALL_DIR}/etcd-${ETCD_VER}-linux-amd64.tar.gz -C ${INSTALL_DIR}/etcd --strip-components=1
-# 删除压缩包
-rm -f ${INSTALL_DIR}/etcd-${ETCD_VER}-linux-amd64.tar.gz
-
-# 测试
-${INSTALL_DIR}/etcd/etcd --version
-${INSTALL_DIR}/etcd/etcdctl version
-```
+  
+  ``` bash
+  #设置要下载的版本
+  ETCD_VER=v3.4.9
+  INSTALL_DIR=/opt
+  
+  # 也可以从google下载，鉴于国内无法访问，就注释掉了
+  # GOOGLE_URL=https://storage.googleapis.com/etcd
+  GITHUB_URL=https://github.com/etcd-io/etcd/releases/download
+  DOWNLOAD_URL=${GITHUB_URL}
+  
+  # 清理原来下载过的
+  rm -f ${INSTALL_DIR}/etcd-${ETCD_VER}-linux-amd64.tar.gz
+  rm -rf ${INSTALL_DIR}/etcd && mkdir -p ${INSTALL_DIR}/etcd
+  
+  # 下载
+  curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o ${INSTALL_DIR}/etcd-${ETCD_VER}-linux-amd64.tar.gz
+  # 解压
+  tar xzvf ${INSTALL_DIR}/etcd-${ETCD_VER}-linux-amd64.tar.gz -C ${INSTALL_DIR}/etcd --strip-components=1
+  # 删除压缩包
+  rm -f ${INSTALL_DIR}/etcd-${ETCD_VER}-linux-amd64.tar.gz
+  
+  # 测试
+  ${INSTALL_DIR}/etcd/etcd --version
+  ${INSTALL_DIR}/etcd/etcdctl version
+  
+  ```
 
 + 启动etcd
 
-``` bash
-./etcd
-```
+  ``` bash
+  ./etcd
+  ```
 
 ### 2.2. 编译安装etcd
 
@@ -135,55 +136,57 @@ ${INSTALL_DIR}/etcd/etcdctl version
 
 + 下载golang
 
-``` bash
-# 国内无法访问google，请使用下面的链接下载二进制包
-wget https://studygolang.com/dl/golang/go1.14.3.linux-amd64.tar.gz
-# 解压
-tar xf go1.14.3.linux-amd64.tar.gz
-# 验证
-./go/bin/go version
-go version go1.14.3 linux/amd64
-```
+  ``` bash
+  # 国内无法访问google，请使用下面的链接下载二进制包
+  wget https://studygolang.com/dl/golang/go1.14.3.linux-amd64.tar.gz
+  # 解压
+  tar xf go1.14.3.linux-amd64.tar.gz
+  # 验证
+  ./go/bin/go version
+  go version go1.14.3 linux/amd64
+  ```
 
 + 配置go环境
 
-``` bash
-cat << EOF > /etc/profile.d/golong.sh
-export GOROOT=/opt/go
-export PATH=$PATH:/opt/go/bin
-EOF
-
-source /etc/profile
-```
+  ``` bash
+  cat << EOF > /etc/profile.d/golong.sh
+  export GOROOT=/opt/go
+  export PATH=$PATH:/opt/go/bin
+  EOF
+  
+  source /etc/profile
+  ```
 
 + 编译
 
-``` bash
-$ git clone https://github.com/etcd-io/etcd.git
-$ cd etcd
-$ go env -w GOPROXY=https://goproxy.cn,direct
-$ go mod vendor
-$ ./build
-```
+  ``` bash
+  $ git clone https://github.com/etcd-io/etcd.git
+  $ cd etcd
+  $ go env -w GOPROXY=https://goproxy.cn,direct
+  $ go mod vendor
+  $ ./build
+  ```
 
 + 验证
 
-``` bash
-# 在bin目录下面会多出两个可执行文件
-ls bin/
-etcd  etcdctl
+  ``` bash
+  # 在bin目录下面会多出两个可执行文件
+  ls bin/
+  etcd  etcdctl
+  
+  # 查看版本
+  $ ./bin/etcd --version
+  etcd Version: 3.5.0-pre
+  Git SHA: 9b6c3e337
+  Go Version: go1.14.3
+  Go OS/Arch: linux/amd64
+  
+  $ ./bin/etcdctl version
+  etcdctl version: 3.5.0-pre
+  API version: 3.5
+  ```
 
-# 查看版本
-$ ./bin/etcd --version
-etcd Version: 3.5.0-pre
-Git SHA: 9b6c3e337
-Go Version: go1.14.3
-Go OS/Arch: linux/amd64
-
-$ ./bin/etcdctl version
-etcdctl version: 3.5.0-pre
-API version: 3.5
-```
+  
 
 
 
@@ -389,7 +392,7 @@ CLUSTER_STATE=new
 
 ### 4.1. 制作证书
 
-参考[github](https://github.com/coreos/docs/blob/master/os/generate-self-signed-certificates.md)
+[制作证书](https://kubernetes.io/docs/concepts/cluster-administration/certificates/)目前普遍使用这三种工具，`easyrsa`, `openssl` 或者 `cfssl`，我们这里使用cfssl，参考[github](https://github.com/coreos/docs/blob/master/os/generate-self-signed-certificates.md)
 
 #### 4.1.1. 准备环境
 
@@ -397,7 +400,7 @@ CLUSTER_STATE=new
 
   ``` bash
   curl -s -L -o /usr/local/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
-  curl -s -L -o /usr/local/bin/cfssl https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+  curl -s -L -o /usr/local/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
   chmod +x /usr/local/bin/{cfssl,cfssljson}
   ```
 
@@ -579,14 +582,14 @@ CLUSTER_STATE=new
 + 生成配置文件
 
   ``` bash
-  cfssl print-defaults csr > members.json
+  cfssl print-defaults csr > peer.json
   ```
 
 + 修改server.json中CN和host的部分
 
   ``` json
   {
-      "CN": "members",
+      "CN": "peer",
       "hosts": [
           "127.0.0.1",
           "10.0.1.204",
@@ -616,9 +619,9 @@ CLUSTER_STATE=new
 + 三个文件
 
   ``` bash
-  members-key.pem
-  members.csr
-  members.pem
+  peer-key.pem
+  peer.csr
+  peer.pem
   ```
 
 #### 4.1.5. 创建客户端（client）的相关证书
@@ -671,44 +674,43 @@ CLUSTER_STATE=new
 
 + 修改启动文件
 
-``` bash
-[Unit]
-Description=Etcd Server
-After=network.target
-After=network-online.target
-Wants=network-online.target
-
-[Service]
-Type=notify
-WorkingDirectory=/data/etcd
-EnvironmentFile=-/etc/etcd/etcd.conf
-User=etcd
-# set GOMAXPROCS to number of processors
-ExecStart=/bin/bash -c "GOMAXPROCS=$(nproc) /opt/etcd/etcd \
-          --data-dir ${DATA_DIR} \
-          --name ${HOST_NAME} \
-          --initial-advertise-peer-urls https://${HOST_IP}:2380 \
-          --listen-peer-urls https://${HOST_IP}:2380 \
-          --advertise-client-urls https://${HOST_IP}:2379 \
-          --listen-client-urls https://127.0.0.1:2379,https://${HOST_IP}:2379 \
-          --listen-metrics-urls=http://127.0.0.1:2381 \
-          --initial-cluster ${CLUSTER} \
-          --initial-cluster-state ${CLUSTER_STATE} \
-          --initial-cluster-token ${TOKEN} \
-          --client-cert-auth \
-          --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem \
-          --cert-file=/etc/kubernetes/pki/etcd/server.pem \
-          --key-file=/etc/kubernetes/pki/etcd/server-key.pem \
-          --peer-client-cert-auth \
-          --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem \
-          --peer-cert-file=/etc/kubernetes/pki/etcd/members.pem \
-          --peer-key-file=/etc/kubernetes/pki/etcd/members-key.pem"
-Restart=on-failure
-LimitNOFILE=65536
-
-[Install]
-WantedBy=multi-user.target
-```
+  ``` bash
+  [Unit]
+  Description=Etcd Server
+  After=network.target
+  After=network-online.target
+  Wants=network-online.target
+  
+  [Service]
+  Type=notify
+  WorkingDirectory=/data/etcd
+  EnvironmentFile=-/etc/etcd/etcd.conf
+  User=etcd
+  # set GOMAXPROCS to number of processors
+  ExecStart=/bin/bash -c "GOMAXPROCS=$(nproc) /opt/etcd/etcd \
+            --data-dir ${DATA_DIR} \
+            --name ${HOST_NAME} \
+            --initial-advertise-peer-urls https://${HOST_IP}:2380 \
+            --listen-peer-urls https://${HOST_IP}:2380 \
+            --advertise-client-urls https://${HOST_IP}:2379 \
+            --listen-client-urls https://127.0.0.1:2379,https://${HOST_IP}:2379 \
+            --listen-metrics-urls=http://127.0.0.1:2381 \
+            --initial-cluster ${CLUSTER} \
+            --initial-cluster-state ${CLUSTER_STATE} \
+            --initial-cluster-token ${TOKEN} \
+            --client-cert-auth \
+            --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem \
+            --cert-file=/etc/kubernetes/pki/etcd/server.pem \
+            --key-file=/etc/kubernetes/pki/etcd/server-key.pem \
+            --peer-client-cert-auth \
+            --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem \
+            --peer-cert-file=/etc/kubernetes/pki/etcd/peer.pem \
+  Restart=on-failure
+  LimitNOFILE=65536
+  
+  [Install]
+  WantedBy=multi-user.target
+  ```
 
 + 修改配置文件，/etc/etcd/etcd.conf
 
@@ -745,8 +747,6 @@ WantedBy=multi-user.target
   TOKEN=ea8cfe2bfe85b7e6c66fe190f9225838
   ```
 
-  
-
 + 修改权限
 
   ``` bash
@@ -754,13 +754,12 @@ WantedBy=multi-user.target
   chown -R etcd:adm /etc/kubernetes/pki/etcd/
   ```
 
-  
-
 + 重启启动集群会报错
 
   ``` bash
   error "tls: first record does not look like a TLS handshake
   ```
 
-+ 删除数据文件，重新启动就好了
+  删除数据文件，重新启动就好了
+
 

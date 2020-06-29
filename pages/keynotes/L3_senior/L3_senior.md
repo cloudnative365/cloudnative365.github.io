@@ -11,13 +11,8 @@ typora-root-url: ../../../cloudnative365.github.io
 
 ## 课程大纲
 
-### 云原生roadmap
+### 1. etcd集群管理
 
-+ 监控-prometheus
-+ 日志-elk/efk
-+ 负载均衡
-+ 持久存储
-+ 微服务-istio
-+ 持续集成工具-jenkins
-+ IaC工具-terraform
+### 2. kubernetes集群管理
 
+### 3. 使用kubenetes工具
