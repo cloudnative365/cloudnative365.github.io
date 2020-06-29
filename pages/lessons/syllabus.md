@@ -41,28 +41,51 @@ folder: lessons
   11. 存储卷
   12. configmap和secret
 + kubernetes从入门到精通
-  1. kubernete课程简介
-  2. kubernetes基础知识
+  1. 课程介绍
+  2. 认识kubernetes
   3. kubernetes架构和基础概念
-  4. 使用kubeadm安装kubernetes
-  5. API和准入控制
-  6. API对象
-  7. 使用Deployment管理pod状态
-  8. Service
-  9. 卷组和数据
-  10. Ingress
-  11. 调度
-  12. 排查错误
-  13. 自定义资源
-  14. HELM
-  15. 安全
-  16. 高可用
+  4. 安装和配置kubernetes实验环境
+  5. 使用命令行管理资源
+  6. 使用清单文件管理资源
+  7. POD
+  8. 标签和标签选择器
+  9. Deployment
+  10. Service
+  11. pv
+  12. configmap和secret
+  13. API
+  14. STATEFULSET
+  15. INGRESS
+  16. 调度
+  17. 日志和错误定位
+  18. 自定义资源
+  19. HELM
+  20. SECURITY
 
 ### 3. 高级课程
 
-+ Prometheus从入门到精通：CNCF毕业项目之一，从监控系统到Prometheus
-+ etcd从入门到精通：
-+ rancher：
++ etcd从入门到精通
+  + etcd概述
+  + 安装etcd集群
+  + 使用kubeadm安装etcd集群
+  + 扩展etcd节点
+  + etcd性能调优
+  + etcd备份和恢复
++ kubernetes集群管理
+  + 使用kubeadm安装kubernetes集群（外挂etcd）
+  + hard way of kubernetes
+  + 管理kubernetes的master节点（kubeadm）
++ ingress控制器
+  + ingress简介
+  + 使用ingress-nginx
+  + 使用ingress-envoy
++ helm管理应用
+  + helm简介
+  + helm安装与配置
+  + 详解chart
++ kubernetes外挂存储
+  + nfs-provisioner
++ rancher管理集群
 
 ### 4. 架构师课程
 
@@ -80,28 +103,12 @@ folder: lessons
 + 日志：介绍多种日志采集方案
   + ELK系列产品：filebeat，apm，logstash，elasticsearch，kibana
   + Fluentd从入门到精通：CNCF毕业项目之一，轻量级数据收集工具
-+ 负载均衡：介绍多种负载均衡方案
-  + Service
-    + iptables
-    + lvs
-  + Ingress
-    + nginx
-    + envoy
-    + traefik
-  + 外部负载均衡
-    + nginx
-    + haproxy
-    + consul
-    + AWS nlb/elb
-  + 外部负载均衡：nginx，ELB，consul
 + DNS解决方案：
   + DNS解析原理
-  + Bind：
   + CoreDNS：
 + 持久存储：介绍多种持久存储方案
   + Ceph
   + rbd-provisioner
-  + nfs-provisioner
   + rook
   + openEBS
 + 微服务治理：介绍多种微服务治理方案
