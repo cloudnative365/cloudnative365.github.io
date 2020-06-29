@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" keynotes, advanced, kubernetes, CKA, COURSE_INTRODUCTION">
+<title>课程介绍 | CloudNative knowledge</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="cloudnative365.gitpage.io" href="http://0.0.0.0:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> 云原生技术课堂</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="lessons_syllabus.html">教学大纲</a></li>
+                        
+                        
+                        
+                        <li><a href="lessons_plans.html">开课计划</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂笔记<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="keynotes_L1_basic.html">基础课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L2_advanced.html">进阶课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L3_senior.html">高级课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L4_architect.html">架构师课程</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂风采<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="classes_teachers.html">讲师风采</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_aboutus.html">关于我们</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_successd.html">优秀学员作品</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用链接<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">Linux Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://cd.foundation/" target="_blank" rel="noopener">CD Foundation</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="课程介绍">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">进阶课程 </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="第一章 CKA官方教程" href="#">第一章 CKA官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="1 COURSE_INTRODUCTION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_1_COURSE_INTRODUCTION.html">1 COURSE_INTRODUCTION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2 BASICS_OF_KUBERNETES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html">2 BASICS_OF_KUBERNETES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3 INSTALLATION_AND_CONFIGURATION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html">3 INSTALLATION_AND_CONFIGURATION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4 KUBERNETES_ARCHITECTURE" href="keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html">4 KUBERNETES_ARCHITECTURE</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5 APIS_AND_ACCESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html">5 APIS_AND_ACCESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6 API_OBJECTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html">6 API_OBJECTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7 MANAGING_STATE_WITH_DEPLOYMENTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html">7 MANAGING_STATE_WITH_DEPLOYMENTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8 SERVICES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html">8 SERVICES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9 VOLUMES_AND_DATA" href="keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html">9 VOLUMES_AND_DATA</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10 INGRESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html">10 INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11 SCHEDULING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html">11 SCHEDULING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12 LOGGING_AND_TROUBLESHOOTING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html">12 LOGGING_AND_TROUBLESHOOTING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13 CUSTOM_RESOURCE_DEFINITIONS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html">13 CUSTOM_RESOURCE_DEFINITIONS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14 HELM" href="keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html">14 HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15 SECURITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html">15 SECURITY</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16 HIGH_AVAILABILITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html">16 HIGH_AVAILABILITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第二章 CKAD官方教程" href="#">第二章 CKAD官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="CloudNative Roadmap" href="mydoc_release_notes_60.html">CloudNative Roadmap</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第三章 kubernetes入门讲座" href="#">第三章 kubernetes入门讲座</a>
+      <ul>
+          
+          
+          
+          <li class="active"><a title="1. 课程介绍" href="keynotes_L2_advanced_3_kubernetes_1_COURSE_INTRODUCTION.html">1. 课程介绍</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2. 认识kubernetes" href="keynotes_L2_advanced_3_kubernetes_2_BASICS_OF_KUBERNETES.html">2. 认识kubernetes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3. kubernetes架构和基础概念" href="keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html">3. kubernetes架构和基础概念</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4. 安装和配置kubernetes实验环境" href="keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html">4. 安装和配置kubernetes实验环境</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5. 使用命令行管理资源" href="keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html">5. 使用命令行管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6. 使用清单文件管理资源" href="keynotes_L2_advanced_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html">6. 使用清单文件管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7. POD" href="keynotes_L2_advanced_3_kubernetes_7_POD.html">7. POD</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8. 标签和标签选择器" href="keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html">8. 标签和标签选择器</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9. Deployment" href="keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html">9. Deployment</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10. Service" href="keynotes_L2_advanced_3_kubernetes_10_SERVICE.html">10. Service</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11. pv" href="keynotes_L2_advanced_3_kubernetes_11_PV.html">11. pv</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12. configmap和secret" href="keynotes_L2_advanced_3_kubernetes_12_SECRET_AND_CONFIGMAP.html">12. configmap和secret</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13. API" href="keynotes_L2_advanced_3_kubernetes_13_APIS_AND_ACCESS.html">13. API</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14. STATEFULSET" href="keynotes_L2_advanced_3_kubernetes_14_STATEFULSET.html">14. STATEFULSET</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15. INGRESS" href="keynotes_L2_advanced_3_kubernetes_15_INGRESS.html">15. INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16. 调度" href="keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html">16. 调度</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="17. 日志和错误定位" href="keynotes_L2_advanced_3_kubernetes_17_LOGGING_AND_TROUBLESHOOTING.html">17. 日志和错误定位</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="18. 自定义资源" href="keynotes_L2_advanced_3_kubernetes_18_CUSTOM_RESOURCE_DEFINTIONS.html">18. 自定义资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="19. HELM" href="keynotes_L2_advanced_3_kubernetes_19_HELM.html">19. HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="20. SECURITY" href="keynotes_L2_advanced_3_kubernetes_20_SECURITY.html">20. SECURITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">课程介绍</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <h2 id="课程简介">课程简介</h2>
+
+<h3 id="课程目标">课程目标</h3>
+
+<ul>
+  <li>深入了解Kubernetes常用组件和概念</li>
+  <li>使用清单文件创建资源</li>
+  <li>使用命令行管理Kubernetes</li>
+  <li>定位集群问题</li>
+</ul>
+
+<h3 id="课程大纲">课程大纲</h3>
+
+<ul>
+  <li>课程简介</li>
+  <li>kubernetes基础知识
+    <ul>
+      <li>容器编排</li>
+      <li>kubernetes特性</li>
+    </ul>
+  </li>
+  <li>kubernetes架构
+    <ul>
+      <li>单master集群</li>
+      <li>概念和术语</li>
+    </ul>
+  </li>
+  <li>安装和部署
+    <ul>
+      <li>使用kubeadm安装kubernetes集群</li>
+    </ul>
+  </li>
+  <li>使用命令行创建资源
+    <ul>
+      <li>资源的增删改查</li>
+    </ul>
+  </li>
+  <li>使用manifest定义资源
+    <ul>
+      <li>使用最简单的资源清单</li>
+    </ul>
+  </li>
+  <li>pod</li>
+  <li>标签和标签选择器</li>
+  <li>daemonset</li>
+  <li>deployment</li>
+  <li>service</li>
+  <li>pv和pvc</li>
+  <li>configmap和secret</li>
+</ul>
+
+<p>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</p>
+
+<p><strong>上面的是CKA必考内容，下面的是选学的内容</strong></p>
+
+<p>===================================</p>
+
+<ul>
+  <li>statefulset</li>
+  <li>认证和RBAC</li>
+  <li>资源限制</li>
+  <li>调度</li>
+  <li>ingress</li>
+  <li>网络和网络策略</li>
+  <li>helm</li>
+</ul>
+
+<p>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</p>
+
+<p><strong>上面的是选学内容，下面的是专题内容</strong></p>
+
+<p>===================================</p>
+
+<ul>
+  <li>CKA考试冲刺</li>
+  <li>容器化与镜像</li>
+  <li>存储卷系统</li>
+  <li>资源指标，监控，prometheus</li>
+  <li>DNS基础和CoreDNS</li>
+  <li>日志收集和fluentd</li>
+  <li>service mesh和istio</li>
+</ul>
+
+<h2 id="教师简介">教师简介</h2>
+
+<p>12年运维经验，曾经就职于诺和诺德，捷信，爱立信，渣打等知名外企，经常出差去欧洲各国和美国参加国际会议，对于国外的开源技术和先进的方法论了如指掌。热衷开源技术，善于总结，喜欢分享心得。在爱立信维护过的产品eccd获得了CNCF的Certified Kubernetes认证。最多维护过9600个kubernetes节点</p>
+
+<h2 id="适用人群和需要准备的环境">适用人群和需要准备的环境</h2>
+
+<h3 id="课程适用于">课程适用于</h3>
+
+<p>本课程面向开始使用容器并想知道如何在生产中管理容器的Linux管理员或软件开发人员。在本课程中，您将学习到使您踏上管理生产中的容器化化应用程序之旅的关键原则。</p>
+
+<h4 id="预备知识">预备知识</h4>
+
+<ul>
+  <li>会使用Linux系统</li>
+  <li>会使用命令行</li>
+  <li>会使用包管理器来安装软件（yum，apt）</li>
+  <li>知道git和github</li>
+  <li>一台可以使用终端的笔记本</li>
+  <li>在机器上安装virtualbox等虚拟化软件，或者使用公有云</li>
+</ul>
+
+<h4 id="操作系统">操作系统</h4>
+
+<p>大多数的Linux发行版都可以</p>
+
+<ul>
+  <li>Debian/Ubuntu(ubuntu 16.04/18.04 LTS)</li>
+  <li>Red Hat/Fedora/CentOS</li>
+  <li>openSUSE/SUSE.</li>
+</ul>
+
+<h4 id="实验环境">实验环境</h4>
+
+<p>建议大家使用不少于2U4G的硬件环境，至少需要3台</p>
+
+<h2 id="联系方式">联系方式</h2>
+
+<p><strong>云原生技术课堂主页</strong>：https://cloudnative365.github.io/</p>
+
+<p><strong>交流群</strong></p>
+
+<p>为了方便大家学习，请大家加我的微信，我会把大家加到微信群（微信群的二维码会经常变）和qq群821119334，问题答案云原生技术课堂，有问题可以一起讨论</p>
+
+<p><strong>个人微信</strong></p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/1_COURSE_INTRODUCTION/640.jpeg" alt="img" /></p>
+
+<p><strong>腾讯课堂</strong></p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/1_COURSE_INTRODUCTION/640-20200506145837072.jpeg" alt="img" /></p>
+
+<p><strong>微信公众平台</strong></p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/1_COURSE_INTRODUCTION/640-20200506145842007.jpeg" alt="img" /></p>
+
+<p>文字平台</p>
+
+<p>简书：https://www.jianshu.com/u/53631c1b6d3a</p>
+
+<p>知乎：https://www.zhihu.com/people/lian-yu-teng-she</p>
+
+<p><strong>专题讲座</strong></p>
+
+<p>2020 CKA考试视频 真题讲解 https://www.bilibili.com/video/BV167411K7hp</p>
+
+<p>2020 CKA考试指南 https://www.bilibili.com/video/BV1sa4y1479B/</p>
+
+
+    <div class="tags">
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://cdn.commento.io/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 原生云技术. All rights reserved. <br />
+ Site last generated: Jun 29, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" keynotes, advanced, kubernetes, CKA, LABEL_AND_SELECTOR">
+<title>标签和标签选择器 | CloudNative knowledge</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="cloudnative365.gitpage.io" href="http://0.0.0.0:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> 云原生技术课堂</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="lessons_syllabus.html">教学大纲</a></li>
+                        
+                        
+                        
+                        <li><a href="lessons_plans.html">开课计划</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂笔记<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="keynotes_L1_basic.html">基础课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L2_advanced.html">进阶课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L3_senior.html">高级课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L4_architect.html">架构师课程</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂风采<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="classes_teachers.html">讲师风采</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_aboutus.html">关于我们</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_successd.html">优秀学员作品</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用链接<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">Linux Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://cd.foundation/" target="_blank" rel="noopener">CD Foundation</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="标签和标签选择器">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">进阶课程 </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="第一章 CKA官方教程" href="#">第一章 CKA官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="1 COURSE_INTRODUCTION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_1_COURSE_INTRODUCTION.html">1 COURSE_INTRODUCTION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2 BASICS_OF_KUBERNETES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html">2 BASICS_OF_KUBERNETES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3 INSTALLATION_AND_CONFIGURATION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html">3 INSTALLATION_AND_CONFIGURATION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4 KUBERNETES_ARCHITECTURE" href="keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html">4 KUBERNETES_ARCHITECTURE</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5 APIS_AND_ACCESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html">5 APIS_AND_ACCESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6 API_OBJECTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html">6 API_OBJECTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7 MANAGING_STATE_WITH_DEPLOYMENTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html">7 MANAGING_STATE_WITH_DEPLOYMENTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8 SERVICES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html">8 SERVICES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9 VOLUMES_AND_DATA" href="keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html">9 VOLUMES_AND_DATA</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10 INGRESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html">10 INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11 SCHEDULING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html">11 SCHEDULING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12 LOGGING_AND_TROUBLESHOOTING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html">12 LOGGING_AND_TROUBLESHOOTING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13 CUSTOM_RESOURCE_DEFINITIONS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html">13 CUSTOM_RESOURCE_DEFINITIONS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14 HELM" href="keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html">14 HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15 SECURITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html">15 SECURITY</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16 HIGH_AVAILABILITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html">16 HIGH_AVAILABILITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第二章 CKAD官方教程" href="#">第二章 CKAD官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="CloudNative Roadmap" href="mydoc_release_notes_60.html">CloudNative Roadmap</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第三章 kubernetes入门讲座" href="#">第三章 kubernetes入门讲座</a>
+      <ul>
+          
+          
+          
+          <li><a title="1. 课程介绍" href="keynotes_L2_advanced_3_kubernetes_1_COURSE_INTRODUCTION.html">1. 课程介绍</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2. 认识kubernetes" href="keynotes_L2_advanced_3_kubernetes_2_BASICS_OF_KUBERNETES.html">2. 认识kubernetes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3. kubernetes架构和基础概念" href="keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html">3. kubernetes架构和基础概念</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4. 安装和配置kubernetes实验环境" href="keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html">4. 安装和配置kubernetes实验环境</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5. 使用命令行管理资源" href="keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html">5. 使用命令行管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6. 使用清单文件管理资源" href="keynotes_L2_advanced_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html">6. 使用清单文件管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7. POD" href="keynotes_L2_advanced_3_kubernetes_7_POD.html">7. POD</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a title="8. 标签和标签选择器" href="keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html">8. 标签和标签选择器</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9. Deployment" href="keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html">9. Deployment</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10. Service" href="keynotes_L2_advanced_3_kubernetes_10_SERVICE.html">10. Service</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11. pv" href="keynotes_L2_advanced_3_kubernetes_11_PV.html">11. pv</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12. configmap和secret" href="keynotes_L2_advanced_3_kubernetes_12_SECRET_AND_CONFIGMAP.html">12. configmap和secret</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13. API" href="keynotes_L2_advanced_3_kubernetes_13_APIS_AND_ACCESS.html">13. API</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14. STATEFULSET" href="keynotes_L2_advanced_3_kubernetes_14_STATEFULSET.html">14. STATEFULSET</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15. INGRESS" href="keynotes_L2_advanced_3_kubernetes_15_INGRESS.html">15. INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16. 调度" href="keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html">16. 调度</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="17. 日志和错误定位" href="keynotes_L2_advanced_3_kubernetes_17_LOGGING_AND_TROUBLESHOOTING.html">17. 日志和错误定位</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="18. 自定义资源" href="keynotes_L2_advanced_3_kubernetes_18_CUSTOM_RESOURCE_DEFINTIONS.html">18. 自定义资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="19. HELM" href="keynotes_L2_advanced_3_kubernetes_19_HELM.html">19. HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="20. SECURITY" href="keynotes_L2_advanced_3_kubernetes_20_SECURITY.html">20. SECURITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">标签和标签选择器</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <h2 id="课程目标">课程目标</h2>
+<ul>
+  <li>标签Label</li>
+  <li>标签选择器Selector</li>
+</ul>
+
+<h2 id="1-标签">1. 标签</h2>
+<p>在我们使用pod的时候，我们都会使用标签来标记我们的pod，因为我们的pod会越来越多，将来我们分类的时候，将pod分成许多较小的分组，都能够显著的提高管理效率，更何况，我们的控制器，servier资源也需要使用识别他们所管控或者关联到的资源。当我们给任何资源设定标签以后，还可以使用标签来查看和删除等管理操作。 标签是k8s上极具特色的功能之一，所谓的标签就是附加在对象上面的键值对。一个资源之上可存在多个标签，每个标签都是一个键值对。而且每一个标签都可以被标签选择器做匹配度检查，从而完成资源挑选。通常情况下，一个资源对象可使用多个标签，而一个标签可以被贴在多个资源对象上，他们是多对多的关系。另外，标签既可以在资源创建时指定，也可以在资源创建之后，添加，删除或者修改。</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"key1"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"value1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"key2"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"value2"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="11-用途">1.1. 用途</h3>
+
+<p>生产系统上，我们通常会对资源添加多个维度的标签，从而实现多个维度的管理。比如：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">"release" : "stable"</code>, <code class="highlighter-rouge">"release" : "canary"</code></li>
+  <li><code class="highlighter-rouge">"environment" : "dev"</code>, <code class="highlighter-rouge">"environment" : "qa"</code>, <code class="highlighter-rouge">"environment" : "production"</code></li>
+  <li><code class="highlighter-rouge">"tier" : "frontend"</code>, <code class="highlighter-rouge">"tier" : "backend"</code>, <code class="highlighter-rouge">"tier" : "cache"</code></li>
+  <li><code class="highlighter-rouge">"partition" : "customerA"</code>, <code class="highlighter-rouge">"partition" : "customerB"</code></li>
+  <li><code class="highlighter-rouge">"track" : "daily"</code>, <code class="highlighter-rouge">"track" : "weekly"</code></li>
+</ul>
+
+<p>下面是一个best practice，指导我们如何在生产系统上打标签</p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/8_LABEL_AND_SELECTOR/2220a321c709574285f1301587484008.png" alt="file" /></p>
+
+<p>资源标签的名称的key和value必须小于或者等于63个字符，字母 数字 点号 下划线 连接线，且必须以字母或者数字开头。我们使用键名的时候也可以使用键前缀，dns的域名当前缀，但是加前缀不能超过253个字符。标签中的值和key一样，但是可以为空，而且只能以字母和数字开头和结尾。</p>
+
+<h3 id="12-操作标签">1.2. 操作标签</h3>
+
+<p>我们在查看pod或者任何资源时，也可以直接指定标签选择器，来选择能够选择那些标签。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c">#表示对象资源拥有标签app</span>
+ kubectl get pods <span class="nt">-l</span> app
+ <span class="c">#还可以同时指定多个标签</span>
+ kubectl get pods <span class="nt">-l</span> app,run
+ <span class="c">#显示指定资源的对象时，对每一类的资源的标签，显示其标签值</span>
+ kubectl get pods <span class="nt">-L</span> app, run
+ <span class="c">#给资源对象打标</span>
+ kubectl label pods pod-demo <span class="nv">release</span><span class="o">=</span>alpha
+ <span class="c">#如果给已经有的标签强行修改</span>
+ kubectl label pods pod-demo <span class="nv">release</span><span class="o">=</span>stable <span class="nt">--overwrite</span>
+</code></pre></div></div>
+
+<p>标签选择器在选择的时候支持两类，一个是等值关系的标签选择器，一个是基于集合的标签选择器。另外我们在使用标签选择器的时候，可以指定多个条件。如果使用多个条件，内部生成的隐含的关系叫逻辑与，两个选择器都要满足。如果我们不使用标签选择器，就表示选择空的标签选择器，就表示我们使用所有的对象。</p>
+
+<ul>
+  <li>基于等值的：=，或者==（等于）!=（不等于）</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>myapp
+ kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>myapp, <span class="nv">release</span><span class="o">=</span>stable
+</code></pre></div></div>
+
+<ul>
+  <li>基于集合关系的：key in （val1， val2）或者 key notin（val1，val2）</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  kubectl get pods <span class="nt">-l</span> <span class="s2">"release in (canary, beta, alpha)"</span>
+	kubectl get pods <span class="nt">-l</span> <span class="s2">"release notin (canary, beta, alpha)"</span>
+</code></pre></div></div>
+
+<h2 id="2-标签选择器">2. 标签选择器</h2>
+
+<p>有很多资源都需要使用标签来关联相关资源的，比如控制器和service。pod控制器和service这种资源来关联pod的时候会使用另外两个字段来嵌套，一个叫matchLables，一个叫matchExpressions。deployment，service等资源通常支持使用matchLables来定义怎样使用标签选择器。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">+ matchLables：表示直接给定键值</span>
+<span class="s">+ matchExpressions：基于给定的表达式来定义标签选择器。{key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">KEY"</span><span class="err">,</span> <span class="na">operator</span><span class="pi">:</span> <span class="s2">"</span><span class="s">POERATOR"</span><span class="err">,</span> <span class="s">values:[VAL1, VAL2, ...]}，这个表示把key和values做operator的比较，这种一般使用逻辑关系操作符，in，notin，exist，not exist</span>
+  <span class="s">+ in, notin：values字段的值必须为非空列表</span>
+  <span class="s">+ exist，not exist：values字段的值必须为空列表</span>
+</code></pre></div></div>
+<h3 id="21-nodeselector">2.1. nodeSelector</h3>
+
+<p>其实不止pod，其他所有资源都都可以打标签，比如node，我们也可以使用get node –show-labels来显示标签，也可以使用label来打标签，随后，就可以让我们的资源有倾向性。</p>
+
+<p>我们在定义pod的时候，有一个内建字段叫nodeSelector，他能够让我们自由的选择pod运行在哪个节点上。比如，我们需要pod运行在拥有标签disk=ssd的节点上，我们就需要使用nodeSelector。他可以影响调度算法，让pod永远运行在拥有这个标签的机器上，同时，我们还有nodeName，直接指定到某个节点上</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="s">namespace:default</span>
+  <span class="s">name</span><span class="pi">:</span> <span class="s">pod-demo</span>
+<span class="err">	</span><span class="na">lables</span><span class="pi">:</span>
+<span class="err">	</span>  <span class="na">app</span><span class="pi">:</span> <span class="s">myapp</span>
+<span class="err">		</span><span class="na">tire</span><span class="pi">:</span> <span class="s">frontend</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+<span class="err">	</span><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">myapp</span>
+<span class="err">	</span>  <span class="na">image</span><span class="pi">:</span> <span class="s">kubernetes/myapp:v1</span>
+  <span class="s">- name</span><span class="pi">:</span> <span class="s">busybox</span>
+    <span class="s">image</span><span class="pi">:</span> <span class="s">busybox</span>
+<span class="err">		</span><span class="na">command</span><span class="pi">:</span>
+<span class="err">		</span><span class="pi">-</span> <span class="s2">"</span><span class="s">/bin/sh"</span>
+<span class="err">		</span><span class="pi">-</span> <span class="s2">"</span><span class="s">-c"</span>
+<span class="err">		</span><span class="pi">-</span> <span class="s2">"</span><span class="s">sleep</span><span class="nv"> </span><span class="s">3600"</span>
+  <span class="na">nodeSelector</span><span class="pi">:</span>
+<span class="err">	</span>  <span class="na">disk</span><span class="pi">:</span> <span class="s">ssd</span>
+</code></pre></div></div>
+
+<h3 id="22-annotations">2.2. annotations</h3>
+
+<p>同时我们还可以使用注解：annotations，他和labels很像，但是区别是annotations不能用于挑选资源对象，仅用于为对象提供”元数据“，一般说来，他会作为外部程序挑选资源的标准，也可以认为是外部的label。而且，他的字符长度没有要求。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">annotations-demo</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">imageregistry</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://hub.docker.com/"</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.7.9</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<p>查看annotation没有专门的命令，必须使用inspect。</p>
+
+
+    <div class="tags">
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://cdn.commento.io/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 原生云技术. All rights reserved. <br />
+ Site last generated: Jun 29, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

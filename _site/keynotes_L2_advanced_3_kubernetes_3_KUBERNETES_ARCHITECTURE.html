@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" keynotes, advanced, kubernetes, CKA, KUBERNETES_ARCHITECTURE">
+<title>kubernetes架构和基础概念 | CloudNative knowledge</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="cloudnative365.gitpage.io" href="http://0.0.0.0:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> 云原生技术课堂</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="lessons_syllabus.html">教学大纲</a></li>
+                        
+                        
+                        
+                        <li><a href="lessons_plans.html">开课计划</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂笔记<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="keynotes_L1_basic.html">基础课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L2_advanced.html">进阶课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L3_senior.html">高级课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L4_architect.html">架构师课程</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂风采<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="classes_teachers.html">讲师风采</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_aboutus.html">关于我们</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_successd.html">优秀学员作品</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用链接<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">Linux Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://cd.foundation/" target="_blank" rel="noopener">CD Foundation</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="kubernetes架构和基础概念">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">进阶课程 </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="第一章 CKA官方教程" href="#">第一章 CKA官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="1 COURSE_INTRODUCTION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_1_COURSE_INTRODUCTION.html">1 COURSE_INTRODUCTION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2 BASICS_OF_KUBERNETES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html">2 BASICS_OF_KUBERNETES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3 INSTALLATION_AND_CONFIGURATION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html">3 INSTALLATION_AND_CONFIGURATION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4 KUBERNETES_ARCHITECTURE" href="keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html">4 KUBERNETES_ARCHITECTURE</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5 APIS_AND_ACCESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html">5 APIS_AND_ACCESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6 API_OBJECTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html">6 API_OBJECTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7 MANAGING_STATE_WITH_DEPLOYMENTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html">7 MANAGING_STATE_WITH_DEPLOYMENTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8 SERVICES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html">8 SERVICES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9 VOLUMES_AND_DATA" href="keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html">9 VOLUMES_AND_DATA</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10 INGRESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html">10 INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11 SCHEDULING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html">11 SCHEDULING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12 LOGGING_AND_TROUBLESHOOTING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html">12 LOGGING_AND_TROUBLESHOOTING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13 CUSTOM_RESOURCE_DEFINITIONS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html">13 CUSTOM_RESOURCE_DEFINITIONS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14 HELM" href="keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html">14 HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15 SECURITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html">15 SECURITY</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16 HIGH_AVAILABILITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html">16 HIGH_AVAILABILITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第二章 CKAD官方教程" href="#">第二章 CKAD官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="CloudNative Roadmap" href="mydoc_release_notes_60.html">CloudNative Roadmap</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第三章 kubernetes入门讲座" href="#">第三章 kubernetes入门讲座</a>
+      <ul>
+          
+          
+          
+          <li><a title="1. 课程介绍" href="keynotes_L2_advanced_3_kubernetes_1_COURSE_INTRODUCTION.html">1. 课程介绍</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2. 认识kubernetes" href="keynotes_L2_advanced_3_kubernetes_2_BASICS_OF_KUBERNETES.html">2. 认识kubernetes</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a title="3. kubernetes架构和基础概念" href="keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html">3. kubernetes架构和基础概念</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4. 安装和配置kubernetes实验环境" href="keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html">4. 安装和配置kubernetes实验环境</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5. 使用命令行管理资源" href="keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html">5. 使用命令行管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6. 使用清单文件管理资源" href="keynotes_L2_advanced_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html">6. 使用清单文件管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7. POD" href="keynotes_L2_advanced_3_kubernetes_7_POD.html">7. POD</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8. 标签和标签选择器" href="keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html">8. 标签和标签选择器</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9. Deployment" href="keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html">9. Deployment</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10. Service" href="keynotes_L2_advanced_3_kubernetes_10_SERVICE.html">10. Service</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11. pv" href="keynotes_L2_advanced_3_kubernetes_11_PV.html">11. pv</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12. configmap和secret" href="keynotes_L2_advanced_3_kubernetes_12_SECRET_AND_CONFIGMAP.html">12. configmap和secret</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13. API" href="keynotes_L2_advanced_3_kubernetes_13_APIS_AND_ACCESS.html">13. API</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14. STATEFULSET" href="keynotes_L2_advanced_3_kubernetes_14_STATEFULSET.html">14. STATEFULSET</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15. INGRESS" href="keynotes_L2_advanced_3_kubernetes_15_INGRESS.html">15. INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16. 调度" href="keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html">16. 调度</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="17. 日志和错误定位" href="keynotes_L2_advanced_3_kubernetes_17_LOGGING_AND_TROUBLESHOOTING.html">17. 日志和错误定位</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="18. 自定义资源" href="keynotes_L2_advanced_3_kubernetes_18_CUSTOM_RESOURCE_DEFINTIONS.html">18. 自定义资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="19. HELM" href="keynotes_L2_advanced_3_kubernetes_19_HELM.html">19. HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="20. SECURITY" href="keynotes_L2_advanced_3_kubernetes_20_SECURITY.html">20. SECURITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">kubernetes架构和基础概念</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <h2 id="课程目标">课程目标</h2>
+
+<ul>
+  <li>组件的形象比喻</li>
+  <li>Kubernetes架构</li>
+  <li>讨论kubernetes集群上的主要组件
+    <ul>
+      <li>从角色上分</li>
+      <li>从逻辑上分</li>
+    </ul>
+  </li>
+  <li>组件和组件之间是怎样交互的</li>
+</ul>
+
+<h2 id="1-组件的形象比喻">1. 组件的形象比喻</h2>
+
+<p>我们可以把各个组件比喻成一个学校中的实际形象，希望大家能够理解</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>组件名称</th>
+      <th>职责</th>
+      <th>形象</th>
+      <th>职责</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>节点</td>
+      <td>master节点，worker节点</td>
+      <td>教学楼</td>
+      <td>有行政楼，1，2，3，4号教学楼</td>
+    </tr>
+    <tr>
+      <td>api-server</td>
+      <td>负责所有接收和分析请求，是集群的中枢</td>
+      <td>校长</td>
+      <td>对学校负责，是整个学校的协调人</td>
+    </tr>
+    <tr>
+      <td>scheduler</td>
+      <td>负责监控所有集群的资源使用情况</td>
+      <td>行政校长</td>
+      <td>对于整个校园的资源进行调度，分配工作</td>
+    </tr>
+    <tr>
+      <td>controller-manager</td>
+      <td>监控controller，保证controller的健康</td>
+      <td>副校长-教务</td>
+      <td>负责学校内各个年级的教务主任的工作</td>
+    </tr>
+    <tr>
+      <td>etcd</td>
+      <td>数据库</td>
+      <td>学生管理系统</td>
+      <td>存储所有信息</td>
+    </tr>
+    <tr>
+      <td>controller</td>
+      <td>负责pod的状态监控，保证管辖内的pod一直向着既定目标改变</td>
+      <td>教务主任</td>
+      <td>安排课程，安排老师，保证每个学生都上好课</td>
+    </tr>
+    <tr>
+      <td>kubelet</td>
+      <td>负责监控node上的状态是否健康</td>
+      <td>摄像头</td>
+      <td>负责监控班级内部的同学是不是上课开小差</td>
+    </tr>
+    <tr>
+      <td>service</td>
+      <td>服务发现和负载均衡</td>
+      <td>班主任</td>
+      <td>负责班级内部事务</td>
+    </tr>
+    <tr>
+      <td>kubelet</td>
+      <td>负责监控node上的状态是否健康</td>
+      <td>摄像头</td>
+      <td>负责监控班级内部的同学是不是上课开小差</td>
+    </tr>
+    <tr>
+      <td>kube-proxy</td>
+      <td>负责给资源分配可用的网络</td>
+      <td>手机</td>
+      <td>让大家都可以通信</td>
+    </tr>
+    <tr>
+      <td>网络插件</td>
+      <td>提供网络功能和隔离功能</td>
+      <td>步话机频段/手机供应商</td>
+      <td>联通或者电信，可以给每个人一个手机号</td>
+    </tr>
+    <tr>
+      <td>pod</td>
+      <td>最小调度单位</td>
+      <td>学生</td>
+      <td>我们来到学校都是为了完成学业</td>
+    </tr>
+    <tr>
+      <td>initcontainer</td>
+      <td>在主容器启动之前的容器</td>
+      <td>肚子</td>
+      <td>吃饱了才能上学</td>
+    </tr>
+    <tr>
+      <td>sidecar</td>
+      <td>辅助主容器的容器</td>
+      <td>书包</td>
+      <td>可以放上学的书，可以放水杯</td>
+    </tr>
+    <tr>
+      <td>daemonset</td>
+      <td>每个节点上都有</td>
+      <td>厕所</td>
+      <td>每个教学楼都有，新建教学楼就得有厕所</td>
+    </tr>
+    <tr>
+      <td>deployment</td>
+      <td>我们的应用都会做成deployment来服务</td>
+      <td>班级</td>
+      <td>学校都是以班级为单位进行教学任务的</td>
+    </tr>
+    <tr>
+      <td>namespace</td>
+      <td>集群隔离</td>
+      <td>学校的区域</td>
+      <td>教学区域，app，大操场，default，老师办公室，kube-system</td>
+    </tr>
+    <tr>
+      <td>docker</td>
+      <td>容器运行时</td>
+      <td>教师</td>
+      <td>负责学生的学习</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="2-kubernetes架构">2. Kubernetes架构</h2>
+
+<ul>
+  <li>Master and worker nodes</li>
+  <li>Controllers</li>
+  <li>Services</li>
+  <li>Pods of containers</li>
+  <li>Network and policies</li>
+</ul>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/4_KUBERNETES_ARCHITECTURE/3fe3zhgikft1-KubernetesArchitecture.png" alt="img" /></p>
+
+<p><a href="https://kubernetes.io/docs/concepts/architecture/cloud-controller/"><em>Concepts Underlying the Cloud Controller Manager</em></a></p>
+
+<p>kubernetes从运维的角度来说，其实就是一个集群，组合多台主机整合成为一个大的资源池，并统一对外提供计算，存储等能力的集群，这个集群，就是找几台主机，每台主机都安装上相关的kubernetes应用程序，并通过某些具有管理功能的应用程序来协调资源，共同工作，把多个主机当一个主机来使用。</p>
+
+<h2 id="3-从角色来分">3. 从角色来分</h2>
+
+<p>在k8s的集群当中，主机是分角色的。k8s就是一个有中心节点的系统，他是master/nodes模型，他有一个/组节点来做master，其他节点做node节点。一般的master有三个就足够了，而nodes或者worker，负责工作。还有一种说法，把Master节点分成了控制平面control panel和数据库节点etcd，我们这里统称为master节点。</p>
+
+<h3 id="31-master-node行政楼">3.1. Master Node（行政楼）</h3>
+
+<p>Kubernetes的master节点上运行着多个集群中的服务和管理进程。在master节点上运行着kube-apiserver，kube-scheduler和etcd数据库。随着软件的成熟，为了满足某些特定的需求，就会有新的组件产生，比如cloud-controller-manager，如果kube-controller-manager发现有需要和外部程序打交道的需求事，就会把这部分任务交给cloud-controller-manager，比如Rancher,DigitalOcean这种第三方的集群管理软件。</p>
+
+<ul>
+  <li>
+    <p>kube-apiserver（校长）</p>
+
+    <p><code class="highlighter-rouge">有一个对外的email，xiaozhang@xuexiao.com，邮箱地址就相当于我们api-server所监听的6443。</code></p>
+
+    <p>kube-apiserver是操作Kubernetes集群的核心。所有的请求，不管是内部的还是外部的请求，都是由kube-apiserver来代理的。所有的操作都是由apiserver来接受并且验证，并且他是链接到etcd数据的唯一一个组件。他为API对象验证并且配置数据（etcd中的数据），可以接受RESTful风格的请求（GET，PUT）。他作为master节点上的进程，是整个集群的入口，扮演着前端的角色，他负责共享整个集群的状态（通过查询etcd）。</p>
+  </li>
+  <li>
+    <p>kube-scheduler（行政校长）</p>
+
+    <p><code class="highlighter-rouge">会根据学校的资源情况，对学生进行分班。</code></p>
+
+    <p>kube-scheduler借助于算法来决定含有容器的Pod应该被分配到哪个主机上去。scheduler会查看可以被分配出来的系统资源，然后尝试并且失败了会重新尝试部署Pod，直到成功。有很多元素会影响算法，或者我们可以使用自定的调度器。我们甚至可以把pod绑定在某个特定的节点，但由于其他设置，Pod可能仍处于挂起状态。引用的第一个设置之一是Pod是否可以在当前配额限制内部署。如果是这样，那么taints污点和tolerations容忍度、pod的标签和节点的标签一起用于确定正确的位置。</p>
+  </li>
+  <li>
+    <p>etcd（数据库）</p>
+
+    <p><code class="highlighter-rouge">学校的管理系统，储存这整个学校的情况。</code></p>
+
+    <p>集群、网络和其他持久信息的状态保存在<strong>etcd</strong>数据库中，或者更准确地说，保存在b+树键值存储中。他不是查找和更改条目，而是始终将值追加到末尾。数据的先前副本随后被标记，以便将来通过回收（compaction）过程移除。它可以通过<strong>curl</strong>使用HTTP库访问，并提供可靠的监视查询。</p>
+
+    <p>更新值的同时请求通过<strong>kube apiserver</strong>，然后将请求以顺序的形式传递给<strong>etcd</strong>。第一个请求将更新数据库。第二个请求将不再具有相同的版本号，在这种情况下，<strong>kube apiserver</strong>将用错误409回复请求者。服务器端没有超过该响应的逻辑，这意味着客户端需要期望这一点，并在拒绝更新时采取行动。</p>
+
+    <p>有一个master数据库和follower。他们在不停的相互沟通，以确定谁将是master，并在发生故障时确定另一个master。虽然速度很快，而且可以快速回复，但如果使用某些工具（如<strong>kubeadm</strong>），来升级整个集群的话，就会出现一些短暂的服务终端。</p>
+  </li>
+  <li>
+    <p>Other Agents（kube-controller-manager教务校长）</p>
+
+    <p><code class="highlighter-rouge">负责教务主任的安排。</code></p>
+
+    <p><strong>kube controller manager</strong>是一个核心控制循环守护进程，它与<strong>kube apiserver</strong>交互以确定集群的状态。如果状态不匹配，管理器将联系必要的控制器以匹配所需的状态。我们有许多的控制器，例如endpoint、namespace和replication。随着kubernetes的成熟，控制器的数量已经扩大。</p>
+
+    <p>在v1.16的测试版中，<strong>云控制器管理器</strong>（<strong>ccm</strong>）与云外的代理交互。一旦由<strong>kube controller manager</strong>处理任务，它就会处理这些任务。这允许在不改变核心Kubernetes控制过程的情况下进行更快的更改。每个kubelet必须使用传递给二进制文件的<strong>–cloud provider external</strong>设置。您还可以开发自己的ccm，它可以作为守护程序部署为树内部署或独立的树外安装。<strong>cloud controller manager</strong>是一个可选的代理，它需要几个步骤来启用。</p>
+  </li>
+</ul>
+
+<h3 id="32-worker-nodes教学楼">3.2. Worker Nodes（教学楼）</h3>
+
+<p><code class="highlighter-rouge">在教学楼来完成学习任务</code></p>
+
+<p>所有工作节点都运行kubelet和kube-proxy，以及容器引擎，如Docker或rkt。部署其他管理守护程序来监视这些代理或提供Kubernetes尚未包含的服务。</p>
+
+<p>kubelet与安装在所有节点上的底层Docker引擎进行交互，并确保需要运行的容器实际上正在运行。kube代理负责管理到容器的网络连接。它是通过使用iptables条目来实现的。它还具有用户空间模式，在这种模式下，它使用一个随机端口来代理流量和ipv的alpha特性来监视服务和端点。</p>
+
+<p>您也可以运行Docker引擎的另一种选择：cri-o或rkt。要了解如何做到这一点，您应该查看文档。在未来的版本中，Kubernetes很可能支持其他容器运行时引擎。</p>
+
+<p>Supervisord是一个轻量级的进程监视器，用于传统Linux环境中监视和通知其他进程。在集群中，这个守护进程监视kubelet和docker进程。如果失败，它将尝试重新启动它们，并记录事件。虽然不是标准安装的一部分，但有些可能会添加此监视器以添加报告。</p>
+
+<ul>
+  <li>
+    <p>Kubelet（监控摄像头）</p>
+
+    <p><code class="highlighter-rouge">他的职责，监控学校的运行情况。一旦出现异常，通知校长。</code></p>
+
+    <p>kubelet是worker节点上更改和配置的重要工具。它接受Pod的specifications规范的API调用（一个<strong>PodSpec</strong>是描述Pod的JSON或YAML文件）。在满足规范之前，它将不停的配置本地节点。</p>
+
+    <p>如果Pod需要访问storage, Secrets or ConfigMaps，kubelet将确保访问或创建。它还将状态发送回kube apiserver，以便最终持久化。</p>
+
+    <ul>
+      <li>
+        <p>使用<strong>PodSpec</strong></p>
+      </li>
+      <li>
+        <p>将卷装载到Pod</p>
+      </li>
+      <li>
+        <p>下载secret</p>
+      </li>
+      <li>
+        <p>将请求传递到本地容器引擎</p>
+      </li>
+      <li>
+        <p>向群集报告pod和节点的状态。</p>
+      </li>
+    </ul>
+
+    <p>Kubelet调用其他组件，如拓扑管理器，它使用来自其他组件的<em>提示</em>来配置拓扑感知资源分配，如CPU和硬件加速器。作为alpha功能，默认情况下不启用。</p>
+  </li>
+  <li>
+    <p>kube-proxy（手机）</p>
+
+    <p>即使有两个容器，它们共享相同的名称空间和相同的IP地址，这将由kubectl发起请求，kube-proxy负责配置。IP地址在容器启动之前分配到容器中。容器将具有类似于<strong>eth0@tun10</strong>的接口。这个IP是跟随pod整个生命周期的。</p>
+
+    <p>endpoint与service同时创建。注意，它使用pod IP地址，但也包括一个端口。该服务使用ipvs中的iptables将网络流量从节点高位端口连接到端点。kube-controller-manager处理监视循环，以监视endpoint和service以及任何更新或删除的需要。</p>
+
+    <p>此图显示了一个单pod、双containers的节点。NodePort服务将Pod连接到外部网络。</p>
+
+    <p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/4_KUBERNETES_ARCHITECTURE/w7eqx8n15cor-ContainerNetwork-8562518.png" alt="w7eqx8n15cor-ContainerNetwork" /></p>
+  </li>
+  <li>
+    <p>网络插件</p>
+
+    <p>尽管kube-proxy负责分配IP地址，但是kube-proxy自己不能完成这项任务，需要借助其他的软件来帮助提供网络功能和策略。kubernetes提供了一个网络接口就CNI，只要符合这个接口的软件都可以kubernetes的网络解决方案。</p>
+
+    <p>如果您有部署基于IaaS解决方案的虚拟机（vm）的经验，这听起来会很熟悉。唯一需要注意的是，在Kubernetes中，最低的计算单位不是容器，而是我们所说的pod。就比如，我们的openstack，他的网络组建叫neutron，而实际上内部是借助于其他网络插件来构建网络的，比如ovs或者calico。</p>
+
+    <p>pod是共享相同IP地址的一组位于同一位置的容器。从网络的角度来看，pod可以看作是物理主机的虚拟机。网络需要为pod分配IP地址，并且需要在任何节点上的所有pod之间提供流量路由。</p>
+
+    <p>在容器编排系统中要解决的三个主要网络挑战是：</p>
+
+    <ul>
+      <li>
+        <p>耦合容器到容器的通信（通过pod概念解决）。</p>
+      </li>
+      <li>
+        <p>点对点通信。</p>
+      </li>
+      <li>
+        <p>外部到pod通信（由服务概念解决，我们稍后将讨论）。</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="4-从逻辑上分">4. 从逻辑上分</h2>
+
+<ul>
+  <li>
+    <p>Pods（学生）</p>
+
+    <p><code class="highlighter-rouge">学校的最小调度单元。</code></p>
+
+    <p>Kubernetes的整个要点是协调容器的生命周期。我们不与特定的容器交互。相反，我们能处理的最小的单元是一个<em>Pod</em>。有人会说一个荚豌豆。由于资源共享，Pod的设计通常遵循每个容器一个进程的架构。</p>
+
+    <p>Pod中的容器是并行启动的。因此，没有办法确定哪一个容器首先在Pod内可用。在某种程度上，使用<strong>InitContainers</strong>可以命令启动。要支持在容器中运行的单个进程，可能需要日志记录、代理或特殊适配器。这些任务通常由同一个pod中的其他容器处理。</p>
+
+    <p>每个Pod只有一个IP地址，几乎每个网络插件都有。如果一个pod中有多个容器，它们必须共享IP。为了相互通信，它们可以使用IPC、环回接口或共享文件系统。</p>
+
+    <p>虽然Pod通常在部署时每个应用程序容器中都有一个，但是Pod中有多个容器的一个常见原因是用于日志记录。您可能会发现术语<strong>sidecar</strong>是指专用于执行帮助器任务（如处理日志和响应请求）的容器，因为主应用程序容器可能不具备此功能。术语<strong>sidecar</strong>与<strong>ambassador</strong>和<strong>adapter</strong>一样，没有特殊的设置，但指的是包含二级吊舱的概念。</p>
+  </li>
+</ul>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/3_KUBERNETES_ARCHITECTURE/image-20200420154642789-8947941.png" alt="image-20200420154642789" /></p>
+
+<ul>
+  <li>
+    <p>Controllers（教务主任）</p>
+
+    <p><code class="highlighter-rouge">教务主任的主要任务，就是安排学生们的学习，主任会对同类的学生分配一定的学习任务。</code></p>
+
+    <p>编排的一个重要概念是使用控制器。各种控制器与Kubernetes一起发布，您也可以创建自己的控制器。控制器的简单来说就是是agent（或称为<em>Informer</em>）和downsteam存储。使用DeltaFIFO队列比较源和downsteam数据。循环进程接收一个<strong>obj</strong>或对象，它是来自FIFO队列的delta数组。只要delta不是<strong>Deleted</strong>类型，控制器的逻辑控制器就会创建或修改某个对象，直到它与规范匹配为止。</p>
+
+    <p>使用API-server作为源的<em>Informer</em>通过API调用请求对象的状态。数据会被缓存，来最小化API-server的负载。类似的agent是<em>SharedInformer</em>；对象通常由多个其他对象使用。它为多个请求创建状态的共享缓存。</p>
+
+    <p>工作队列workqueue使用一个键将任务分发给不同的worker。通常使用go语言内置的队列（queue）来做资源限制、延迟和时间队列。</p>
+
+    <p><strong>endpoint</strong>、<strong>namespace</strong>和<strong>serviceaccount</strong>控制器分别管理pod的同名资源。</p>
+  </li>
+  <li>
+    <p>Services（班主任）</p>
+
+    <p><code class="highlighter-rouge">访问某个班级，我要一个学生帮我做卫生，班主任来班级选学生来参加扫除。</code></p>
+
+    <p>由于每个对象和代理都是分离的，所以我们需要一个灵活的、可伸缩的代理，它将资源连接在一起，如果有什么东西死了，产生了替代品，它就会重新连接。每个服务都是一个微服务，处理特定的通信量，例如单个NodePort或LoadBalancer，以在多个pod之间分发入站请求。</p>
+
+    <p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/3_KUBERNETES_ARCHITECTURE/7bsdyahn0rbx-Servicesuserspaceoverview.svg" alt="7bsdyahn0rbx-Servicesuserspaceoverview" /></p>
+  </li>
+</ul>
+
+<p>服务还处理入站请求的访问策略，这对于资源控制和安全性都很有用。</p>
+<ul>
+  <li>
+    <p>把Pod连接在一起</p>
+  </li>
+  <li>
+    <p>向Internet公开播客</p>
+  </li>
+  <li>
+    <p>解耦配置</p>
+  </li>
+  <li>
+    <p>定义Pod访问策略。</p>
+  </li>
+</ul>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/3_KUBERNETES_ARCHITECTURE/2937p0785z15-Service_Network.png" alt="Service Network" /></p>
+
+<p><strong>Service Network</strong>（做卫生）</p>
+
+<p>ClusterIP的方式，实际上是由老师来指定学生做卫生。</p>
+
+<p>NodePort的方式，老师把值班表贴在的班级的门口。</p>
+
+<h2 id="node">Node</h2>
+
+<p>节点是在集群外部创建的表示实例的API对象。虽然主节点必须是Linux，但工作节点也可以是Microsoft Windows Server 2019。一旦节点安装了必要的软件，它就会被接收到API服务器中。</p>
+
+<p>现在，您可以通过传递<strong>join</strong>，创建一个带有<strong>kubeadm init</strong>和worker节点的主节点。在不久的将来，可以加入辅助主节点和/或etcd节点。</p>
+
+<p>如果kube apiserver在5分钟内无法与节点上的kubelet通信，则默认的<strong>NodeLease</strong>将安排删除该节点，并且<strong>NodeStatus</strong>将从<em>ready</em>更改。一旦重新建立连接，播客将被逐出。它们不再被集群强制移除和重新调度。</p>
+
+<p>每个节点对象都存在于<strong>kube-node-lease</strong>命名空间中。要从集群中删除节点，首先使用<strong>kubectl delete node</strong>将其从API服务器中删除。这将导致吊舱被疏散。然后，使用<strong>kubeadm reset</strong>删除集群特定信息。您可能还需要删除iptables信息，这取决于您是否计划重新使用该节点。</p>
+
+<h3 id="api-call-flow">API Call Flow</h3>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/3_KUBERNETES_ARCHITECTURE/api-call.jpg" alt="img" /></p>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://cdn.commento.io/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 原生云技术. All rights reserved. <br />
+ Site last generated: Jun 29, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

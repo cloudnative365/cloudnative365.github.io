@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" keynotes, advanced, kubernetes, CKA, STATEFULSETS">
+<title>StatefulSets | CloudNative knowledge</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="cloudnative365.gitpage.io" href="http://0.0.0.0:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> 云原生技术课堂</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="lessons_syllabus.html">教学大纲</a></li>
+                        
+                        
+                        
+                        <li><a href="lessons_plans.html">开课计划</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂笔记<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="keynotes_L1_basic.html">基础课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L2_advanced.html">进阶课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L3_senior.html">高级课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L4_architect.html">架构师课程</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂风采<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="classes_teachers.html">讲师风采</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_aboutus.html">关于我们</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_successd.html">优秀学员作品</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用链接<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">Linux Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://cd.foundation/" target="_blank" rel="noopener">CD Foundation</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="StatefulSets">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">进阶课程 </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="第一章 CKA官方教程" href="#">第一章 CKA官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="1 COURSE_INTRODUCTION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_1_COURSE_INTRODUCTION.html">1 COURSE_INTRODUCTION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2 BASICS_OF_KUBERNETES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html">2 BASICS_OF_KUBERNETES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3 INSTALLATION_AND_CONFIGURATION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html">3 INSTALLATION_AND_CONFIGURATION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4 KUBERNETES_ARCHITECTURE" href="keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html">4 KUBERNETES_ARCHITECTURE</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5 APIS_AND_ACCESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html">5 APIS_AND_ACCESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6 API_OBJECTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html">6 API_OBJECTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7 MANAGING_STATE_WITH_DEPLOYMENTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html">7 MANAGING_STATE_WITH_DEPLOYMENTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8 SERVICES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html">8 SERVICES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9 VOLUMES_AND_DATA" href="keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html">9 VOLUMES_AND_DATA</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10 INGRESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html">10 INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11 SCHEDULING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html">11 SCHEDULING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12 LOGGING_AND_TROUBLESHOOTING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html">12 LOGGING_AND_TROUBLESHOOTING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13 CUSTOM_RESOURCE_DEFINITIONS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html">13 CUSTOM_RESOURCE_DEFINITIONS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14 HELM" href="keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html">14 HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15 SECURITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html">15 SECURITY</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16 HIGH_AVAILABILITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html">16 HIGH_AVAILABILITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第二章 CKAD官方教程" href="#">第二章 CKAD官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="CloudNative Roadmap" href="mydoc_release_notes_60.html">CloudNative Roadmap</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第三章 kubernetes入门讲座" href="#">第三章 kubernetes入门讲座</a>
+      <ul>
+          
+          
+          
+          <li><a title="1. 课程介绍" href="keynotes_L2_advanced_3_kubernetes_1_COURSE_INTRODUCTION.html">1. 课程介绍</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2. 认识kubernetes" href="keynotes_L2_advanced_3_kubernetes_2_BASICS_OF_KUBERNETES.html">2. 认识kubernetes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3. kubernetes架构和基础概念" href="keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html">3. kubernetes架构和基础概念</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4. 安装和配置kubernetes实验环境" href="keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html">4. 安装和配置kubernetes实验环境</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5. 使用命令行管理资源" href="keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html">5. 使用命令行管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6. 使用清单文件管理资源" href="keynotes_L2_advanced_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html">6. 使用清单文件管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7. POD" href="keynotes_L2_advanced_3_kubernetes_7_POD.html">7. POD</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8. 标签和标签选择器" href="keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html">8. 标签和标签选择器</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9. Deployment" href="keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html">9. Deployment</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10. Service" href="keynotes_L2_advanced_3_kubernetes_10_SERVICE.html">10. Service</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11. pv" href="keynotes_L2_advanced_3_kubernetes_11_PV.html">11. pv</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12. configmap和secret" href="keynotes_L2_advanced_3_kubernetes_12_SECRET_AND_CONFIGMAP.html">12. configmap和secret</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13. API" href="keynotes_L2_advanced_3_kubernetes_13_APIS_AND_ACCESS.html">13. API</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14. STATEFULSET" href="keynotes_L2_advanced_3_kubernetes_14_STATEFULSET.html">14. STATEFULSET</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15. INGRESS" href="keynotes_L2_advanced_3_kubernetes_15_INGRESS.html">15. INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16. 调度" href="keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html">16. 调度</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="17. 日志和错误定位" href="keynotes_L2_advanced_3_kubernetes_17_LOGGING_AND_TROUBLESHOOTING.html">17. 日志和错误定位</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="18. 自定义资源" href="keynotes_L2_advanced_3_kubernetes_18_CUSTOM_RESOURCE_DEFINTIONS.html">18. 自定义资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="19. HELM" href="keynotes_L2_advanced_3_kubernetes_19_HELM.html">19. HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="20. SECURITY" href="keynotes_L2_advanced_3_kubernetes_20_SECURITY.html">20. SECURITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">StatefulSets</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <h2 id="1-statefulsets简介">1. STATEFULSETS简介</h2>
+<p>StatefulSet 是用来管理有状态应用的workload API 对象。</p>
+
+<p>StatefulSet 用来管理 Deployment 和扩展一组 Pod，并且能为这些 Pod 提供<em>顺序和唯一性保证</em>。</p>
+
+<p>和 Deployment 相同的是，StatefulSet 管理了基于相同容器定义的一组 Pod。但和 Deployment 不同的是，StatefulSet 为它们的每个 Pod 维护了一个固定的 ID。这些 Pod 是基于相同的声明来创建的，但是不能相互替换：无论怎么调度，每个 Pod 都有一个永久不变的 ID。</p>
+
+<p>StatefulSet 和其他控制器使用相同的工作模式。在 StatefulSet <em>对象</em> 中定义我们所期望的状态，然后 StatefulSet 的 <em>控制器</em> 就会通过各种更新来达到那种你想要的状态。</p>
+
+<h2 id="2-什么时候应该使用statefulset">2. 什么时候应该使用StatefulSet</h2>
+
+<p>如果我们的应用有以下一个或者多个需求，我们就应该使用StatefulSet</p>
+
+<ul>
+  <li>Stable, unique network identifiers. 稳定的、唯一的网络标识符</li>
+  <li>Stable, persistent storage. 稳定的、持久的存储。</li>
+  <li>Ordered, graceful deployment and scaling.有序的、优雅的部署和缩放。</li>
+  <li>Ordered, automated rolling updates.有序的、自动的滚动更新。</li>
+</ul>
+
+<p>综上所述，稳定意味着 Pod 调度或重调度的整个过程是有持久性的。如果应用程序不需要任何稳定的标识符或有序的部署、删除或伸缩，则应该使用由一组无状态的副本控制器提供的工作负载来部署应用程序，比如 Deployment或者 ReplicaSet 可能更适用于我们的无状态应用部署需要。</p>
+
+<h2 id="3-使用statefulset的限制">3. 使用StatefulSet的限制</h2>
+
+<ul>
+  <li>给定 Pod 的存储必须由 PersistentVolume 驱动 基于所请求的 storage class 来提供，或者由管理员预先提供。</li>
+  <li>删除或者收缩 StatefulSet 并不会删除它关联的存储卷。这样做是为了保证数据安全，它通常比自动清除 StatefulSet 所有相关的资源更有价值。</li>
+  <li>StatefulSet 当前需要 headless 服务 来负责 Pod 的网络标识。您需要负责创建此服务。</li>
+  <li>当删除 StatefulSets 时，StatefulSet 不提供任何终止 Pod 的保证。为了实现 StatefulSet 中的 Pod 可以有序和优雅的终止，可以在删除之前将 StatefulSet 缩放为 0。</li>
+  <li>在默认 Pod 管理策略(OrderedReady) 时使用 滚动更新，可能进入需要 人工干预 才能修复的损坏状态。</li>
+</ul>
+
+<h2 id="4-statefulset的示例">4. StatefulSet的示例</h2>
+
+<p>下面的示例包含了所有的StatefulSet组件</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">80</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+  <span class="na">clusterIP</span><span class="pi">:</span> <span class="s">None</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span> <span class="c1"># has to match .spec.template.metadata.labels</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">nginx"</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">3</span> <span class="c1"># by default is 1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span> <span class="c1"># has to match .spec.selector.matchLabels</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">terminationGracePeriodSeconds</span><span class="pi">:</span> <span class="s">10</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">k8s.gcr.io/nginx-slim:0.8</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">80</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+        <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">www</span>
+          <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/usr/share/nginx/html</span>
+  <span class="na">volumeClaimTemplates</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">www</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">accessModes</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">ReadWriteOnce"</span> <span class="pi">]</span>
+      <span class="na">storageClassName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">my-storage-class"</span>
+      <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">requests</span><span class="pi">:</span>
+          <span class="na">storage</span><span class="pi">:</span> <span class="s">1Gi</span>
+</code></pre></div></div>
+
+<ul>
+  <li>名为 nginx 的 Headless Service 用来控制网络域名。</li>
+  <li>名为 web 的 StatefulSet 有一个 Spec，它表明将在独立的 3 个 Pod 副本中启动 nginx容器</li>
+  <li>volumeClaimTemplates 将通过 PersistentVolumes 驱动提供的 PersistentVolumes 来提供稳定的存储。</li>
+</ul>
+
+<h3 id="41-pod选择器">4.1. Pod选择器</h3>
+
+<p>必须设置标签选择器，使之匹配其在 <code class="highlighter-rouge">.spec.template.metadata.labels</code> 中设置的标签。在 Kubernetes 1.8 版本之前，被忽略 <code class="highlighter-rouge">.spec.selector</code> 字段会获得默认设置值。在 1.8 和以后的版本中，未指定匹配的 Pod 选择器将在创建 StatefulSet 期间导致验证错误。</p>
+
+<h3 id="42-pod标识">4.2. Pod标识</h3>
+
+<p>StatefulSet Pod 具有唯一的标识，该标识包括<strong>顺序标识</strong>、<strong>稳定的网络标识</strong>和<strong>稳定的存储</strong>。该标识和 Pod 是绑定的，不管它被调度在哪个节点上。</p>
+
+<ul>
+  <li>有序索引</li>
+</ul>
+
+<p>对于具有 N 个副本的 StatefulSet，StatefulSet 中的每个 Pod 将被分配一个整数序号，从 0 到 N-1，该序号在 StatefulSet 上是唯一的。</p>
+
+<ul>
+  <li>稳定的网络 ID</li>
+</ul>
+
+<p>StatefulSet 中的每个 Pod 根据 StatefulSet 的名称和 Pod 的序号派生出它的主机名。组合主机名的格式为<code class="highlighter-rouge">$(StatefulSet 名称)-$(序号)</code>。上例将会创建三个名称分别为 <code class="highlighter-rouge">web-0、web-1、web-2</code> 的 Pod。 StatefulSet 可以使用 <a href="https://kubernetes.io/docs/concepts/services-networking/service/#headless-services">headless 服务</a> 控制它的 Pod 的网络域。管理域的这个服务的格式为： <code class="highlighter-rouge">$(服务名称).$(命名空间).svc.cluster.local</code>，其中 <code class="highlighter-rouge">cluster.local</code> 是集群域。 一旦每个 Pod 创建成功，就会得到一个匹配的 DNS 子域，格式为：<code class="highlighter-rouge">$(pod 名称).$(所属服务的 DNS 域名)</code>，其中所属服务由 StatefulSet 的 <code class="highlighter-rouge">serviceName</code> 域来设定。</p>
+
+<p>下面给出一些选择集群域、服务名、StatefulSet 名、及其怎样影响 StatefulSet 的 Pod 上的 DNS 名称的示例：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Cluster Domain</th>
+      <th style="text-align: left">Service (ns/name)</th>
+      <th style="text-align: left">StatefulSet (ns/name)</th>
+      <th style="text-align: left">StatefulSet Domain</th>
+      <th style="text-align: left">Pod DNS</th>
+      <th style="text-align: left">Pod Hostname</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">cluster.local</td>
+      <td style="text-align: left">default/nginx</td>
+      <td style="text-align: left">default/web</td>
+      <td style="text-align: left">nginx.default.svc.cluster.local</td>
+      <td style="text-align: left">web-{0..N-1}.nginx.default.svc.cluster.local</td>
+      <td style="text-align: left">web-{0..N-1}</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">cluster.local</td>
+      <td style="text-align: left">foo/nginx</td>
+      <td style="text-align: left">foo/web</td>
+      <td style="text-align: left">nginx.foo.svc.cluster.local</td>
+      <td style="text-align: left">web-{0..N-1}.nginx.foo.svc.cluster.local</td>
+      <td style="text-align: left">web-{0..N-1}</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">kube.local</td>
+      <td style="text-align: left">foo/nginx</td>
+      <td style="text-align: left">foo/web</td>
+      <td style="text-align: left">nginx.foo.svc.kube.local</td>
+      <td style="text-align: left">web-{0..N-1}.nginx.foo.svc.kube.local</td>
+      <td style="text-align: left">web-{0..N-1}</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p><strong>注意：</strong> 集群域会被设置为 <code class="highlighter-rouge">cluster.local</code>，除非有<a href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/">其他配置</a>。</p>
+</blockquote>
+
+<ul>
+  <li>稳定的存储</li>
+</ul>
+
+<p>Kubernetes 为每个 VolumeClaimTemplate 创建一个 PersistentVolume。在上面的 nginx 示例中，每个 Pod 将会得到基于 StorageClass <code class="highlighter-rouge">my-storage-class</code> 提供的 1 Gib 的 PersistentVolume。如果没有声明 StorageClass，就会使用默认的 StorageClass。当一个 Pod 被调度（重新调度）到节点上时，它的 <code class="highlighter-rouge">volumeMounts</code> 会挂载与其 PersistentVolumeClaims 相关联的 PersistentVolume。请注意，当 Pod 或者 StatefulSet 被删除时，与 PersistentVolumeClaims 相关联的 PersistentVolume 并不会被删除。要删除它必须通过手动方式来完成。</p>
+
+<ul>
+  <li>Pod 名称标签</li>
+</ul>
+
+<p>当 StatefulSet 控制器 创建 Pod 时，它会添加一个标签 <code class="highlighter-rouge">statefulset.kubernetes.io/pod-name</code>，该标签设置为 Pod 名称。这个标签允许您给 StatefulSet 中的特定 Pod 绑定一个 Service。</p>
+
+<h2 id="5-保证部署和扩展">5. 保证部署和扩展</h2>
+
+<ul>
+  <li>对于包含 N 个 副本的 StatefulSet，当部署 Pod 时，它们是依次创建的，顺序为 <code class="highlighter-rouge">0..N-1</code>。</li>
+  <li>当删除 Pod 时，它们是逆序终止的，顺序为 <code class="highlighter-rouge">N-1..0</code>。</li>
+  <li>在将缩放操作应用到 Pod 之前，它前面的所有 Pod 必须是 Running 和 Ready 状态。</li>
+  <li>在 Pod 终止之前，所有的继任者必须完全关闭。</li>
+</ul>
+
+<p>StatefulSet 不应将 <code class="highlighter-rouge">pod.Spec.TerminationGracePeriodSeconds</code> 设置为 0。这种做法是不安全的，要强烈阻止。更多的解释请参考 <a href="https://kubernetes.io/docs/tasks/run-application/force-delete-stateful-set-pod/">强制删除 StatefulSet Pod</a>。</p>
+
+<p>在上面的 nginx 示例被创建后，会按照 web-0、web-1、web-2 的顺序部署三个 Pod。在 web-0 进入 Running 和 Ready 状态前不会部署 web-1。在 web-1 进入 Running 和 Ready 状态前不会部署 web-2。如果 web-1 已经处于 Running 和 Ready 状态，而 web-2 尚未部署，在此期间发生了 web-0 运行失败，那么 web-2 将不会被部署，要等到 web-0 部署完成并进入 Running 和 Ready 状态后，才会部署 web-2。</p>
+
+<p>如果用户想将示例中的 StatefulSet 收缩为 <code class="highlighter-rouge">replicas=1</code>，首先被终止的是 web-2。在 web-2 没有被完全停止和删除前，web-1 不会被终止。当 web-2 已被终止和删除、web-1 尚未被终止，如果在此期间发生 web-0 运行失败，那么就不会终止 web-1，必须等到 web-0 进入 Running 和 Ready 状态后才会终止 web-1。</p>
+
+<h3 id="51-pod-管理策略">5.1. Pod 管理策略</h3>
+
+<p>在 Kubernetes 1.7 及以后的版本中，StatefulSet 允许您不要求其排序保证，同时通过它的 <code class="highlighter-rouge">.spec.podManagementPolicy</code> 域保持其唯一性和身份保证。 在 Kubernetes 1.7 及以后的版本中，StatefulSet 允许您放宽其排序保证，同时通过它的 <code class="highlighter-rouge">.spec.podManagementPolicy</code> 域保持其唯一性和身份保证。</p>
+
+<h3 id="52-orderedready-pod-管理">5.2. OrderedReady Pod 管理</h3>
+
+<p><code class="highlighter-rouge">OrderedReady</code> 是 StatefulSet 管理Pod的默认设置。它实现了上面所有的功能。</p>
+
+<h3 id="53-parallel-pod-管理">5.3. Parallel Pod 管理</h3>
+
+<p><code class="highlighter-rouge">Parallel</code> 是 StatefulSet 控制器管理Pod并行的启动或终止所有的 Pod，启动或者终止其他 Pod 前，无需等待 Pod 进入 Running 和 ready 或者完全停止状态。</p>
+
+<h2 id="6-更新策略">6. 更新策略</h2>
+
+<p>在 Kubernetes 1.7 及以后的版本中，StatefulSet 的 <code class="highlighter-rouge">.spec.updateStrategy</code> 字段让您可以配置和禁用掉自动滚动更新 Pod 的容器、标签、资源请求或限制、以及注解。</p>
+
+<h3 id="61-关于删除策略">6.1. 关于删除策略</h3>
+
+<p><code class="highlighter-rouge">OnDelete</code> 更新策略保留了 1.6 及以前版本的历史遗留行为。当 StatefulSet 的 <code class="highlighter-rouge">.spec.updateStrategy.type</code> 设置为 <code class="highlighter-rouge">OnDelete</code> 时，它的控制器将不会自动更新 StatefulSet 中的 Pod。用户必须手动删除 Pod 以便让控制器创建新的 Pod，以此来对 StatefulSet 的 <code class="highlighter-rouge">.spec.template</code> 的变动作出反应。</p>
+
+<h3 id="62-滚动更新策略">6.2. 滚动更新策略</h3>
+
+<p><code class="highlighter-rouge">RollingUpdate</code> 更新策略对 StatefulSet 中的 Pod 执行自动的滚动更新。在没有声明 <code class="highlighter-rouge">.spec.updateStrategy</code> 时，<code class="highlighter-rouge">RollingUpdate</code> 是默认配置。 当 StatefulSet 的 <code class="highlighter-rouge">.spec.updateStrategy.type</code> 被设置为 <code class="highlighter-rouge">RollingUpdate</code> 时，StatefulSet 控制器会删除和重建 StatefulSet 中的每个 Pod。 它将按照与 Pod 终止相同的顺序（从最大序号到最小序号）进行，每次更新一个 Pod。它会等到被更新的 Pod 进入 Running 和 Ready 状态，然后再更新其前身。</p>
+
+<h3 id="63-分区更新">6.3. 分区更新</h3>
+
+<p>通过声明 <code class="highlighter-rouge">.spec.updateStrategy.rollingUpdate.partition</code> 的方式，<code class="highlighter-rouge">RollingUpdate</code> 更新策略可以实现分区。如果声明了一个分区，当 StatefulSet 的 <code class="highlighter-rouge">.spec.template</code> 被更新时，所有序号大于等于该分区序号的 Pod 都会被更新。所有序号小于该分区序号的 Pod 都不会被更新，并且，即使他们被删除也会依据之前的版本进行重建。如果 StatefulSet 的 <code class="highlighter-rouge">.spec.updateStrategy.rollingUpdate.partition</code> 大于它的 <code class="highlighter-rouge">.spec.replicas</code>，对它的 <code class="highlighter-rouge">.spec.template</code> 的更新将不会传递到它的 Pod。 在大多数情况下，您不需要使用分区，但如果您希望进行阶段更新、执行金丝雀或执行分阶段展开，则这些分区会非常有用。</p>
+
+<h3 id="64-强制回滚">6.4. 强制回滚</h3>
+
+<p>在默认 Pod 管理策略(<code class="highlighter-rouge">OrderedReady</code>) 时使用 滚动更新 ，可能进入需要人工干预才能修复的损坏状态。</p>
+
+<p>如果更新后 Pod 模板配置进入无法运行或就绪的状态（例如，由于错误的二进制文件或应用程序级配置错误），StatefulSet 将停止回滚并等待。</p>
+
+<p>在这种状态下，仅将 Pod 模板还原为正确的配置是不够的。由于已知问题，StatefulSet 将继续等待损坏状态的 Pod 准备就绪（永远不会发生），然后再尝试将其恢复为正常工作配置。</p>
+
+<p>恢复模板后，还必须删除 StatefulSet 尝试使用错误的配置来运行的 Pod。这样，StatefulSet 才会开始使用被还原的模板来重新创建 Pod。</p>
+
+
+    <div class="tags">
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://cdn.commento.io/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 原生云技术. All rights reserved. <br />
+ Site last generated: Jun 29, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

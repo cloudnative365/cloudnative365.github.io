@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" keynotes, advanced, kubernetes, CKA, HELM">
+<title>Helm入门 | CloudNative knowledge</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="cloudnative365.gitpage.io" href="http://0.0.0.0:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> 云原生技术课堂</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="lessons_syllabus.html">教学大纲</a></li>
+                        
+                        
+                        
+                        <li><a href="lessons_plans.html">开课计划</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂笔记<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="keynotes_L1_basic.html">基础课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L2_advanced.html">进阶课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L3_senior.html">高级课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L4_architect.html">架构师课程</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂风采<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="classes_teachers.html">讲师风采</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_aboutus.html">关于我们</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_successd.html">优秀学员作品</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用链接<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">Linux Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://cd.foundation/" target="_blank" rel="noopener">CD Foundation</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Helm入门">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">进阶课程 </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="第一章 CKA官方教程" href="#">第一章 CKA官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="1 COURSE_INTRODUCTION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_1_COURSE_INTRODUCTION.html">1 COURSE_INTRODUCTION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2 BASICS_OF_KUBERNETES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html">2 BASICS_OF_KUBERNETES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3 INSTALLATION_AND_CONFIGURATION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html">3 INSTALLATION_AND_CONFIGURATION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4 KUBERNETES_ARCHITECTURE" href="keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html">4 KUBERNETES_ARCHITECTURE</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5 APIS_AND_ACCESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html">5 APIS_AND_ACCESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6 API_OBJECTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html">6 API_OBJECTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7 MANAGING_STATE_WITH_DEPLOYMENTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html">7 MANAGING_STATE_WITH_DEPLOYMENTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8 SERVICES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html">8 SERVICES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9 VOLUMES_AND_DATA" href="keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html">9 VOLUMES_AND_DATA</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10 INGRESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html">10 INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11 SCHEDULING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html">11 SCHEDULING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12 LOGGING_AND_TROUBLESHOOTING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html">12 LOGGING_AND_TROUBLESHOOTING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13 CUSTOM_RESOURCE_DEFINITIONS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html">13 CUSTOM_RESOURCE_DEFINITIONS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14 HELM" href="keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html">14 HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15 SECURITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html">15 SECURITY</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16 HIGH_AVAILABILITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html">16 HIGH_AVAILABILITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第二章 CKAD官方教程" href="#">第二章 CKAD官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="CloudNative Roadmap" href="mydoc_release_notes_60.html">CloudNative Roadmap</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第三章 kubernetes入门讲座" href="#">第三章 kubernetes入门讲座</a>
+      <ul>
+          
+          
+          
+          <li><a title="1. 课程介绍" href="keynotes_L2_advanced_3_kubernetes_1_COURSE_INTRODUCTION.html">1. 课程介绍</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2. 认识kubernetes" href="keynotes_L2_advanced_3_kubernetes_2_BASICS_OF_KUBERNETES.html">2. 认识kubernetes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3. kubernetes架构和基础概念" href="keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html">3. kubernetes架构和基础概念</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4. 安装和配置kubernetes实验环境" href="keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html">4. 安装和配置kubernetes实验环境</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5. 使用命令行管理资源" href="keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html">5. 使用命令行管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6. 使用清单文件管理资源" href="keynotes_L2_advanced_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html">6. 使用清单文件管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7. POD" href="keynotes_L2_advanced_3_kubernetes_7_POD.html">7. POD</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8. 标签和标签选择器" href="keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html">8. 标签和标签选择器</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9. Deployment" href="keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html">9. Deployment</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10. Service" href="keynotes_L2_advanced_3_kubernetes_10_SERVICE.html">10. Service</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11. pv" href="keynotes_L2_advanced_3_kubernetes_11_PV.html">11. pv</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12. configmap和secret" href="keynotes_L2_advanced_3_kubernetes_12_SECRET_AND_CONFIGMAP.html">12. configmap和secret</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13. API" href="keynotes_L2_advanced_3_kubernetes_13_APIS_AND_ACCESS.html">13. API</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14. STATEFULSET" href="keynotes_L2_advanced_3_kubernetes_14_STATEFULSET.html">14. STATEFULSET</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15. INGRESS" href="keynotes_L2_advanced_3_kubernetes_15_INGRESS.html">15. INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16. 调度" href="keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html">16. 调度</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="17. 日志和错误定位" href="keynotes_L2_advanced_3_kubernetes_17_LOGGING_AND_TROUBLESHOOTING.html">17. 日志和错误定位</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="18. 自定义资源" href="keynotes_L2_advanced_3_kubernetes_18_CUSTOM_RESOURCE_DEFINTIONS.html">18. 自定义资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a title="19. HELM" href="keynotes_L2_advanced_3_kubernetes_19_HELM.html">19. HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="20. SECURITY" href="keynotes_L2_advanced_3_kubernetes_20_SECURITY.html">20. SECURITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">Helm入门</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <h2 id="学习目标">学习目标</h2>
+
+<ul>
+  <li>使用Helm简单的部署Kubernetes的deployment</li>
+  <li>了解Chart模板是怎样描述应用应该如何部署的</li>
+  <li>讨论Tiller是怎样技术Chart创建Deployment的</li>
+  <li>在集群中初始化一个Helm</li>
+</ul>
+
+<h2 id="1-简介">1. 简介</h2>
+
+<p>我们使用了Kubernetes工具来部署简单的Docker应用程序。从v1.4版本开始，我们的目标是为软件提供一个标准的规范。Helm类似于<strong>yum</strong>或<strong>apt</strong>这样的包管理器，Chart类似于包。而Helm v3与v2有着显著的不同。
+典型的容器化应用程序会包含很多清单。Deployment、Service和ConfigMap的清单。我们可能还会创建一些Secret、Ingress和其他对象。每一个都需要一份清单。
+有了Helm，你可以打包所有这些清单文件，并使它们作为一个单独的tar包使用。我们可以将tar包放在一个存储库中，搜索该存储库，发现一个应用程序，然后使用一个命令部署并启动整个应用程序。
+服务器运行在Kubernetes集群中，而客户机是本地的，甚至是本地笔记本电脑。使用客户机，您可以连接到多个应用程序存储库。
+我们还可以从命令行轻松地升级或回滚应用程序。</p>
+
+<h2 id="2-helm的两个版本">2. Helm的两个版本</h2>
+
+<h3 id="21-helm-v2和tiller">2.1. Helm v2和Tiller</h3>
+
+<p>helm工具使用一系列YAML文件将Kubernetes应用程序打包成一个chart或包。这中方式允许用户之间简单的共享，使用模板方案进行优化，以及来源跟踪等。</p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/19_HELM/zgxbwiuexxtg-BasicFlow-HelmandTiller.png" alt="zgxbwiuexxtg-BasicFlow-HelmandTiller" /></p>
+
+<h4 id="基础的helm和tiller的流程">基础的Helm和Tiller的流程</h4>
+
+<p>Helm的v2版本是由两个组件构成的</p>
+
+<ul>
+  <li>服务器端叫Tiller，运行在kubernetes集群之中</li>
+  <li>客户端叫Helm，在我们本地的机器上运行</li>
+</ul>
+
+<p>Helm v2会在集群中部署一个Tiller的pod。这样会引发很多安全和集群权限的问题。而Helm v3就不用部署这个pod了.</p>
+
+<p>使用Helm客户端，您可以浏览包存储库（包含已发布的Chart），并在Kubernetes集群上部署这些Chart。kubernetes将下载Chart并将请求传递给Tiller来创建应用。这个应用是由运行在Kubernetes集群中的各种资源组成。</p>
+
+<h3 id="22-helm-v3">2.2. Helm v3</h3>
+
+<p>最近Helm彻底的翻修了一遍，流程和命令都有很大的改变。如果我们正在使用Helm的v2版本，那么可能需要花些时间去升级和集成这些改变。</p>
+
+<p>最显著的变化之一就是Tiller的移除。这是一个一直存在的安全问题，因为pod需要提升权限才能部署Chart。在新版本中，这个功能被单独放在了命令行中，不再需要初始化才能使用。</p>
+
+<p>在v2中，对chart和deployment的更新需要使用双向策略合并来完成。这需要将先前的manifest和预期的menifest进行比较，而不是在<strong>helm</strong>命令之外进行编辑。目前的检查是使用另外的方法，检查目前对象的状态。</p>
+
+<p>还有其他的改变，比如软件安装不再自动生成名称。我们必须手动指定名称，要不就传递<code class="highlighter-rouge">--generated name</code>参数</p>
+
+<h2 id="3-chart">3. Chart</h2>
+
+<h3 id="31-chart中的内容">3.1. Chart中的内容</h3>
+
+<p><strong>Chart</strong>是组成分布式应用程序的Kubernetes资源清单的存档集，您可以从<a href="https://helm.sh/docs/topics/charts">Helm 3文档</a>中了解更多信息。我们还可以使用其他的方式轻松地创建，例如由供应商提供软件。Chart类似于独立的yum存储库的使用。</p>
+
+<p><strong>├── Chart.yaml
+├── README.md
+├── templates
+│  ├── NOTES.txt
+│  ├── _helpers.tpl
+│  ├── configmap.yaml
+│  ├── deployment.yaml
+│  ├── pvc.yaml
+│  ├── secrets.yaml
+│  └── svc.yaml
+└── values.yaml</strong></p>
+
+<ul>
+  <li>Chart.yaml</li>
+</ul>
+
+<p><strong>Chart.yaml</strong>文件包含很多Chart的元数据，比如name, version, keywords等等</p>
+
+<ul>
+  <li>values.yaml</li>
+</ul>
+
+<p><strong>values.yaml</strong>文件包含了k-v，用来生成集群中的某个release。这些值会被资源清单中的值所替代，他使用的是Go的模板语法。</p>
+
+<ul>
+  <li>templates</li>
+</ul>
+
+<p><strong>templates</strong>文件夹包含了创建这个MariaDB应用所需的所有的清单文件</p>
+
+<h3 id="32-模板">3.2. 模板</h3>
+
+<p>模板是使用Go模板化语法的资源清单。例如，在<strong>values</strong>文件中定义的变量在创建发布时被注入到模板中。在我们提供的MariaDB示例中，数据库密码存储在Kubernetes secret中，数据库配置存储在Kubernetes ConfigMap中。</p>
+
+<p>我们可以看到，在Secret metadat中使用chart名称、Release名称等定义了一组标签。而实际的值都是来自于<strong>values.yaml</strong>文件。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
+<span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> 
+    <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> 
+        <span class="na">chart</span><span class="pi">:</span> <span class="s2">"</span><span class="s">-"</span>
+        <span class="na">release</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+        <span class="na">heritage</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
+<span class="na">data</span><span class="pi">:</span>
+    <span class="na">mariadb-root-password</span><span class="pi">:</span> 
+    <span class="na">mariadb-password</span><span class="pi">:</span> 
+</code></pre></div></div>
+
+<h2 id="4-初始化helm-v2">4. 初始化Helm v2</h2>
+
+<p>Helm v3是不需要执行这个操作的</p>
+
+<p>我们可以从源代码中构建Helm，或者下载tar包。我们希望很快能看到稳定版本的Linux包（yum或者apt）。当前部署helm的RBAC安全需求需要创建一个新的<strong>serviceaccount</strong>，并分配权限和角色。有几个可选的设置可以传递给<strong>helm init</strong>命令，通常是针对特定的安全问题、存储选项和试运行选项。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>helm init
+...
+Tiller <span class="o">(</span>the helm server side component<span class="o">)</span> has been installed into your Kubernetes Cluster.
+Happy Helming!
+
+<span class="nv">$ </span>kubectl get deployments <span class="nt">--namespace</span><span class="o">=</span>kube-system
+NAMESPACE    NAME           READY  UP-TO-DATE  AVAILABLE  AGE
+kube-system  tiller-deploy  1/1    1           1          15s
+</code></pre></div></div>
+
+<p>helm v2在初始化的过程当中会在集群当中创建一个叫做<strong>tiller-deploy</strong>的pod。这个会在kube-system的名称空间中创建一个deployment</p>
+
+<p>客户端需要通过pod转发和tiller的pod进行通信。因此，我们不会看到任何的service来暴露tiller</p>
+
+<h3 id="41-chart的仓库">4.1. Chart的仓库</h3>
+
+<p>初始化helm时包含默认存储库，但添加其他存储库是常见的。存储库目前是简单的HTTP服务器，包含一个索引文件和所有Chart的tar包。</p>
+
+<p>您可以使用<strong>helm repo</strong>命令与存储库交互。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>helm repo add testing http://storage.googleapis.com/kubernetes-charts-testing
+
+<span class="nv">$ </span>helm repo list
+NAME URL
+stable http://storage.googleapis.com/kubernetes-charts
+<span class="nb">local </span>http://localhost:8879/charts
+testing http://storage.googleapis.com/kubernetes-charts...
+</code></pre></div></div>
+
+<p>一旦仓库是可用的，我们就可以使用关键字来搜索Chart。下面我们来搜索redis的Chart</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>helm search redis
+WARNING: Deprecated index file format. Try <span class="s1">'helm repo update'</span>
+NAME                     VERSION DESCRIPTION
+testing/redis-cluster    0.0.5   Highly available Redis cluster with multiple se...
+testing/redis-standalone 0.0.1   Standalone Redis Master testing/...
+</code></pre></div></div>
+
+<p>如果我们在仓库中找到对应的Chart，我们就可以部署了。</p>
+
+<h3 id="42-deploying-a-chart">4.2. Deploying a Chart</h3>
+
+<p>要部署Chart，只需使用<strong>helm install</strong>命令。安装成功可能需要几个资源，例如与chart PVC匹配的可用pv。目前，发现哪些资源需要存在的唯一方法是读取每个图表的<strong>READMEs</strong>：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>helm install testing/redis-standalone
+Fetched testing/redis-standalone to redis-standalone-0.0.1.tgz
+amber-eel
+Last Deployed: Fri Oct 21 12:24:01 2016
+Namespace: default
+Status: DEPLOYED
+
+Resources:
+<span class="o">==&gt;</span> v1/ReplicationController
+NAME             DESIRED CURRENT READY AGE
+redis-standalone 1       1       0     1s
+
+<span class="o">==&gt;</span> v1/Service
+NAME  CLUSTER-IP EXTERNAL-IP PORT<span class="o">(</span>S<span class="o">)</span>  AGE
+redis 10.0.81.67 &lt;none&gt;      6379/TCP 0s
+
+</code></pre></div></div>
+
+<p>我们还可以列出可用版本，删除，或者升级和回滚</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>helm list
+NAME      REVISION UPDATED                  STATUS   CHART
+amber-eel 1        Fri Oct 21 12:24:01 2016 DEPLOYED redis-standalone-0.0.1
+</code></pre></div></div>
+
+<p>系统将为部署的每个helm实例创建一个独特的、多样的名称。您还可以使用kubectl查看集群中创建的新资源Helm。</p>
+
+<p>应仔细审查部署的结果。它通常包含有关访问内部应用程序的信息。如果集群中没有所需的集群，则输出通常是开始故障排除的第一步。</p>
+
+
+    <div class="tags">
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://cdn.commento.io/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 原生云技术. All rights reserved. <br />
+ Site last generated: Jun 29, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" keynotes, L4_architect, 1_solutions_design, 2_monitoring, 4_querying">
+<title>查询 | CloudNative knowledge</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="cloudnative365.gitpage.io" href="http://0.0.0.0:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> 云原生技术课堂</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="lessons_syllabus.html">教学大纲</a></li>
+                        
+                        
+                        
+                        <li><a href="lessons_plans.html">开课计划</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂笔记<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="keynotes_L1_basic.html">基础课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L2_advanced.html">进阶课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L3_senior.html">高级课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L4_architect.html">架构师课程</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂风采<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="classes_teachers.html">讲师风采</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_aboutus.html">关于我们</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_successd.html">优秀学员作品</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用链接<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">Linux Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://cd.foundation/" target="_blank" rel="noopener">CD Foundation</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="查询">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">架构师课程 </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="第一章 高可用" href="#">第一章 高可用</a>
+      <ul>
+          
+          
+          
+          <li><a title="1. 用kubeadm搭建k8s高可用（yum版）" href="keynotes_L4_architect_1_HA_1_k8s_cluster_kubeadm_yum.html">1. 用kubeadm搭建k8s高可用（yum版）</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2. 用kubeadm搭建k8s高可用（apt版）" href="keynotes_L4_architect_1_HA_2_k8s_cluster_kubeadm_apt.html">2. 用kubeadm搭建k8s高可用（apt版）</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3. 使用kops在aws上创建集群" href="keynotes_L4_architect_1_HA_3_kops_AWS.html">3. 使用kops在aws上创建集群</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4. 使用Rancher管理我们的集群" href="keynotes_L4_architect_1_HA_4_rancher.html">4. 使用Rancher管理我们的集群</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5. 使用kubespray创建集群" href="keynotes_L4_architect_1_HA_5_kubespray_ubuntu.html">5. 使用kubespray创建集群</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6. minikube" href="keynotes_L4_architect_1_HA_6_minikube_macos.html">6. minikube</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第二章 监控" href="#">第二章 监控</a>
+      <ul>
+          
+          
+          
+          <li><a title="1 监控概述" href="keynotes_L4_architect_2_monitoring_1_monitoring_overview.html">1 监控概述</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2 Prometheus系列" href="keynotes_L4_architect_2_monitoring_2_Prometheus_overview.html">2 Prometheus系列</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3 exporter概览" href="keynotes_L4_architect_2_monitoring_3_exporter_overview.html">3 exporter概览</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a title="4 查询" href="keynotes_L4_architect_2_monitoring_4_querying.html">4 查询</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第三章 日志" href="#">第三章 日志</a>
+      <ul>
+          
+          
+          
+          <li><a title="1 ELK" href="keynotes_L4_architect_3_logging_1_Course_Introduction.html">1 ELK</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2 fluentd" href="keynotes_L4_architect_3_logging_1_Course_Introduction.html">2 fluentd</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">查询</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <h2 id="简介">简介</h2>
+
+<p>Prometheus提供函数式的表达式语言PromQL(Prometheus Query Language) ，可以使用户实时地查找和聚合时间序列数据。表达式计算结果可以在图表中展示，也可以在Prometheus表达式浏览器中以表格形式展示，或者作为数据源, 以HTTP API的方式提供给外部系统使用。</p>
+
+<h2 id="1-http-api">1. HTTP API</h2>
+
+<p>在prometheus服务器上，我们可以通过访问/api/v1来查询prometheus状态，也就是http://localhost:9090/api/v1</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://localhost:9090/api/v1
+&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">"/api/v1/"</span><span class="o">&gt;</span>Moved Permanently&lt;/a&gt;
+</code></pre></div></div>
+
+<p>不过我们这样是没办法查询到数据的，毕竟这是接口的地址，但是出现这个输出就说明接口是可以访问的</p>
+
+<h3 id="11-接口的格式">1.1. 接口的格式</h3>
+
+<p>API的返回值是JSON格式的。每个请求成功的返回值都是以<code class="highlighter-rouge">2xx</code>开头的编码。</p>
+
+<p>到达API处理的无效请求，返回一个JSON错误对象，并返回下面的错误码：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">400 Bad Request</code>。当参数错误或者丢失时。</li>
+  <li><code class="highlighter-rouge">422 Unprocessable Entity</code>。当一个表达式不能被执行时。</li>
+  <li><code class="highlighter-rouge">503 Service Unavailable</code>。当查询超时或者中断时。</li>
+</ul>
+
+<h3 id="12-表达式查询">1.2. 表达式查询</h3>
+
+<p>查询语言表达式可以在<strong>瞬时向量</strong>或者<strong>范围向量</strong>中执行。</p>
+
+<ul>
+  <li>
+    <p>Instant queries(即时查询)：</p>
+
+    <blockquote>
+      <p>GET /api/v1/query</p>
+
+      <p>POST /api/v1/query</p>
+    </blockquote>
+
+    <p>URL查询参数：</p>
+
+    <ul>
+      <li><code class="highlighter-rouge">query=&lt;string&gt;</code>: Prometheus表达式要查询的字符串。</li>
+      <li><code class="highlighter-rouge">time=&lt;rfc3339 | unix_timestamp&gt;</code>: 执行这个查询的时间戳，可选项，缺省则表示当前服务器时间</li>
+      <li><code class="highlighter-rouge">timeout=&lt;duration&gt;</code>: 执行的超时时间设置，默认由<code class="highlighter-rouge">-query.timeout</code>参数设置</li>
+    </ul>
+
+    <p>查询结果如下</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span>
+ <span class="s2">"resultType"</span>: <span class="s2">"matrix"</span> | <span class="s2">"vector"</span> | <span class="s2">"scalar"</span> | <span class="s2">"string"</span>,
+ <span class="s2">"result"</span>: &lt;value&gt;
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>比如：下面例子执行的是在时刻是<code class="highlighter-rouge">2015-07-01T20:10:51.781Z</code>的<code class="highlighter-rouge">up</code>表达式：</p>
+
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span><span class="w"> </span><span class="err">curl</span><span class="w"> </span><span class="err">'http</span><span class="p">:</span><span class="err">//localhost</span><span class="p">:</span><span class="mi">9090</span><span class="err">/api/v</span><span class="mi">1</span><span class="err">/query?query=up&amp;time=</span><span class="mi">2015-07-01</span><span class="err">T</span><span class="mi">20</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mf">51.781</span><span class="err">Z'</span><span class="w">
+</span><span class="p">{</span><span class="w">
+ </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"data"</span><span class="p">:{</span><span class="w">
+    </span><span class="s2">"resultType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vector"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"result"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"metric"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+               </span><span class="s2">"__name__"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"up"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"job"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"prometheus"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"instance"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost:9090"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mf">1435781451.781</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="w"> </span><span class="p">]</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"metric"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+               </span><span class="s2">"__name__"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"up"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"job"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"instance"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost:9100"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"value"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mf">1435781451.781</span><span class="p">,</span><span class="w"> </span><span class="s2">"0"</span><span class="w"> </span><span class="p">]</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>范围查询</p>
+
+    <blockquote>
+      <p>GET /api/v1/query_range</p>
+
+      <p>POST /api/v1/query_range</p>
+    </blockquote>
+
+    <p>URL查询参数</p>
+
+    <ul>
+      <li><code class="highlighter-rouge">query=&lt;string&gt;</code>: Prometheus表达式查询字符串。</li>
+      <li><code class="highlighter-rouge">start=&lt;rfc3339 | unix_timestamp&gt;</code>: 开始时间戳。</li>
+      <li><code class="highlighter-rouge">end=&lt;rfc3339 | unix_timestamp&gt;</code>: 结束时间戳。</li>
+      <li><code class="highlighter-rouge">step=&lt;duration | float&gt;</code>: 查询时间步长，范围时间内每step秒执行一次。</li>
+      <li><code class="highlighter-rouge">timeout=&lt;duration&gt;</code>: 执行超时时间设置，默认由<code class="highlighter-rouge">-query.timeout</code>标志设置</li>
+    </ul>
+
+    <p>下面查询结果格式的<code class="highlighter-rouge">data</code>部分：</p>
+
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"resultType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"matrix"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;value&gt;</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <p>下面例子评估的查询条件<code class="highlighter-rouge">up</code>，且30s范围的查询，步长是15s。</p>
+
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span><span class="w"> </span><span class="err">curl</span><span class="w"> </span><span class="err">'http</span><span class="p">:</span><span class="err">//localhost</span><span class="p">:</span><span class="mi">9090</span><span class="err">/api/v</span><span class="mi">1</span><span class="err">/query_range?query=up&amp;start=</span><span class="mi">2015-07-01</span><span class="err">T</span><span class="mi">20</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mf">30.781</span><span class="err">Z&amp;end=</span><span class="mi">2015-07-01</span><span class="err">T</span><span class="mi">20</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">0</span><span class="mf">0.781</span><span class="err">Z&amp;step=</span><span class="mi">15</span><span class="err">s'</span><span class="w">
+</span><span class="p">{</span><span class="w">
+   </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"data"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"resultType"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"matrix"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"result"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"metric"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+               </span><span class="s2">"__name__"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"up"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"job"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"prometheus"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"instance"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost:9090"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"values"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+               </span><span class="p">[</span><span class="w"> </span><span class="mf">1435781430.781</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="w"> </span><span class="p">],</span><span class="w">
+               </span><span class="p">[</span><span class="w"> </span><span class="mf">1435781445.781</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="w"> </span><span class="p">],</span><span class="w">
+               </span><span class="p">[</span><span class="w"> </span><span class="mf">1435781460.781</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="w"> </span><span class="p">]</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"metric"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+               </span><span class="s2">"__name__"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"up"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"job"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"instance"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost:9091"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"values"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+           </span><span class="p">[</span><span class="w"> </span><span class="mf">1435781430.781</span><span class="p">,</span><span class="w"> </span><span class="s2">"0"</span><span class="w"> </span><span class="p">],</span><span class="w">
+               </span><span class="p">[</span><span class="w"> </span><span class="mf">1435781445.781</span><span class="p">,</span><span class="w"> </span><span class="s2">"0"</span><span class="w"> </span><span class="p">],</span><span class="w">
+               </span><span class="p">[</span><span class="w"> </span><span class="mf">1435781460.781</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="w"> </span><span class="p">]</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="13-查询元数据">1.3. 查询元数据</h3>
+
+<ul>
+  <li>
+    <p>通过标签匹配器找到度量指标列表</p>
+
+    <p>下面例子返回了度量指标列表 且不返回时间序列数据值。</p>
+
+    <blockquote>
+      <p>GET /api/v1/series</p>
+    </blockquote>
+
+    <p>URL查询参数：</p>
+
+    <ul>
+      <li><code class="highlighter-rouge">match[]=&lt;series_selector&gt;</code>: 选择器是series_selector。这个参数个数必须大于等于1.</li>
+      <li><code class="highlighter-rouge">start=&lt;rfc3339 | unix_timestamp&gt;</code>: 开始时间戳。</li>
+      <li><code class="highlighter-rouge">end=&lt;rfc3339 | unix_timestamp&gt;</code>: 结束时间戳。</li>
+    </ul>
+
+    <p>返回结果的<code class="highlighter-rouge">data</code>部分，是由key-value键值对的对象列表组成的。</p>
+
+    <p>下面这个例子返回时间序列数据, 选择器是<code class="highlighter-rouge">up</code>或者<code class="highlighter-rouge">process_start_time_seconds{job="prometheus"}</code></p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-g</span> <span class="s1">'http://localhost:9090/api/v1/series?match[]=up&amp;match[]=process_start_time_seconds{job="prometheus"}'</span>
+<span class="o">{</span>
+   <span class="s2">"status"</span> : <span class="s2">"success"</span>,
+   <span class="s2">"data"</span> : <span class="o">[</span>
+      <span class="o">{</span>
+         <span class="s2">"__name__"</span> : <span class="s2">"up"</span>,
+         <span class="s2">"job"</span> : <span class="s2">"prometheus"</span>,
+         <span class="s2">"instance"</span> : <span class="s2">"localhost:9090"</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+         <span class="s2">"__name__"</span> : <span class="s2">"up"</span>,
+         <span class="s2">"job"</span> : <span class="s2">"node"</span>,
+         <span class="s2">"instance"</span> : <span class="s2">"localhost:9091"</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+         <span class="s2">"__name__"</span> : <span class="s2">"process_start_time_seconds"</span>,
+         <span class="s2">"job"</span> : <span class="s2">"prometheus"</span>,
+         <span class="s2">"instance"</span> : <span class="s2">"localhost:9090"</span>
+      <span class="o">}</span>
+   <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>查询标签值</p>
+
+    <p>下面这个例子，返回了带有指定标签的标签值列表</p>
+
+    <blockquote>
+      <p>GET /api/v1/label//values</p>
+    </blockquote>
+
+    <p>这个返回JSON结果的<code class="highlighter-rouge">data</code>部分是带有label_name=job的值列表：</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl http://localhost:9090/api/v1/label/job/values
+<span class="o">{</span>
+   <span class="s2">"status"</span> : <span class="s2">"success"</span>,
+   <span class="s2">"data"</span> : <span class="o">[</span>
+      <span class="s2">"node"</span>,
+      <span class="s2">"prometheus"</span>
+   <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>删除时间序列</p>
+
+    <p>下面的例子，是从Prometheus服务中删除匹配的度量指标和标签列表：</p>
+
+    <blockquote>
+      <p>DELETE /api/v1/series</p>
+    </blockquote>
+
+    <p>URL查询参数</p>
+
+    <ul>
+      <li><code class="highlighter-rouge">match[]=&lt;series_selector&gt;</code>: 删除符合series_selector匹配器的时间序列数据。参数个数必须大于等于1.</li>
+    </ul>
+
+    <p>返回JSON数据中的<code class="highlighter-rouge">data</code>部分有以下的格式</p>
+
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"numDeleted"</span><span class="p">:</span><span class="w"> </span><span class="err">&lt;number</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">deleted</span><span class="w"> </span><span class="err">series&gt;</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <p>下面的例子删除符合度量指标名称是<code class="highlighter-rouge">up</code>或者时间序为<code class="highlighter-rouge">process_start_time_seconds{job="prometheus"}</code>：</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-XDELETE</span> <span class="nt">-g</span> <span class="s1">'http://localhost:9090/api/v1/series?match[]=up&amp;match[]=process_start_time_seconds{job="prometheus"}'</span>
+<span class="o">{</span>
+   <span class="s2">"status"</span> : <span class="s2">"success"</span>,
+   <span class="s2">"data"</span> : <span class="o">{</span>
+      <span class="s2">"numDeleted"</span> : 3
+   <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="2-表达式语言数据类型">2. 表达式语言数据类型</h2>
+
+<p>在Prometheus的表达式语言PromQL中，所有的表达式或者子表达式都可以归为四种类型：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">string</code> ：字符串类型</li>
+  <li>
+    <p><code class="highlighter-rouge">scalar</code> ：标量（浮点值）</p>
+  </li>
+  <li><code class="highlighter-rouge">instant vector</code> ：瞬时向量，它是指在同一时刻，抓取的所有metrics指标数据。这些metrics指标数据的key都是相同的，也就是时间戳是相同的。</li>
+  <li><code class="highlighter-rouge">range vector</code>：范围向量，它是指在任何一个时间范围之内，抓取的所有metrics指标数据。</li>
+</ul>
+
+<h3 id="21-字符串">2.1. 字符串</h3>
+
+<p>字符串需要用单引号<code class="highlighter-rouge">'</code>、双引号<code class="highlighter-rouge">"</code>或者反引号表示</p>
+
+<p>PromQL遵循着与Go语言相同的转义规则。使用单引号，双引号中，反斜杠<code class="highlighter-rouge">\</code>作为转义字符，它后面还可以跟着<code class="highlighter-rouge">a, b, f, n, r, t, v</code>或者<code class="highlighter-rouge">\</code>。 也可以使用八进制(\nnn)或者十六进制(\xnn, \unnnn和\Unnnnnnnn)提供特定字符。</p>
+
+<p>在反引号内不处理转义字符。与Go不同，PromQL不会丢弃反引号中的换行符。例如：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"this is a string"
+'these are unescaped: \n \\ \t'
+`these are not unescaped: \n ' " \t`
+</code></pre></div></div>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/4_querying/image-20200612214927733.png" alt="image-20200612214927733" /></p>
+
+<h3 id="22-标量">2.2. 标量</h3>
+
+<p>标量浮点值可以直接写成这样的形式 <code class="highlighter-rouge">[-](digits)[.(digits)]</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-2.43
+</code></pre></div></div>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/4_querying/image-20200612215918944.png" alt="image-20200612215918944" /></p>
+
+<h3 id="23-瞬时向量选择器">2.3. 瞬时向量选择器</h3>
+
+<p>瞬时向量选择器可以对一组时间序列数据进行筛选，并给出结果中的每个结果键值对（时间戳-样本值）。最简单的形式是，只有一个metric名称被指定。在一个瞬时向量中这个结果包含有这个metrics指标名称的所有样本数据的key-value。</p>
+
+<p>下面这个例子选择所有时间序列度量名称为<code class="highlighter-rouge">http_requests_total</code>的样本数据：</p>
+
+<blockquote>
+  <p>http_requests_total</p>
+</blockquote>
+
+<p>通过在度量指标后面增加{}一组标签可以进一步地过滤这些时间序列数据。</p>
+
+<p>下面这个例子选择了度量指标名称为<code class="highlighter-rouge">http_requests_total</code>，且一组标签为<code class="highlighter-rouge">job=prometheus</code>, <code class="highlighter-rouge">group=canary</code>:</p>
+
+<blockquote>
+  <p>http_requests_total{job=”prometheus”,group=”canary”}</p>
+</blockquote>
+
+<p>可以采用不匹配的标签值也是可以的，或者用正则表达式不匹配标签。标签匹配操作如下所示：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">=</code>: 精确地匹配标签给定的值</li>
+  <li><code class="highlighter-rouge">!=</code>: 不等于给定的标签值</li>
+  <li><code class="highlighter-rouge">=~</code>: 正则表达匹配给定的标签值</li>
+  <li><code class="highlighter-rouge">!=</code>: 给定的标签值不符合正则表达式</li>
+</ul>
+
+<p>例如：度量指标名称为<code class="highlighter-rouge">http_requests_total</code>，正则表达式匹配标签<code class="highlighter-rouge">environment</code>为<code class="highlighter-rouge">staging, testing, development</code>的值，且http请求方法不等于<code class="highlighter-rouge">GET</code>。</p>
+
+<blockquote>
+  <table>
+    <tbody>
+      <tr>
+        <td>http_requests_total{environment=~”staging</td>
+        <td>testing</td>
+        <td>development”, method!=”GET”}</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<p>匹配空标签值的标签匹配器也可以选择没有设置任何标签的所有时间序列数据。正则表达式完全匹配。</p>
+
+<p>向量选择器必须指定一个度量指标名称或者至少不能为空字符串的标签值。以下表达式是非法的:</p>
+
+<blockquote>
+  <p>{job=~”.*”} #Bad!</p>
+</blockquote>
+
+<p>上面这个例子既没有度量指标名称，标签选择器也可以正则匹配空标签值，所以不符合向量选择器的条件</p>
+
+<p>相反地，下面这些表达式是有效的，第一个一定有一个字符。第二个有一个有用的标签method</p>
+
+<blockquote>
+  <p>{job=~”.+”} # Good!{job=~”.*”, method=”get”} # Good!</p>
+</blockquote>
+
+<p>标签匹配器能够被应用到度量指标名称，使用<code class="highlighter-rouge">__name__</code>标签筛选度量指标名称。例如：表达式<code class="highlighter-rouge">http_requests_total</code>等价于<code class="highlighter-rouge">{__name__="http_requests_total"}</code>。 其他的匹配器，如：<code class="highlighter-rouge">= ( !=, =~, !~)</code>都可以使用。下面的表达式选择了度量指标名称以<code class="highlighter-rouge">job:</code>开头的时间序列数据：</p>
+
+<blockquote>
+  <p>{<strong>name</strong>=~”^job:.*”} #</p>
+</blockquote>
+
+<h3 id="24-范围向量选择器">2.4. 范围向量选择器</h3>
+
+<p>范围向量类似于瞬时向量, 所不同在于，它们从当前实例来选择样本范围区间。在语法上，时间长度被追加在向量选择器尾部的方括号[]之中，用以指定对于每个样本范围区间中的每个元素应该抓取的时间范围样本区间。</p>
+
+<p>时间长度有一个数值决定，后面可以跟下面的单位：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">s</code> - seconds</li>
+  <li><code class="highlighter-rouge">m</code> - minutes</li>
+  <li><code class="highlighter-rouge">h</code> - hours</li>
+  <li><code class="highlighter-rouge">d</code> - days</li>
+  <li><code class="highlighter-rouge">w</code> - weeks</li>
+  <li><code class="highlighter-rouge">y</code> - years</li>
+</ul>
+
+<p>在下面这个例子中, 选择过去5分钟内，度量指标名称为<code class="highlighter-rouge">http_requests_total</code>， 标签为<code class="highlighter-rouge">job="prometheus"</code>的时间序列数据:</p>
+
+<blockquote>
+  <p>http_requests_total{job=”prometheus”}[5m]</p>
+</blockquote>
+
+<h3 id="25-偏移修饰符">2.5. 偏移修饰符</h3>
+
+<p>这个<code class="highlighter-rouge">offset</code>偏移修饰符允许在查询中改变单个瞬时向量和范围向量中的时间偏移</p>
+
+<p>例如，下面的表达式返回相对于当前时间的前5分钟时的时刻, 度量指标名称为<code class="highlighter-rouge">http_requests_total</code>的时间序列数据：</p>
+
+<blockquote>
+  <p>http_requests_total offset 5m</p>
+</blockquote>
+
+<p>注意：<code class="highlighter-rouge">offset</code>偏移修饰符必须直接跟在选择器后面，例如：</p>
+
+<blockquote>
+  <p>sum(http_requests_total{method=”GET”} offset 5m) // GOOD.</p>
+</blockquote>
+
+<p>然而，下面这种情况是不正确的</p>
+
+<blockquote>
+  <p>sum(http_requests_total{method=”GET”}) offset 5m // INVALID.</p>
+</blockquote>
+
+<p>offset偏移修饰符在范围向量上和瞬时向量用法一样的。下面这个返回了相对于当前时间的前一周时，过去5分钟的度量指标名称为<code class="highlighter-rouge">http_requests_total</code>的速率：</p>
+
+<blockquote>
+  <p>rate(http_requests_total[5m] offset 1w)</p>
+</blockquote>
+
+<h3 id="26-子查询">2.6. 子查询</h3>
+
+<p>子查询可以在一个给定的范围和结果内进行查询。子查询的结果是一个范围向量</p>
+
+<blockquote>
+  <instant_query> '[' <range> ':' [<resolution>] ']' [ offset <duration> ]
+</duration></resolution></range></instant_query>
+</blockquote>
+
+<h3 id="27-注释">2.7. 注释</h3>
+
+<p>PromQL支持行首以<code class="highlighter-rouge">#</code>开头的行为注释行</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    # This is a comment
+</code></pre></div></div>
+
+<h3 id="28-运算符和函数">2.8. 运算符和函数</h3>
+
+<p>这两个也是查询中需要用到的，内容我们会在后面详细说</p>
+
+
+    <div class="tags">
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://cdn.commento.io/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 原生云技术. All rights reserved. <br />
+ Site last generated: Jun 29, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

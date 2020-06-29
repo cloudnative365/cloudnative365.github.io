@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" keynotes, advanced, kubernetes, CKA, VOLUMES">
+<title>存储卷 | CloudNative knowledge</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="cloudnative365.gitpage.io" href="http://0.0.0.0:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> 云原生技术课堂</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="lessons_syllabus.html">教学大纲</a></li>
+                        
+                        
+                        
+                        <li><a href="lessons_plans.html">开课计划</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂笔记<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="keynotes_L1_basic.html">基础课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L2_advanced.html">进阶课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L3_senior.html">高级课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L4_architect.html">架构师课程</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂风采<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="classes_teachers.html">讲师风采</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_aboutus.html">关于我们</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_successd.html">优秀学员作品</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用链接<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">Linux Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://cd.foundation/" target="_blank" rel="noopener">CD Foundation</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="存储卷">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">进阶课程 </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="第一章 CKA官方教程" href="#">第一章 CKA官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="1 COURSE_INTRODUCTION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_1_COURSE_INTRODUCTION.html">1 COURSE_INTRODUCTION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2 BASICS_OF_KUBERNETES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html">2 BASICS_OF_KUBERNETES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3 INSTALLATION_AND_CONFIGURATION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html">3 INSTALLATION_AND_CONFIGURATION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4 KUBERNETES_ARCHITECTURE" href="keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html">4 KUBERNETES_ARCHITECTURE</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5 APIS_AND_ACCESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html">5 APIS_AND_ACCESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6 API_OBJECTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html">6 API_OBJECTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7 MANAGING_STATE_WITH_DEPLOYMENTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html">7 MANAGING_STATE_WITH_DEPLOYMENTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8 SERVICES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html">8 SERVICES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9 VOLUMES_AND_DATA" href="keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html">9 VOLUMES_AND_DATA</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10 INGRESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html">10 INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11 SCHEDULING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html">11 SCHEDULING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12 LOGGING_AND_TROUBLESHOOTING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html">12 LOGGING_AND_TROUBLESHOOTING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13 CUSTOM_RESOURCE_DEFINITIONS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html">13 CUSTOM_RESOURCE_DEFINITIONS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14 HELM" href="keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html">14 HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15 SECURITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html">15 SECURITY</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16 HIGH_AVAILABILITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html">16 HIGH_AVAILABILITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第二章 CKAD官方教程" href="#">第二章 CKAD官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="CloudNative Roadmap" href="mydoc_release_notes_60.html">CloudNative Roadmap</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第三章 kubernetes入门讲座" href="#">第三章 kubernetes入门讲座</a>
+      <ul>
+          
+          
+          
+          <li><a title="1. 课程介绍" href="keynotes_L2_advanced_3_kubernetes_1_COURSE_INTRODUCTION.html">1. 课程介绍</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2. 认识kubernetes" href="keynotes_L2_advanced_3_kubernetes_2_BASICS_OF_KUBERNETES.html">2. 认识kubernetes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3. kubernetes架构和基础概念" href="keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html">3. kubernetes架构和基础概念</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4. 安装和配置kubernetes实验环境" href="keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html">4. 安装和配置kubernetes实验环境</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5. 使用命令行管理资源" href="keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html">5. 使用命令行管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6. 使用清单文件管理资源" href="keynotes_L2_advanced_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html">6. 使用清单文件管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7. POD" href="keynotes_L2_advanced_3_kubernetes_7_POD.html">7. POD</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8. 标签和标签选择器" href="keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html">8. 标签和标签选择器</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9. Deployment" href="keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html">9. Deployment</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10. Service" href="keynotes_L2_advanced_3_kubernetes_10_SERVICE.html">10. Service</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11. pv" href="keynotes_L2_advanced_3_kubernetes_11_PV.html">11. pv</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12. configmap和secret" href="keynotes_L2_advanced_3_kubernetes_12_SECRET_AND_CONFIGMAP.html">12. configmap和secret</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13. API" href="keynotes_L2_advanced_3_kubernetes_13_APIS_AND_ACCESS.html">13. API</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14. STATEFULSET" href="keynotes_L2_advanced_3_kubernetes_14_STATEFULSET.html">14. STATEFULSET</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15. INGRESS" href="keynotes_L2_advanced_3_kubernetes_15_INGRESS.html">15. INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16. 调度" href="keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html">16. 调度</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="17. 日志和错误定位" href="keynotes_L2_advanced_3_kubernetes_17_LOGGING_AND_TROUBLESHOOTING.html">17. 日志和错误定位</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="18. 自定义资源" href="keynotes_L2_advanced_3_kubernetes_18_CUSTOM_RESOURCE_DEFINTIONS.html">18. 自定义资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="19. HELM" href="keynotes_L2_advanced_3_kubernetes_19_HELM.html">19. HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="20. SECURITY" href="keynotes_L2_advanced_3_kubernetes_20_SECURITY.html">20. SECURITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">存储卷</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <h2 id="课程目标">课程目标</h2>
+<ul>
+  <li>了解和创建PV（Persistent volumes）</li>
+  <li>配置pvc（persistent volumes claims）</li>
+  <li>管理卷的访问模式</li>
+  <li>部署一个带存持久存储的应用</li>
+  <li>动态提供存储</li>
+</ul>
+
+<h2 id="1-简介">1. 简介</h2>
+<p>传统环境中，存储空间会随着容器的终止而终止，没办法提供持久存储。由于容器被认为是瞬时的，这可能导致数据丢失或复杂的外部存储选项。Kubernetes<strong>卷</strong>共享Pod生存期，而不是其中的容器。如果容器终止，数据将继续对新容器可用。</p>
+
+<p>卷是一个目录，可以是预先写好内容的，可供Pod中的容器使用。目录的创建、数据的后端存储和内容取决于卷类型。在v1.13，共有27种不同的卷类型，从rbd到访问Ceph、NFS，再到来自像Google的gcePersistentDisk这样的云提供商的动态卷。每个都有特定的配置选项和依赖项。</p>
+
+<p>容器存储接口（CSI）的采用为容器编排的行业标准接口，他的目标是允许通过接口访问任意存储系统。目前，卷插件“in tree”，这意味着它们是用核心Kubernetes二进制文件编译和构建的。“不在树中的”对象将允许存储供应商开发单个驱动程序，并允许插件被容器化。这将取代现有插件，他是需要提升主机节点访问权限的，这是一个很大的安全问题。</p>
+
+<p>如果希望存储生命周期与Pod不同，可以使用持久卷。这些允许Pod使用pvc来声明空的或预填充的卷，然后生命周期比Pod还长。也就是说在pod终止之后可以继续存在。然后，卷内的数据可以被另一个Pod使用，或者作为检索数据的手段。</p>
+
+<p>已经有两个API对象来向Pod提供数据。加密数据可以使用secret传递，非加密数据可以使用ConfigMap传递。它们可以用来传递重要的数据，比如SSH密钥、密码，甚至是配置文件，比如<strong>/etc/hosts</strong>。</p>
+
+<h2 id="2-卷组">2. 卷组</h2>
+
+<p>Pod的spec可以声明一个或多个卷及其可用位置。每个都需要一个name、一个type和一个mountpoint。一个Pod中的多个容器可以使用相同的卷，这可以作为一种容器到容器通信的方法。一个卷可以提供给多个pod，每个pod都有一个访问模式。如果没有并发性检查，这意味着数据可能会损坏，除非我们使用外部锁定。</p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/11_PV/njibb9wicexq-KubernetesPodVolumes.png" alt="njibb9wicexq-KubernetesPodVolumes" /></p>
+
+<h3 id="21-kubernetes-pod-volumes">2.1. Kubernetes Pod Volumes</h3>
+
+<p>特定的访问模式是Pod请求的一部分。作为请求，用户可以被授予更多但不是更少的访问权限，尽管首先尝试直接匹配。群集将具有相同模式的卷分组在一起，然后按大小从最小到最大对卷进行排序。在足够大的卷匹配之前，将针对该访问模式组中的每个卷检查声明。三种访问模式是：</p>
+
+<ul>
+  <li>
+    <p>ReadWriteOnce，允许单个节点读写，RWO</p>
+  </li>
+  <li>
+    <p>ReadOnlyMany，允许多个节点只读，RO</p>
+  </li>
+  <li>
+    <p>read write many，允许多个节点读写，RW</p>
+  </li>
+</ul>
+
+<p>因此，同一节点上的两个pod可以写入ReadWriteOnce，但另一节点上的第三个pod会因为FailedAttachVolume错误而无法就绪。</p>
+
+<p>当请求卷时，本地kubelet使用<strong>kubelet_pods.go</strong>脚本映射裸设备，决定并确保容器的mountpoint，然后在主机节点文件系统上创建符号链接，将存储与容器关联。API服务器向<strong>StorageClass</strong>插件发出存储请求，但对后端存储的请求具体取决于正在使用的插件。</p>
+
+<p>如果没有对特定的<strong>StorageClass</strong>发出请求，则使用的唯一参数是mode和size。卷可以来自任何可用的存储类型，并且没有配置来确定将使用哪种可用的存储类型。</p>
+
+<h3 id="22-volume-spec">2.2. Volume Spec</h3>
+
+<p>最常用的存储类型之一是<strong>emptyDir</strong>。kubelet将在容器中创建目录，但不mount任何存储。创建的任何数据都将写入共享容器空间。因此，它不会是持久性存储。当Pod被销毁时，目录将与容器一起被删除。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">fordpinto</span> 
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">simpleapp</span> 
+    <span class="na">name</span><span class="pi">:</span> <span class="s">gastank</span> 
+    <span class="na">command</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">sleep</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">3600"</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/scratch</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">scratch-volume</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">scratch-volume</span>
+    <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+
+<p>上面的YAML文件将创建一个Pod，其中包含一个名为<strong>scratch volume</strong>的卷，该卷将在容器内创建<strong>/scratch</strong>目录。</p>
+
+<h3 id="23-存储卷类型">2.3. 存储卷类型</h3>
+
+<p>有几种类型可用于定义卷，每种类型都有其优缺点。有些是本地的，许多是利用基于网络的资源。</p>
+
+<p>在GCE或AWS中，您可以使用类型为<strong>GCEpersistentDisk</strong>或<strong>awsElasticBlockStore</strong>的卷，需要允许在已设置帐户和权限的情况下在Pod中装载GCE和EBS磁盘。</p>
+
+<p><strong>emptyDir</strong>和<strong>hostPath</strong>卷易于使用。如前所述，<strong>emptyDir</strong>是一个空目录，在Pod终止时被删除，但在容器重新启动时被重新创建。<strong>hostPath</strong>卷从主机节点文件系统装载资源。资源可以是目录、文件套接字、字符或块设备。这些资源必须已经存在于要使用的主机上。有两种类型，<strong>directoryocreate</strong>和<strong>FileOrCreate</strong>，它们在主机上创建资源，如果它们还不存在，则使用它们。</p>
+
+<p>NFS（网络文件系统）和iSCSI(Internet Small Computer System Interface)是多个阅读器场景的常用选择。</p>
+
+<p>块存储或cepfs和GlusterFS的rbd（如果在Kubernetes集群中可用）对于多个writer需求来说是一个不错的选择。</p>
+
+<p>除了我们刚才提到的卷类型之外，还有很多其他的可能，还有更多的可能：<strong>azureDisk</strong>、<strong>azureFile</strong>、<strong>csi</strong>、<strong>downwardAPI</strong>、<strong>fc</strong>（光纤通道）、<strong>flocker</strong>、<strong>gitRepo</strong>、<strong>local</strong>、<strong>projected</strong>、<strong>portworxVolume</strong>、<strong>quobyte</strong>、<strong>scaleIO</strong>、<strong>secret</strong>、<strong>storageos</strong>、<strong>vsphereVolume</strong>、<strong>persistenvolumeclaim</strong>，<strong>CSIPersistentVolumeSource</strong> 等。</p>
+
+<p>CSI允许更多的灵活的和解耦的插件，而无需编辑核心Kubernetes代码。它是作为将来公开任意插件的标准而开发的。</p>
+
+<h3 id="24-共享卷组">2.4. 共享卷组</h3>
+
+<p>下面的YAML文件创建了一个pod，<strong>exampleA</strong>，他包含了两个容器，两个容器共享一个存储卷。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">....</span>
+   <span class="s">containers</span><span class="pi">:</span>
+   <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">alphacont</span>
+     <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+     <span class="na">volumeMounts</span><span class="pi">:</span>
+     <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/alphadir</span>
+       <span class="na">name</span><span class="pi">:</span> <span class="s">sharevol</span>
+   <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">betacont</span>
+     <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+     <span class="na">volumeMounts</span><span class="pi">:</span>
+     <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/betadir</span>
+       <span class="na">name</span><span class="pi">:</span> <span class="s">sharevol</span>
+   <span class="na">volumes</span><span class="pi">:</span>
+   <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">sharevol</span>
+     <span class="na">emptyDir</span><span class="pi">:</span> <span class="pi">{}</span>  
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl <span class="nb">exec</span> <span class="nt">-ti</span> exampleA <span class="nt">-c</span> betacont <span class="nt">--</span> touch /betadir/foobar
+<span class="nv">$ </span>kubectl <span class="nb">exec</span> <span class="nt">-ti</span> exampleA <span class="nt">-c</span> alphacont <span class="nt">--</span> <span class="nb">ls</span> <span class="nt">-l</span> /alphadir
+
+total 0
+<span class="nt">-rw-r--r--</span> 1 root root 0 Nov 19 16:26 foobar
+</code></pre></div></div>
+
+<p>我们可以很容易地使用<strong>emptyDir</strong>或<strong>hostPath</strong>，因为这些类型不需要任何额外的设置，并且可以在Kubernetes集群中工作。</p>
+
+<p>注意，一个容器（<strong>betacont</strong>）写入，另一个容器（<strong>alphacont</strong>）可以立即访问数据。没有什么可以阻止容器覆盖另一个容器的数据。锁定或版本控制等注意的地方是容器化应用程序的重要一环，以避免损坏。</p>
+
+<h2 id="3-persistent-volume">3. Persistent Volume</h2>
+
+<p>下面这个例子是PV使用hostPath类型的一个示例</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolume</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">10Gpv01</span>
+    <span class="na">labels</span><span class="pi">:</span> 
+        <span class="na">type</span><span class="pi">:</span> <span class="s">local</span> 
+<span class="na">spec</span><span class="pi">:</span>
+    <span class="na">capacity</span><span class="pi">:</span> 
+        <span class="na">storage</span><span class="pi">:</span> <span class="s">10Gi</span>
+    <span class="na">accessModes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+    <span class="na">hostPath</span><span class="pi">:</span>
+        <span class="na">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/somepath/data01"</span>
+</code></pre></div></div>
+
+<p>每一种类型都有他自己独特的配置。比如，一个已经创建了Ceph或者GCE持久存储的盘就不需要配置Ceph和GCE了，而是需要从provider去声明自己使用哪种存储。</p>
+
+<p>PV不属于任何的namespace，但是pvc是属于某一个namespace的。从1.13版本中的beta特性开始允许配置静态的裸盘。目前已经支持FC，AWS EBS，Azure Disk和 RBD等多种插件。</p>
+
+<p>使用本地的附加存储目前已经毕业成为一个稳定版。这个特性经常被用来做分布式文件系统和数据库</p>
+
+<h2 id="4-persistent-volume-claim">4. Persistent Volume Claim</h2>
+
+<p>当我们的集群中有pv的时候，我们就可以在清单文件中声明使用了。我们可以在使用pod的时候去定义一个声明。在Pod中，定义卷组的时候使用<strong>persistentVolumeClaim</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">myclaim</span>
+<span class="na">spec</span><span class="pi">:</span>
+    <span class="na">accessModes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+    <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">requests</span><span class="pi">:</span>
+                <span class="na">storage</span><span class="pi">:</span> <span class="s">8GI</span>
+</code></pre></div></div>
+
+<p>In the Pod:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spec</span><span class="pi">:</span>
+    <span class="na">containers</span><span class="pi">:</span>
+<span class="s">....</span>
+    <span class="s">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">test-volume</span>
+          <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
+                <span class="na">claimName</span><span class="pi">:</span> <span class="s">myclaim</span>
+</code></pre></div></div>
+
+<p>Pod中复杂一点的配置就像下面这个样子</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">volumeMounts</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Cephpd</span>
+        <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/data/rbd</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">rbdpd</span>
+      <span class="na">rbd</span><span class="pi">:</span>
+        <span class="na">monitors</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s1">'</span><span class="s">10.19.14.22:6789'</span>
+        <span class="pi">-</span> <span class="s1">'</span><span class="s">10.19.14.23:6789'</span>
+        <span class="pi">-</span> <span class="s1">'</span><span class="s">10.19.14.24:6789'</span>
+        <span class="na">pool</span><span class="pi">:</span> <span class="s">k8s</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">client</span>
+        <span class="na">fsType</span><span class="pi">:</span> <span class="s">ext4</span>
+        <span class="na">readOnly</span><span class="pi">:</span> <span class="no">true</span>
+        <span class="na">user</span><span class="pi">:</span> <span class="s">admin</span>
+        <span class="na">keyring</span><span class="pi">:</span> <span class="s">/etc/ceph/keyring</span>
+        <span class="na">imageformat</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2"</span>
+        <span class="na">imagefeatures</span><span class="pi">:</span> <span class="s2">"</span><span class="s">layering"</span>
+</code></pre></div></div>
+
+<h2 id="5-动态配置dynamic-provisioning">5. 动态配置Dynamic Provisioning</h2>
+
+<p>在使用卷组的时候，我们使用pv先定义好一类存储，然后抽象的使用存储的provider去声明使用很方便，但是集群的管理员仍然需要预先定义这些卷。从kubernetes1.4版本之后，Dynamic Provisioning允许集群从外部申请预先配置好的资源。API调用通过插件可以支持很多类型的动态存储。</p>
+
+<p><strong>StorageClass</strong>这种API资源就能够让管理员去定义一个由特殊类型定义的一个pv。</p>
+
+<p><strong>StorageClass</strong>创建之后，用户可以申请一个claim，API server会自动的配置符合要求的存储。资源还会被provide重新claim。我们通常会选择AWS或者GCE作为动态的存储，当然我们也可以选择其他的类型，比如Ceph或者iSCSI。通常来说，默认的类型是使用annotation来声明的。</p>
+
+<p>下面是一个使用GCE的例子</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">fast</span>      <span class="c1"># Could be any name</span>
+<span class="na">provisioner</span><span class="pi">:</span> <span class="s">kubernetes.io/gce-pd</span>
+<span class="na">parameters</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">pd-ssd</span> 
+</code></pre></div></div>
+
+
+    <div class="tags">
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://cdn.commento.io/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 原生云技术. All rights reserved. <br />
+ Site last generated: Jun 29, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

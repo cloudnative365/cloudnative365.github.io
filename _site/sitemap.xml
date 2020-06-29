@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/cloudnative.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/kubernetes_operations.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/install_kubernetes_on_reapberryPi4.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/myupdate.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/test-post-from-last-year.html</loc>
+  </url>
+  
+  
+
+
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_1_COURSE_INTRODUCTION.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_1_COURSE_INTRODUCTION.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_2_BASICS_OF_KUBERNETES.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_7_POD.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_10_SERVICE.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_10_PV.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_11_SECRET_AND_CONFIGMAP.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_13_APIS_AND_ACCESS.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_14_STATEFULSETS.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_15_INGRESS.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_17_LOGGING_AND_TROUBLESHOOTING.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_18_CUSTOM_RESOURCE_DEFINTIONS.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_19_HELM.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_1_solutions_design_2_monitoring_1_TIGK.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L1_basic_1_containerization_1_container_basic.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_1_etcd_1_etcd_overview.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_2_kubernetes_tools_1_harbor.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_2_kubernetes_1_helm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_2_kubernetes_1_ingress.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_2_kubernetes_1_install_kubernetes_kubeadm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_1_HA_1_k8s_cluster_kubeadm_yum.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_2_monitoring_1_monitoring_overview.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_2_kubernetes_1_Rancher.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_3_kubernetes_20_SECURITY.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_2_kubernetes_2_hardest_way.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_2_kubernetes_2_install_ingress_nginx.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_1_etcd_2_install_etcd.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_1_HA_2_k8s_cluster_kubeadm_apt.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_2_monitoring_2_Prometheus_overview.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L1_basic_1_containerization_2_use_docker.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L1_basic_1_containerization_3_docker_image.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_2_monitoring_3_exporter_overview.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_2_kubernetes_3_install_ingress_envoy.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_1_etcd_3_install_etcd_with_kubeadm.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_1_HA_3_kops_AWS.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_2_kubernetes_3_manage_kubernetes.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L1_basic_1_containerization_4_docker_network.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_2_monitoring_4_querying.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_1_etcd_4_scale_etcd.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_2_monitoring_1_monitoring_overview.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L1_basic_1_containerization_5_docker_volume.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_1_etcd_5_etcd_tuning.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_1_HA_5_kubespray_ubuntu.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior_1_etcd_6_backup_and_restore_etcd.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L1_basic_1_containerization_6_docker_limit.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_1_HA_6_minikube_macos.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect_2_monitoring_1_monitoring_overview.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L1_basic_1_containerization_3_docker_image.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_2_CKAD_1_INTRODUCTION.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced_1_kubernetes_2_CKAD_1_INTRODUCTION.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L1_basic.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L2_advanced.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L3_senior.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/keynotes_L4_architect.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/classes_aboutus.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/index.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/news_archive.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/lessons_plans.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/classes_successd.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/lessons_syllabus.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/syllabus_L2_advanced.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/classes_teachers.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/assets/css/style.css</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/pages/lessons/syllabus/syllabus_L1_basic.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/pages/lessons/syllabus/syllabus_L3_senior.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://0.0.0.0:4000/pages/lessons/syllabus/syllabus_L4_architect.html</loc>
+  </url>
+  
+  
+</urlset>

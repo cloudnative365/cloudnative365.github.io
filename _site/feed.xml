@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>cloudnative365.gitpage.io</title>
+        <description>Intended as a documentation theme based on Jekyll for technical writers documenting software and other technical products, this theme has all the elements you would need to handle multiple products with both multi-level sidebar navigation, tags, and other documentation features.</description>
+        <link>http://0.0.0.0:4000/</link>
+        <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Mon, 29 Jun 2020 17:35:38 +0800</pubDate>
+        <lastBuildDate>Mon, 29 Jun 2020 17:35:38 +0800</lastBuildDate>
+        <generator>Jekyll v3.8.5</generator>
+        
+        <item>
+            <title>云原生的身世之谜</title>
+            <description>&lt;h2 id=&quot;1-什么是云原生&quot;&gt;1 什么是云原生&lt;/h2&gt;
+
+&lt;p&gt;Cloud Native翻译为云原生，是由Pivotal的攻城狮Matt Stine提出的一个概念，它是一个思想的集合，包括DevOps、持续交付（Continuous Delivery）、微服务（MicroServices）、敏捷基础设施（Agile Infrastructure）、康威定律（Conways Law）等，以及根据商业能力对公司进行重组。Cloud Native既包含技术（微服务，敏捷基础设施），也包含管理（DevOps，持续交付，康威定律，重组等）。Cloud Native也可以说是一系列Cloud技术、企业管理方法的集合。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/../_posts/pics/cloudnative/222c485b6dcc44762d65201584886558.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;2-云原生技术发展的历史&quot;&gt;2. 云原生技术发展的历史&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/../_posts/pics/cloudnative/222e0dfcf7f9f4c7794f201584886745.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;2004 年— 2007 年，Google 已在内部大规模地使用像 Cgroups 这样的容器技术；&lt;/li&gt;
+  &lt;li&gt;2008 年，Google 将 Cgroups 合并进入了 Linux 内核主干；&lt;/li&gt;
+  &lt;li&gt;2013 年，Docker 项目正式发布。&lt;/li&gt;
+  &lt;li&gt;2014 年，Kubernetes 项目也正式发布。这样的原因也非常容易理解，因为有了容器和 Docker 之后，就需要有一种方式去帮助大家方便、快速、优雅地管理这些容器，这就是 Kubernetes 项目的初衷。在 Google 发布了 Kubernetes 之后，这个项目的发展速度非常之快。&lt;/li&gt;
+  &lt;li&gt;2015 年，由Google、Redhat 以及微软等大型云计算厂商以及一些开源公司共同牵头成立了 CNCF 云原生基金会。CNCF 成立之初，就有 22 个创始会员，而且 Kubernetes 也成为了 CNCF 托管的第一个开源项目。在这之后，CNCF 的发展速度非常迅猛；&lt;/li&gt;
+  &lt;li&gt;2017 年，CNCF 达到 170 个成员和 14 个基金项目；&lt;/li&gt;
+  &lt;li&gt;2018 年，CNCF 成立三周年有了 195 个成员，19 个基金会项目和 11 个孵化项目，如此之快的发展速度在整个云计算领域都是非常罕见的。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;3-云原生技术的现状&quot;&gt;3. 云原生技术的现状&lt;/h2&gt;
+
+&lt;p&gt;CNCF 有一张云原生&lt;a href=&quot;https://landscape.cncf.io/images/landscape.png&quot;&gt;全景图&lt;/a&gt;在这个全景图里已经有 200 多个项目和产品了，这些项目和产品也都是和 CNCF 的观点所契合的。 这个全景图是在的太大了，每次KubeCon大会的时候，上台演讲的人都会担心屏幕无法把全景图显示出来。这个全景图我在加载的时候用了1分多钟，大小是MB。上面密密麻麻的名字会让有密集恐惧症的人立马起一身的鸡皮疙瘩。为了照顾大家的网速，我这里给大家做一个缩小版的截图，但是有兴趣的朋友一定要看一看，上面有非常多的logo都是我们耳闻能详的软件。如果你想成为一个云原生架构师，那么上面的软件起码要知道是干什么用的，如果说自己是资深的架构师，起码要亲自部署过才敢这么称呼自己吧。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/../_posts/pics/cloudnative/222ee31039bbf936b7e9901584889508.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;所以如果以这张全景图作为背景，加以思考就会发现，我们今天所讨论的云原生其实主要谈论了以下几点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;云原生基金会 云原生基金会，英文缩写叫CNCF，全称是Cloud Native Computing Foundation，是目前云计算领域最成功的开源基金会之一，是kubenetes，containerd，prometheus等著名开源项目的托管基金会。&lt;/li&gt;
+  &lt;li&gt;云原生技术社区 CNCF目前托管的30多个正式项目共同构成了现代云计算生态的基石，其中kubernetes项目是全世界第四活跃的开源项目。&lt;/li&gt;
+  &lt;li&gt;云原生技术产业 全球各大公有云厂商和100多个技术创业公司持续的投入，总体市场与2021年逼近1000亿美元。国内的互联网企业纷纷全面投入云计算行业。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;4-回顾2019年&quot;&gt;4. 回顾2019年&lt;/h2&gt;
+
+&lt;p&gt;2019 年正是云原生时代的关键节点，为什么这么说？我们这里就为大家简单梳理一下。&lt;/p&gt;
+
+&lt;p&gt;从 2013 年 Docker 项目发布开始说起，Docker 项目的发布使得全操作系统语义的沙盒技术唾手可得，使得用户能够更好地、更完整地打包自己的应用，使得开发者可以轻而易举的获得了一个应用的最小可运行单位，而不需要依赖任何 PaaS 能力。这对经典 PaaS 产业其实是一个“降维打击”。&lt;/p&gt;
+
+&lt;p&gt;2014 年的时候，Kubernetes 项目发布，其意义在于 Google 将内部的 Borg/Omega 系统思想借助开源社区实现了“重生”，并且提出了“容器设计模式”的思想。而 Google 之所以选择间接开源 Kubernetes 而不是直接开源 Borg 项目，其实背后的原因也比较容易理解：Borg/Omega 这样的系统太复杂了，是没办法提供给 Google 之外的人使用，但是 Borg/Omega 这样的设计思想却可以借助 Kubernetes 让大家接触到，这也是开源 Kubernetes 的重要背景。&lt;/p&gt;
+
+&lt;p&gt;这样到了 2015 年到 2016 年，就到了容器编排“三国争霸”的时代，当时 Docker、Swarm、Mesos、Kubernetes 都在容器编排领域展开角逐，他们竞争的原因其实也比较容易理解， 那就是 Docker 或者容器本身的价值虽然大，但是如果想要让其产生商业价值或者说对云的价值，那么就一定需要在编排上面占据一个有利的位置。&lt;/p&gt;
+
+&lt;p&gt;Swarm 和 Mesos 的特点，那就是各自只在生态和技术方面比较强，其中，Swarm 更偏向于生态，而 Mesos 技术更强一些。相比之下， Kubernetes 则兼具了两者优势，最终在 2017 年“三国争霸”的局面中得以胜出，成为了当时直到现在的容器编排标准。这一过程的代表性事件就是 Docker 公司宣布在核心产品中内置了 Kubernetes 服务，并且 Swarm 项目逐渐停止维护。&lt;/p&gt;
+
+&lt;p&gt;到了 2018 年的时候，云原生技术理念开始逐渐萌芽，这是因为此时 Kubernetes 以及容器都成为了云厂商的既定标准，以“云”为核心的软件研发思想逐步形成。&lt;/p&gt;
+
+&lt;p&gt;而到了 2019 年，云原生技术普及元年。首先大家可以看到，在 2019 年，阿里巴巴宣布要全面上云，而且“上云就要上云原生”。我们还可以看到，以“云”为核心的软件研发思想，正逐步成为所有开发者的默认选项。像 Kubernetes 等云原生技术正在成为技术人员的必修课，大量的工作岗位正在涌现出来。这种背景下，“会 Kubernetes”已经远远不够了，“懂 Kubernetes”、“会云原生架构”的重要性正日益凸显出来。 从 2019 年开始，云原生技术将会大规模普及，这也是为什么大家都要在这个时间点上学习和投资云原生技术的重要原因。&lt;/p&gt;
+
+&lt;h2 id=&quot;5-云原生的技术范畴landscape&quot;&gt;5. 云原生的技术范畴（Landscape）&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/../_posts/pics/cloudnative/222ba706de12fbca470ab01584889205.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;容器化。目前最流行的容器化技术是Docker，你可以将任意大小的应用程序和依赖项，甚至在模拟器上运行的一些程序，都进行容器化。随着时间的推移，你还可以对应用程序进行分割，并将未来的功能编写为微服务。&lt;/li&gt;
+  &lt;li&gt;CI/CD（持续集成和持续发布）。创建CI/CD环境，从而使源代码上的任意修改，都能够自动通过容器进行编译、测试，并被部署到预生产甚至生产环境中。&lt;/li&gt;
+  &lt;li&gt;应用编排。Kubernetes是目前市场上应用编排领域被最广泛应用的工具，Helm Charts可以用来帮助应用开发和发布者用于升级Kubernetes上运行的应用。&lt;/li&gt;
+  &lt;li&gt;监控和分析。在这一步中，用户需要为平台选择监控、日志以及跟踪的相关工具，例如将Prometheus用于监控、Fluentd用于日志、Jaeger用于整个应用调用链的跟踪。&lt;/li&gt;
+  &lt;li&gt;服务代理、发现和治理。CoreDNS、Envoy和LInkerd可以分别用于服务发现和服务治理，提供服务的健康检查、请求路由、和负载均衡等功能。&lt;/li&gt;
+  &lt;li&gt;网络。Calico、Flannel以及Weave Net等软件用于提供更灵活的网络功能。&lt;/li&gt;
+  &lt;li&gt;分布式数据库和存储。分布式数据库可以提供更好的弹性和伸缩性能，但同时需要专业的容器存储予以支持。&lt;/li&gt;
+  &lt;li&gt;流和消息处理。当应用需要比JSON-REST这个模式更高的性能时，可以考虑使用gRPC或者NATS。gRPC是一个通用的RPC（远程调用）框架（类似各种框架中的RPC调用），NATS是一个发布/订阅和负载均衡的消息队列系统。&lt;/li&gt;
+  &lt;li&gt;容器镜像库和运行环境。Harbor是目前最受欢迎的容器镜像库，同时，你也可以选择使用不同的容器运行环境用于运行容器程序。&lt;/li&gt;
+  &lt;li&gt;软件发布。最后可以借助Notary等软件用于软件的安全发布。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;6-云原生思想的两个理论&quot;&gt;6. 云原生思想的两个理论&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;第一个理论基础是：不可变基础设施。这一点目前是通过容器镜像来实现的，其含义就是应用的基础设施应该是不可变的，是一个自包含、自描述可以完全在不同环境中迁移的东西；&lt;/li&gt;
+  &lt;li&gt;第二个理论基础就是：云应用编排理论。当前的实现方式就是 Google 所提出来的“容器设计模式”，这也是本系列课程中的 Kubernetes 部分所需主要讲解的内容。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;7-基础设施向云演进的过程&quot;&gt;7. 基础设施向云演进的过程&lt;/h2&gt;
+
+&lt;p&gt;首先为大家介绍一下“不可变基础设施”的概念。其实，应用所依赖的基础设施也在经历一个向云演进的过程，举例而言，对于传统的应用基础设施而言，其实往往是可变的。&lt;/p&gt;
+
+&lt;p&gt;大家可能经常会干这样一件事情，比如需要发布或者更新一个软件，那么流程大致是这样的，先通过 SSH 连到服务器，然后手动升级或者降级软件包，逐个调整服务器上的配置文件，并且将新代码直接都部署到现有服务器上。因此，这套基础设施会不断地被调整和修改。&lt;/p&gt;
+
+&lt;p&gt;但是在云上，对“云”友好的应用基础设施是不可变的。&lt;/p&gt;
+
+&lt;p&gt;这种场景下的上述更新过程会这么做：一旦应用部署完成之后，那么这套应用基础设施就不会再修改了。如果需要更新，那么需要现更改公共镜像来构建新服务直接替换旧服务。而我们之所以能够实现直接替换，就是因为容器提供了自包含的环境（包含应用运行所需的所有依赖）。所以对于应用而言，完全不需要关心容器发生了什么变化，只需要把容器镜像本身修改掉就可以了。因此，对于云友好的基础设施是随时可以替换和更换的，这就是因为容器具有敏捷和一致性的能力，也就是云时代的应用基础设施。&lt;/p&gt;
+
+&lt;p&gt;所以，总结而言，云时代的基础设施就像是可以替代的“牲口”，可以随时替换；而传统的基础设施则是独一无二的“宠物”，需要细心呵护，这就体现出了云时代不可变基础设施的优点。&lt;/p&gt;
+
+&lt;h2 id=&quot;8-基础设施向云演进的意义&quot;&gt;8. 基础设施向云演进的意义&lt;/h2&gt;
+
+&lt;p&gt;所以，像这样的基础设施向“不可变”演进的过程，为我们提供了两个非常重要的优点。&lt;/p&gt;
+
+&lt;p&gt;1、基础设施的一致性和可靠性。同样一个镜像，无论是在美国打开，在中国打开，还是在印度打开都是一样的。并且其中的 OS 环境对于应用而言都是一致的。而对于应用而言，它就不需要关心容器跑在哪里，这就是基础设施一致性非常重要的一个特征。&lt;/p&gt;
+
+&lt;p&gt;2、这样的镜像本身就是自包含的，其包含了应用运行所需要的所有依赖，因此也可以漂移到云上的任何一个位置。&lt;/p&gt;
+
+&lt;p&gt;此外，云原生的基础设施还提供了简单、可预测的部署和运维能力。由于现在有了镜像，应用还是自描述的，通过镜像运行起来的整个容器其实可以像 Kubernetes 的 Operator 技术一样将其做成自运维的，所以整个应用本身都是自包含的行为，使得其能够迁移到云上任何一个位置。这也使得整个流程的自动化变得非常容易。&lt;/p&gt;
+
+&lt;p&gt;应用本身也可以更好地扩容，从 1 个实例变成 100 个实例，进而变成 1 万个实例，这个过程对于容器化后的应用没有任何特殊的。最后，我们这时也能够通过不可变的基础设施来地快速周围的管控系统和支撑组件。因为，这些组件本身也是容器化的，是符合不可变基础设施这样一套理论的组件。&lt;/p&gt;
+
+&lt;p&gt;以上就是不可变基础设施为用户带来的最大的优点。&lt;/p&gt;
+
+&lt;h2 id=&quot;9-云原生关键技术点&quot;&gt;9. 云原生关键技术点&lt;/h2&gt;
+
+&lt;p&gt;当我们回过头来看云原生关键技术点或者说它所依赖的技术理论的时候，可以看到主要有这样的四个方向：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;如何构建自包含、可定制的应用镜像；&lt;/li&gt;
+  &lt;li&gt;能不能实现应用快速部署与隔离能力；&lt;/li&gt;
+  &lt;li&gt;应用基础设施创建和销毁的自动化管理；&lt;/li&gt;
+  &lt;li&gt;可复制的管控系统和支撑组件。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;“未来的软件一定是生长于云上的”这是云原生理念的最核心假设。而所谓“云原生”，实际上就是在定义一条能够让应用最大程度利用云的能力、发挥云的价值的最佳路径。在这条路径上，脱离了“应用”这个载体，“云原生”就无从谈起；容器技术，则是将这个理念落地、将软件交付的革命持续进行下去的重要手段之一。&lt;/p&gt;
+
+</description>
+            <pubDate>Mon, 23 Mar 2020 00:00:00 +0800</pubDate>
+            <link>http://0.0.0.0:4000/cloudnative.html</link>
+            <guid isPermaLink="true">http://0.0.0.0:4000/cloudnative.html</guid>
+            
+            <category>news</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>kubernetes运维</title>
+            <description>&lt;h2 id=&quot;1-kubernetes-vs-no-kubernetes&quot;&gt;1. kubernetes VS no kubernetes&lt;/h2&gt;
+
+</description>
+            <pubDate>Wed, 18 Mar 2020 00:00:00 +0800</pubDate>
+            <link>http://0.0.0.0:4000/kubernetes_operations.html</link>
+            <guid isPermaLink="true">http://0.0.0.0:4000/kubernetes_operations.html</guid>
+            
+            <category>news</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>在树莓派4上安装kubernetes集群</title>
+            <description>&lt;h2 id=&quot;1-简介&quot;&gt;1. 简介&lt;/h2&gt;
+
+&lt;p&gt;使用树莓派创建kubernetes集群的灵感来自于CNCF大会上一些极客们在展示自己公司的产品时候，把产品搭建在装有kubernetes集群的树莓派上，然后带到会场去做现场演示。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_3885.png&quot; alt=&quot;IMG_3885&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;上图中使用的是最新的树莓派4，我也模仿这个做了一个（请忽略凌乱的布线）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4212.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;2-架构图&quot;&gt;2. 架构图&lt;/h2&gt;
+
+&lt;p&gt;这个就是一个标准的3master-2node+外部LB的架构，前面带屏幕的机器是负载均衡器和跳板机。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/ha-master-gce.png&quot; alt=&quot;ha-master-gce&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;3-硬件清单&quot;&gt;3. 硬件清单&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;服务器（树莓派）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;机器型号&lt;/th&gt;
+      &lt;th&gt;IP地址&lt;/th&gt;
+      &lt;th&gt;主机名&lt;/th&gt;
+      &lt;th&gt;内存&lt;/th&gt;
+      &lt;th&gt;组件&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;树莓派4B&lt;/td&gt;
+      &lt;td&gt;10.1.1.11&lt;/td&gt;
+      &lt;td&gt;master1&lt;/td&gt;
+      &lt;td&gt;4G&lt;/td&gt;
+      &lt;td&gt;kube-panel&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;树莓派4B&lt;/td&gt;
+      &lt;td&gt;10.1.1.12&lt;/td&gt;
+      &lt;td&gt;master2&lt;/td&gt;
+      &lt;td&gt;4G&lt;/td&gt;
+      &lt;td&gt;kube-master/etcd&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;树莓派4B&lt;/td&gt;
+      &lt;td&gt;10.1.1.13&lt;/td&gt;
+      &lt;td&gt;master3&lt;/td&gt;
+      &lt;td&gt;4G&lt;/td&gt;
+      &lt;td&gt;kube-master/etcd&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;树莓派4B&lt;/td&gt;
+      &lt;td&gt;10.1.1.14&lt;/td&gt;
+      &lt;td&gt;worker1&lt;/td&gt;
+      &lt;td&gt;4G&lt;/td&gt;
+      &lt;td&gt;kube-worker/etcd&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;树莓派4B&lt;/td&gt;
+      &lt;td&gt;10.1.1.15&lt;/td&gt;
+      &lt;td&gt;master1&lt;/td&gt;
+      &lt;td&gt;4G&lt;/td&gt;
+      &lt;td&gt;kube-worker/etcd&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;树莓派3B+&lt;/td&gt;
+      &lt;td&gt;10.1.1.10&lt;br /&gt;192.168.18.17（连接无线网DHCP到的地址）&lt;/td&gt;
+      &lt;td&gt;mgtserver&lt;/td&gt;
+      &lt;td&gt;4G&lt;/td&gt;
+      &lt;td&gt;dhcp，loadbalancer，dns&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&quot;/../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4218.JPG&quot; alt=&quot;IMG_4218&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/20190626094948762.png&quot; alt=&quot;20190626094948762&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;路由器：TP-LINK8口路由器&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4220.JPG&quot; alt=&quot;IMG_4220&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;电源适配器：小米6口充电器，官方要求树莓派4B+的电流是3A，但是目前大部分USB充电都是最大2.4A，而且多口同时供电会产生电流不到2A的情况，我实了很多种方法，最后还是小米的这个最稳定，虽然到不了3A，但是机器可以正常运转，我还没有压力测试，所以不知道满负荷的情况下会不会断电，但是这个已经是家庭级别最稳定的方式了。&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/../_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4219.JPG&quot; alt=&quot;IMG_4219&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;其他：6类千兆线若干，USB转typeA线1根（树莓派3B+），USB转typeC线若干（树莓派4B），一般来说typeC的线都可以达到5A，只要不是质量太差的。一个tf卡读卡器，其他转换器（我用mac系统就需要有typeC扩展USB的转换器）&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;4-烧录镜像&quot;&gt;4. 烧录镜像&lt;/h2&gt;
+
+&lt;h3 id=&quot;41-操作系统&quot;&gt;4.1. 操作系统&lt;/h3&gt;
+
+&lt;p&gt;开始我在树莓派4B上使用的是树莓派系统，但是鉴于他和kubernetes的兼容性，我选择的是ubuntu18.04，在我写这篇文章的时候，ubuntu已经有了19.01，但是19不是LTS版，可以算是测试版，我还是选择的1804，下载地址&lt;a href=&quot;https://ubuntu.com/download/raspberry-pi&quot;&gt;点这里&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;树莓派3B+我安装了一个屏幕，但是需要安装淘宝店铺官方提供的镜像才能驱动这块屏幕，我看了下，官方的镜像用的是树莓派的镜像，所以这个系统没有选择，只有树莓派&lt;/p&gt;
+
+&lt;h3 id=&quot;42-烧录系统到sd卡&quot;&gt;4.2. 烧录系统到SD卡&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;官方教程在这里，windows&lt;a href=&quot;https://ubuntu.com/tutorials/create-an-ubuntu-image-for-a-raspberry-pi-on-windows#1-overview&quot;&gt;点这里&lt;/a&gt;，ubuntu&lt;a href=&quot;https://ubuntu.com/tutorials/create-an-ubuntu-image-for-a-raspberry-pi-on-ubuntu#1-overview&quot;&gt;点这里&lt;/a&gt;，MacOS&lt;a href=&quot;https://ubuntu.com/tutorials/create-an-ubuntu-image-for-a-raspberry-pi-on-macos#1-overview&quot;&gt;点这里&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;我的是MacOS系统，把tf卡插进转换器，再插到机器上&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/_posts/pics/2020-03-18-install-kubernetes-on-raspberryPi4/IMG_4216.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;查看磁盘&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;diskutil list
+/dev/disk0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;internal, physical&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+   &lt;span class=&quot;c&quot;&gt;#:                       TYPE NAME                    SIZE       IDENTIFIER&lt;/span&gt;
+   0:      GUID_partition_scheme                        &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;251.0 GB   disk0
+   1:                        EFI EFI                     314.6 MB   disk0s1
+   2:                 Apple_APFS Container disk1         250.7 GB   disk0s2
+
+/dev/disk1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;synthesized&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+   &lt;span class=&quot;c&quot;&gt;#:                       TYPE NAME                    SIZE       IDENTIFIER&lt;/span&gt;
+   0:      APFS Container Scheme -                      +250.7 GB   disk1
+                                 Physical Store disk0s2
+   1:                APFS Volume Macintosh HD - 数据     197.3 GB   disk1s1
+   2:                APFS Volume Preboot                 82.8 MB    disk1s2
+   3:                APFS Volume Recovery                526.6 MB   disk1s3
+   4:                APFS Volume VM                      1.1 GB     disk1s4
+   5:                APFS Volume Macintosh HD            11.0 GB    disk1s5
+
+/dev/disk2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;external, physical&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+   &lt;span class=&quot;c&quot;&gt;#:                       TYPE NAME                    SIZE       IDENTIFIER&lt;/span&gt;
+   0:     FDisk_partition_scheme                        &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;127.9 GB   disk2
+   1:             Windows_FAT_32 boot                    268.4 MB   disk2s1
+   2:                      Linux                         127.6 GB   disk2s2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;/dev/disk2是我们刚才插进去的tf卡&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;取消挂载&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;diskutil unmountDisk /dev/disk2
+Unmount of all volumes on disk2 was successful
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;把镜像写入tf卡&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'gunzip -c ~/Downloads/ubuntu-18.04.4-preinstalled-server-arm64+raspi3.img.xz | sudo dd of=/dev/disk2 bs=32m'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;5-在管理机上配置服务&quot;&gt;5. 在管理机上配置服务&lt;/h2&gt;
+
+&lt;p&gt;在管理机上配置各种服务，比如dhcp，dns和负载均衡，模拟真实环境中的dhcp服务器，名称解析服务器和F5防火墙。&lt;/p&gt;
+
+&lt;h3 id=&quot;51-连接mgtserver&quot;&gt;5.1. 连接mgtserver&lt;/h3&gt;
+
+&lt;p&gt;我用的是微型屏幕，插上鼠标键盘就有图形界面了。但是不是每个人都买了屏幕，我来说一下一般的方法。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;获取IP地址&lt;/p&gt;
+
+    &lt;p&gt;把tf卡插进卡槽，找一根网线，把机器接入路由器（一般的家庭路由器都有dhcp功能）。同时，把笔记本也接入同一个路由器。&lt;/p&gt;
+
+    &lt;p&gt;使用ifconfig命令查看自己机器获取到的IP地址&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;en0: &lt;span class=&quot;nv&quot;&gt;flags&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8863&amp;lt;UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST&amp;gt; mtu 1500
+	&lt;span class=&quot;nv&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400&amp;lt;CHANNEL_IO&amp;gt;
+	ether a4:83:e7:89:fb:62
+	inet6 fe80::75:39db:87f:6452%en0 prefixlen 64 secured scopeid 0x6
+	inet 192.168.18.12 netmask 0xffffff00 broadcast 192.168.18.255
+	inet6 2408:8210:2425:5ee0:1414:8ebc:bf37:2eb5 prefixlen 64 autoconf secured
+	inet6 2408:8210:2425:5ee0:a40c:3b21:5f39:2ab prefixlen 64 autoconf temporary
+	nd6 &lt;span class=&quot;nv&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;201&amp;lt;PERFORMNUD,DAD&amp;gt;
+	media: autoselect
+	status: active
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;使用nmap命令查看在同一个网段中其他机器的地址(没有nmap请brew install)，找到地址是mgtserver (192.168.18.17)&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sP&lt;/span&gt; 192.168.18.0/24
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;192.168.18.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.18.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.062s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;miwifi-r1cm &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.18.2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.066s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;zhimi-humidifier-v1_miio94054944 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.18.3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.15s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;zhimi-airpurifier-v3_miio437238 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.18.4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.15s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;lumi-gateway-v3_miio45176213 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.18.5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.16s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;katsutekiiphone &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.18.7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.064s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;jormunsmbp2019 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.18.12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.0023s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;mgtserver &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.18.17&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.20s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 256 IP addresses &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;8 hosts up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;14.79 second
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ssh上去就好了，默认用户名/密码是pi/raspberry，我这个是已经改完的，可能和新机器略有区别&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh pi@192.168.18.17
+pi@192.168.18.17&lt;span class=&quot;s1&quot;&gt;'s password:
+Linux mgtserver 4.19.97-v7+ #1294 SMP Thu Jan 30 13:15:58 GMT 2020 armv7l
+  
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+  
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Mar 19 10:48:27 2020 from 192.168.18.12
+  
+SSH is enabled and the default password for the '&lt;/span&gt;pi&lt;span class=&quot;s1&quot;&gt;' user has not been changed.
+This is a security risk - please login as the '&lt;/span&gt;pi&lt;span class=&quot;s1&quot;&gt;' user and type '&lt;/span&gt;passwd&lt;span class=&quot;s1&quot;&gt;' to set a new password.
+  
+pi@mgtserver:~ $
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;52-配置无线网络&quot;&gt;5.2. 配置无线网络&lt;/h3&gt;
+
+&lt;p&gt;树莓派是自带无线模块的，所以外网的链接，我们使用无线链接，修改&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/wpa_supplicant/wpa_supplicant.conf&lt;/code&gt;文件(可以配置多个无线网)&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;update_config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+&lt;span class=&quot;nv&quot;&gt;country&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CN
+
+&lt;span class=&quot;nv&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;
+	&lt;span class=&quot;nv&quot;&gt;ssid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;raspberrypi&quot;&lt;/span&gt;
+	&lt;span class=&quot;nv&quot;&gt;psk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;xxxxxxxx&quot;&lt;/span&gt;
+	&lt;span class=&quot;nv&quot;&gt;key_mgmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;WPA-PSK
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;
+	&lt;span class=&quot;nv&quot;&gt;ssid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CU_hehe&quot;&lt;/span&gt;
+	&lt;span class=&quot;nv&quot;&gt;psk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;xxxxxxxx&quot;&lt;/span&gt;
+	&lt;span class=&quot;nv&quot;&gt;key_mgmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;WPA-PSK
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;改完了重启一下，然后拔掉网线，测试一下是否可以自动获取地址，依然使用nmap查看新获取到的地址&lt;/p&gt;
+
+&lt;h3 id=&quot;53-配置私有网络&quot;&gt;5.3. 配置私有网络&lt;/h3&gt;
+
+&lt;p&gt;成功之后，我们就可以把树莓派的网口连接到我们的8口路由器上了。然后修改以太网口的地址为静态地址&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/dhcpcd.conf&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;interface enxb827eb835a18
+static &lt;span class=&quot;nv&quot;&gt;ip_address&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.1.1.10/24
+static &lt;span class=&quot;nv&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.1.1.1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;54-配置树莓派为dhcp服务器&quot;&gt;5.4. 配置树莓派为dhcp服务器&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装dhcp服务器的包&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install isc-dhcp-server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;编辑配置文件&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/default/isc-dhcp-server&lt;/code&gt;，选择需要开启dhcp服务器的网卡，我们选择刚才的以太网口enxb827eb835a18&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;INTERFACES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;enxb827eb835a18&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;配置dhcp服务，&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/dhcp/dhcpd.conf&lt;/code&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;subnet 10.1.1.0 netmask 255.255.255.0 &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+option routers 10.1.1.1&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+option subnet-mask 255.255.255.0&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+range dynamic-bootp 10.1.1.100 10.1.1.200&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动服务&lt;/p&gt;
+
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl start isc-dhcp-server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;注意：不管是实验还是生产环境，dhcp服务都不建议开机启动，因为和网络相关的服务器，系统默认的timeout时间都比较长，也就是说，如果机器意外重启，那么他在启动的时候，如果遇到问题，会不停的重试，导致启动时间非常的长，如果有数据不一致的情况，系统为了保护数据，会让自己进入安全模式，这样的话，我们是无法通过ssh连上去的，必须要到机房才可以&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;6-启动树莓派集群&quot;&gt;6. 启动树莓派集群&lt;/h2&gt;
+
+&lt;p&gt;把其他的树莓派集群都通过以太网口连接到8口路由器上，同样的方式获取和配置IP地址，这里就不赘述了。&lt;/p&gt;
+
+&lt;h2 id=&quot;7-安装kubernetes集群&quot;&gt;7. 安装kubernetes集群&lt;/h2&gt;
+
+&lt;p&gt;参考我以前的&lt;a href=&quot;https://cloudnative365.github.io/keynotes_L4_architect_1_solutions_design_1_HA_2_k8s_cluster_kubeadm_apt.html&quot;&gt;文章&lt;/a&gt;&lt;/p&gt;
+
+</description>
+            <pubDate>Wed, 18 Mar 2020 00:00:00 +0800</pubDate>
+            <link>http://0.0.0.0:4000/install_kubernetes_on_reapberryPi4.html</link>
+            <guid isPermaLink="true">http://0.0.0.0:4000/install_kubernetes_on_reapberryPi4.html</guid>
+            
+            <category>news</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>Welcome to Jekyll!</title>
+            <description>&lt;p&gt;Theme updates:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Permalinks&lt;/li&gt;
+  &lt;li&gt;Kramdown&lt;/li&gt;
+  &lt;li&gt;URL specified in config file&lt;/li&gt;
+  &lt;li&gt;removed PDF output&lt;/li&gt;
+  &lt;li&gt;removed some of the alternative layouts&lt;/li&gt;
+  &lt;li&gt;added blog feature&lt;/li&gt;
+  &lt;li&gt;sidebars configurable per page&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+            <pubDate>Wed, 24 Feb 2016 00:00:00 +0800</pubDate>
+            <link>http://0.0.0.0:4000/myupdate.html</link>
+            <guid isPermaLink="true">http://0.0.0.0:4000/myupdate.html</guid>
+            
+            <category>news</category>
+            
+            
+        </item>
+        
+        <item>
+            <title>Test post from last year</title>
+            <description>&lt;p&gt;This is just a test post from the previous year.&lt;/p&gt;
+
+</description>
+            <pubDate>Sun, 12 Apr 2015 00:00:00 +0800</pubDate>
+            <link>http://0.0.0.0:4000/test-post-from-last-year.html</link>
+            <guid isPermaLink="true">http://0.0.0.0:4000/test-post-from-last-year.html</guid>
+            
+            <category>news</category>
+            
+            
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" keynotes, senior, etcd, scale_etcd">
+<title>伸缩etcd集群 | CloudNative knowledge</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="cloudnative365.gitpage.io" href="http://0.0.0.0:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> 云原生技术课堂</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="lessons_syllabus.html">教学大纲</a></li>
+                        
+                        
+                        
+                        <li><a href="lessons_plans.html">开课计划</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂笔记<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="keynotes_L1_basic.html">基础课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L2_advanced.html">进阶课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L3_senior.html">高级课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L4_architect.html">架构师课程</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂风采<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="classes_teachers.html">讲师风采</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_aboutus.html">关于我们</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_successd.html">优秀学员作品</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用链接<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">Linux Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://cd.foundation/" target="_blank" rel="noopener">CD Foundation</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="伸缩etcd集群">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">高级课程 </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="1.etcd" href="#">1.etcd</a>
+      <ul>
+          
+          
+          
+          <li><a title="1.etcd概览" href="keynotes_L3_senior_1_etcd_1_etcd_overview.html">1.etcd概览</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2.安装etcd" href="keynotes_L3_senior_1_etcd_2_install_etcd.html">2.安装etcd</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3.使用kubeadm安装etcd" href="keynotes_L3_senior_1_etcd_3_install_etcd_with_kubeadm.html">3.使用kubeadm安装etcd</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4.管理etcd集群" href="keynotes_L3_senior_1_etcd_4_manage_etcd.html">4.管理etcd集群</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="2.kubernetes集群管理" href="#">2.kubernetes集群管理</a>
+      <ul>
+          
+          
+          
+          <li><a title="1.使用kubeadm安装kubernetes集群（外挂etcd）" href="keynotes_L3_senior_2_kubernetes_1_install_kubernetes_kubeadm.html">1.使用kubeadm安装kubernetes集群（外挂etcd）</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2.比hard way还hard的方式安装kubernetes集群" href="keynotes_L3_senior_2_kubernetes_2_hardest_way.html">2.比hard way还hard的方式安装kubernetes集群</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3.keynotes_L3_senior_2_kubernetes_3_manage_kubernetes.html" href="mydoc_introduction.html">3.keynotes_L3_senior_2_kubernetes_3_manage_kubernetes.html</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="3.ingress" href="#">3.ingress</a>
+      <ul>
+          
+          
+          
+          <li><a title="1.ingress" href="keynotes_L3_senior_2_kubernetes_1_ingress.html">1.ingress</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2.安装ingress-nginx" href="keynotes_L3_senior_2_kubernetes_2_install_ingress_nginx.html">2.安装ingress-nginx</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3.安装ingress-envoy" href="keynotes_L3_senior_2_kubernetes_3_install_ingress_envoy.html">3.安装ingress-envoy</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="4.helm" href="#">4.helm</a>
+      <ul>
+          
+          
+          
+          <li><a title="1.helm简介" href="keynotes_L3_senior_2_kubernetes_1_helm.html">1.helm简介</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="5.Rancher" href="#">5.Rancher</a>
+      <ul>
+          
+          
+          
+          <li><a title="1.Rancher简介" href="keynotes_L3_senior_2_kubernetes_1_Rancher.html">1.Rancher简介</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">伸缩etcd集群</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <h2 id="课程目标">课程目标</h2>
+
+<ul>
+  <li>向etcd集群中添加节点</li>
+  <li>从etcd集群中删除节点</li>
+  <li>etcd集群的备份与恢复</li>
+  <li>etcd集群的升级</li>
+</ul>
+
+<h2 id="1-环境">1. 环境</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>IP</th>
+      <th>HOST</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>10.0.11.36</td>
+      <td>infra0</td>
+    </tr>
+    <tr>
+      <td>10.0.12.21</td>
+      <td>infra1</td>
+    </tr>
+    <tr>
+      <td>10.0.13.126</td>
+      <td>infra2</td>
+    </tr>
+    <tr>
+      <td>10.0.12.157</td>
+      <td>infra3</td>
+    </tr>
+    <tr>
+      <td>10.0.13.118</td>
+      <td>infra4</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>且infra0，infra1，infra2是创建好的etcd集群，方法请看<a href="https://cloudnative365.github.io/keynotes_L3_senior_1_etcd_2_install_etcd.html">这里</a></p>
+
+<h2 id="2-向etcd集群中添加节点">2. 向etcd集群中添加节点</h2>
+
+<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#scaling-up-etcd-clusters">官方文档</a>中不建议我们向生产系统中添加节点，因为添加etcd节点会损失集群的性能，增加节点并不会增加集群的性能或者是容量。一般来说不建议对etcd集群扩/缩容。更不要配置任何的etcd集群自动扩展策略。我们建议在生产系统中部署五个member的etcd集群。过程参考<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/runtime-configuration.md#remove-a-member">github</a>。</p>
+
+<p>当然，如果有特殊需求，我们也可以部署7个节点，比如两地三中心的架构，三个DC中分别部署2/2/3个etcd集群。</p>
+
+<h3 id="21-添加一个正常工作的etcd节点">2.1. 添加一个正常工作的etcd节点</h3>
+
+<p>一般来说，添加节点有两个步骤：</p>
+
+<ul>
+  <li>我们可以通过 <a href="https://github.com/etcd-io/etcd/blob/master/Documentation/v2/members_api.md">HTTP members API</a>， <a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/api_reference_v3.md#service-cluster-etcdserveretcdserverpbrpcproto">gRPC members API</a>,或者是 <code class="highlighter-rouge">etcdctl member add</code> 命令。当然我们肯定是需要使用etcdctl命令的</li>
+  <li>使用新的集群配置启动新的节点</li>
+  <li>同步后，使用新的配置重新启动原有节点</li>
+</ul>
+
+<p><strong>注意1</strong>：如果原来的etcd使用的是ssl证书在签署的时候，指定了hosts的地址的证书是不能够使用的，比如：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cfssl certinfo <span class="nt">-csr</span> server.csr
+<span class="nb">.</span>
+<span class="nb">.</span>
+  <span class="s2">"IPAddresses"</span>: <span class="o">[</span>
+    <span class="s2">"127.0.0.1"</span>,
+    <span class="s2">"10.0.11.36"</span>,
+    <span class="s2">"10.0.12.21"</span>,
+    <span class="s2">"10.0.13.126"</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这样的证书在添加了新的member之后是无法正常通信的，需要重新签署证书，把新的节点加入到证书中。</p>
+
+<p><strong>注意2</strong>：由于签署的证书只用于数据传输，不用于数据加密，所以即使更换CA，重新签署证书，也是没有问题的。但是，如果我们首次启动etcd集群的时候使用的是非加密方式，后面改成SSL方式启动etcd集群的时候就会报错</p>
+
+<p><strong>注意3</strong>：json文件无法使用<code class="highlighter-rouge">hosts: [""] </code>这种方式来通配所有地址（理论上可以行，实际操作上报错）</p>
+
+<p><strong>注意4</strong>：json文件中可以使用域名来通配一类host，理论上可行，但是没有测试</p>
+
+<h4 id="211-环境准备">2.1.1. 环境准备</h4>
+
+<p>请参考<a href="https://cloudnative365.github.io/keynotes_L3_senior_1_etcd_2_install_etcd.html#31-%E5%87%86%E5%A4%87%E7%8E%AF%E5%A2%83">环境准备</a>和<a href="https://cloudnative365.github.io/keynotes_L3_senior_1_etcd_2_install_etcd.html#32-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%85%E5%AE%89%E8%A3%85etcd">下载和解压</a></p>
+
+<h4 id="212-添加节点">2.1.2. 添加节点</h4>
+
+<ul>
+  <li>
+    <p>检查节点健康状态</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> list
+  
+466035bfe5ac7a64, started, infra2, https://10.0.13.126:2380, https://10.0.13.126:2379, <span class="nb">false
+</span>784e0050552d81cd, started, infra1, https://10.0.12.21:2380, https://10.0.12.21:2379, <span class="nb">false
+</span>f7d6895384ae86d2, started, infra0, https://10.0.11.36:2380, https://10.0.11.36:2379, <span class="nb">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在任意一个etcd节点上执行</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member add infra3 <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> <span class="nt">--peer-urls</span><span class="o">=</span>https://10.0.12.157:2380
+  
+Member 6a5e9d82c1c1c471 added to cluster f36e4227f36fdc03
+  
+<span class="nv">ETCD_NAME</span><span class="o">=</span><span class="s2">"infra3"</span>
+<span class="nv">ETCD_INITIAL_CLUSTER</span><span class="o">=</span><span class="s2">"infra2=https://10.0.13.126:2380,infra3=https://10.0.12.157:2380,infra1=https://10.0.12.21:2380,infra0=https://10.0.11.36:2380"</span>
+<span class="nv">ETCD_INITIAL_ADVERTISE_PEER_URLS</span><span class="o">=</span><span class="s2">"https://10.0.12.157:2380"</span>
+<span class="nv">ETCD_INITIAL_CLUSTER_STATE</span><span class="o">=</span><span class="s2">"existing"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>再查看集群状态</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> list
+  
+466035bfe5ac7a64, started, infra2, https://10.0.13.126:2380, https://10.0.13.126:2379, <span class="nb">false
+</span>6a5e9d82c1c1c471, unstarted, , https://10.0.12.157:2380, , <span class="nb">false
+</span>784e0050552d81cd, started, infra1, https://10.0.12.21:2380, https://10.0.12.21:2379, <span class="nb">false
+</span>f7d6895384ae86d2, started, infra0, https://10.0.11.36:2380, https://10.0.11.36:2379, <span class="nb">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在新节点创建配置文件/etc/etcd/etcd.conf</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">DATA_DIR</span><span class="o">=</span>/data/etcd
+<span class="nv">HOST_NAME</span><span class="o">=</span>infra3
+<span class="nv">HOST_IP</span><span class="o">=</span>10.0.12.157
+<span class="nv">CLUSTER</span><span class="o">=</span><span class="nv">infra0</span><span class="o">=</span>https://10.0.11.36:2380,infra1<span class="o">=</span>https://10.0.12.21:2380,infra2<span class="o">=</span>https://10.0.13.126:2380,infra3<span class="o">=</span>https://10.0.12.157:2380
+<span class="nv">CLUSTER_STATE</span><span class="o">=</span>existing
+<span class="nv">TOKEN</span><span class="o">=</span>ea8cfe2bfe85b7e6c66fe190f9225838
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>修改systemd文件/lib/systemd/system/etcd.service</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>Unit]
+<span class="nv">Description</span><span class="o">=</span>Etcd Server
+<span class="nv">After</span><span class="o">=</span>network.target
+<span class="nv">After</span><span class="o">=</span>network-online.target
+<span class="nv">Wants</span><span class="o">=</span>network-online.target
+  
+<span class="o">[</span>Service]
+<span class="nv">Type</span><span class="o">=</span>notify
+<span class="nv">WorkingDirectory</span><span class="o">=</span>/data/etcd
+<span class="nv">EnvironmentFile</span><span class="o">=</span>-/etc/etcd/etcd.conf
+<span class="nv">User</span><span class="o">=</span>etcd
+<span class="c"># set GOMAXPROCS to number of processors</span>
+<span class="nv">ExecStart</span><span class="o">=</span>/bin/bash <span class="nt">-c</span> <span class="s2">"GOMAXPROCS=</span><span class="k">$(</span>nproc<span class="k">)</span><span class="s2"> /opt/etcd/etcd </span><span class="se">\</span><span class="s2">
+          --data-dir </span><span class="k">${</span><span class="nv">DATA_DIR</span><span class="k">}</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+          --name </span><span class="k">${</span><span class="nv">HOST_NAME</span><span class="k">}</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+          --initial-advertise-peer-urls https://</span><span class="k">${</span><span class="nv">HOST_IP</span><span class="k">}</span><span class="s2">:2380 </span><span class="se">\</span><span class="s2">
+          --listen-peer-urls https://</span><span class="k">${</span><span class="nv">HOST_IP</span><span class="k">}</span><span class="s2">:2380 </span><span class="se">\</span><span class="s2">
+          --advertise-client-urls https://</span><span class="k">${</span><span class="nv">HOST_IP</span><span class="k">}</span><span class="s2">:2379 </span><span class="se">\</span><span class="s2">
+          --listen-client-urls https://127.0.0.1:2379,https://</span><span class="k">${</span><span class="nv">HOST_IP</span><span class="k">}</span><span class="s2">:2379 </span><span class="se">\</span><span class="s2">
+          --listen-metrics-urls=http://127.0.0.1:2381 </span><span class="se">\</span><span class="s2">
+          --initial-cluster </span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+          --initial-cluster-state </span><span class="k">${</span><span class="nv">CLUSTER_STATE</span><span class="k">}</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+          --initial-cluster-token </span><span class="k">${</span><span class="nv">TOKEN</span><span class="k">}</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+          --client-cert-auth </span><span class="se">\</span><span class="s2">
+          --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem </span><span class="se">\</span><span class="s2">
+          --cert-file=/etc/kubernetes/pki/etcd/server.pem </span><span class="se">\</span><span class="s2">
+          --key-file=/etc/kubernetes/pki/etcd/server-key.pem </span><span class="se">\</span><span class="s2">
+          --peer-client-cert-auth </span><span class="se">\</span><span class="s2">
+          --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem </span><span class="se">\</span><span class="s2">
+          --peer-cert-file=/etc/kubernetes/pki/etcd/members.pem </span><span class="se">\</span><span class="s2">
+          --peer-key-file=/etc/kubernetes/pki/etcd/members-key.pem"</span>
+<span class="nv">Restart</span><span class="o">=</span>on-failure
+<span class="nv">LimitNOFILE</span><span class="o">=</span>65536
+  
+<span class="o">[</span>Install]
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>通过scp方式把etcd的pki同步到新机器上并修改权限</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chmod 400 /etc/kubernetes/pki/etcd/<span class="k">*</span>
+chown <span class="nt">-R</span> etcd:adm /etc/kubernetes/pki/etcd/
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在新节点上启动etcd</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start etcd
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>如果报错，就吧数据文件<code class="highlighter-rouge">/data/etcd/member</code>删除再重启</p>
+  </li>
+  <li>
+    <p>这时候再list member</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> list
+  
+466035bfe5ac7a64, started, infra2, https://10.0.13.126:2380, https://10.0.13.126:2379, <span class="nb">false
+</span>6a5e9d82c1c1c471, started, infra3, https://10.0.12.157:2380, https://10.0.12.157:2379, <span class="nb">false
+</span>784e0050552d81cd, started, infra1, https://10.0.12.21:2380, https://10.0.12.21:2379, <span class="nb">false
+</span>f7d6895384ae86d2, started, infra0, https://10.0.11.36:2380, https://10.0.11.36:2379, <span class="nb">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>注意</strong>：修改每个节点上的/etc/etcd/etcd.conf都需要修改为对应的配置</p>
+  </li>
+</ul>
+
+<h4 id="213-添加一个learner-etcd节点">2.1.3. 添加一个learner etcd节点</h4>
+
+<p>从etcd3.4版本之后，etcd知识把节点添加为learner节点（不会参与投票的节点）。这样做是为了让添加新节点更加的安全，较少添加节点过程中集群的宕机时间，我们建议在节点在完全同步数据之前作为learner节点。所以我们增加节点的步骤变成了下面几个</p>
+
+<ul>
+  <li>我们可以通过 <a href="https://github.com/etcd-io/etcd/blob/master/Documentation/v2/members_api.md">HTTP members API</a>， <a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/api_reference_v3.md#service-cluster-etcdserveretcdserverpbrpcproto">gRPC members API</a>,或者是 <code class="highlighter-rouge">etcdctl member add --learner</code> 命令.</li>
+  <li>使用新的集群配置启动新的节点</li>
+  <li>使用新的配置重新启动原有节点</li>
+  <li>使用 <a href="https://github.com/etcd-io/etcd/blob/master/Documentation/dev-guide/api_reference_v3.md#service-cluster-etcdserveretcdserverpbrpcproto">gRPC members API</a>,或者是 <code class="highlighter-rouge">etcdctl member promote</code>命令来让learner节点成为有投票权的节点。这个时候etcd集群会检查一下promote的请求来确认这个操作是安全的。他会去确认learner节点确实已经同步了leader数据的节点，然后才让这个节点拥有投票权。</li>
+</ul>
+
+<h4 id="214-添加learner-etcd节点具体操作如下">2.1.4. 添加learner etcd节点具体操作如下</h4>
+
+<ul>
+  <li>
+    <p>检查节点健康状态</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> list
+  
+466035bfe5ac7a64, started, infra2, https://10.0.13.126:2380, https://10.0.13.126:2379, <span class="nb">false
+</span>6a5e9d82c1c1c471, started, infra3, https://10.0.12.157:2380, https://10.0.12.157:2379, <span class="nb">false
+</span>784e0050552d81cd, started, infra1, https://10.0.12.21:2380, https://10.0.12.21:2379, <span class="nb">false
+</span>f7d6895384ae86d2, started, infra0, https://10.0.11.36:2380, https://10.0.11.36:2379, <span class="nb">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在任意一个etcd节点上执行</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member add infra4 <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> <span class="nt">--peer-urls</span><span class="o">=</span>https://10.0.13.118:2380 <span class="nt">--learner</span>
+Member d11c0954aee6f056 added to cluster f36e4227f36fdc03
+  
+<span class="nv">ETCD_NAME</span><span class="o">=</span><span class="s2">"infra4"</span>
+<span class="nv">ETCD_INITIAL_CLUSTER</span><span class="o">=</span><span class="s2">"infra2=https://10.0.13.126:2380,infra3=https://10.0.12.157:2380,infra1=https://10.0.12.21:2380,infra4=https://10.0.13.118:2380,infra0=https://10.0.11.36:2380"</span>
+<span class="nv">ETCD_INITIAL_ADVERTISE_PEER_URLS</span><span class="o">=</span><span class="s2">"https://10.0.13.118:2380"</span>
+<span class="nv">ETCD_INITIAL_CLUSTER_STATE</span><span class="o">=</span><span class="s2">"existing"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>再查看集群状态</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>etcdctl member <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> list
+  
+249badc16d370eb0, unstarted, , https://10.0.13.118:2380, , <span class="nb">true
+</span>466035bfe5ac7a64, started, infra2, https://10.0.13.126:2380, https://10.0.13.126:2379, <span class="nb">false
+</span>6a5e9d82c1c1c471, started, infra3, https://10.0.12.157:2380, https://10.0.12.157:2379, <span class="nb">false
+</span>784e0050552d81cd, started, infra1, https://10.0.12.21:2380, https://10.0.12.21:2379, <span class="nb">false
+</span>f7d6895384ae86d2, started, infra0, https://10.0.11.36:2380, https://10.0.11.36:2379, <span class="nb">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在新节点创建配置文件/etc/etcd/etcd.conf</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">DATA_DIR</span><span class="o">=</span>/data/etcd
+<span class="nv">HOST_NAME</span><span class="o">=</span>infra4
+<span class="nv">HOST_IP</span><span class="o">=</span>10.0.13.118
+<span class="nv">CLUSTER</span><span class="o">=</span><span class="nv">infra0</span><span class="o">=</span>https://10.0.11.36:2380,infra1<span class="o">=</span>https://10.0.12.21:2380,infra2<span class="o">=</span>https://10.0.13.126:2380,infra3<span class="o">=</span>https://10.0.12.157:2380,infra4<span class="o">=</span>https://10.0.13.118:2380
+<span class="nv">CLUSTER_STATE</span><span class="o">=</span>existing
+<span class="nv">TOKEN</span><span class="o">=</span>ea8cfe2bfe85b7e6c66fe190f9225838
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>修改systemd文件/lib/systemd/system/etcd.service</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>Unit]
+<span class="nv">Description</span><span class="o">=</span>Etcd Server
+<span class="nv">After</span><span class="o">=</span>network.target
+<span class="nv">After</span><span class="o">=</span>network-online.target
+<span class="nv">Wants</span><span class="o">=</span>network-online.target
+  
+<span class="o">[</span>Service]
+<span class="nv">Type</span><span class="o">=</span>notify
+<span class="nv">WorkingDirectory</span><span class="o">=</span>/data/etcd
+<span class="nv">EnvironmentFile</span><span class="o">=</span>-/etc/etcd/etcd.conf
+<span class="nv">User</span><span class="o">=</span>etcd
+<span class="c"># set GOMAXPROCS to number of processors</span>
+<span class="nv">ExecStart</span><span class="o">=</span>/bin/bash <span class="nt">-c</span> <span class="s2">"GOMAXPROCS=</span><span class="k">$(</span>nproc<span class="k">)</span><span class="s2"> /opt/etcd/etcd </span><span class="se">\</span><span class="s2">
+          --data-dir </span><span class="k">${</span><span class="nv">DATA_DIR</span><span class="k">}</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+          --name </span><span class="k">${</span><span class="nv">HOST_NAME</span><span class="k">}</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+          --initial-advertise-peer-urls https://</span><span class="k">${</span><span class="nv">HOST_IP</span><span class="k">}</span><span class="s2">:2380 </span><span class="se">\</span><span class="s2">
+          --listen-peer-urls https://</span><span class="k">${</span><span class="nv">HOST_IP</span><span class="k">}</span><span class="s2">:2380 </span><span class="se">\</span><span class="s2">
+          --advertise-client-urls https://</span><span class="k">${</span><span class="nv">HOST_IP</span><span class="k">}</span><span class="s2">:2379 </span><span class="se">\</span><span class="s2">
+          --listen-client-urls https://127.0.0.1:2379,https://</span><span class="k">${</span><span class="nv">HOST_IP</span><span class="k">}</span><span class="s2">:2379 </span><span class="se">\</span><span class="s2">
+          --listen-metrics-urls=http://127.0.0.1:2381 </span><span class="se">\</span><span class="s2">
+          --initial-cluster </span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+          --initial-cluster-state </span><span class="k">${</span><span class="nv">CLUSTER_STATE</span><span class="k">}</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+          --initial-cluster-token </span><span class="k">${</span><span class="nv">TOKEN</span><span class="k">}</span><span class="s2"> </span><span class="se">\</span><span class="s2">
+          --client-cert-auth </span><span class="se">\</span><span class="s2">
+          --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem </span><span class="se">\</span><span class="s2">
+          --cert-file=/etc/kubernetes/pki/etcd/server.pem </span><span class="se">\</span><span class="s2">
+          --key-file=/etc/kubernetes/pki/etcd/server-key.pem </span><span class="se">\</span><span class="s2">
+          --peer-client-cert-auth </span><span class="se">\</span><span class="s2">
+          --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem </span><span class="se">\</span><span class="s2">
+          --peer-cert-file=/etc/kubernetes/pki/etcd/members.pem </span><span class="se">\</span><span class="s2">
+          --peer-key-file=/etc/kubernetes/pki/etcd/members-key.pem"</span>
+<span class="nv">Restart</span><span class="o">=</span>on-failure
+<span class="nv">LimitNOFILE</span><span class="o">=</span>65536
+  
+<span class="o">[</span>Install]
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>通过scp方式把etcd的pki同步到新机器上并修改权限</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>chmod 400 /etc/kubernetes/pki/etcd/<span class="k">*</span>
+<span class="nv">$ </span>chown <span class="nt">-R</span> etcd:adm /etc/kubernetes/pki/etcd/
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>启动etcd</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl start etcd
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>再查看集群状态，发现infra4的learner是true</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> list
+12d20db544264be2, started, infra4, https://10.0.13.118:2380, https://10.0.13.118:2379, <span class="nb">true
+</span>466035bfe5ac7a64, started, infra2, https://10.0.13.126:2380, https://10.0.13.126:2379, <span class="nb">false
+</span>6a5e9d82c1c1c471, started, infra3, https://10.0.12.157:2380, https://10.0.12.157:2379, <span class="nb">false
+</span>784e0050552d81cd, started, infra1, https://10.0.12.21:2380, https://10.0.12.21:2379, <span class="nb">false
+</span>f7d6895384ae86d2, started, infra0, https://10.0.11.36:2380, https://10.0.11.36:2379, <span class="nb">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>查看集群状态，集群状态的显示结果为<code class="highlighter-rouge">The items in the lists are endpoint, ID, version, db size, is leader, is learner, raft term, raft index, raft applied index, errors.</code></p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl endpoint status <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> <span class="nt">--endpoints</span><span class="o">=</span>https://127.0.0.1:2379 <span class="nt">--cluster</span>
+https://10.0.13.118:2379, 12d20db544264be2, 3.4.9, 16 kB, <span class="nb">false</span>, <span class="nb">true</span>, 4232, 26, 26,
+https://10.0.13.126:2379, 466035bfe5ac7a64, 3.4.9, 20 kB, <span class="nb">false</span>, <span class="nb">false</span>, 4232, 26, 26,
+https://10.0.12.157:2379, 6a5e9d82c1c1c471, 3.4.9, 20 kB, <span class="nb">false</span>, <span class="nb">false</span>, 4232, 26, 26,
+https://10.0.12.21:2379, 784e0050552d81cd, 3.4.9, 20 kB, <span class="nb">false</span>, <span class="nb">false</span>, 4232, 26, 26,
+https://10.0.11.36:2379, f7d6895384ae86d2, 3.4.9, 20 kB, <span class="nb">true</span>, <span class="nb">false</span>, 4232, 26, 26,
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>当信息同步之后，我们就可以开始promote了</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member promote 12d20db544264be2 <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span>
+Member 12d20db544264be2 promoted <span class="k">in </span>cluster f36e4227f36fdc03
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>再查看集群状态</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> list
+12d20db544264be2, started, infra4, https://10.0.13.118:2380, https://10.0.13.118:2379, <span class="nb">false
+</span>466035bfe5ac7a64, started, infra2, https://10.0.13.126:2380, https://10.0.13.126:2379, <span class="nb">false
+</span>6a5e9d82c1c1c471, started, infra3, https://10.0.12.157:2380, https://10.0.12.157:2379, <span class="nb">false
+</span>784e0050552d81cd, started, infra1, https://10.0.12.21:2380, https://10.0.12.21:2379, <span class="nb">false
+</span>f7d6895384ae86d2, started, infra0, https://10.0.11.36:2380, https://10.0.11.36:2379, <span class="nb">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>注意</strong>：修改每个节点上的/etc/etcd/etcd.conf都需要修改为对应的配置</p>
+  </li>
+</ul>
+
+<h3 id="22-如果添加节点出现问题">2.2. 如果添加节点出现问题</h3>
+
+<p>我们这里举例是同步出现问题，比如：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcd <span class="nt">--name</span> infra3 <span class="se">\</span>
+  <span class="nt">--initial-cluster</span> <span class="nv">infra0</span><span class="o">=</span>http://10.0.1.10:2380,infra1<span class="o">=</span>http://10.0.1.11:2380,infra2<span class="o">=</span>http://10.0.1.12:2380 <span class="se">\</span>
+  <span class="nt">--initial-cluster-state</span> existing
+etcdserver: assign ids error: the member count is unequal
+<span class="nb">exit </span>1
+</code></pre></div></div>
+
+<p>我们需要清空数据文件，再更换一下节点的信息（节点名称和IP）</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcd <span class="nt">--name</span> infra4 <span class="se">\</span>
+  <span class="nt">--initial-cluster</span> <span class="nv">infra0</span><span class="o">=</span>http://10.0.1.10:2380,infra1<span class="o">=</span>http://10.0.1.11:2380,infra2<span class="o">=</span>http://10.0.1.12:2380,infra4<span class="o">=</span>http://10.0.1.14:2380 <span class="se">\</span>
+  <span class="nt">--initial-cluster-state</span> existing
+etcdserver: assign ids error: unmatched member <span class="k">while </span>checking PeerURLs
+<span class="nb">exit </span>1
+</code></pre></div></div>
+
+<h3 id="23-如果添加learner节点出现问题">2.3. 如果添加learner节点出现问题</h3>
+
+<ul>
+  <li>集群中多于1个learner会报错</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member add infra4 <span class="nt">--peer-urls</span><span class="o">=</span>http://10.0.1.14:2380 <span class="nt">--learner</span>
+Error: etcdserver: too many learner members <span class="k">in </span>cluster
+</code></pre></div></div>
+
+<ul>
+  <li>数据不同步的情况下会报错</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member promote 9bf1b35fc7761a23
+Error: etcdserver: can only promote a learner member which is <span class="k">in </span>sync with leader
+</code></pre></div></div>
+
+<ul>
+  <li>提升一个不是learner的节点会报错</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member promote 9bf1b35fc7761a23
+Error: etcdserver: can only promote a learner member
+</code></pre></div></div>
+
+<ul>
+  <li>提升一个不存在的learner节点会报错</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member promote 12345abcde
+Error: etcdserver: member not found
+</code></pre></div></div>
+
+<h2 id="3-移除节点">3. 移除节点</h2>
+
+<ul>
+  <li>
+    <p>查看集群状态</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> list
+12d20db544264be2, started, infra4, https://10.0.13.118:2380, https://10.0.13.118:2379, <span class="nb">false
+</span>466035bfe5ac7a64, started, infra2, https://10.0.13.126:2380, https://10.0.13.126:2379, <span class="nb">false
+</span>6a5e9d82c1c1c471, started, infra3, https://10.0.12.157:2380, https://10.0.12.157:2379, <span class="nb">false
+</span>784e0050552d81cd, started, infra1, https://10.0.12.21:2380, https://10.0.12.21:2379, <span class="nb">false
+</span>f7d6895384ae86d2, started, infra0, https://10.0.11.36:2380, https://10.0.11.36:2379, <span class="nb">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>从集群中删除节点infra4</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member remove 12d20db544264be2 <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span>
+Member 12d20db544264be2 removed from cluster f36e4227f36fdc03
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>查看状态</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>etcdctl member <span class="nt">--cacert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/ca.pem"</span> <span class="nt">--cert</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members.pem"</span> <span class="nt">--key</span><span class="o">=</span><span class="s2">"/etc/kubernetes/pki/etcd/members-key.pem"</span> list
+466035bfe5ac7a64, started, infra2, https://10.0.13.126:2380, https://10.0.13.126:2379, <span class="nb">false
+</span>6a5e9d82c1c1c471, started, infra3, https://10.0.12.157:2380, https://10.0.12.157:2379, <span class="nb">false
+</span>784e0050552d81cd, started, infra1, https://10.0.12.21:2380, https://10.0.12.21:2379, <span class="nb">false
+</span>f7d6895384ae86d2, started, infra0, https://10.0.11.36:2380, https://10.0.11.36:2379, <span class="nb">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>注意</strong>：修改每个节点上的/etc/etcd/etcd.conf都需要修改为对应的配置</p>
+  </li>
+</ul>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://cdn.commento.io/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 原生云技术. All rights reserved. <br />
+ Site last generated: Jun 29, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

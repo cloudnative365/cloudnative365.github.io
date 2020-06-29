@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" keynotes, advanced, kubernetes, CKA, SECURITY">
+<title>SECURITY | CloudNative knowledge</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="cloudnative365.gitpage.io" href="http://0.0.0.0:4000/feed.xml">
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> 云原生技术课堂</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课程<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="lessons_syllabus.html">教学大纲</a></li>
+                        
+                        
+                        
+                        <li><a href="lessons_plans.html">开课计划</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂笔记<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="keynotes_L1_basic.html">基础课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L2_advanced.html">进阶课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L3_senior.html">高级课程</a></li>
+                        
+                        
+                        
+                        <li><a href="keynotes_L4_architect.html">架构师课程</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">课堂风采<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="classes_teachers.html">讲师风采</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_aboutus.html">关于我们</a></li>
+                        
+                        
+                        
+                        <li><a href="classes_successd.html">优秀学员作品</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">常用链接<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="https://www.cncf.io/" target="_blank" rel="noopener">CNCF Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">Linux Foundation</a></li>
+                        
+                        
+                        
+                        <li><a href="https://cd.foundation/" target="_blank" rel="noopener">CD Foundation</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="search...">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="SECURITY">{title}</a></li>',
+                    noResultsText: 'No results found.',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">进阶课程 </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="第一章 CKA官方教程" href="#">第一章 CKA官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="1 COURSE_INTRODUCTION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_1_COURSE_INTRODUCTION.html">1 COURSE_INTRODUCTION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2 BASICS_OF_KUBERNETES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html">2 BASICS_OF_KUBERNETES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3 INSTALLATION_AND_CONFIGURATION" href="keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html">3 INSTALLATION_AND_CONFIGURATION</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4 KUBERNETES_ARCHITECTURE" href="keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html">4 KUBERNETES_ARCHITECTURE</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5 APIS_AND_ACCESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html">5 APIS_AND_ACCESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6 API_OBJECTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html">6 API_OBJECTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7 MANAGING_STATE_WITH_DEPLOYMENTS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html">7 MANAGING_STATE_WITH_DEPLOYMENTS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8 SERVICES" href="keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html">8 SERVICES</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9 VOLUMES_AND_DATA" href="keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html">9 VOLUMES_AND_DATA</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10 INGRESS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html">10 INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11 SCHEDULING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html">11 SCHEDULING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12 LOGGING_AND_TROUBLESHOOTING" href="keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html">12 LOGGING_AND_TROUBLESHOOTING</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13 CUSTOM_RESOURCE_DEFINITIONS" href="keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html">13 CUSTOM_RESOURCE_DEFINITIONS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14 HELM" href="keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html">14 HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a title="15 SECURITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html">15 SECURITY</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16 HIGH_AVAILABILITY" href="keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html">16 HIGH_AVAILABILITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第二章 CKAD官方教程" href="#">第二章 CKAD官方教程</a>
+      <ul>
+          
+          
+          
+          <li><a title="CloudNative Roadmap" href="mydoc_release_notes_60.html">CloudNative Roadmap</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="第三章 kubernetes入门讲座" href="#">第三章 kubernetes入门讲座</a>
+      <ul>
+          
+          
+          
+          <li><a title="1. 课程介绍" href="keynotes_L2_advanced_3_kubernetes_1_COURSE_INTRODUCTION.html">1. 课程介绍</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="2. 认识kubernetes" href="keynotes_L2_advanced_3_kubernetes_2_BASICS_OF_KUBERNETES.html">2. 认识kubernetes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="3. kubernetes架构和基础概念" href="keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html">3. kubernetes架构和基础概念</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="4. 安装和配置kubernetes实验环境" href="keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html">4. 安装和配置kubernetes实验环境</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="5. 使用命令行管理资源" href="keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html">5. 使用命令行管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="6. 使用清单文件管理资源" href="keynotes_L2_advanced_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html">6. 使用清单文件管理资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="7. POD" href="keynotes_L2_advanced_3_kubernetes_7_POD.html">7. POD</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="8. 标签和标签选择器" href="keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html">8. 标签和标签选择器</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="9. Deployment" href="keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html">9. Deployment</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="10. Service" href="keynotes_L2_advanced_3_kubernetes_10_SERVICE.html">10. Service</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="11. pv" href="keynotes_L2_advanced_3_kubernetes_11_PV.html">11. pv</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="12. configmap和secret" href="keynotes_L2_advanced_3_kubernetes_12_SECRET_AND_CONFIGMAP.html">12. configmap和secret</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="13. API" href="keynotes_L2_advanced_3_kubernetes_13_APIS_AND_ACCESS.html">13. API</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="14. STATEFULSET" href="keynotes_L2_advanced_3_kubernetes_14_STATEFULSET.html">14. STATEFULSET</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="15. INGRESS" href="keynotes_L2_advanced_3_kubernetes_15_INGRESS.html">15. INGRESS</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="16. 调度" href="keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html">16. 调度</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="17. 日志和错误定位" href="keynotes_L2_advanced_3_kubernetes_17_LOGGING_AND_TROUBLESHOOTING.html">17. 日志和错误定位</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="18. 自定义资源" href="keynotes_L2_advanced_3_kubernetes_18_CUSTOM_RESOURCE_DEFINTIONS.html">18. 自定义资源</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="19. HELM" href="keynotes_L2_advanced_3_kubernetes_19_HELM.html">19. HELM</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="20. SECURITY" href="keynotes_L2_advanced_3_kubernetes_20_SECURITY.html">20. SECURITY</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">SECURITY</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <h2 id="learning-objectives">Learning Objectives</h2>
+
+<p>By the end of this chapter, you should be able to:</p>
+
+<ul>
+  <li>Explain the flow of API requests.</li>
+  <li>Configure authorization rules.</li>
+  <li>Examine authentication policies.</li>
+  <li>Restrict network traffic with network policies.</li>
+</ul>
+
+<h2 id="security">SECURITY</h2>
+
+<h3 id="overview">Overview</h3>
+
+<p>Security is a big and complex topic, especially in a distributed system like Kubernetes. Thus, we are just going to cover some of the concepts that deal with security in the context of Kubernetes.</p>
+
+<p>Then, we are going to focus on the authentication aspect of the API server and we will dive into authorization, looking at things like ABAC and RBAC, which is now the default configuration when you bootstrap a Kubernetes cluster with <strong>kubeadm</strong>.</p>
+
+<p>We are going to look at the <strong>admission control</strong> system, which lets you look at and possibly modify the requests that are coming in, and do a final deny or accept on those requests.</p>
+
+<p>Following that, we’re going to look at a few other concepts, including how you can secure your Pods more tightly using security contexts and pod security policies, which are full-fledged API objects in Kubernetes.</p>
+
+<p>Finally, we will look at network policies. By default, we tend not to turn on network policies, which let any traffic flow through all of our pods, in all the different namespaces. Using network policies, we can actually define Ingress rules so that we can restrict the Ingress traffic between the different namespaces. The network tool in use, such as Flannel or Calico will determine if a network policy can be implemented. As Kubernetes becomes more mature, this will become a strongly suggested configuration.</p>
+
+<h3 id="accessing-the-api">Accessing the API</h3>
+
+<p>To perform any action in a Kubernetes cluster, you need to access the API and go through three main steps:</p>
+
+<ul>
+  <li>Authentication:</li>
+  <li>Authorization (ABAC or RBAC):</li>
+  <li>Admission Control.</li>
+</ul>
+
+<p>These steps are described in more detail in the official documentation about <a href="https://kubernetes.io/docs/reference/access-authn-authz/controlling-access/">controlling access to the Kubernetes API</a> and illustrated by the diagram below.</p>
+
+<p><img src="/pages/keynotes/L2_advanced/1_CKA/pics/15_SECURITY/1u7mjwewyqon-Accessing_the_API.png" alt="img" /></p>
+
+<p><strong>Accessing the API</strong>
+Retrieved from the <a href="https://kubernetes.io/images/docs/admin/access-control-overview.svg">Kubernetes website</a></p>
+
+<p>Once a request reaches the API server securely, it will first go through any authentication module that has been configured. The request can be rejected if authentication fails or it gets authenticated and passed to the authorization step.</p>
+
+<p>At the authorization step, the request will be checked against existing policies. It will be authorized if the user has the permissions to perform the requested actions. Then, the requests will go through the last step of admission. In general, admission controllers will check the actual content of the objects being created and validate them before admitting the request.</p>
+
+<p>In addition to these steps, the requests reaching the API server over the network are encrypted using TLS. This needs to be properly configured using SSL certificates. If you use <strong>kubeadm</strong>, this configuration is done for you; otherwise, follow <a href="https://github.com/kelseyhightower/kubernetes-the-hard-way"><em>Kubernetes the Hard Way</em></a> by Kelsey Hightower, or review the <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/">API server configuration options</a>.</p>
+
+<h3 id="authentication">Authentication</h3>
+
+<p>There are three main points to remember with authentication in Kubernetes:</p>
+
+<ul>
+  <li>In its straightforward form, authentication is done with certificates, tokens or basic authentication (i.e. username and password).</li>
+  <li>Users are not created by the API, but should be managed by an external system.</li>
+  <li>System accounts are used by processes to access the API (to learn more read <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/"><em>Configure Service Accounts for Pods</em></a>).</li>
+</ul>
+
+<p>If you want to learn more on how system accounts are used by processes to access the API:</p>
+
+<p>There are two more advanced authentication mechanisms. Webhooks can be used to verify bearer tokens, and connection with an external OpenID provider.</p>
+
+<p>The type of authentication used is defined in the kube-apiserver startup options. Below are four examples of a subset of configuration options that would need to be set depending on what choice of authentication mechanism you choose:</p>
+
+<p><strong>–basic-auth-file</strong></p>
+
+<p><strong>–oidc-issuer-url</strong></p>
+
+<p><strong>–token-auth-file</strong></p>
+
+<p><strong>–authorization-webhook-config-file</strong></p>
+
+<p>One or more Authenticator Modules are used:</p>
+
+<ul>
+  <li>x509 Client Certs;</li>
+  <li>static token, bearer or bootstrap token;</li>
+  <li>static password file;</li>
+  <li>service account;</li>
+  <li>OpenID connect tokens.</li>
+</ul>
+
+<p>Each is tried until successful, and the order is not guaranteed. Anonymous access can also be enabled, otherwise you will get a 401 response. Users are not created by the API, and should be managed by an external system.</p>
+
+<p>To learn more about authentication, see the official <a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/">Kubernetes Documentation</a>.</p>
+
+<h3 id="authorization">Authorization</h3>
+
+<p>Once a request is authenticated, it needs to be authorized to be able to proceed through the Kubernetes system and perform its intended action.</p>
+
+<p>There are three main authorization modes and two global Deny/Allow settings. The three main modes are:</p>
+
+<ul>
+  <li>ABAC</li>
+  <li>RBAC</li>
+  <li>Webhook.</li>
+</ul>
+
+<p>They can be configured as kube-apiserver startup options:</p>
+
+<p><strong>–authorization-mode=ABAC</strong></p>
+
+<p><strong>–authorization-mode=RBAC</strong></p>
+
+<p><strong>–authorization-mode=Webhook</strong></p>
+
+<p><strong>–authorization-mode=AlwaysDeny</strong></p>
+
+<p><strong>–authorization-mode=AlwaysAllow</strong></p>
+
+<p>The authorization modes implement policies to allow requests. Attributes of the requests are checked against the policies (e.g. user, group, namespace, verb).</p>
+
+<h3 id="abac-rbac-and-webhook-modes">ABAC, RBAC and Webhook Modes</h3>
+
+<ul>
+  <li>
+    <p>ABAC</p>
+
+    <p><a href="https://kubernetes.io/docs/reference/access-authn-authz/abac/">ABAC</a> stands for Attribute Based Access Control. It was the first authorization model in Kubernetes that allowed administrators to implement the right policies. Today, RBAC is becoming the default authorization mode.</p>
+
+    <p>Policies are defined in a JSON file and referenced to by a kube-apiserver startup option:</p>
+
+    <p><strong>–authorization-policy-file=my_policy.json</strong></p>
+
+    <p>For example, the policy file shown below authorizes user Bob to read pods in the namespace <strong>foobar</strong>:</p>
+
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abac.authorization.kubernetes.io/v1beta1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Policy"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bob"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"namespace"</span><span class="p">:</span><span class="w"> </span><span class="s2">"foobar"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"resource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pods"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"readonly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">     
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
+
+    <p>You can check other <a href="https://kubernetes.io/docs/reference/access-authn-authz/abac/#examples">policy examples</a> in the Kubernetes Documentation.</p>
+  </li>
+  <li>
+    <p>RBAC</p>
+
+    <p><a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">RBAC</a> stands for Role Based Access Control.</p>
+
+    <p>All resources are modeled API objects in Kubernetes, from Pods to Namespaces. They also belong to API Groups, such as <strong>core</strong> and <strong>apps</strong>.These resources allow operations such as Create, Read, Update, and Delete (CRUD), which we have been working with so far. Operations are called <strong>verbs</strong> inside YAML files. Adding to these basic components, we will add more elements of the API, which can then be managed via RBAC.</p>
+
+    <p>Rules are operations which can act upon an API group. Roles are a group of rules which affect, or scope, a single namespace, whereas <strong>ClusterRoles</strong> have a scope of the entire cluster.</p>
+
+    <p>Each operation can act upon one of three subjects, which are <strong>User Accounts</strong> which don’t exist as API objects, <strong>Service Accounts</strong>, and <strong>Groups</strong> which are known as <strong>clusterrolebinding</strong> when using kubectl.</p>
+
+    <p>RBAC is then writing rules to allow or deny operations by users, roles or groups upon resources.</p>
+
+    <p>While RBAC can be complex, the basic flow is to create a certificate for a user. As a user is not an API object of Kubernetes, we are requiring outside authentication, such as OpenSSL certificates. After generating the certificate against the cluster certificate authority, we can set that credential for the user using a context.</p>
+
+    <p>Roles can then be used to configure an association of <strong>apiGroups</strong>, <strong>resources</strong>, and the <strong>verbs</strong> allowed to them. The user can then be bound to a role limiting what and where they can work in the cluster.</p>
+
+    <p>Here is a summary of the RBAC process:</p>
+    <ul>
+      <li>Determine or create namespace</li>
+      <li>Create certificate credentials for user</li>
+      <li>Set the credentials for the user to the namespace using a context</li>
+      <li>Create a role for the expected task set</li>
+      <li>Bind the user to the role</li>
+      <li>Verify the user has limited access.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Webhook</p>
+
+    <p>A Webhook is an HTTP callback, an HTTP POST that occurs when something happens; a simple event-notification via HTTP POST. A web application implementing Webhooks will POST a message to a URL when certain things happen.</p>
+
+    <p>To learn more about using the Webhook mode, see the <a href="https://kubernetes.io/docs/reference/access-authn-authz/webhook/"><em>Webhook Mode</em></a> section of the Kubernetes Documentation.</p>
+  </li>
+</ul>
+
+<h3 id="admission-controller">Admission Controller</h3>
+
+<p>The last step in letting an API request into Kubernetes is admission control.</p>
+
+<p>Admission controllers are pieces of software that can access the content of the objects being created by the requests. They can modify the content or validate it, and potentially deny the request.</p>
+
+<p>Admission controllers are needed for certain features to work properly. Controllers have been added as Kubernetes matured. Starting with the 1.13.1 release of the <strong>kube-apiserver</strong>, the admission controllers are now compiled into the binary, instead of a list passed during execution. To enable or disable, you can pass the following options, changing out the plugins you want to enable or disable:</p>
+
+<p><strong>–enable-admission-plugins=Initializers,NamespaceLifecycle,LimitRanger
+–disable-admission-plugins=PodNodeSelector</strong></p>
+
+<p>The first controller is <strong>Initializers</strong> which will allow the dynamic modification of the API request, providing great flexibility. Each admission controller functionality is explained in the documentation. For example, the <strong>ResourceQuota</strong> controller will ensure that the object created does not violate any of the existing quotas.</p>
+
+<h3 id="security-contexts">Security Contexts</h3>
+
+<p>Pods and containers within pods can be given specific security constraints to limit what processes running in containers can do. For example, the UID of the process, the Linux capabilities, and the filesystem group can be limited.</p>
+
+<p>This security limitation is called a security context. It can be defined for the entire pod or per container, and is represented as additional sections in the resources manifests. The notable difference is that Linux capabilities are set at the container level.</p>
+
+<p>For example, if you want to enforce a policy that containers cannot run their process as the root user, you can add a pod security context like the one below:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">securityContext</span><span class="pi">:</span>
+    <span class="na">runAsNonRoot</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+</code></pre></div></div>
+
+<p>Then, when you create this Pod, you will see a warning that the container is trying to run as root and that it is not allowed. Hence, the Pod will never run:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods
+
+NAME   READY  STATUS                                                 RESTARTS  AGE
+nginx  0/1    container has runAsNonRoot and image will run as root  0         10s
+</code></pre></div></div>
+
+<p>To learn more, read the <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"><em>Configure a Security Context for a Pod or Container</em></a> section in the Kubernetes Documentation.</p>
+
+<h3 id="pod-security-policies">Pod Security Policies</h3>
+
+<p>To automate the enforcement of security contexts, you can define <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/">PodSecurityPolicies</a> (PSP). A PSP is defined via a standard Kubernetes manifest following the PSP API schema. An example is presented below.</p>
+
+<p>These policies are cluster-level rules that govern what a pod can do, what they can access, what user they run as, etc.</p>
+
+<p>For instance, if you do not want any of the containers in your cluster to run as the root user, you can define a PSP to that effect. You can also prevent containers from being privileged or use the host network namespace, or the host PID namespace.</p>
+
+<p>You can see an example of a PSP below:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">policy/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PodSecurityPolicy</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">restricted</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">seLinux</span><span class="pi">:</span>
+    <span class="na">rule</span><span class="pi">:</span> <span class="s">RunAsAny</span>
+  <span class="na">supplementalGroups</span><span class="pi">:</span>
+    <span class="na">rule</span><span class="pi">:</span> <span class="s">RunAsAny</span>
+  <span class="na">runAsUser</span><span class="pi">:</span>
+    <span class="na">rule</span><span class="pi">:</span> <span class="s">MustRunAsNonRoot</span>
+  <span class="na">fsGroup</span><span class="pi">:</span>
+    <span class="na">rule</span><span class="pi">:</span> <span class="s">RunAsAny</span>
+</code></pre></div></div>
+
+<p>For Pod Security Policies to be enabled, you need to configure the admission controller of the controller-manager to contain <strong>PodSecurityPolicy</strong>. These policies make even more sense when coupled with the RBAC configuration in your cluster. This will allow you to finely tune what your users are allowed to run and what capabilities and low level privileges their containers will have.</p>
+
+<p>See the <a href="https://github.com/kubernetes/examples/tree/master/staging/podsecuritypolicy/rbac/">PSP RBAC example</a> on GitHub for more details.</p>
+
+<h3 id="network-security-policies">Network Security Policies</h3>
+
+<p>By default, all pods can reach each other; all ingress and egress traffic is allowed. This has been a high-level networking requirement in Kubernetes. However, network isolation can be configured and traffic to pods can be blocked. In newer versions of Kubernetes, egress traffic can also be blocked. This is done by configuring a <strong>NetworkPolicy</strong>. As all traffic is allowed, you may want to implement a policy that drops all traffic, then, other policies which allow desired ingress and egress traffic.</p>
+
+<p>The <strong>spec</strong> of the policy can narrow down the effect to a particular namespace, which can be handy. Further settings include a <strong>podSelector</strong>, or label, to narrow down which Pods are affected. Further ingress and egress settings declare traffic to and from IP addresses and ports.</p>
+
+<p>Not all network providers support the <strong>NetworkPolicies</strong> kind. A non-exhaustive list of providers with support includes Calico, Romana, Cilium, Kube-router, and WeaveNet.</p>
+
+<p>In previous versions of Kubernetes, there was a requirement to annotate a namespace as part of network isolation, specifically the <strong>net.beta.kubernetes.io/network-policy= value</strong>. Some network plugins may still require this setting.</p>
+
+<p>On the next page, you can find an example of a <strong>NetworkPolicy</strong> recipe. More <a href="https://github.com/ahmetb/kubernetes-network-policy-recipes">network policy recipes</a> can be found on GitHub.</p>
+
+<h3 id="network-security-policy-example">Network Security Policy Example</h3>
+
+<p>The use of policies has become stable, noted with the <strong>v1 apiVersion</strong>. The example below narrows down the policy to affect the default namespace.</p>
+
+<p>Only Pods with the label of <strong>role: db</strong> will be affected by this policy, and the policy has both Ingress and Egress settings.</p>
+
+<p>The <strong>ingress</strong> setting includes a <strong>172.17</strong> network, with a smaller range of <strong>172.17.1.0</strong> IPs being excluded from this traffic.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">NetworkPolicy</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-egress-policy</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">podSelector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">role</span><span class="pi">:</span> <span class="s">db</span>
+  <span class="na">policyTypes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">Ingress</span>
+  <span class="pi">-</span> <span class="s">Egress</span>
+  <span class="na">ingress</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">from</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">ipBlock</span><span class="pi">:</span>
+        <span class="na">cidr</span><span class="pi">:</span> <span class="s">172.17.0.0/16</span>
+        <span class="na">except</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">172.17.1.0/24</span>
+  <span class="pi">-</span> <span class="na">namespaceSelector</span><span class="pi">:</span>
+      <span class="na">matchLabels</span><span class="pi">:</span>
+        <span class="na">project</span><span class="pi">:</span> <span class="s">myproject</span>
+  <span class="pi">-</span> <span class="na">podSelector</span><span class="pi">:</span>
+      <span class="na">matchLabels</span><span class="pi">:</span>
+        <span class="na">role</span><span class="pi">:</span> <span class="s">frontend</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="s">6379</span>
+<span class="na">egress</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">to</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">ipBlock</span><span class="pi">:</span>
+      <span class="na">cidr</span><span class="pi">:</span> <span class="s">10.0.0.0/24</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="s">5978</span>
+</code></pre></div></div>
+
+<p>These rules change the namespace for the following settings to be labeled <strong>project: myproject</strong>. The affected Pods also would need to match the label <strong>role: frontend</strong>. Finally, TCP traffic on port 6379 would be allowed from these Pods.</p>
+
+<p>The egress rules have the <strong>to</strong> settings, in this case the <strong>10.0.0.0/24</strong> range TCP traffic to port 5978.</p>
+
+<p>The use of empty ingress or egress rules denies all type of traffic for the included Pods, though this is not suggested. Use another dedicated <strong>NetworkPolicy</strong> instead.</p>
+
+<h3 id="default-policy-example">Default Policy Example</h3>
+
+<p>The empty braces will match all Pods not selected by other <strong>NetworkPolicy</strong> and will not allow ingress traffic. Egress traffic would be unaffected by this policy.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">NetworkPolicy</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">default-deny</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">podSelector</span><span class="pi">:</span> <span class="pi">{}</span>
+  <span class="na">policyTypes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">Ingress</span>
+</code></pre></div></div>
+
+<p>With the potential for complex ingress and egress rules, it may be helpful to create multiple objects which include simple isolation rules and use easy to understand names and labels.</p>
+
+<p>Some network plugins, such as WeaveNet, may require annotation of the Namespace. The following shows the setting of a <strong>DefaultDeny</strong> for the <strong>myns</strong> namespace:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">Namespace</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">myns</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">net.beta.kubernetes.io/network-policy</span><span class="pi">:</span> <span class="pi">|</span>
+     <span class="no">{</span>
+        <span class="no">"ingress": {</span>
+          <span class="no">"isolation": "DefaultDeny"</span>
+        <span class="no">}</span>
+     <span class="no">}</span>
+</code></pre></div></div>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+<div id="commento"></div>
+<script src="https://cdn.commento.io/js/commento.js"></script>
+<noscript>Please enable JavaScript to load the comments.</noscript>
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 原生云技术. All rights reserved. <br />
+ Site last generated: Jun 29, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>
