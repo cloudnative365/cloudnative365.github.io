@@ -10,8 +10,4 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 课程目标
 
-- 向etcd集群中添加节点
-- 从etcd集群中删除节点
-- etcd集群的备份与恢复
-- etcd集群的升级
-
+- 

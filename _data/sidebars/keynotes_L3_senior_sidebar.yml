@@ -52,8 +52,8 @@ entries:
       output: web, pdf
 
 
-    - title: 3.keynotes_L3_senior_2_kubernetes_3_manage_kubernetes.html
-      url: /mydoc_introduction.html
+    - title: 3.管理kubernetes集群
+      url: /keynotes_L3_senior_2_kubernetes_3_manage_kubernetes.html
       output: web, pdf
 
   - title: 3.ingress

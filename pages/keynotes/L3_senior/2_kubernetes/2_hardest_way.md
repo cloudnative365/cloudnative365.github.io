@@ -2,7 +2,7 @@
 title: 最困难的方式安装k8s集群
 keywords: keynotes, senior, kubernetes, hardest_way
 permalink: keynotes_L3_senior_2_kubernetes_2_hardest_way.html
-sidebar: keynotes_L3_advanced_sidebar
+sidebar: keynotes_L3_senior_sidebar
 typora-copy-images-to: ./pics/2_hardest_way
 typora-root-url: ../../../../../cloudnative365.github.io
 
