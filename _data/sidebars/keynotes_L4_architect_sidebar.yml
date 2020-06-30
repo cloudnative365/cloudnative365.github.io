@@ -35,10 +35,6 @@ entries:
       url: /keynotes_L4_architect_1_HA_3_kops_AWS.html
       output: web, pdf
 
-    - title: 4. 使用Rancher管理我们的集群
-      url: /keynotes_L4_architect_1_HA_4_rancher.html
-      output: web, pdf
-
     - title: 5. 使用kubespray创建集群
       url: /keynotes_L4_architect_1_HA_5_kubespray_ubuntu.html
       output: web, pdf
@@ -51,20 +47,40 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 1 监控概述
+    - title: 1.监控概述
       url: /keynotes_L4_architect_2_monitoring_1_monitoring_overview.html
       output: web, pdf
 
-    - title: 2 Prometheus系列
+    - title: 2.Prometheus系列
       url: /keynotes_L4_architect_2_monitoring_2_Prometheus_overview.html
       output: web, pdf
 
-    - title: 3 exporter概览
+    - title: 3.exporter概览
       url: /keynotes_L4_architect_2_monitoring_3_exporter_overview.html
       output: web, pdf
 
-    - title: 4 查询
+    - title: 4.查询
       url: /keynotes_L4_architect_2_monitoring_4_querying.html
+      output: web, pdf
+
+    - title: 5.复杂查询
+      url: /keynotes_L4_architect_2_monitoring_5_complex_querying.html
+      output: web, pdf
+
+    - title: 6.复杂查询
+      url: /keynotes_L4_architect_2_monitoring_6_normal_metrics.html
+      output: web, pdf
+
+  - title: 第三章 日志
+    output: web, pdf
+    folderitems:
+
+    - title: 1 ELK
+      url: /keynotes_L4_architect_3_logging_1_Course_Introduction.html
+      output: web, pdf
+
+    - title: 2 fluentd
+      url: /keynotes_L4_architect_3_logging_1_Course_Introduction.html
       output: web, pdf
 
   - title: 第三章 日志

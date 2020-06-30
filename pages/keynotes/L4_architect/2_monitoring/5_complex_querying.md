@@ -1,9 +1,9 @@
 ---
-title: 监控概述
-keywords: keynotes, architect, monitoring, monitoring_overview
-permalink: keynotes_L4_architect_2_monitoring_1_monitoring_overview.html
+title: 复杂查询
+keywords: keynotes, architect, monitoring, complex_querying
+permalink: keynotes_L4_architect_2_monitoring_5_complex_querying.html
 sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/1_monitoring
+typora-copy-images-to: ./pics/5_complex_querying
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---

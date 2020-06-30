@@ -29,7 +29,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
   + AWS
 
     ``` bash
-    yum install docker
+    yum -y install docker
     ```
 
   注意：一定要把docker的cgroups的方式和kubelet的cgroup方式修改成一致的，否则会报错
@@ -91,7 +91,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
   export HOST2=172.31.43.7
   
   # 创建临时目录来存储将被分发到其它主机上的文件
-    mkdir -p /tmp/${HOST0}/ /tmp/${HOST1}/ /tmp/${HOST2}/
+  $ mkdir -p /tmp/${HOST0}/ /tmp/${HOST1}/ /tmp/${HOST2}/
   
   ETCDHOSTS=(${HOST0} ${HOST1} ${HOST2})
   NAMES=("infra0" "infra1" "infra2")
@@ -171,9 +171,9 @@ typora-root-url: ../../../../../cloudnative365.github.io
   HOST=${HOST1}
   scp -r /tmp/${HOST}/* ${USER}@${HOST}:
   ssh ${USER}@${HOST}
-  USER@HOST $ sudo -Es
-  root@HOST $ chown -R root:root pki
-  root@HOST $ mv pki /etc/kubernetes/
+  USER@HOST # sudo -Es
+  root@HOST # chown -R root:root pki
+  root@HOST # mv pki /etc/kubernetes/
   ```
 
 + 确保已经所有预期的文件都存在

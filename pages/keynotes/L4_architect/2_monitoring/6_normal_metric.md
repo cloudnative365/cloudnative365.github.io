@@ -1,9 +1,9 @@
 ---
-title: 监控概述
-keywords: keynotes, architect, monitoring, monitoring_overview
-permalink: keynotes_L4_architect_2_monitoring_1_monitoring_overview.html
+title: 常用指标
+keywords: keynotes, architect, monitoring, normal_metrics
+permalink: keynotes_L4_architect_2_monitoring_6_normal_metrics.html
 sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/1_monitoring
+typora-copy-images-to: ./pics/6_normal_metrics
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---
