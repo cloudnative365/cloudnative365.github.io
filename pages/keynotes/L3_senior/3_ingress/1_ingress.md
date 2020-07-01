@@ -79,7 +79,7 @@ ingress的底层是借助于带有虚拟主机，基于URL重定向，TLS/SSL，
 + 然后，我们就可以创建ingress资源了，创建ingress资源的时候就像写nginx的配置文件一样可以配置虚拟主机，负载均衡等等。
 + 当我们使用kubectl把清单文件提交给kubernetes之后，ingress控制器会负责把我们的配置文件转换成nginx的配置文件，丢给nginx作为他的配置文件使用。
 
-![img](https://www.nginx.com/wp-content/uploads/2020/04/NGINX-Plus-Ingress-Controller-1-7-0_ecosystem-1024x535.png)
+![img](/pages/keynotes/L3_senior/3_ingress/pics/1_ingress/NGINX-Plus-Ingress-Controller-1-7-0_ecosystem-1024x535.png)
 
 + 同时，ingress-controller也是通过service方式暴露出来的，ingress的service默认会暴露80和443端口，如果没有添加任何规则的时候，我们通过ingress请求后端服务的时候是会显示404的。
 
