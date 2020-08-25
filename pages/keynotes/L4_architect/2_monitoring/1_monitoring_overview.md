@@ -18,7 +18,50 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 这个算是监控的一部分，不过是机房级别的监控，和我们要讨论的监控从哲学角度是一个东西，但是从软件角度却大相径庭。
 
-### 1.2. 从运维到监控
+### 1.2. 术语定义
+
+在讨论监控系统时，目前几乎没有通用的术语。即使在Google内部，不同的团队也在使用不同的术语，以下是绝大部分通用的术语。
+
++ 监控（monitoring）
+
+  收集、处理、汇总，并且显示关于某个系统的实时量化数据，例如请求的数量和类型，错误的数量和类型，以及处理用时，应用服务器的存活时间等。
+
++ 白盒监控（white-box monitoring）
+
+  依靠系统内部暴露的一些性能指标进行监控。包括日志分析、Java虚拟机提供的监控接口，或者一个列出内部统计数据的HTTP接口进行监控。
+
++ 黑盒监控（black-box monitoring）
+
+  通过测试某种外部用户可见的系统行为进行监控。
+
++ 监控台页面（dashboard）
+
+  提供某个服务核心指标一览服务的应用程序（一般是基于Web的）。该应用程序可能会提供过滤功能（filter）、选择功能（selector）等，但是最主要的功能是用来显示系统最重要的指标。该程序同时可以显示相应团队的一些信息，包括目前工单的数量、高优先级的Bug列表、目前的on-call工程师和最近进行的生产发布等。
+
++ 警报（alert）
+
+  目标对象是某个人发向某个系统地址的一个通知。目的地可以包括工单系统、E-mail地址，或者某个传呼机。相应的，这些警报被分类为：工单、E-mail警报，以及紧急警报。
+
++ 根源问题（root cause）
+
+  指系统（软件或流程）中的某种缺陷。这个缺陷如果被修复，就可以保证这种问题不会再以同样的方式发生。某一个故障情况可能同时具有多个根源问题：例如，有可能自动化程度不够，软件在异常输入下崩溃，以及对生成配置文件的脚本测试不足等。这里每一个因素都是一个根源问题，并且每一个都需要被修复。
+
++ 节点或者机器（node/machine）
+
+  这里的两个术语是可以互换的：指在物理机、虚拟机，或者容器内运行的某个实例。某个单独的物理机器上可能有多个服务需要监控，这些服务可能具有如下特点。
+
+  + 相互关联的服务：例如Web服务器与对应的缓存服务器。
+  + 不相关的服务，它们仅仅共享硬件：例如代码仓库和把文件存放在代码仓库中的配置管理系统的主进程。例如Puppet（https://puppetlabs.com/puppet/puppetopen-source）和Chef（https://www.chef.io/chef/）。
+
++ 推送（push）
+
+  关于某个服务正在运行的软件或者其配置文件的任何改动。（好处在于实时性比较高，但是如果agent挂了需要长时间才会有反应）
+
++ 拉取（pull）（个人理解）
+
+  和push相反，服务器会主动去agent上问这个节点有没有变动。（好处在于如果agent挂了，服务器的间隔时间只要够短，就可以快速响应）
+
+### 1.3. 从运维到监控
 
 我们运维的最重要职责之一就是要保证我们的环境稳定，为了让我们知道环境稳定与否，我们就需要去确认。当然不是人工去确认，而是使用一些摄像头去24小时监控，在我们的监控系统中，我们叫他Agent。而Agent会吧他看到的东西主动或者被动的传递给监控服务器，服务器会有自己的逻辑去判断我们采集来的数据是否符合标准，符合标准的不做任何处理，不符合标准的就需要去报警，来通知运维人员去处理。
 
@@ -32,13 +75,13 @@ typora-root-url: ../../../../../cloudnative365.github.io
 | 打电话                 | 发送报警到手机 | 发送报警到微信     |
 | 维修工人               | 运维工程师     | 运维工程师         |
 
-### 1.3. 数据采集方式
+### 1.4. 数据采集方式
 
 一般来说，服务器获取数据的方式有两种，一种是推，一种是拉。推是由agent主动向server报告，而拉是由服务器去客户端取数据，而prometheus主要是拉数据。
 
 从1.2的图中可以看出，prometheus的agent叫exporter，也就是打报告的人，这个打报告的人会把系统的状态通过特定端口暴露出来，也就是写成报告，让prometheus去采集，这是一种拉的方式。
 
-### 1.4. 架构图
+### 1.5. 架构图
 
 ![Prometheus architecture](/pages/keynotes/L4_architect/2_monitoring/pics/1_monitoring/architecture.png)
 
@@ -46,7 +89,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 在右上角还有一个组件叫AlertManager，他主要是来负责报警的，他支持把报警推送到多个平台，甚至是微信。
 
-### 1.5. 软件清单
+### 1.6. 软件清单
 
 因此，我们需要安装的程序如下
 
@@ -56,7 +99,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 + pushgateway：接受一次性metrics推送，然后暴露出来
 + grafana：成图工具，非常绚丽的界面
 
-### 1.6. Prometheus的优点（缺点）
+### 1.7. Prometheus的优点（缺点）
 
 + 契合google SRE的理念，与kubernetes集成效果卓越，是云原生系统中监控的不二选择
 
@@ -96,11 +139,11 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 + 应用数据库，https://landscape.cncf.io/category=database&format=card-mode&grouping=category
 
-![image-20200605110311468](/pages/keynotes/L4_architect/2_monitoring/pics/1_monitoring/image-20200605110311468.png)
+![Jietu20200714-220753](/pages/keynotes/L4_architect/2_monitoring/pics/1_monitoring/Jietu20200714-220753.jpg)
 
 + 监控，https://landscape.cncf.io/category=observability-and-analysis&format=card-mode&grouping=category
 
-![image-20200605110423481](/pages/keynotes/L4_architect/2_monitoring/pics/1_monitoring/image-20200605110423481.png)
+![Jietu20200714-220959](/pages/keynotes/L4_architect/2_monitoring/pics/1_monitoring/Jietu20200714-220959.jpg)
 
 这么多软件一个屏幕已经放不开了，我是缩小之后才放在文章中的。图中用蓝框画出来的软件是注册在CNCF下面的软件。粗略的看一下就会发现不管是什么软件都在和云计算挂钩，即使oracle或者DB2这种老牌的数据库在这个时代也会推出一些云功能，或者向云原生靠拢。
 
@@ -130,7 +173,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 而我们监控的终极目标就是要自动修复！早先，阿里巴巴每年双11活动的时候，会产生巨大的系统压力，阿里集团各个系统的人员都会集中到阿里巴巴集团的杭州总部待命，在园区各个地方搭起帐篷待命。
 
-![img](/pages/keynotes/L4_architect/2_monitoring/pics/1_monitoring/Img425971672.jpg)
+![Jietu20200714-221031](/pages/keynotes/L4_architect/2_monitoring/pics/1_monitoring/Jietu20200714-221031.jpg)
 
 而从2017年开始，自从阿里集团开始使用公有云作为基础设施来提供服务之后，就实现了“喝茶过双十一”。那么，可想而知，如果某一个环节出现了问题，比如资源不足，应用宕机，其实都是由定义好的规则自动修复的。而监控资源，监控应用的监控系统就是整个环节中的第一个重要步骤了，我们会在监控中定义好“底线”，也就是阈值，一旦系统触发了底线，我们的监控就会采取相应的措施，比如：等待3秒，如果不恢复，就告诉自动修复的程序去修复，如果再无法修复，就告诉运维工程师，如果运维工程师不响应，就给经理发消息。
 

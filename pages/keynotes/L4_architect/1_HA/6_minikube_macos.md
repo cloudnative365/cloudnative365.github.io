@@ -23,6 +23,10 @@ sysctl -a | grep -E --color 'machdep.cpu.features|VMX'
 
 如果安装了HyperKit，VitrualBox或者VMwareFusion之外的其他hypervisor，有可能会产生冲突。
 
+### 1.3. 安装docker-desktop
+
+在[这里](https://www.docker.com/products/docker-desktop)下载，或者直接点击[这里](https://download.docker.com/mac/stable/Docker.dmg)，安装的时候各种下一步就可以了。
+
 ## 2 安装minikube
 
 ### 2.1. 安装brew，参考[这里](https://github.com/Homebrew/install)
