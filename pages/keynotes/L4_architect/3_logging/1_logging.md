@@ -32,13 +32,17 @@ Loki
 + 搜索引擎：通常是指我们查询的时候使用的一系列算法的组合。
 + 展示工具：负责展示我们的搜索结果
 
-## 2. 搜索引擎
+## 2. 日志系统与搜索引擎
 
-我们常见的搜索引擎有
+日志的格式基本都是以文本为主，所以搜索引擎首当其冲作为检索的工具是比较合适的，我们常见的搜索引擎有
 
 + lucene
 + ElasticSearch
 + Solr
+
+但是，搜索引擎是日志系统的一部分，也是比较核心的部分，但是，**搜索引擎不等于日志系统**。日志系统是包含了搜索引擎在内的非常多的组件组合而成的，只不过有些产品，以搜索引擎为核心，配套了很多的周边，形成了一套日志收集系统，比如我们下面要说的elasticsearch就是搜索引擎，他和周边很多产品才构成了我们的日志系统。
+
+所以，我们的题目叫日志系统，而不是搜索引擎，和其他课程讲elasticsearch大数据开发相关知识不同，我们讲的是构建一套生产级别的日志系统，开发的事情还是交给程序员吧，我们运维的主要任务是提供稳定的环境。
 
 ## 3. Elastic Stack
 
@@ -103,3 +107,26 @@ beats作为ES的客户端，也就是我们常说的agent。ES把logstash定位�
 
 ## 4. Loki
 
+Loki是grafana lab的另外一款产品，他专注的是日志的检索功能，他可以和grafana很好的结合，做出非常漂亮的dashborad。这一款非常轻量的产品，功能，稳定和安全性肯定不能和elasticsearch来比，但是他叫做日志聚合系统（log aggregation），主打的是和grafana很好的结合，完善监控日志的功能。如果作为监控系统使用，我觉得Loki比ES更加适合。
+
+### 4.1. Loki架构图
+
++ 物理架构
+
+  ![See the source image](/pages/keynotes/L4_architect/3_logging/pics/1_logging_overview/OIP.hlteEwpZJ72zcHXEzDmgRwHaDJ)
+
+  物理上架构非常简单，日志是通过Promtail组件来挖取的，然后promtail会把日志发送到loki的服务器，最后通过grafana进行展示
+
++ 逻辑架构
+
+  ![See the source image](/pages/keynotes/L4_architect/3_logging/pics/1_logging_overview/loki-arch.png)
+
+逻辑架构就比较复杂了，我们后面讲这个时候再一点点说
+
+### 4.2. 展示工具
+
+既然是grafana的产品，不给他单独做一个dashboard就不太合适了，他的dashboard和ES差不多，同样是提供一个输入框，下面可以展示结果。
+
+![See the source image](/pages/keynotes/L4_architect/3_logging/pics/1_logging_overview/loki_grafana_filtering.png)
+
+### 4.3. 功能
