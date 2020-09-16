@@ -63,12 +63,76 @@ entries:
       url: /keynotes_L4_architect_2_monitoring_4_querying.html
       output: web, pdf
 
-    - title: 5.复杂查询
-      url: /keynotes_L4_architect_2_monitoring_5_complex_querying.html
+    - title: 5.常见监控系统和适用场景
+      url: /keynotes_L4_architect_2_monitoring_5_common_monitor_system.html
       output: web, pdf
 
-    - title: 6.复杂查询
-      url: /keynotes_L4_architect_2_monitoring_6_normal_metrics.html
+    - title: 6.常见监控指标
+      url: /keynotes_L4_architect_2_monitoring_6_common_metrics.html
+      output: web, pdf
+
+    - title: 7.prometheus复杂查询
+      url: /keynotes_L4_architect_2_monitoring_7_complex_query.html
+      output: web, pdf
+
+    - title: 8.Zabbix5.0尝鲜
+      url: /keynotes_L4_architect_2_monitoring_8_zabbix.html
+      output: web, pdf
+
+    - title: 9.Zabbix5.0自动发现
+      url: /keynotes_L4_architect_2_monitoring_9_zabbix_operations.html
+      output: web, pdf
+
+    - title: 10.prometheus自动发现
+      url: /keynotes_L4_architect_2_monitoring_10_prometheus_auto_discovery.html
+      output: web, pdf
+
+    - title: 11.thanos
+      url: /keynotes_L4_architect_2_monitoring_11_thanos.html
+      output: web, pdf
+
+    - title: 12.thanos概念
+      url: /keynotes_L4_architect_2_monitoring_12_thanos_conception.html
+      output: web, pdf
+
+    - title: 13.node_exporter
+      url: /keynotes_L4_architect_2_monitoring_13_node_exporter.html
+      output: web, pdf
+
+    - title: 14.windows_exporter
+      url: /keynotes_L4_architect_2_monitoring_14_windows_exporter.html
+      output: web, pdf
+
+    - title: 15.hypervisor_exporter
+      url: /keynotes_L4_architect_2_monitoring_15_hypervisor_exporter.html
+      output: web, pdf
+
+    - title: 16.database_exporter
+      url: /keynotes_L4_architect_2_monitoring_16_database_exporter.html
+      output: web, pdf
+
+    - title: 17.middleware_exporter
+      url: /keynotes_L4_architect_2_monitoring_17_middleware_exporter.html
+      output: web, pdf
+
+    - title: 18.blackbox_exporter
+      url: /keynotes_L4_architect_2_monitoring_18_blackbox_exporter.html
+      output: web, pdf
+
+    - title: 19.snmp_exporter
+      url: /keynotes_L4_architect_2_monitoring_19_snmp_exporter.html
+      output: web, pdf
+
+    - title: 20.开发exporter
+      url: /keynotes_L4_architect_2_monitoring_20_writer_exporter.html
+      output: web, pdf
+
+    - title: 21.grafana集成
+      url: /keynotes_L4_architect_2_monitoring_21_grafana_exporter.html
+      output: web, pdf
+
+    - title: 21.grafana集成
+      url: /keynotes_L4_architect_2_monitoring_21_grafana_exporter.html
       output: web, pdf
 
   - title: 第三章 日志

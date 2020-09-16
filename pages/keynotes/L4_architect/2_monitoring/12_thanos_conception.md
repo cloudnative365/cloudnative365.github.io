@@ -1,6 +1,6 @@
 ---
-title: thanos
-keywords: keynotes, architect, monitoring, thanos
+title: thanos概念
+keywords: keynotes, architect, monitoring, thanos_conception
 permalink: keynotes_L4_architect_2_monitoring_12_thanos_conception.html
 sidebar: keynotes_L4_architect_sidebar
 typora-copy-images-to: ./pics/12_thanos_conception
