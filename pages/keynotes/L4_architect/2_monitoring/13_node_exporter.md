@@ -1,6 +1,6 @@
 ---
 title: node_exporter
-keywords: keynotes, architect, monitoring, thanos
+keywords: keynotes, architect, monitoring, node_exporter
 permalink: keynotes_L4_architect_2_monitoring_13_node_exporter.html
 sidebar: keynotes_L4_architect_sidebar
 typora-copy-images-to: ./pics/13_node_exporter
