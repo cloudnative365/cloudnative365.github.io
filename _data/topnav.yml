@@ -1,0 +1,39 @@
+#Topnav dropdowns
+topnav_dropdowns:
+- title: Topnav dropdowns
+  folders:
+    - title: 课程
+      folderitems:
+        - title: 教学大纲
+          url: /lessons_syllabus.html
+        - title: 开课计划
+          url: /lessons_plans.html
+
+    - title: 课堂笔记
+      folderitems:
+        - title: 基础课程
+          url: /keynotes_L1_basic.html
+        - title: 进阶课程
+          url: /keynotes_L2_advanced.html
+        - title: 高级课程
+          url: /keynotes_L3_senior.html
+        - title: 架构师课程
+          url: /keynotes_L4_architect.html
+
+    - title: 课堂风采
+      folderitems:
+        - title: 讲师风采
+          url: /classes_teachers.html
+        - title: 关于我们
+          url: /classes_aboutus.html
+        - title: 优秀学员作品
+          url: /classes_successd.html
+
+    - title: 常用链接
+      folderitems:
+        - title: CNCF Foundation
+          external_url: https://www.cncf.io/
+        - title: Linux Foundation
+          external_url: https://www.linuxfoundation.org/
+        - title: CD Foundation
+          external_url: https://cd.foundation/
