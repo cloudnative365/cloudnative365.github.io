@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>windows_exporter | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="windows_exporter" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L4_architect_2_monitoring_14_windows_exporter.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L4_architect_2_monitoring_14_windows_exporter.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"windows_exporter","url":"http://localhost:4000/keynotes_L4_architect_2_monitoring_14_windows_exporter.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="1-概述">1. 概述</h2>
+
+<p>微软系的产品其实我一直没怎么研究，主要是我个人非常喜欢开源产品，对于收费的产品基本没什么研究。这里说的不到位的地方希望大家谅解。</p>
+
+<p>Windows的exporter很有意思，因为他不仅可以监控Windows系统本身，连上面一些常用的服务也可以监控起来，比如ad，sql-server，iis，hyperv，exchange, .NET信息等等</p>
+
+<h2 id="2-windows_exporter">2. windows_exporter</h2>
+
+<p>和node_exporter类似，windows也是使用了collector的方式，默认打开一些选项，如果我们有额外要求再打开别的选项</p>
+
+<h3 id="21-collectors">2.1. Collectors</h3>
+
+<p>摘自<a href="https://github.com/prometheus-community/windows_exporter">官网</a></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Enabled by default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.ad.md">ad</a></td>
+      <td>Active Directory Domain Services</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.adfs.md">adfs</a></td>
+      <td>Active Directory Federation Services</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.cpu.md">cpu</a></td>
+      <td>CPU usage</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.cs.md">cs</a></td>
+      <td>“Computer System” metrics (system properties, num cpus/total memory)</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.container.md">container</a></td>
+      <td>Container metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.dhcp.md">dhcp</a></td>
+      <td>DHCP Server</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.dns.md">dns</a></td>
+      <td>DNS Server</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.exchange.md">exchange</a></td>
+      <td>Exchange metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.fsrmquota.md">fsrmquota</a></td>
+      <td>Microsoft File Server Resource Manager (FSRM) Quotas collector</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.hyperv.md">hyperv</a></td>
+      <td>Hyper-V hosts</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.iis.md">iis</a></td>
+      <td>IIS sites and applications</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.logical_disk.md">logical_disk</a></td>
+      <td>Logical disks, disk I/O</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.logon.md">logon</a></td>
+      <td>User logon sessions</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.memory.md">memory</a></td>
+      <td>Memory usage metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.msmq.md">msmq</a></td>
+      <td>MSMQ queues</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.mssql.md">mssql</a></td>
+      <td><a href="https://docs.microsoft.com/en-us/sql/relational-databases/performance-monitor/use-sql-server-objects#SQLServerPOs">SQL Server Performance Objects</a> metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.netframework_clrexceptions.md">netframework_clrexceptions</a></td>
+      <td>.NET Framework CLR Exceptions</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.netframework_clrinterop.md">netframework_clrinterop</a></td>
+      <td>.NET Framework Interop Metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.netframework_clrjit.md">netframework_clrjit</a></td>
+      <td>.NET Framework JIT metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.netframework_clrloading.md">netframework_clrloading</a></td>
+      <td>.NET Framework CLR Loading metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.netframework_clrlocksandthreads.md">netframework_clrlocksandthreads</a></td>
+      <td>.NET Framework locks and metrics threads</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.netframework_clrmemory.md">netframework_clrmemory</a></td>
+      <td>.NET Framework Memory metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.netframework_clrremoting.md">netframework_clrremoting</a></td>
+      <td>.NET Framework Remoting metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.netframework_clrsecurity.md">netframework_clrsecurity</a></td>
+      <td>.NET Framework Security Check metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.net.md">net</a></td>
+      <td>Network interface I/O</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.os.md">os</a></td>
+      <td>OS metrics (memory, processes, users)</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.process.md">process</a></td>
+      <td>Per-process metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.remote_fx.md">remote_fx</a></td>
+      <td>RemoteFX protocol (RDP) metrics</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.service.md">service</a></td>
+      <td>Service state metrics</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.system.md">system</a></td>
+      <td>System calls</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.tcp.md">tcp</a></td>
+      <td>TCP connections</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.thermalzone.md">thermalzone</a></td>
+      <td>Thermal information</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.terminal_services.md">terminal_services</a></td>
+      <td>Terminal services (RDS)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.textfile.md">textfile</a></td>
+      <td>Read prometheus metrics from a text file</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/prometheus-community/windows_exporter/blob/master/docs/collector.vmware.md">vmware</a></td>
+      <td>Performance counters installed by the Vmware Guest agent</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="22-启动选项">2.2. 启动选项</h3>
+
+<p>如果想要启动某个选项，就使用<code class="highlighter-rouge">--collectors.enabled</code>，比如</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.<span class="se">\w</span>indows_exporter.exe <span class="nt">--collectors</span>.enabled <span class="s2">"service"</span> <span class="nt">--collector</span>.service.services-where <span class="s2">"Name='windows_exporter'"</span>
+</code></pre></div></div>
+
+<p>启用二级选项，比如只监控firefox</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.<span class="se">\w</span>indows_exporter.exe <span class="nt">--collectors</span>.enabled <span class="s2">"process"</span> <span class="nt">--collector</span>.process.whitelist<span class="o">=</span><span class="s2">"firefox.+"</span>
+</code></pre></div></div>
+
+<p>以进程形式启动</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msiexec /i C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ownloads<span class="se">\w</span>indows_exporter.msi <span class="nv">ENABLED_COLLECTORS</span><span class="o">=</span><span class="s2">"ad,iis,logon,memory,process,tcp,thermalzone"</span> <span class="nv">TEXTFILE_DIR</span><span class="o">=</span><span class="s2">"C:</span><span class="se">\c</span><span class="s2">ustom_metrics</span><span class="se">\"</span><span class="s2">
+</span></code></pre></div></div>
+
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

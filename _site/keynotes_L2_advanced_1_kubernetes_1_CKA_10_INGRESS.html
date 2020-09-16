@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>INGRESS | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="INGRESS" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"INGRESS","url":"http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="learning-objectives">Learning Objectives</h2>
+
+<p>By the end of this chapter, you should be able to:</p>
+
+<ul>
+  <li>Discuss the difference between an Ingress Controller and a Service.</li>
+  <li>Learn about nginx and GCE Ingress Controllers.</li>
+  <li>Deploy an Ingress Controller.</li>
+  <li>Configure an Ingress Rule.</li>
+</ul>
+
+<h2 id="ingress">INGRESS</h2>
+
+<h3 id="overview">Overview</h3>
+
+<p>In an earlier chapter, we learned about using a Service to expose a containerized application outside of the cluster. We use Ingress Controllers and Rules to do the same function. The difference is efficiency. Instead of using lots of services, such as LoadBalancer, you can route traffic based on the request host or path. This allows for centralization of many services to a single point.</p>
+
+<p>An Ingress Controller is different than most controllers, as it does not run as part of the kube-controller-manager binary. You can deploy multiple controllers, each with unique configurations. A controller uses Ingress Rules to handle traffic to and from outside the cluster.</p>
+
+<p>There are many ingress controllers such as GKE, nginx, Traefik, Contour and Envoy to name a few. Any tool capable of reverse proxy should work. These agents consume rules and listen for associated traffic. An Ingress Rule is an API resource that you can create with <strong>kubectl</strong>. When you create that resource, it reprograms and reconfigures your Ingress Controller to allow traffic to flow from the outside to an internal service. You can leave a service as a ClusterIP type and define how the traffic gets routed to that internal service using an Ingress Rule.</p>
+
+<h3 id="ingress-controller">Ingress Controller</h3>
+
+<p>An Ingress Controller is a daemon running in a Pod which watches the <strong>/ingresses</strong> endpoint on the API server, which is found under the <strong>networking.k8s.io/v1beta1</strong> group for new objects. When a new endpoint is created, the daemon uses the configured set of rules to allow inbound connection to a service, most often HTTP traffic. This allows easy access to a service through an edge router to Pods, regardless of where the Pod is deployed.</p>
+
+<p>Multiple Ingress Controllers can be deployed. Traffic should use annotations to select the proper controller. The lack of a matching annotation will cause every controller to attempt to satisfy the ingress traffic.</p>
+
+<p><img src="/pages/keynotes/L2_advanced/1_CKA/pics/10_INGRESS/5ln4zg2183da-TheIngress.png" alt="The Ingress" /></p>
+
+<p><strong>The Ingress Controller for Inbound Connections</strong></p>
+
+<h3 id="nginx">nginx</h3>
+
+<p>Deploying an nginx controller has been made easy through the use of provided YAML files, which can be found in the <a href="https://github.com/kubernetes/ingress-nginx/tree/master/deploy">ingress-nginx/deploy GitHub repository</a>.</p>
+
+<p>This page has configuration files to configure nginx on several platforms, such as AWS, GKE, Azure, and bare metal, among others.</p>
+
+<p>As with any Ingress Controller, there are some configuration requirements for proper deployment. Customization can be done via a ConfigMap, Annotations, or, for detailed configuration, a custom template:</p>
+
+<ul>
+  <li>Easy integration with RBAC</li>
+  <li>Uses the annotation <strong>kubernetes.io/ingress.class: “nginx”</strong></li>
+  <li>L7 traffic requires the <strong>proxy-real-ip-cidr</strong> setting</li>
+  <li>Bypasses kube-proxy to allow session affinity</li>
+  <li>Does not use <strong>conntrack</strong> entries for iptables DNAT</li>
+  <li>TLS requires the host field to be defined.</li>
+</ul>
+
+<h3 id="google-load-balancer-controller-glbc">Google Load Balancer Controller (GLBC)</h3>
+
+<p>There are several objects which need to be created to deploy the GCE Ingress Controller. YAML files are available to make the process easy. Be aware that several objects would be created for each service, and currently, quotas are not evaluated prior to creation.</p>
+
+<p>The GLBC Controller must be created and started first. Also, you must create a ReplicationController with a single replica, three services for the application Pod, and an Ingress with two hostnames and three endpoints for each service. The backend is a group of virtual machine instances, Instance Group.</p>
+
+<p>Each path for traffic uses a group of like objects referred to as a pool. Each pool regularly checks the next hop up to ensure connectivity.</p>
+
+<p>The multi-pool path is:</p>
+
+<p><strong>Global Forwarding Rule -&gt; Target HTTP Proxy -&gt; URL map -&gt; Backend Service -&gt; Instance Group</strong></p>
+
+<p>Currently, the TLS Ingress only supports port 443 and assumes TLS termination. It does not support SNI, only using the first certificate. The TLS secret must contain keys named <strong>tls.crt</strong> and <strong>tls.key</strong>.</p>
+
+<h3 id="ingress-api-resources">Ingress API Resources</h3>
+
+<p>Ingress objects are now part of the networking.k8s.io API, but still a beta object. A typical Ingress object that you can POST to the API server is:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1beta1</span> 
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span> 
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ghost</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">ghost.192.168.99.100.nip.io</span>
+<span class="na">http</span><span class="pi">:</span>
+<span class="na">paths</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+            <span class="na">serviceName</span><span class="pi">:</span> <span class="s">ghost</span>
+            <span class="na">servicePort</span><span class="pi">:</span> <span class="s">2368</span> 
+</code></pre></div></div>
+
+<p>You can manage ingress resources like you do pods, deployments, services etc:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get ingress
+
+<span class="nv">$ </span>kubectl delete ingress &lt;ingress_name&gt;
+
+<span class="nv">$ </span>kubectl edit ingress &lt;ingress_name&gt;
+</code></pre></div></div>
+
+<h3 id="deploying-the-ingress-controller">Deploying the Ingress Controller</h3>
+
+<p>To deploy an Ingress Controller, it can be as simple as creating it with <strong>kubectl</strong>. The source for a sample controller deployment is available on <a href="https://github.com/kubernetes/ingress-nginx/tree/master/deploy">GitHub</a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> backend.yaml
+</code></pre></div></div>
+
+<p>The result will be a set of pods managed by a replication controller and some internal services. You will notice a default HTTP backend which serves 404 pages.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods,rc,svc
+NAME                               READY  STATUS   RESTARTS  AGE
+po/default-http-backend-xvep8      1/1    Running  0         4m
+po/nginx-ingress-controller-fkshm  1/1    Running  0         4m
+
+NAME                     DESIRED  CURRENT  READY  AGE
+rc/default-http-backend  1        1        0      4m
+
+NAME                      CLUSTER-IP  EXTERNAL-IP  PORT<span class="o">(</span>S<span class="o">)</span>  AGE
+svc/default-http-backend  10.0.0.212  &lt;none&gt;       80/TCP   4m
+svc/kubernetes            10.0.0.1    &lt;none&gt;       443/TCP  77d
+</code></pre></div></div>
+
+<h3 id="creating-an-ingress-rule">Creating an Ingress Rule</h3>
+
+<p>To get exposed with ingress quickly, you can go ahead and try to create a similar rule as mentioned on the previous page. First, start a <strong>ghost</strong> deployment and expose it with an internal ClusterIP service:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl run ghost <span class="nt">--image</span><span class="o">=</span>ghost
+
+<span class="nv">$ </span>kubectl expose deployments ghost <span class="nt">--port</span><span class="o">=</span>2368
+</code></pre></div></div>
+
+<p>With the deployment exposed and the Ingress rules in place, you should be able to access the application from outside the cluster.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+    name: ghost
+spec:
+    rules:
+    - host: ghost.192.168.99.100.nip.io
+      http:
+      paths:
+      - backend:
+            serviceName: ghost
+            servicePort: 2368
+</code></pre></div></div>
+
+<h3 id="multiple-rules">Multiple Rules</h3>
+
+<p>On the previous page, we defined a single rule. If you have multiple services, you can define multiple rules in the same Ingress, each rule forwarding traffic to a specific service.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">rules</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">ghost.192.168.99.100.nip.io</span>
+  <span class="na">http</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+        <span class="na">serviceName</span><span class="pi">:</span> <span class="s">ghost</span>
+        <span class="na">servicePort</span><span class="pi">:</span> <span class="s">2368</span>
+<span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">nginx.192.168.99.100.nip.io</span>
+  <span class="na">http</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+        <span class="na">serviceName</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<h3 id="intelligent-connected-proxies">Intelligent Connected Proxies</h3>
+
+<p>For more complex connections or resources such as service discovery, rate limiting, traffic management and advanced metrics, you may want to implement a service mesh.</p>
+
+<p>A <em>service mesh</em> consists of edge and embedded proxies communicating with each other and handling traffic based on rules from a control plane. Various options are available, including Envoy, Istio, and linkerd.</p>
+
+<p><img src="/pages/keynotes/L2_advanced/1_CKA/pics/10_INGRESS/xnzplfpkk59c-istio-service-mesh.png" alt="Istio Service Mesh" /></p>
+
+<p><strong>Istio Service Mesh</strong>
+retrieved from the <a href="https://istio.io/docs/concepts/what-is-istio/">Istio Documentation</a></p>
+
+<h4 id="service-mesh-options">Service Mesh Options</h4>
+
+<ul>
+  <li>
+    <p>Envoy</p>
+
+    <p><a href="https://www.envoyproxy.io/">Envoy</a> is a modular and extensible proxy favored due to its modular construction, open architecture and dedication to remaining unmonetized. It is often used as a data plane under other tools of a service mesh.</p>
+  </li>
+  <li>
+    <p>Istio</p>
+
+    <p>Istio is a powerful tool set which leverages Envoy proxies via a multi-component control plane. It is built to be platform-independent, and it can be used to make the service mesh flexible and feature-filled.</p>
+  </li>
+  <li>
+    <p>linkerd</p>
+
+    <p><a href="https://linkerd.io/">linkerd</a> is another service mesh, purposely built to be easy to deploy, fast, and ultralight.</p>
+  </li>
+</ul>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

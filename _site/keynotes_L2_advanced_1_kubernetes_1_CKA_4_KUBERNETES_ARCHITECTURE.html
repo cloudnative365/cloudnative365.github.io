@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>KUBERNETES ARCHITECTURE | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="KUBERNETES ARCHITECTURE" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"KUBERNETES ARCHITECTURE","url":"http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="learning-objectives">Learning Objectives</h2>
+
+<p>By the end of this chapter, you should be able to:</p>
+
+<ul>
+  <li>Discuss the main components of a Kubernetes cluster.</li>
+  <li>Learn details of the master agent kube-apiserver.</li>
+  <li>Explain how the etcd database keeps the cluster state and configuration.</li>
+  <li>Study the kubelet local agent.</li>
+  <li>Examine how controllers are used to manage the cluster state.</li>
+  <li>Discover what a Pod is to the cluster.</li>
+  <li>Examine network configurations of a cluster.</li>
+  <li>Discuss Kubernetes services.</li>
+</ul>
+
+<h2 id="kubernetes-architecture">Kubernetes Architecture</h2>
+
+<p>Kubernetes has the following main components:</p>
+
+<ul>
+  <li>Master and worker nodes</li>
+  <li>Controllers</li>
+  <li>Services</li>
+  <li>Pods of containers</li>
+  <li>Namespaces and quotas</li>
+  <li>Network and policies</li>
+  <li>Storage.</li>
+</ul>
+
+<p>A Kubernetes cluster is made of a master node and a set of worker nodes. The cluster is all driven via API calls to controllers, both interior as well as exterior traffic. We will take a closer look at these components next.</p>
+
+<p>Most of the processes are executed inside a container. There are some differences, depending on the vendor and the tool used to build the cluster.</p>
+
+<p><img src="https://d36ai2hkxl16us.cloudfront.net/course-uploads/e0df7fbf-a057-42af-8a1f-590912be5460/3fe3zhgikft1-KubernetesArchitecture.png" alt="img" /></p>
+
+<p><strong>Kubernetes Architecture</strong>
+Retrieved from the Kubernetes documentation <strong>-</strong> <a href="https://kubernetes.io/docs/concepts/architecture/cloud-controller/"><em>Concepts Underlying the Cloud Controller Manager</em></a></p>
+
+<h3 id="master-node">Master Node</h3>
+
+<p>The Kubernetes master runs various server and manager processes for the cluster. Among the components of the master node are the <strong>kube-apiserver</strong>, the <strong>kube-scheduler</strong>, and the <strong>etcd</strong> database. As the software has matured, new components have been created to handle dedicated needs, such as the <strong>cloud-controller-manager</strong>; it handles tasks once handled by the <strong>kube-controller-manager</strong> to interact with other tools, such as Rancher or DigitalOcean for third-party cluster management and reporting.</p>
+
+<p>There are several add-ons which have become essential to a typical production cluster, such as DNS services. Others are third-party solutions where Kubernetes has not yet developed a local component, such as cluster-level logging and resource monitoring.</p>
+
+<h4 id="kube-apiserver">kube-apiserver</h4>
+
+<p>The <strong>kube-apiserver</strong> is central to the operation of the Kubernetes cluster. All calls, both internal and external traffic, are handled via this agent. All actions are accepted and validated by this agent, and it is the only connection to the <strong>etcd</strong> database. It validates and configures data for API objects, and services REST operations. As a result, it acts as a master process for the entire cluster, and acts as a frontend of the cluster’s shared state.</p>
+
+<p>Starting as an alpha feature in v1.16 is the ability to separate user-initiated traffic from server-initiated traffic. Until these features are developed, most network plugins commingle the traffic, which has performance, capacity, and security ramifications.</p>
+
+<h4 id="kube-scheduler">kube-scheduler</h4>
+
+<p>The <strong>kube-scheduler</strong> uses an algorithm to determine which node will host a Pod of containers. The scheduler will try to view available resources (such as volumes) to bind, and then try and retry to deploy the Pod based on availability and success. There are several ways you can affect the algorithm, or a custom scheduler could be used instead. You can also bind a Pod to a particular node, though the Pod may remain in a pending state due to other settings. One of the first settings referenced is if the Pod can be deployed within the current quota restrictions. If so, then the taints and tolerations, and labels of the Pods are used along with those of the nodes to determine the proper placement.</p>
+
+<p>The <a href="https://raw.githubusercontent.com/kubernetes/kubernetes/master/pkg/scheduler/scheduler.go">details of the scheduler can be found on GitHub</a>.</p>
+
+<h4 id="etcd">etcd</h4>
+
+<p>The state of the cluster, networking, and other persistent information is kept in an <strong>etcd</strong> database, or, more accurately, a b+tree key-value store. Rather than finding and changing an entry, values are always appended to the end. Previous copies of the data are then marked for future removal by a compaction process. It works with <strong>curl</strong> and other HTTP libraries, and provides reliable watch queries.</p>
+
+<p>Simultaneous requests to update a value all travel via the <strong>kube-apiserver</strong>, which then passes along the request to <strong>etcd</strong> in a series. The first request would update the database. The second request would no longer have the same version number, in which case the <strong>kube-apiserver</strong> would reply with an error 409 to the requester. There is no logic past that response on the server side, meaning the client needs to expect this and act upon the denial to update.</p>
+
+<p>There is a <em>master</em> database along with possible <em>followers</em>. They communicate with each other on an ongoing basis to determine which will be master, and determine another in the event of failure. While very fast and potentially durable, there have been some hiccups with new tools, such as <strong>kubeadm</strong>, and features like whole cluster upgrades.</p>
+
+<h4 id="other-agents">Other Agents</h4>
+
+<p>The <strong>kube-controller-manager</strong> is a core control loop daemon which interacts with the <strong>kube-apiserver</strong> to determine the state of the cluster. If the state does not match, the manager will contact the necessary controller to match the desired state. There are several controllers in use, such as endpoints, namespace, and replication. The full list has expanded as Kubernetes has matured.</p>
+
+<p>Remaining in beta in v1.16, the <strong>cloud-controller-manager</strong> (<strong>ccm</strong>) interacts with agents outside of the cloud. It handles tasks once handled by <strong>kube-controller-manager</strong>. This allows faster changes without altering the core Kubernetes control process. Each kubelet must use the <strong>–cloud-provider-external</strong> settings passed to the binary. You can also develop your own ccm, which can be deployed as a daemonset as an in-tree deployment or as a free-standing out-of-tree installation. The <strong>cloud-controller-manager</strong> is an optional agent which takes a few steps to enable. You can learn more about the <a href="https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/">cloud-controller-manager</a> online.</p>
+
+<h3 id="worker-nodes">Worker Nodes</h3>
+
+<p>All worker nodes run the kubelet and kube-proxy, as well as the container engine, such as Docker or rkt. Other management daemons are deployed to watch these agents or provide services not yet included with Kubernetes.</p>
+
+<p>The kubelet interacts with the underlying Docker Engine also installed on all the nodes, and makes sure that the containers that need to run are actually running. The kube-proxy is in charge of managing the network connectivity to the containers. It does so through the use of iptables entries. It also has the userspace mode, in which it monitors Services and Endpoints using a random port to proxy traffic and an alpha feature of ipvs.</p>
+
+<p>You can also run an alternative to the Docker engine: cri-o or rkt. To learn how you can do that, you should check the documentation. In future releases, it is highly likely that Kubernetes will support additional container runtime engines.</p>
+
+<p>Supervisord is a lightweight process monitor used in traditional Linux environments to monitor and notify about other processes. In the cluster, this daemon monitors both the kubelet and docker processes. It will try to restart them if they fail, and log events. While not part of a standard installation, some may add this monitor for added reporting.</p>
+
+<p>Kubernetes does not have cluster-wide logging yet. Instead, another CNCF project is used, called <a href="https://www.fluentd.org/">Fluentd</a>. When implemented, it provides a unified logging layer for the cluster, which filters, buffers, and routes messages.</p>
+
+<h3 id="kubelet">Kubelet</h3>
+
+<p>The kubelet agent is the heavy lifter for changes and configuration on worker nodes. It accepts the API calls for Pod specifications (a <strong>PodSpec</strong> is a JSON or YAML file that describes a pod). It will work to configure the local node until the specification has been met.</p>
+
+<p>Should a Pod require access to storage, Secrets or ConfigMaps, the kubelet will ensure access or creation. It also sends back status to the kube-apiserver for eventual persistence.</p>
+
+<ul>
+  <li>Uses <strong>PodSpec</strong></li>
+  <li>Mounts volumes to Pod</li>
+  <li>Downloads secrets</li>
+  <li>Passes request to local container engine</li>
+  <li>Reports status of Pods and node to cluster.</li>
+</ul>
+
+<p>Kubelet calls other components such as the Topology Manager, which uses <em>hints</em> from other components to configure topology-aware resource assignments such as for CPU and hardware accelerators. As an alpha feature, it is not enabled by default.</p>
+
+<h3 id="services">Services</h3>
+
+<p>With every object and agent decoupled we need a flexible and scalable agent which connects resources together and will reconnect, should something die and a replacement is spawned. Each Service is a microservice handling a particular bit of traffic, such as a single NodePort or a LoadBalancer to distribute inbound requests among many Pods.</p>
+
+<p>A Service also handles access policies for inbound requests, useful for resource control, as well as for security.</p>
+
+<ul>
+  <li>Connect Pods together</li>
+  <li>Expose Pods to Internet</li>
+  <li>Decouple settings</li>
+  <li>Define Pod access policy.</li>
+</ul>
+
+<p>We can use a service to connect one pod to another, or to outside of the cluster.</p>
+
+<p><img src="https://d36ai2hkxl16us.cloudfront.net/course-uploads/e0df7fbf-a057-42af-8a1f-590912be5460/2937p0785z15-Service_Network.png" alt="Service Network" /></p>
+
+<p><strong>Service Network</strong></p>
+
+<p>This graphic shows a pod with a primary container, App, with an optional sidecar Logger. Also seen is the pause container, which is used by the cluster to reserve the IP address in the namespace prior to starting the other pods. This container is not seen from within Kubernetes, but can be seen using <strong>docker</strong> and <strong>crictl</strong>.</p>
+
+<p>This graphic also shows a ClusterIP which is used to connect inside the cluster, not the IP of the cluster. As the graphic shows, this can be used to connect to a NodePort for outside the cluster, an IngressController or proxy, or another ”backend” pod or pods.</p>
+
+<h3 id="controllers">Controllers</h3>
+
+<p>An important concept for orchestration is the use of controllers. Various controllers ship with Kubernetes, and you can create your own, as well. A simplified view of a controller is an agent, or <em>Informer</em>, and a downstream store. Using a DeltaFIFO queue, the source and downstream are compared. A loop process receives an <strong>obj</strong> or object, which is an array of deltas from the FIFO queue. As long as the delta is not of the type <strong>Deleted</strong>, the logic of the controller is used to create or modify some object until it matches the specification.</p>
+
+<p>The <em>Informer</em> which uses the API server as a source requests the state of an object via an API call. The data is cached to minimize API server transactions. A similar agent is the <em>SharedInformer</em>; objects are often used by multiple other objects. It creates a shared cache of the state for multiple requests.</p>
+
+<p>A <em>Workqueue</em> uses a key to hand out tasks to various workers. The standard Go work queues of rate limiting, delayed, and time queue are typically used.</p>
+
+<p>The <strong>endpoints</strong>, <strong>namespace</strong>, and <strong>serviceaccounts</strong> controllers each manage the eponymous resources for Pods.</p>
+
+<h3 id="pods">Pods</h3>
+
+<p>The whole point of Kubernetes is to orchestrate the lifecycle of a container. We do not interact with particular containers. Instead, the smallest unit we can work with is a <em>Pod</em>. Some would say a pod of whales or peas-in-a-pod. Due to shared resources, the design of a Pod typically follows a one-process-per-container architecture.</p>
+
+<p>Containers in a Pod are started in parallel. As a result, there is no way to determine which container becomes available first inside a pod. The use of <strong>InitContainers</strong> can order startup, to some extent. To support a single process running in a container, you may need logging, a proxy, or special adapter. These tasks are often handled by other containers in the same pod.</p>
+
+<p>There is only one IP address per Pod, for almost every network plugin. If there is more than one container in a pod, they must share the IP. To communicate with each other, they can either use IPC, the loopback interface, or a shared filesystem.</p>
+
+<p>While Pods are often deployed with one application container in each, a common reason to have multiple containers in a Pod is for logging. You may find the term <strong>sidecar</strong> for a container dedicated to performing a helper task, like handling logs and responding to requests, as the primary application container may not have this ability. The term <strong>sidecar</strong>, like <strong>ambassador</strong> and <strong>adapter</strong>, does not have a special setting, but refers to the concept of what secondary pods are included to do.</p>
+
+<p><img src="/pages/keynotes/L2_advanced/1_CKA/pics/4_KUBERNETES_ARCHITECTURE/image-20200420154642789.png" alt="image-20200420154642789" /></p>
+
+<h3 id="containers">Containers</h3>
+
+<p>While Kubernetes orchestration does not allow direct manipulation on a container level, we can manage the resources containers are allowed to consume.</p>
+
+<p>In the resources section of the <strong>PodSpec</strong> you can pass parameters which will be passed to the container runtime on the scheduled node:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>resources:
+  limits: 
+    cpu: <span class="s2">"1"</span>
+    memory: <span class="s2">"4Gi"</span> 
+  requests:
+    cpu: <span class="s2">"0.5"</span>
+    memory: <span class="s2">"500Mi"</span>
+</code></pre></div></div>
+
+<p>Another way to manage resource usage of the containers is by creating a <strong>ResourceQuota</strong> object, which allows hard and soft limits to be set in a namespace. The quotas allow management of more resources than just CPU and memory and allows limiting several objects.</p>
+
+<p>A beta feature in v1.12 uses the <strong>scopeSelector</strong> field in the quota spec to run a pod at a specific priority if it has the appropriate <strong>priorityClassName</strong> in its pod spec.</p>
+
+<h3 id="init-containers">Init Containers</h3>
+
+<p>Not all containers are the same. Standard containers are sent to the container engine at the same time, and may start in any order. LivenessProbes, ReadinessProbes, and StatefulSets can be used to determine the order, but can add complexity. Another option can be an <strong>Init container</strong>, which must complete before app containers can be started. Should the init container fail, it will be restarted until completion, without the app container running.</p>
+
+<p>The init container can have a different view of the storage and security settings, which allows us to use utilities and commands that the application would not be allowed to use. Init containers can contain code or utilities that are not in an app. It also has an independent security from app containers.</p>
+
+<p>The code below will run the init container until the <strong>ls</strong> command succeeds; then the database container will start.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spec:
+  containers:
+  - name: main-app
+    image: databaseD 
+    - name: wait-fatabase
+    image: busybox
+    <span class="nb">command</span>: <span class="o">[</span><span class="s1">'sh'</span>, <span class="s1">'-c'</span>, <span class="s1">'until ls /db/dir ; do sleep 5; done; '</span><span class="o">]</span>
+</code></pre></div></div>
+
+<h3 id="component-review">Component Review</h3>
+
+<p>Now that we have seen some of the components, let’s take another look with some of the connections shown. Not all connections are shown in the diagram below. Note that all of the components are communicating with kube-apiserver. Only kube-apiserver communicates with the etcd database.</p>
+
+<p><img src="/pages/keynotes/L2_advanced/1_CKA/pics/4_KUBERNETES_ARCHITECTURE/ii5snipbs3l4-K8s_Architectural_Review.png" alt="Kubernetes Architectural Review" /></p>
+
+<p>We also see some commands, which we may need to install separately to work with various components. There is an <strong>etcdctl</strong> command to interrogate the database and <strong>calicoctl</strong> to view more of how the network is configured. We can see Felix, which is the primary Calico agent on each machine. This agent, or daemon, is responsible for interface monitoring and management, route programming, ACL configuration and state reporting.</p>
+
+<p>BIRD is a dynamic IP routing daemon used by Felix to read routing state and distribute that information to other nodes in the cluster. This allows a client to connect to any node, and eventually be connected to the workload on a container, even if not the node originally contacted.</p>
+
+<h3 id="api-call-flow">API Call Flow</h3>
+
+<p><img src="/pages/keynotes/L2_advanced/1_CKA/pics/4_KUBERNETES_ARCHITECTURE/image-20200420231358008.png" alt="image-20200420231358008" /></p>
+
+<h3 id="node">Node</h3>
+
+<p>A node is an API object created outside the cluster representing an instance. While a master must be Linux, worker nodes can also be Microsoft Windows Server 2019. Once the node has the necessary software installed, it is ingested into the API server.</p>
+
+<p>At the moment, you can create a master node with <strong>kubeadm init</strong> and worker nodes by passing <strong>join</strong>. In the near future, secondary master nodes and/or etcd nodes may be joined.</p>
+
+<p>If the kube-apiserver cannot communicate with the kubelet on a node for 5 minutes, the default <strong>NodeLease</strong> will schedule the node for deletion and the <strong>NodeStatus</strong> will change from <em>ready</em>. The pods will be evicted once a connection is re-established. They are no longer forcibly removed and rescheduled by the cluster.</p>
+
+<p>Each node object exists in the <strong>kube-node-lease</strong> namespace. To remove a node from the cluster, first use <strong>kubectl delete node ** to remove it from the API server. This will cause pods to be evacuated. Then, use **kubeadm reset</strong> to remove cluster-specific information. You may also need to remove iptables information, depending on if you plan on re-using the node.</p>
+
+<h3 id="single-ip-per-pod">Single IP per Pod</h3>
+
+<p>A <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/">pod</a> represents a group of co-located containers with some associated data volumes. All containers in a pod share the same network namespace.</p>
+
+<p><img src="https://d36ai2hkxl16us.cloudfront.net/course-uploads/e0df7fbf-a057-42af-8a1f-590912be5460/bfd5haac3htu-Kubernetes-Network-Pod-2.png" alt="Pod Network" /></p>
+
+<h4 id="pod-network">Pod Network</h4>
+
+<p>The graphic shows a pod with two containers, A and B, and two data volumes, 1 and 2. Containers A and B share the network namespace of a third container, known as the <em>pause container</em>. The pause container is used to get an IP address, then all the containers in the pod will use its network namespace. Volumes 1 and 2 are shown for completeness.</p>
+
+<p>To communicate with each other, containers within pods can use the loopback interface, write to files on a common filesystem, or via inter-process communication (IPC). There is now a network plugin from HPE Labs which allows multiple IP addresses per pod, but this feature has not grown past this new plugin.</p>
+
+<p>Starting as an alpha feature in 1.16 is the ability to use IPv4 and IPv6 for pods and services. When creating a service, you would create the endpoint for each address family separately.</p>
+
+<h3 id="container-to-outside-path">Container to Outside Path</h3>
+
+<p>This graphic shows a node with a single, dual-container pod. A NodePort service connects the Pod to the outside network.</p>
+
+<p><img src="/pages/keynotes/L2_advanced/1_CKA/pics/4_KUBERNETES_ARCHITECTURE/w7eqx8n15cor-ContainerNetwork.png" alt="Container Network" /></p>
+
+<h4 id="container-network">Container Network</h4>
+
+<p>Even though there are two containers, they share the same namespace and the same IP address, which would be configured by kubectl working with kube-proxy. The IP address is assigned before the containers are started, and will be inserted into the containers. The container will have an interface like <strong>eth0@tun10</strong>. This IP is set for the life of the pod.</p>
+
+<p>The endpoint is created at the same time as the service. Note that it uses the pod IP address, but also includes a port. The service connects network traffic from a node high-number port to the endpoint using iptables with ipvs on the way. The kube-controller-manager handles the watch loops to monitor the need for endpoints and services, as well as any updates or deletions.</p>
+
+<h3 id="networking-setup">Networking Setup</h3>
+
+<p>Getting all the previous components running is a common task for system administrators who are accustomed to configuration management. But, to get a fully functional Kubernetes cluster, the network will need to be set up properly, as well.</p>
+
+<p>A detailed explanation about the Kubernetes networking model can be seen on the <a href="https://kubernetes.io/docs/concepts/cluster-administration/networking/">Cluster Networking page</a> in the Kubernetes documentation.</p>
+
+<p>If you have experience deploying virtual machines (VMs) based on IaaS solutions, this will sound familiar. The only caveat is that, in Kubernetes, the lowest compute unit is not a container, but what we call a pod.</p>
+
+<p>A pod is a group of co-located containers that share the same IP address. From a networking perspective, a pod can be seen as a virtual machine of physical hosts. The network needs to assign IP addresses to pods, and needs to provide traffic routes between all pods on any nodes.</p>
+
+<p>The three main networking challenges to solve in a container orchestration system are:</p>
+
+<ul>
+  <li>Coupled container-to-container communication (solved by the pod concept).</li>
+  <li>Pod-to-pod communication.</li>
+  <li>External-to-pod communication (solved by the services concept, which we will discuss later).</li>
+</ul>
+
+<p>Kubernetes expects the network configuration to enable pod-to-pod communication to be available; it will not do it for you.</p>
+
+<p>Tim Hockin, one of the lead Kubernetes developers, has created a very useful slide deck to understand the Kubernetes networking: <a href="https://speakerdeck.com/thockin/illustrated-guide-to-kubernetes-networking"><em>An Illustrated Guide to Kubernetes Networking</em></a>.</p>
+
+<h3 id="cni-network-configuration-file">CNI Network Configuration File</h3>
+
+<p>To provide container networking, Kubernetes is standardizing on the Container Network Interface (CNI) specification. Since v1.6.0, the goal of kubeadm (the Kubernetes cluster bootstrapping tool) has been to use CNI, but you may need to recompile to do so.</p>
+
+<p>CNI is an emerging specification with associated libraries to write plugins that configure container networking and remove allocated resources when the container is deleted. Its aim is to provide a common interface between the various networking solutions and container runtimes. As the CNI specification is language-agnostic, there are many plugins from Amazon ECS, to SR-IOV, to Cloud Foundry, and more.</p>
+
+<p>With CNI, you can write a network configuration file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span>
+    <span class="s2">"cniVersion"</span>: <span class="s2">"0.2.0"</span>,
+    <span class="s2">"name"</span>: <span class="s2">"mynet"</span>,
+    <span class="s2">"type"</span>: <span class="s2">"bridge"</span>,
+    <span class="s2">"bridge"</span>: <span class="s2">"cni0"</span>,
+    <span class="s2">"isGateway"</span>: <span class="nb">true</span>,
+    <span class="s2">"ipMasq"</span>: <span class="nb">true</span>,
+    <span class="s2">"ipam"</span>: <span class="o">{</span>
+        <span class="s2">"type"</span>: <span class="s2">"host-local"</span>,
+        <span class="s2">"subnet"</span>: <span class="s2">"10.22.0.0/16"</span>,
+        <span class="s2">"routes"</span>: <span class="o">[</span>
+            <span class="o">{</span> <span class="s2">"dst"</span>: <span class="s2">"0.0.0.0/0"</span> <span class="o">}</span>
+             <span class="o">]</span>
+     <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This configuration defines a standard Linux bridge named <strong>cni0</strong>, which will give out IP addresses in the subnet 10.22.0.0./16. The bridge plugin will configure the network interfaces in the correct namespaces to define the container network properly.</p>
+
+<p>The main <strong>README</strong> of the <a href="https://github.com/containernetworking/cni">CNI GitHub repository</a> has more information.</p>
+
+<h3 id="pod-to-pod-communication">Pod-to-Pod Communication</h3>
+
+<p>While a CNI plugin can be used to configure the network of a pod and provide a single IP per pod, CNI does not help you with pod-to-pod communication across nodes.</p>
+
+<p>The requirement from Kubernetes is the following:</p>
+
+<ul>
+  <li>All pods can communicate with each other across nodes.</li>
+  <li>All nodes can communicate with all pods.</li>
+  <li>No Network Address Translation (NAT).</li>
+</ul>
+
+<p>Basically, all IPs involved (nodes and pods) are routable without NAT. This can be achieved at the physical network infrastructure if you have access to it (e.g. GKE). Or, this can be achieved with a software defined overlay with solutions like:</p>
+
+<ul>
+  <li>Weave</li>
+  <li>Flannel</li>
+  <li>Calico</li>
+  <li>Romana.</li>
+</ul>
+
+<p>See this <a href="https://kubernetes.io/docs/concepts/cluster-administration/networking/">documentation page</a> or the <a href="https://kubernetes.io/docs/concepts/cluster-administration/addons/">list of networking add-ons</a> for a more complete list.</p>
+
+<h3 id="mesos">Mesos</h3>
+
+<p>At a high level, there is nothing different between Kubernetes and other clustering systems.</p>
+
+<p>A central manager exposes an API, a scheduler places the workloads on a set of nodes, and the state of the cluster is stored in a persistent layer.</p>
+
+<p>For example, you could compare Kubernetes with Mesos, and you would see the similarities. In Kubernetes, however, the persistence layer is implemented with etcd, instead of Zookeeper for Mesos.</p>
+
+<p><img src="/pages/keynotes/L2_advanced/1_CKA/pics/4_KUBERNETES_ARCHITECTURE/98m1gc9180d7-MesosArchitecture.jpg" alt="Mesos Architecture" /></p>
+
+<h4 id="mesos-architecture">Mesos Architecture</h4>
+
+<p>The Apache Software Foundation
+Retrieved from the <a href="http://mesos.apache.org/documentation/latest/architecture/">Mesos website</a></p>
+
+<p>You should also consider systems like OpenStack and CloudStack. Think about what runs on their head node, and what runs on their worker nodes. How do they keep state? How do they handle networking? If you are familiar with those systems, Kubernetes will not seem that different.</p>
+
+<p>What really sets Kubernetes apart is its features oriented towards fault-tolerance, self-discovery, and scaling, coupled with a mindset that is purely API-driven.</p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>INTRODUCTION | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="INTRODUCTION" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_2_CKAD_1_INTRODUCTION.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_2_CKAD_1_INTRODUCTION.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"INTRODUCTION","url":"http://localhost:4000/keynotes_L2_advanced_1_kubernetes_2_CKAD_1_INTRODUCTION.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="course-information">Course Information</h2>
+
+<h3 id="course-learning-objectives">Course Learning Objectives</h3>
+
+<p>By the end of this course, you should be able to:</p>
+
+<ul>
+  <li>Containerize and deploy a new Python script.</li>
+  <li>Configure the deployment with ConfigMaps, Secrets, and SecurityContexts.</li>
+  <li>Understand multi-container Pod design.</li>
+  <li>Configure probes for Pod health.</li>
+  <li>Update and roll back an application.</li>
+  <li>Implement services and NetworkPolicies.</li>
+  <li>Use PersistentVolumeClaims for state persistence.</li>
+</ul>
+
+<h3 id="course-audience-and-requirements">Course Audience and Requirements</h3>
+
+<ul>
+  <li>
+    <p>Course Audience</p>
+
+    <p>This course is for developers looking to learn how to deploy, configure, and test their containerized applications on a multi-node Kubernetes cluster.</p>
+  </li>
+  <li>
+    <p>Knowledge/Skills Requirements</p>
+
+    <p>For a successful learning experience, basic Linux command line and file editing skills are required. Familiarity with using a programming language (such as Python, Node.js, Go) and Cloud Native application concepts and architectures is helpful.</p>
+
+    <p>Our free <a href="https://www.edx.org/course/introduction-to-kubernetes">LFS158x - Introduction to Kubernetes</a> MOOC on edX is a useful preparation for this course.</p>
+  </li>
+  <li>
+    <p>Software Environment</p>
+
+    <p>The material produced by The Linux Foundation is distribution-flexible. This means that technical explanations, labs and procedures should work on most modern distributions, and we do not promote products sold by any specific vendor (although we may mention them for specific scenarios).</p>
+
+    <p>In practice, most of our material is written with the three main Linux distribution families in mind:</p>
+
+    <p>- Debian/Ubuntu</p>
+
+    <p>- Red Hat/Fedora</p>
+
+    <p>- openSUSE/SUSE.</p>
+
+    <p>Distributions used by our students tend to be one of these three alternatives, or a product that is derived from them.</p>
+  </li>
+  <li>
+    <p>Lab Environment</p>
+
+    <p>The lab exercises were written using Google Compute Engine (GCE) nodes. They have been written to be vendor-agnostic, so they could run on AWS, local hardware, or inside of virtual machines, to give you the most flexibility and options.</p>
+
+    <p>Each node has 2 vCPUs and 8G of memory, running Ubuntu 18.04. Smaller nodes should work, but you should expect a slow response. Other operating system images are also possible, but there may be a slight difference in some command outputs.</p>
+
+    <p>Using GCE requires setting up an account, and will incur expenses if using nodes of the size suggested. For more information review <a href="https://cloud.google.com/compute/docs/quickstart-linux">“Quickstart Using a Linux VM”</a>.</p>
+
+    <p>Amazon Web Service (AWS) is another provider of cloud-based nodes, and requires an account; you will incur expenses for nodes of the suggested size. You can find videos and information about <a href="https://aws.amazon.com/getting-started/tutorials/launch-a-virtual-machine/">how to launch a Linux virtual machine</a> on the AWS website.</p>
+
+    <p>Virtual machines such as KVM, VirtualBox, or VMWare can also be used for the lab systems. Putting the VMs on a private network can make troubleshooting easier.</p>
+
+    <p>Finally, using bare-metal nodes, with access to the Internet, will also work for the lab exercises.</p>
+  </li>
+</ul>
+
+<h3 id="course-resources">Course Resources</h3>
+
+<p>Resources for this course can be found online. Making updates to this course takes time. Therefore, if there are any changes in between updates, you can always access course updates, as well as the course resources online:</p>
+
+<ul>
+  <li>Go to the Linux Foundation training website to obtain <a href="https://training.linuxfoundation.org/cm/LFD259/">Course Resources</a></li>
+  <li>The user ID is <strong>LFtraining</strong> and the password is <strong>Penguin2014</strong>.</li>
+</ul>
+
+<h3 id="which-distribution-to-choose">Which Distribution to Choose?</h3>
+
+<p><img src="/pages/keynotes/L2_advanced/2_CKAD/pics/1_INTRODUCTION/image-20200425110009299.png" alt="image-20200425110009299" /></p>
+
+<p><img src="/pages/keynotes/L2_advanced/2_CKAD/pics/1_INTRODUCTION/image-20200425110035118.png" alt="image-20200425110035118" /></p>
+
+<p><img src="/pages/keynotes/L2_advanced/2_CKAD/pics/1_INTRODUCTION/image-20200425110119137.png" alt="image-20200425110119137" /></p>
+
+<p><img src="/pages/keynotes/L2_advanced/2_CKAD/pics/1_INTRODUCTION/image-20200425110136998.png" alt="image-20200425110136998" /></p>
+
+<p><img src="/pages/keynotes/L2_advanced/2_CKAD/pics/1_INTRODUCTION/image-20200425110152962.png" alt="image-20200425110152962" /></p>
+
+<p><img src="/pages/keynotes/L2_advanced/2_CKAD/pics/1_INTRODUCTION/image-20200425110209810.png" alt="image-20200425110209810" /></p>
+
+<h3 id="important-using-aws-to-set-up-labs">IMPORTANT: Using AWS to Set Up Labs</h3>
+
+<h2 id="the-linux-foundation">The Linux Foundation</h2>
+
+<h3 id="the-linux-foundation-1">The Linux Foundation</h3>
+
+<p><a href="https://www.linuxfoundation.org/">The Linux Foundation</a> is dedicated to building sustainable ecosystems around open source projects to accelerate technology development and industry adoption. Founded in 2000, the Linux Foundation provided unparalleled support for open source communities through financial and intellectual resources, infrastructure, services, events, and training. Working together, the Linux Foundation and its projects form the most ambitious and successful investment in the creation of shared technology.</p>
+
+<p>Linux is the world’s largest and most pervasive open source software project in history. The Linux Foundation is home to the Linux creator Linus Torvalds and lead maintainer Greg Kroah-Hartman, and provides a neutral home where Linux kernel development can be protected and accelerated for years to come. The success of Linux has catalyzed growth in the open source community, demonstrating the commercial efficacy of open source and inspiring countless new projects across all industries and levels of the technology stack.</p>
+
+<p>The Linux Foundation is the umbrella for many critical open source projects that power corporations today, spanning all industry sectors:</p>
+
+<ul>
+  <li>Big data and analytics: <a href="https://www.odpi.org/">ODPi</a>, <a href="https://www.r-consortium.org/">R Consortium</a></li>
+  <li>Networking: <a href="https://www.opendaylight.org/">OpenDaylight</a>, <a href="https://www.opnfv.org/">OPNFV</a>, <a href="https://www.onap.org/">ONAP</a></li>
+  <li>Embedded: <a href="https://www.dronecode.org/">Dronecode</a>, <a href="https://www.zephyrproject.org/">Zephyr</a></li>
+  <li>Web tools: <a href="https://openjsf.org/">OpenJS Foundation</a></li>
+  <li>Cloud computing: <a href="https://www.cloudfoundry.org/">Cloud Foundry</a>, <a href="https://www.cncf.io/">Cloud Native Computing Foundation</a>, <a href="https://www.opencontainers.org/">Open Container Initiative</a></li>
+  <li>Automotive: <a href="https://www.automotivelinux.org/">Automotive Grade Linux</a></li>
+  <li>Security: <a href="https://www.coreinfrastructure.org/">The Core Infrastructure Initiative</a></li>
+  <li>Blockchain: <a href="https://www.hyperledger.org/">Hyperledger</a></li>
+  <li>And many more.</li>
+</ul>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

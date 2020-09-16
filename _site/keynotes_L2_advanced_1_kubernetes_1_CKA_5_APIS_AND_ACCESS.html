@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>APIS_AND_ACCESS | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="APIS_AND_ACCESS" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"APIS_AND_ACCESS","url":"http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="learning-objectives">Learning Objectives</h2>
+
+<p>By the end of this chapter, you should be able to:</p>
+
+<ul>
+  <li>Understand the API REST-based architecture.</li>
+  <li>Work with annotations.</li>
+  <li>Understand a simple Pod template.</li>
+  <li>Use kubectl with greater verbosity for troubleshooting.</li>
+  <li>Separate cluster resources using namespaces.</li>
+</ul>
+
+<h2 id="apis_and_access">APIS_AND_ACCESS</h2>
+
+<h3 id="api-access">API Access</h3>
+
+<p>Kubernetes has a powerful REST-based API. The entire architecture is API-driven. Knowing where to find resource endpoints and understanding how the API changes between versions can be important to ongoing administrative tasks, as there is much ongoing change and growth. Starting with v1.16 deprecated objects are no longer honored by the API server.</p>
+
+<p>As we learned in the <em>Kubernetes Architecture</em> chapter, the main agent for communication between cluster agents and from outside the cluster is the kube-apiserver. A <strong>curl</strong> query to the agent will expose the current API groups. Groups may have multiple versions, which evolve independently of other groups, and follow a domain-name format with several names reserved, such as single-word domains, the empty group, and any name ending in <strong>.k8s.io</strong>.</p>
+
+<h3 id="restful">RESTful</h3>
+
+<p>kubectl makes API calls on your behalf, responding to typical HTTP verbs (<strong>GET</strong>, <strong>POST</strong>, <strong>DELETE</strong>). You can also make calls externally, using <strong>curl</strong> or other program. With the appropriate certificates and keys, you can make requests, or pass JSON files to make configuration changes.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">--cert</span> userbob.pem <span class="nt">--key</span> userBob-key.pem <span class="se">\ </span> 
+<span class="nt">--cacert</span> /path/to/ca.pem <span class="se">\ </span>  
+https://k8sServer:6443/api/v1/pods 
+</code></pre></div></div>
+
+<p>The ability to impersonate other users or groups, subject to RBAC configuration, allows a manual override authentication. This can be helpful for debugging authorization policies of other users.</p>
+
+<h3 id="checking-access">Checking Access</h3>
+
+<p>While there is more detail on security in a later chapter, it is helpful to check the current authorizations, both as an administrator, as well as another user. The following shows what user <strong>bob</strong> could do in the <strong>default</strong> namespace and the <strong>developer</strong> namespace, using the <strong>auth can-i</strong> subcommand to query:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl auth can-i create deployments
+yes 
+
+<span class="nv">$ </span>kubectl auth can-i create deployments <span class="nt">--as</span> bob
+no 
+
+<span class="nv">$ </span>kubectl auth can-i create deployments <span class="nt">--as</span> bob <span class="nt">--namespace</span> developer
+yes 
+</code></pre></div></div>
+
+<p>There are currently three APIs which can be applied to set who and what can be queried:</p>
+
+<ul>
+  <li>
+    <p><strong>SelfSubjectAccessReview</strong>
+Access review for any user, helpful for delegating to others.</p>
+  </li>
+  <li>
+    <p><strong>LocalSubjectAccessReview</strong>
+​Review is restricted to a specific namespace.</p>
+  </li>
+  <li>
+    <p><strong>SelfSubjectRulesReview</strong>
+A review which shows allowed actions for a user within a particular namespace.</p>
+  </li>
+</ul>
+
+<p>The use of <strong>reconcile</strong> allows a check of authorization necessary to create an object from a file. No output indicates the creation would be allowed.</p>
+
+<h3 id="optimistic-concurrency">Optimistic Concurrency</h3>
+
+<p>The default serialization for API calls must be JSON. There is an effort to use Google’s <em>protobuf</em> serialization, but this remains experimental. While we may work with files in a YAML format, they are converted to and from JSON.</p>
+
+<p>Kubernetes uses the <strong>resourceVersion</strong> value to determine API updates and implement optimistic concurrency. In other words, an object is not locked from the time it has been read until the object is written.</p>
+
+<p>Instead, upon an updated call to an object, the <strong>resourceVersion</strong> is checked, and a <strong>409 CONFLICT</strong> is returned, should the number have changed. The <strong>resourceVersion</strong> is currently backed via the <strong>modifiedIndex</strong> parameter in the etcd database, and is unique to the namespace, kind, and server. Operations which do not change an object, such as <strong>WATCH</strong> or <strong>GET</strong>, do not update this value.</p>
+
+<h3 id="using-annotations">Using Annotations</h3>
+
+<p>Labels are used to work with objects or collections of objects; annotations are not.</p>
+
+<p>Instead, annotations allow for metadata to be included with an object that may be helpful outside of the Kubernetes object interaction. Similar to labels, they are key to value maps. They are also able to hold more information, and more human-readable information than labels.</p>
+
+<p>Having this kind of metadata can be used to track information such as a timestamp, pointers to related objects from other ecosystems, or even an email from the developer responsible for that object’s creation.</p>
+
+<p>The annotation data could otherwise be held in an exterior database, but that would limit the flexibility of the data. The more this metadata is included, the easier it is to integrate management and deployment tools or shared client libraries.</p>
+
+<p>For example, to annotate only Pods within a namespace, you can overwrite the annotation, and finally delete it:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl annotate pods <span class="nt">--all</span> <span class="nv">description</span><span class="o">=</span><span class="s1">'Production Pods'</span> <span class="nt">-n</span> prod 
+
+<span class="nv">$ </span>kubectl annotate <span class="nt">--overwrite</span> pods <span class="nv">description</span><span class="o">=</span><span class="s2">"Old Production Pods"</span> <span class="nt">-n</span> prod 
+
+<span class="nv">$ </span>kubectl annotate pods foo description- <span class="nt">-n</span> prod
+</code></pre></div></div>
+
+<h3 id="simple-pod">Simple Pod</h3>
+
+<p>As discussed earlier, a Pod is the lowest compute unit and individual object we can work with in Kubernetes. It can be a single container, but often, it will consist of a primary application container and one or more supporting containers.</p>
+
+<p>Below is an example of a simple pod manifest in YAML format. You can see the <strong>apiVersion</strong> (it must match the existing API group), the <strong>kind</strong> (the type of object to create), the <strong>metadata</strong> (at least a name), and its <strong>spec</strong> (what to create and parameters), which define the container that actually runs in this pod:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: v1
+kind: Pod
+metadata:
+    name: firstpod
+spec:
+    containers:
+    - image: nginx
+      name: stan 
+</code></pre></div></div>
+
+<p>You can use the <strong>kubectl create</strong> command to create this pod in Kubernetes. Once it is created, you can check its status with <strong>kubectl get pods</strong>. The output is omitted to save space:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> simple.yaml 
+
+<span class="nv">$ </span>kubectl get pods 
+
+<span class="nv">$ </span>kubectl get pod firstpod <span class="nt">-o</span> yaml 
+
+<span class="nv">$ </span>kubectl get pod firstpod <span class="nt">-o</span> json
+</code></pre></div></div>
+
+<h3 id="manage-api-resources-with-kubectl">Manage API Resources with kubectl</h3>
+
+<p>Kubernetes exposes resources via RESTful API calls, which allows all resources to be managed via HTTP, JSON or even XML, the typical protocol being HTTP. The state of the resources can be changed using standard HTTP verbs (e.g. <strong>GET</strong>, <strong>POST</strong>, <strong>PATCH</strong>, <strong>DELETE</strong>, etc.).</p>
+
+<p><strong>kubectl</strong> has a verbose mode argument which shows details from where the command gets and updates information. Other output includes <strong>curl</strong> commands you could use to obtain the same result. While the verbosity accepts levels from zero to any number, there is currently no verbosity value greater than ten. You can check this out for <strong>kubectl get</strong>. The output below has been formatted for clarity:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl <span class="nt">--v</span><span class="o">=</span>10 get pods firstpod
+
+....
+I1215 17:46:47.860958 29909 round_trippers.go:417]
+curl <span class="nt">-k</span> <span class="nt">-v</span> <span class="nt">-XGET</span> <span class="nt">-H</span> <span class="s2">"Accept: application/json"</span>
+<span class="nt">-H</span> <span class="s2">"User-Agent: kubectl/v1.8.5 (linux/amd64) kubernetes/cce11c6"</span>
+https://10.128.0.3:6443/api/v1/namespaces/default/pods/firstpod
+....
+</code></pre></div></div>
+
+<p>If you delete this pod, you will see that the HTTP method changes from <strong>XGET</strong> to <strong>XDELETE</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl <span class="nt">--v</span><span class="o">=</span>10 delete pods firstpod
+
+....
+I1215 17:49:32.166115 30452 round_trippers.go:417]
+curl <span class="nt">-k</span> <span class="nt">-v</span> <span class="nt">-XDELETE</span> <span class="nt">-H</span> <span class="s2">"Accept: application/json, */*"</span>
+<span class="nt">-H</span> <span class="s2">"User-Agent: kubectl/v1.8.5 (linux/amd64) kubernetes/cce11c6"</span>
+https://10.128.0.3:6443/api/v1/namespaces/default/pods/firstpod
+....
+</code></pre></div></div>
+
+<h3 id="access-from-outside-the-cluster">Access from Outside the Cluster</h3>
+
+<p>The primary tool used from the command line will be <strong>kubectl</strong>, which calls <strong>curl</strong> on your behalf. You can also use the <strong>curl</strong> command from outside the cluster to view or make changes.</p>
+
+<p>The basic server information, with redacted TLS certificate information, can be found in the output of</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl config view 
+</code></pre></div></div>
+
+<p>If you view the verbose output from a previous page, you will note that the first line references a configuration file where this information is pulled from, <strong>~/.kube/config</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I1215 17:35:46.725407 27695 loader.go:357] 
+     Config loaded from file /home/student/.kube/config 
+</code></pre></div></div>
+
+<p>Without the certificate authority, key and certificate from this file, only insecure <strong>curl</strong> commands can be used, which will not expose much due to security settings. We will use <strong>curl</strong> to access our cluster using TLS in an upcoming lab.</p>
+
+<h3 id="kubeconfig">~/.kube/config</h3>
+
+<p>Take a look at the output below:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdF.....
+    server: https://10.128.0.3:6443 
+    name: kubernetes
+contexts:
+- context:
+    cluster: kubernetes
+    user: kubernetes-admin
+  name: kubernetes-admin@kubernetes
+current-context: kubernetes-admin@kubernetes
+kind: Config
+preferences: <span class="o">{}</span>
+users:
+- name: kubernetes-admin
+  user:
+    client-certificate-data: LS0tLS1CRUdJTib.....
+    client-key-data: LS0tLS1CRUdJTi....
+</code></pre></div></div>
+
+<p>The output above shows 19 lines of output, with each of the keys being heavily truncated. While the keys may look similar, close examination shows them to be distinct.</p>
+
+<ul>
+  <li>apiVersion</li>
+</ul>
+
+<p>As with other objects, this instructs the kube-apiserver where to assign the data.</p>
+
+<ul>
+  <li>clusters</li>
+</ul>
+
+<p>This key contains the name of the cluster, as well as where to send the API calls. The <strong>certificate-authority-data</strong> is passed to authenticate the curl request.</p>
+
+<ul>
+  <li>contexts</li>
+</ul>
+
+<p>This is a setting which allows easy access to multiple clusters, possibly as various users, from one configuration file. It can be used to set <strong>namespace</strong>, <strong>user</strong>, and <strong>cluster</strong>.</p>
+
+<ul>
+  <li>current-context</li>
+</ul>
+
+<p>This shows which cluster and user the <strong>kubectl</strong> command would use. These settings can also be passed on a per-command basis.</p>
+
+<ul>
+  <li>kind</li>
+</ul>
+
+<p>Every object within Kubernetes must have this setting; in this case, a declaration of object type <strong>Config</strong>.</p>
+
+<ul>
+  <li>preferences</li>
+</ul>
+
+<p>Currently not used, this is an optional settings for the <strong>kubectl</strong> command, such as colorizing output.</p>
+
+<ul>
+  <li>users</li>
+</ul>
+
+<p>A nickname associated with client credentials, which can be client key and certificate, username and password, and a token. Token and username/password are mutually exclusive. These can be configured via the <strong>kubectl config set-credentials</strong> command.</p>
+
+<h3 id="working-with-namespaces">Working with Namespaces</h3>
+
+<p>Take a look at the following commands:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get ns
+
+<span class="nv">$ </span>kubectl create ns linuxcon
+
+<span class="nv">$ </span>kubectl describe ns linuxcon
+
+<span class="nv">$ </span>kubectl get ns/linuxcon <span class="nt">-o</span> yaml
+
+<span class="nv">$ </span>kubectl delete ns/linuxcon
+</code></pre></div></div>
+
+<p>The above commands show how to view, create and delete namespaces. Note that the <strong>describe</strong> subcommand shows several settings, such as Labels, Annotations, resource quotas, and resource limits, which we will discus later in the course.</p>
+
+<p>Once a namespace has been created, you can reference it via YAML when creating a resource:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>redis.yaml
+
+apiVersion: V1
+kind: Pod
+metadata:
+    name: redis
+    namespace: linuxcon
+...
+</code></pre></div></div>
+
+<h3 id="api-resources-with-kubectl">API Resources with kubectl</h3>
+
+<p>All API resources exposed are available via <strong>kubectl</strong>. To get more information, do <strong>kubectl help</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="o">[</span><span class="nb">command</span><span class="o">]</span> <span class="o">[</span><span class="nb">type</span><span class="o">]</span> <span class="o">[</span>Name] <span class="o">[</span>flag]
+</code></pre></div></div>
+
+<p>Expect the list below to change:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>all</strong></th>
+      <th><strong>events</strong> (<strong>ev</strong>)</th>
+      <th><strong>podsecuritypolicies</strong> (<strong>psp</strong>)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>certificatesigningrequests</strong> (<strong>csr</strong>)</td>
+      <td><strong>horizontalpodautoscalers</strong> (<strong>hpa</strong>)</td>
+      <td><strong>podtemplates</strong></td>
+    </tr>
+    <tr>
+      <td><strong>clusterrolebindings</strong></td>
+      <td><strong>ingresses</strong> (<strong>ing</strong>)</td>
+      <td><strong>replicasets</strong> (<strong>rs</strong>)</td>
+    </tr>
+    <tr>
+      <td><strong>clusterroles</strong></td>
+      <td><strong>jobs</strong></td>
+      <td><strong>replicationcontrollers</strong> (<strong>rc</strong>)</td>
+    </tr>
+    <tr>
+      <td><strong>clusters</strong> (valid only for federation apiservers)</td>
+      <td><strong>limitranges</strong> (<strong>limits</strong>)</td>
+      <td><strong>resourcequotas</strong> (<strong>quota</strong>)</td>
+    </tr>
+    <tr>
+      <td><strong>componentstatuses</strong> (<strong>cs</strong>)</td>
+      <td><strong>namespaces</strong> (<strong>ns</strong>)</td>
+      <td><strong>rolebindings</strong></td>
+    </tr>
+    <tr>
+      <td><strong>configmaps</strong> (<strong>cm</strong>)</td>
+      <td><strong>networkpolicies</strong> (<strong>netpol</strong>)</td>
+      <td><strong>roles</strong></td>
+    </tr>
+    <tr>
+      <td><strong>controllerrevisions</strong></td>
+      <td><strong>nodes</strong> (<strong>no</strong>)</td>
+      <td><strong>secrets</strong></td>
+    </tr>
+    <tr>
+      <td><strong>cronjobs</strong></td>
+      <td><strong>persistentvolumeclaims</strong> (<strong>pvc</strong>)</td>
+      <td><strong>serviceaccounts</strong> (<strong>sa</strong>)</td>
+    </tr>
+    <tr>
+      <td><strong>customresourcedefinition</strong> (<strong>crd</strong>)</td>
+      <td><strong>persistentvolumes</strong> (<strong>pv</strong>)</td>
+      <td><strong>services</strong> (<strong>svc</strong>)</td>
+    </tr>
+    <tr>
+      <td><strong>daemonsets</strong> (<strong>ds</strong>)</td>
+      <td><strong>poddisruptionbudgets</strong> (<strong>pdb</strong>)</td>
+      <td><strong>statefulsets</strong></td>
+    </tr>
+    <tr>
+      <td><strong>deployments</strong> (<strong>deploy</strong>)</td>
+      <td><strong>podpreset</strong></td>
+      <td><strong>storageclasses</strong></td>
+    </tr>
+    <tr>
+      <td><strong>endpoints</strong> (<strong>ep</strong>)</td>
+      <td><strong>pods</strong> (<strong>po</strong>)</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="additional-resource-methods">Additional Resource Methods</h3>
+
+<p>In addition to basic resource management via REST, the API also provides some extremely useful endpoints for certain resources.</p>
+
+<p>For example, you can access the logs of a container, exec into it, and watch changes to it with the following endpoints:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">--cert</span> /tmp/client.pem <span class="nt">--key</span> /tmp/client-key.pem <span class="se">\</span>
+<span class="nt">--cacert</span> /tmp/ca.pem <span class="nt">-v</span> <span class="nt">-XGET</span> <span class="se">\ </span>
+https://10.128.0.3:6443/api/v1/namespaces/default/pods/firstpod/log
+</code></pre></div></div>
+
+<p>This would be the same as the following. If the container does not have any standard out, there would be no logs.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl logs firstpod
+</code></pre></div></div>
+
+<p>There are other calls you could make, following the various API groups on your cluster:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /api/v1/namespaces/{namespace}/pods/{name}/exec
+
+GET /api/v1/namespaces/{namespace}/pods/{name}/log
+
+GET /api/v1/watch/namespaces/{namespace}/pods/{name}
+</code></pre></div></div>
+
+<h3 id="swagger-and-openapi">Swagger and OpenAPI</h3>
+
+<p>The entire Kubernetes API uses a Swagger specification. This is evolving towards the OpenAPI initiative. It is extremely useful, as it allows, for example, to auto-generate client code. All the stable resources definitions are available on the documentation site.</p>
+
+<p>You can browse some of the API groups via a Swagger UI on the <a href="https://swagger.io/specification/">OpenAPI Specification web page</a>.</p>
+
+<p><img src="/pages/keynotes/L2_advanced/1_CKA/pics/5_APIS_AND_ACCESS/d0czu3b6py8d-swagger.png" alt="Swagger" /></p>
+
+<h3 id="api-maturity">API Maturity</h3>
+
+<p>The use of API groups and different versions allows for development to advance without changes to an existing group of APIs. This allows for easier growth and separation of work among separate teams. While there is an attempt to maintain some consistency between API and software versions, they are only indirectly linked.</p>
+
+<p>The use of JSON and Google’s Protobuf serialization scheme will follow the same release guidelines.</p>
+
+<ul>
+  <li>Alpha</li>
+</ul>
+
+<p>An Alpha level release, noted with <em>alpha</em> in the name, may be buggy and is disabled by default. Features could change or disappear at any time. Only use these features on a test cluster which is often rebuilt.</p>
+
+<ul>
+  <li>Beta</li>
+</ul>
+
+<p>The Beta level, found with <em>beta</em> in the name, has more well-tested code and is enabled by default. It also ensures that, as changes move forward, they will be tested for backwards compatibility between versions. It has not been adopted and tested enough to be called stable. You can expect some bugs and issues.</p>
+
+<ul>
+  <li>Stable</li>
+</ul>
+
+<p>Use of the <em>Stable</em> version, denoted by only an integer which may be preceded by the letter <em>v</em>, is for stable APIs.</p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

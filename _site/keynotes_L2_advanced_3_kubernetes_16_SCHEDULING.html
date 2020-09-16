@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>调度 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="调度" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"调度","url":"http://localhost:4000/keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="课程目标">课程目标</h2>
+<ul>
+  <li>学习kube-cheduler如何调度Pod</li>
+  <li>使用标签来管理Pod的调度</li>
+  <li>配置taints和tolerations</li>
+  <li>使用 <strong>podAffinity</strong> 和 <strong>podAntiAffinity</strong>.</li>
+  <li>了解怎样去运行多个调度器</li>
+</ul>
+
+<h2 id="1-调度">1. 调度</h2>
+
+<h3 id="11-kube-scheduler">1.1. kube-scheduler</h3>
+
+<p>Kubernetes部署的应用数量越多、越多样化，调度的管理就越是重要。kube-scheduler使用topology-aware算法确定哪些节点将运行Pod。</p>
+
+<p>用户可以设置pod的优先级，这将允许强行驱逐较低优先级的pod。逐出较低优先级的pod之后将安排较高优先级的pod。</p>
+
+<p>调度器跟踪集群中的节点的状态，根据Predicates（预选）过滤它们，然后使用优先级函数来确定每个Pod应该在哪个节点上调度。作为请求的一部分，Pod的spec被发送到节点上的kubelet进行创建。</p>
+
+<p>默认的调度决策可以通过在节点或pod上使用label来决定。podAffinity、tolerations和pod绑定的label允许从pod或节点的角度进行配置。有些，像tolerations，允许Pod在特定节点上运行，即使节点有taints，也不会阻止Pod被调度。</p>
+
+<p>不是所有的标签都是绝对的。Affinity可能会鼓励在节点上部署Pod，但如果节点不可用，则会将Pod部署到其他位置。有时，文档中可能使用术语<em>require</em>，但实践表明，设置他更像是一个请求。作为beta特性，预计小地方会有所改变。如果所需条件不再为true，某些设置将从节点中逐出播客，例如<strong>requiredDuringScheduling</strong>、<strong>RequiredDuringExecution</strong>。</p>
+
+<p>其他选项，如自定义调度程序，需要编程并部署到Kubernetes集群中。</p>
+
+<h3 id="12-predicates预选">1.2. Predicates（预选）</h3>
+
+<p>调度器通过一组过滤器或predicates来查找可用的节点，然后使用priority（优选）对每个节点进行排序。选择等级最高的节点来运行Pod。</p>
+
+<p><a href="https://github.com/kubernetes/kubernetes/blob/323f34858de18b862d43c40b2cced65ad8e24052/pkg/scheduler/framework/plugins/legacy_registry.go">源代码</a></p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="n">PredicateOrdering</span><span class="p">()</span><span class="x"> </span><span class="p">[]</span><span class="kt">string</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="k">return</span><span class="x"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="n">CheckNodeUnschedulablePred</span><span class="p">,</span><span class="x">
+		</span><span class="n">GeneralPred</span><span class="p">,</span><span class="x"> </span><span class="n">HostNamePred</span><span class="p">,</span><span class="x"> </span><span class="n">PodFitsHostPortsPred</span><span class="p">,</span><span class="x">
+		</span><span class="n">MatchNodeSelectorPred</span><span class="p">,</span><span class="x"> </span><span class="n">PodFitsResourcesPred</span><span class="p">,</span><span class="x"> </span><span class="n">NoDiskConflictPred</span><span class="p">,</span><span class="x">
+		</span><span class="n">PodToleratesNodeTaintsPred</span><span class="p">,</span><span class="x"> </span><span class="n">CheckNodeLabelPresencePred</span><span class="p">,</span><span class="x">
+		</span><span class="n">CheckServiceAffinityPred</span><span class="p">,</span><span class="x"> </span><span class="n">MaxEBSVolumeCountPred</span><span class="p">,</span><span class="x"> </span><span class="n">MaxGCEPDVolumeCountPred</span><span class="p">,</span><span class="x"> </span><span class="n">MaxCSIVolumeCountPred</span><span class="p">,</span><span class="x">
+		</span><span class="n">MaxAzureDiskVolumeCountPred</span><span class="p">,</span><span class="x"> </span><span class="n">MaxCinderVolumeCountPred</span><span class="p">,</span><span class="x"> </span><span class="n">CheckVolumeBindingPred</span><span class="p">,</span><span class="x"> </span><span class="n">NoVolumeZoneConflictPred</span><span class="p">,</span><span class="x">
+		</span><span class="n">EvenPodsSpreadPred</span><span class="p">,</span><span class="x"> </span><span class="n">MatchInterPodAffinityPred</span><span class="p">}</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div>
+
+<p>预选predicates（如<strong>PodFitsHost</strong>或<strong>NoDiskConflict</strong>）按特定顺序计算，然后决定顺序。这样，一个节点对新的Pod部署的检查数量降到最小，如果该节点的状态不正确，就可以从不必要的检查中排除该节点。</p>
+
+<p>例如，有一个名为<strong>HostNamePred</strong>的过滤器，也称为<strong>HostName</strong>，它过滤掉与pod spec中指定的节点名不匹配的节点。另一个预选是<strong>PodFitsResources</strong>，以确保可用的CPU和内存能够满足Pod所需的资源。</p>
+
+<p>调度程序可以通过传递一个<strong>kind:Policy</strong>配置来更新，该配置可以对预选进行排序，为优先级赋予特殊的权重，甚至<strong>hardpodaffinitysymmeryweight</strong>，即使我们将Pod a设置为与Pod B一起运行，那么Pod B应该自动与Pod a一起运行。</p>
+
+<h3 id="13-priorities优选">1.3. Priorities（优选）</h3>
+
+<p><strong>优先级</strong>是用来衡量资源的函数。除非配置了Pod和Node的Affinity被配置成SelectorSpreadPriority设置（该设置基于现有运行Pod的数量对节点进行排序），否则它们将选择Pod数量最少的节点。这是一种在集群中分配Pod的基本方法。</p>
+
+<p>其他优先级可以用于特定的集群需求。<strong>ImageLocalityPriorityMap</strong>支持已下载容器image的节点。镜像大小的总和与具有最高优先级的最大值进行比较，但不检查即将使用的镜像。</p>
+
+<p>目前，包含的优选规则超过10个，范围从检查标签的存在到选择请求CPU和内存使用率最高的节点。您可以在<strong>master/pkg/scheduler/algorithm/priorities</strong>查看优先级列表。（1.18版本的不在这了，应该在<a href="https://github.com/kubernetes/kubernetes/blob/323f34858de18b862d43c40b2cced65ad8e24052/pkg/scheduler/framework/plugins/imagelocality/image_locality.go">源代码</a>）</p>
+
+<p>从v1.14开始的稳定功能允许设置<strong>PriorityClass</strong>并通过使用<strong>PriorityClassName</strong>设置来调度pod。这允许用户抢占或逐出较低优先级的pod，以便可以安排其较高优先级的pod。如果一个或多个现有pod被逐出，kube调度程序将确定挂起状态的pod可以运行的节点。如果找到一个节点，低优先级pod将被逐出，而高优先级pod将被调度。使用Pod中断预算（Pod Disruption Budget简称PDB）可以限制Pod抢占收回的数量，以确保有足够的Pod保持运行。如果没有其他可用的选项，即使违反了PDB，调度器也将删除pods。</p>
+
+<h3 id="14-调度的策略">1.4. 调度的策略</h3>
+
+<p>默认的调度策略包含了一堆的预选和优选规则。但是这些可以使用调度的策略文件去改变他。</p>
+
+<p>下面是一个例子</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"kind"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Policy"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"apiVersion"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"v1"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"predicates"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"MatchNodeSelector"</span><span class="p">,</span><span class="w"> </span><span class="s2">"order"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"PodFitsHostPorts"</span><span class="p">,</span><span class="w"> </span><span class="s2">"order"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"PodFitsResources"</span><span class="p">,</span><span class="w"> </span><span class="s2">"order"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"NoDiskConflict"</span><span class="p">,</span><span class="w"> </span><span class="s2">"order"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"PodToleratesNodeTaints"</span><span class="p">,</span><span class="w"> </span><span class="s2">"order"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"PodFitsHost"</span><span class="p">,</span><span class="w"> </span><span class="s2">"order"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+</span><span class="s2">"priorities"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"LeastRequestedPriority"</span><span class="p">,</span><span class="w"> </span><span class="s2">"weight"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"BalancedResourceAllocation"</span><span class="p">,</span><span class="w"> </span><span class="s2">"weight"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w">       
+        </span><span class="p">{</span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"ServiceSpreadingPriority"</span><span class="p">,</span><span class="w"> </span><span class="s2">"weight"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"EqualPriority"</span><span class="p">,</span><span class="w"> </span><span class="s2">"weight"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span><span class="w">   
+        </span><span class="p">],</span><span class="w">
+</span><span class="s2">"hardPodAffinitySymmetricWeight"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>一般来说，我们通过使用<strong>–policy-config-file</strong>参数来应用这个Policy配置，并使用<strong>–scheduler-name</strong>参数定义此调度程序的名称。然后，我们将有两个调度程序运行，并将能够指定在pod的spec中使用哪个调度程序。</p>
+
+<p>对于多个调度程序，Pod分配可能会发生冲突。每个Pod都应该声明应该使用哪个调度程序。但是，如果单独的调度程序确定某个节点由于可用资源而符合条件，并且两个调度程序都试图部署，从而导致该资源不再可用，则会发生冲突。当前的解决方案是让本地kubelet将Pods返回调度程序进行重新分配。最终，一个Pod将成功部署，另一个将安排在别处。</p>
+
+<h2 id="2-在pod的spec中配置调度">2. 在Pod的Spec中配置调度</h2>
+
+<p>大部分的调度策略可以作为Pod的Spec文件中的一部分来定义。一个Pod的Spec文件包含了相面几个字段可以影响调度的：</p>
+
+<ul>
+  <li><strong>nodeName</strong></li>
+  <li><strong>nodeSelector</strong></li>
+  <li><strong>affinity</strong></li>
+  <li><strong>schedulerName</strong></li>
+  <li><strong>tolerations</strong></li>
+</ul>
+
+<h3 id="21-配置的解释">2.1. 配置的解释：</h3>
+
+<ul>
+  <li>nodeName and nodeSelector</li>
+</ul>
+
+<p>这个选项允许Pod被分配到特定node或者是一组拥有特定标签的node</p>
+
+<ul>
+  <li>affinity and anti-affinity</li>
+</ul>
+
+<p>亲和性和反亲和性是说pod被调度的时候需要或者喜欢被分配到某个节点。如果使用了偏好，首先就需要在已经预选出来的节点中匹配，但是如果不存在匹配的节点，那么就会任意选择一个节点。</p>
+
+<ul>
+  <li>taints and tolerations</li>
+</ul>
+
+<p>污点的使用允许对node进行标记，这样Pods就不会由于某些原因而被调度，比如初始化后的主节点。配置容忍度会让Pod忽略污点，并在满足其他要求的情况下进行调度。</p>
+
+<ul>
+  <li>schedulerName</li>
+</ul>
+
+<p>如果上面的选项都不能满足集群的需要，那么还可以部署自定义调度程序。然后，每个Pod可以包含一个<strong>schedulerName</strong>来选择要使用的计划。</p>
+
+<h3 id="22-节点选择器">2.2. 节点选择器</h3>
+
+<p>pod规范中的<strong>nodeSelector</strong>字段提供了使用一个或多个键值对以node或一组node为调度目标的简单方法。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis</span>
+  <span class="na">nodeSelector</span><span class="pi">:</span>
+    <span class="na">net</span><span class="pi">:</span> <span class="s">fast</span>
+</code></pre></div></div>
+
+<p>配置<strong>nodeSelector</strong>会告诉调度器将pod放置在与标签匹配的节点上。必须满足所有列出的选择器，但节点可能有多个标签。在上面的例子中，任何键为<strong>net</strong>的node的配置为<strong>fast</strong>都是调度的候选节点。请记住，标签是管理员创建的标签，与实际资源没有关联。即使节点的网络可能很慢。</p>
+
+<p>在找到具有匹配标签的节点之前，pod将保持挂起状态。</p>
+
+<p>使用affinity/anti-affinity和nodeSelector的表达方式是一样的。</p>
+
+<h3 id="23-pod-affinity-rules">2.3. Pod Affinity Rules</h3>
+
+<p>如果位于同一个node，可以进行大量通信或共享数据的Pod可能运行得最好，这就是一种亲和力。为了获得更大的容错性，您可能希望Pods尽可能地分开，这就是反亲和力的。这些配置由调度器根据已经运行的pod的标签来决定。因此，调度器必须询问每个节点并跟踪正在运行的pod的标签。大于几百个节点的集群可能会出现显著的性能损失。Pod关联规则使用<strong>In</strong>、<strong>NotIn</strong>、<strong>Exists</strong>和<strong>DoesNotExist</strong>运算符。</p>
+
+<h4 id="pod-affinity规则">Pod Affinity规则</h4>
+
+<ul>
+  <li>requiredDuringSchedulingIgnoredDuringExecution</li>
+</ul>
+
+<p>表示除非下面operator的值为true，否则Pod就不会运行在这里。即使operator将来变成了false，pod也会继续在这个节点上运行。我们可以认为这是一个硬性规定</p>
+
+<ul>
+  <li>preferredDuringSchedulingIgnoredDuringExecution</li>
+</ul>
+
+<p>和上面相同，调度器会选择一个最好有下面配置的节点。如果没有节点拥有匹配的标签，pod也会被调度到没有配置的节点。这是一个相对不那么强烈的要求，所以说前缀是preferred，而不是require。</p>
+
+<ul>
+  <li>podAffinity</li>
+</ul>
+
+<p>使用Pod的亲和性，调度器会把Pod调度到一起</p>
+
+<ul>
+  <li>podAntiAffinity</li>
+</ul>
+
+<p>这个会让调度器去保证pod运行在不同的节点</p>
+
+<ul>
+  <li>
+    <p>topologyKey</p>
+
+    <p>这个规则允许对Pod在部署时候进行一般分组。亲和性（或反亲和性）将尝试在具有已声明topologyKey的节点上运行，并在具有特定标签的pod上运行。<strong>topologyKey</strong>可以是任何合法密钥，但需要考虑一些重要因素。</p>
+
+    <ul>
+      <li>如果使用了 <strong>requiredDuringScheduling</strong> 和<strong>LimitPodHardAntiAffinityTopology</strong> 配置,  <strong>topologyKey</strong> 必须被配置为<strong>kubernetes.io/hostname</strong>.</li>
+      <li>如果使用<strong>PreferredDuringScheduling</strong>,  <strong>topologyKey</strong> 的值留空就可以了, 或者是下面配置的组合<strong>kubernetes.io/hostname</strong>, <strong>topology.kubernetes.io/zone</strong> and <strong>topology.kubernetes.io/region</strong>.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="podaffinity的例子">podAffinity的例子</h4>
+
+<p>亲和性和pod亲和性的配置，我们看下面的例子。这个同样需要在pod启动的时候给出一个特殊的标签，但是这个标签即使在后面被删除了也没有关系。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spec</span><span class="pi">:</span>
+  <span class="na">affinity</span><span class="pi">:</span>
+    <span class="na">podAffinity</span><span class="pi">:</span>
+      <span class="na">requiredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">labelSelector</span><span class="pi">:</span>
+          <span class="na">matchExpressions</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">security</span>
+            <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+            <span class="na">values</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">S1</span>
+        <span class="na">topologyKey</span><span class="pi">:</span> <span class="s">topology.kubernetes.io/zone</span>
+</code></pre></div></div>
+
+<p>在声明的topology区域，Pod可以被调度到标签名字为security并且值包含S1的节点上。如果这个需求没有被满足，pod就会处于pending状态。</p>
+
+<h4 id="podantiaffinity的例子">podAntiAffinity的例子</h4>
+
+<p>使用podAntiAffinity，我们可以防止pod被调度到拥有摸个特定标签的节点上。从这个角度来说，调度器会倾向于避开label的名字为security并且值包含S2的节点。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">podAntiAffinity</span><span class="pi">:</span>
+  <span class="na">preferredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">weight</span><span class="pi">:</span> <span class="s">100</span>
+    <span class="na">podAffinityTerm</span><span class="pi">:</span>
+      <span class="na">labelSelector</span><span class="pi">:</span>
+        <span class="na">matchExpressions</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">security</span>
+          <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+          <span class="na">values</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">S2</span>
+    <span class="na">topologyKey</span><span class="pi">:</span> <span class="s">kubernetes.io/hostname</span> 
+</code></pre></div></div>
+
+<p>在一个大而多变的环境中，可能有多种情况需要避免。作为首选配置，这个设置会尝试避开某些标签，但仍会在某些节点上调度Pod。由于Pod始终处于运行状态，我们可以为特定规则提供权重的选项。权重可以声明为1到100之间的值。然后调度程序尝试选择或避免具有最大组合值的node。</p>
+
+<h4 id="24-node-affinity规则">2.4. Node Affinity规则</h4>
+
+<p>Where Pod affinity/anti-affinity has to do with other Pods, the use of <strong>nodeAffinity</strong> allows Pod scheduling based on node labels. This is similar and will some day replace the use of the <strong>nodeSelector</strong> setting. The scheduler will not look at other Pods on the system, but the labels of the nodes. This should have much less performance impact on the cluster, even with a large number of nodes.</p>
+
+<ul>
+  <li>Uses <strong>In</strong>, <strong>NotIn</strong>, <strong>Exists</strong>, <strong>DoesNotExist</strong> operators</li>
+  <li><strong>requiredDuringSchedulingIgnoredDuringExecution</strong></li>
+  <li><strong>preferredDuringSchedulingIgnoredDuringExecution</strong></li>
+  <li>Planned for future: <strong>requiredDuringSchedulingRequiredDuringExecution</strong>.</li>
+</ul>
+
+<p>Until <strong>nodeSelector</strong> has been fully deprecated, both the selector and required labels must be met for a Pod to be scheduled.</p>
+
+<h3 id="25-node-affinity例子">2.5. Node Affinity例子</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spec</span><span class="pi">:</span>
+  <span class="na">affinity</span><span class="pi">:</span>
+    <span class="na">nodeAffinity</span><span class="pi">:</span> 
+      <span class="na">requiredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>  
+        <span class="na">nodeSelectorTerms</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">matchExpressions</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">kubernetes.io/colo-tx-name</span>
+            <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+            <span class="na">values</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">tx-aus</span>
+            <span class="pi">-</span> <span class="s">tx-dal</span>
+      <span class="na">preferredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">weight</span><span class="pi">:</span> <span class="s">1</span>
+        <span class="na">preference</span><span class="pi">:</span>
+          <span class="na">matchExpressions</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">disk-speed</span>
+            <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+            <span class="na">values</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">fast</span>
+            <span class="pi">-</span> <span class="s">quick</span> 
+</code></pre></div></div>
+
+<p>第一个<strong>nodeAffinity</strong>规则需求节点的key是<strong>kubernetes.io/colo-tx-name</strong>并且值是<strong>tx-aus</strong> 或者 <strong>tx-dal</strong>.</p>
+
+<p>第二个规则给出了额外的节点的权重，并且<strong>disk-speed</strong>的值是<strong>fast</strong> 或者 <strong>quick</strong>. Pod会被调度到相同的节点之上。但是为了防止意外，这个配置只是倾向于一个拥有特定标签的节点。</p>
+
+<h3 id="3-taints和toleration">3. Taints和Toleration</h3>
+
+<h3 id="31-taints">3.1. Taints</h3>
+
+<p>一个有特殊污点Taints的节点会排斥不会容忍这种污点的Pod。污点表示为<strong>key=value:effect</strong>. key和value是由管理员创建。</p>
+
+<p>使用的键和值可以是任何合法的字符串，这允许根据任何需要灵活地防止pod在节点上运行。如果Pod当前没有容忍度，调度器将不会考虑有污点的节点。</p>
+
+<h3 id="32-防止pod被调度的方式">3.2. 防止Pod被调度的方式</h3>
+
+<p>在node上配置下面的选项</p>
+
+<ul>
+  <li>
+    <p>NoSchedule</p>
+
+    <p>不会把Pod调度到这个节点上，除非pod有toleration。已经存在的Pod会持续的运行，和容忍度无关。</p>
+  </li>
+  <li>
+    <p>PreferNoSchedule</p>
+
+    <p>调度器会尽量的避免把pod调度到这个节点上，除非有没有污点的节点可以匹配到Pod的容忍度。已经存在的Pod不会受到影响。</p>
+  </li>
+  <li>
+    <p>NoExecute</p>
+
+    <p>这一污点将导致现有的Pod被驱逐，以后也不会调度pod。如果现有的Pod有容忍度，它将继续运行。如果设置了Pod的<strong>tolerationSeconds</strong>，则它们将保留数秒，然后被逐出。而节点故障将导致kubelet增加300秒的容忍度，以避免不必要的逐出。</p>
+  </li>
+</ul>
+
+<p>如果节点有多个污点，调度器会忽而略这些匹配到的容忍度。其他的没有被忽略的污点就会生效。</p>
+
+<p><strong>TaintBasedEvictions</strong>目前还处在alpha阶段。当节点出现问题时，kubelet使用污点来控制需要驱逐的pod的比例</p>
+
+<h3 id="33-tolerations">3.3. Tolerations</h3>
+
+<p>在节点上设置容忍度tolerations用于在有污点Taints的节点上调度pod。这提供了一种避免pod被调度到某个节点的简单方法。只有那些有特殊的容忍度的节点才会被调度pod上去。</p>
+
+<p>Pod Spec中可以包含运算符，如果未明确说明，则默认为<strong>等于</strong>。使用运算符<strong>Equal</strong>需要一个值来匹配。不应指定<strong>Exists</strong>运算符。如果一个空的key使用<strong>Exists</strong>运算符，它将容忍每一个污点。如果没有生效，但声明了键和运算符，则所有效果都与声明的键匹配。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tolerations</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">server"</span>
+  <span class="na">operator</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Equal"</span>
+  <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ap-east"</span>
+  <span class="na">effect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">NoExecute"</span>
+  <span class="na">tolerationSeconds</span><span class="pi">:</span> <span class="s">3600</span>
+</code></pre></div></div>
+
+<p>上面的例子中，在这个节点被打上污点<strong>NoExecute</strong>之后，Pod会停留在由键为server和他的值为ap-east的节点3600秒。时间结束之后，pod会被驱逐。</p>
+
+<h2 id="4-自定义调度器">4. 自定义调度器</h2>
+
+<p>如果默认的调度机制（affinity, taints, policies）还不能满足我们的需求，我们可以开发自己的调度器。自定义调度程序的编程不在本课程的范围内，但如果希望从现有的调度程序代码开始，可以在<a href="https://github.com/kubernetes/kubernetes/tree/master/pkg/scheduler">GitHub</a>中找到这些代码。</p>
+
+<p>如果Pod Spec没有声明要使用哪个调度程序，则默认使用标准调度程序。如果Pod声明了一个调度程序，而该容器没有运行，那么Pod将永远处于<strong>挂起</strong>状态。</p>
+
+<p>调度过程的最终结果是让pod绑定到应该运行整个pod的节点之上。binding是<strong>API/v1</strong>组中的Kubernetes API之一。从技术上讲，在没有任何调度程序运行的情况下，您仍然可以通过指定pod的绑定来调度节点上的pod。</p>
+
+<p>您还可以同时运行多个调度程序。</p>
+
+<p>您可以使用以下命令查看计划程序和其他信息：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get events
+</code></pre></div></div>
+
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

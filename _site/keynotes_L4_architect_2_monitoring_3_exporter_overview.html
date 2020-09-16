@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>exporter概览 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="exporter概览" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L4_architect_2_monitoring_3_exporter_overview.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L4_architect_2_monitoring_3_exporter_overview.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"exporter概览","url":"http://localhost:4000/keynotes_L4_architect_2_monitoring_3_exporter_overview.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="1-exporter概览">1. exporter概览</h2>
+
+<p>前面我们尝试过了使用prometheus server抓举数据，只不过数据是我们随机生成的，而且数据和服务器是在一台机器。而我们实际的生产中最常使用的endpoint叫exporter，exporter可以被认为是prometheus的客户端或者agent，只不过这个agent并不是推送数据到prometheus服务器，而是暴露（expose）指标（metrics）到某一个端口，这个端口是可以通过http的方式访问到的。而我们通过scrapy的方式就可以抓取到。</p>
+
+<p>官方网站一共给我们提供了下面几种exporter的<a href="https://prometheus.io/download/">下载</a></p>
+
+<ul>
+  <li>blackbox_exporter</li>
+  <li>consul_exporter</li>
+  <li>graphite_exporter</li>
+  <li>haproxy_exporter</li>
+  <li>memcached_exporter</li>
+  <li>mysqld_exporter</li>
+  <li>node_exporter</li>
+  <li>statsd_exporter</li>
+</ul>
+
+<p>而实际上，我们是可以自己定义exporter的，在官网上<a href="https://prometheus.io/docs/instrumenting/exporters/">列出</a>的第三方exporter不计其数。</p>
+
+<p>如果这还不够，我们还可以开发<a href="https://prometheus.io/docs/instrumenting/writing_exporters/">自己的exporter</a>，当然，要遵循一定的<a href="https://prometheus.io/docs/instrumenting/exposition_formats/">规则</a>。</p>
+
+<p>最后，如果exporters依然不能满足需求，那么我们就<a href="https://prometheus.io/docs/instrumenting/clientlibs/">自己写吧</a>，官方声明支持Go，java，scala，python和ruby的客户端，而实际上非官方的还有10多种语言可以来开发。<strong>总有一款适合你！</strong></p>
+
+<h2 id="2-node_exporter">2. node_exporter</h2>
+
+<p>这么多的客户端我们不能一一尝试，我这里用node_exporter来给大家做一个演示。这个主要是来监控主机的，支持linux和mac，没有windows。我们下面的演示是在mac上做的，在linux上也是一样的。</p>
+
+<h3 id="21-启动node_exporter">2.1. 启动node_exporter</h3>
+
+<ul>
+  <li>
+    <p>下载地址：<a href="https://github.com/prometheus/node_exporter/releases/download/v1.0.0/node_exporter-1.0.0.darwin-amd64.tar.gz">node_exporter-1.0.0.darwin-amd64.tar.gz</a></p>
+  </li>
+  <li>
+    <p>解压</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tar </span>xf node_exporter-1.0.0.darwin-amd64.tar.gz
+<span class="nb">cd </span>node_exporter-1.0.0.darwin-amd64
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>启动</p>
+
+    <p>他默认是不提供配置文件的，所以直接运行就可以了</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./node_exporter
+</code></pre></div>    </div>
+
+    <p>当然，不是没有配置，我们可以使用<code class="highlighter-rouge">node_exporter -h</code>来查看详细的配置，或者使用<code class="highlighter-rouge">--web.config=""</code>来指定TLS证书的位置。</p>
+  </li>
+  <li>
+    <p>打开浏览器，访问http://localhost:9100/metrics。可以看到下面的信息。</p>
+  </li>
+</ul>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/3_exporter_overview/image-20200610103335829.png" alt="image-20200610103335829" /></p>
+
+<p>看起来好像和prometheus服务器暴露出来的信息的格式是差不多的，只不过我们没办法进行数据的查询，我们需要通过prometheus抓取之后才能够进行计算。</p>
+
+<h3 id="22-配置prometheus抓取这个endpoint上的数据">2.2. 配置Prometheus抓取这个endpoint上的数据</h3>
+
+<p>我们还是使用前面的prometheus服务器</p>
+
+<ul>
+  <li>
+    <p>修改prometheus.yml，添加一个新的job</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="pi">-</span> <span class="na">job_name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">laptop_exporter'</span>
+    <span class="na">scrape_interval</span><span class="pi">:</span> <span class="s">5s</span>
+    <span class="na">static_configs</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">targets</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">'</span><span class="s">localhost:9100'</span><span class="pi">]</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">host</span><span class="pi">:</span> <span class="s1">'</span><span class="s">my_laptop'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>重新启动prometheus并且访问http://localhost:9090</p>
+  </li>
+  <li>
+    <p>在console选项卡界面，输入我们要查询的项<code class="highlighter-rouge">node_filesystem_size_bytes</code></p>
+
+    <p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/3_exporter_overview/image-20200610104211803.png" alt="image-20200610104211803" /></p>
+  </li>
+</ul>
+
+<h2 id="3-mysql_exporter">3. mysql_exporter</h2>
+
+<p>另外一个常见的exporter是mysql，这个exporter是通过登录mysql数据库内部，从内部取得一些指标后，暴露出来的。</p>
+
+<h3 id="21-安装mysql">2.1. 安装mysql</h3>
+
+<p>这个就不演示了，我们只要通过mysql命令行可以登录就可以了，我们这里是本地演示，如果是远程的话需要打开mysql的远程登录</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /usr/local/mysql/bin/mysql -uroot -p</span>
+Enter password:
+Welcome to the MySQL monitor.  Commands end with <span class="p">;</span> or <span class="se">\g</span><span class="nb">.</span>
+Your MySQL connection id is 10
+Server version: 8.0.20 MySQL Community Server - GPL
+
+Copyright <span class="o">(</span>c<span class="o">)</span> 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type <span class="s1">'help;'</span> or <span class="s1">'\h'</span> <span class="k">for </span>help. Type <span class="s1">'\c'</span> to clear the current input statement.
+
+mysql&gt; 
+</code></pre></div></div>
+
+<h3 id="22-启动node_exporter">2.2. 启动node_exporter</h3>
+
+<ul>
+  <li>
+    <p>下载地址：<a href="https://github.com/prometheus/mysqld_exporter/releases/download/v0.12.1/mysqld_exporter-0.12.1.darwin-amd64.tar.gz">mysqld_exporter-0.12.1.darwin-amd64.tar.gz</a></p>
+  </li>
+  <li>
+    <p>解压：</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tar </span>xf mysqld_exporter-0.12.1.darwin-amd64.tar.gz
+<span class="nb">cd </span>mysqld_exporter-0.12.1.darwin-amd64
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>启动</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">DATA_SOURCE_NAME</span><span class="o">=</span><span class="s1">'root:Passw0rd@(localhost:3306)/'</span>
+<span class="nv">$ </span>./mysqld_exporter
+INFO[0000] Starting mysqld_exporter <span class="o">(</span><span class="nv">version</span><span class="o">=</span>0.12.1, <span class="nv">branch</span><span class="o">=</span>HEAD, <span class="nv">revision</span><span class="o">=</span>48667bf7c3b438b5e93b259f3d17b70a7c9aff96<span class="o">)</span>  <span class="nb">source</span><span class="o">=</span><span class="s2">"mysqld_exporter.go:257"</span>
+INFO[0000] Build context <span class="o">(</span><span class="nv">go</span><span class="o">=</span>go1.12.7, <span class="nv">user</span><span class="o">=</span>root@0b3e56a7bc0a, <span class="nv">date</span><span class="o">=</span>20190729-12:36:41<span class="o">)</span>  <span class="nb">source</span><span class="o">=</span><span class="s2">"mysqld_exporter.go:258"</span>
+INFO[0000] Enabled scrapers:                             <span class="nb">source</span><span class="o">=</span><span class="s2">"mysqld_exporter.go:269"</span>
+INFO[0000]  <span class="nt">--collect</span>.global_status                      <span class="nb">source</span><span class="o">=</span><span class="s2">"mysqld_exporter.go:273"</span>
+INFO[0000]  <span class="nt">--collect</span>.global_variables                   <span class="nb">source</span><span class="o">=</span><span class="s2">"mysqld_exporter.go:273"</span>
+INFO[0000]  <span class="nt">--collect</span>.slave_status                       <span class="nb">source</span><span class="o">=</span><span class="s2">"mysqld_exporter.go:273"</span>
+INFO[0000]  <span class="nt">--collect</span>.info_schema.innodb_cmp             <span class="nb">source</span><span class="o">=</span><span class="s2">"mysqld_exporter.go:273"</span>
+INFO[0000]  <span class="nt">--collect</span>.info_schema.innodb_cmpmem          <span class="nb">source</span><span class="o">=</span><span class="s2">"mysqld_exporter.go:273"</span>
+INFO[0000]  <span class="nt">--collect</span>.info_schema.query_response_time    <span class="nb">source</span><span class="o">=</span><span class="s2">"mysqld_exporter.go:273"</span>
+INFO[0000] Listening on :9104                            <span class="nb">source</span><span class="o">=</span><span class="s2">"mysqld_exporter.go:283"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>打开浏览器，访问http://localhost:9104/metrics，可以看到下面的信息</p>
+
+    <p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/3_exporter_overview/image-20200610113154431.png" alt="image-20200610113154431" /></p>
+  </li>
+</ul>
+
+<h3 id="23-配置prometheus抓取这个endpoint上的数据">2.3. 配置Prometheus抓取这个endpoint上的数据</h3>
+
+<p>我们还是使用前面的prometheus服务器</p>
+
+<ul>
+  <li>
+    <p>修改prometheus.yml，添加一个新的job</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  - job_name: <span class="s1">'mysql_on_laptop_exporter'</span>
+    static_configs:
+    - targets: <span class="o">[</span><span class="s1">'localhost:9104'</span><span class="o">]</span>
+      labels:
+        app: <span class="s1">'mysql_on_laptop'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>重新启动prometheus并且访问http://localhost:9090</p>
+  </li>
+  <li>
+    <p>在console选项卡界面，输入我们要查询的项<code class="highlighter-rouge">mysql_version_info</code></p>
+  </li>
+</ul>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/3_exporter_overview/image-20200610113711240.png" alt="image-20200610113711240" /></p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

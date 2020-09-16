@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>hypervisor_exporter | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="hypervisor_exporter" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L4_architect_2_monitoring_15_hypervisor_exporter.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L4_architect_2_monitoring_15_hypervisor_exporter.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"hypervisor_exporter","url":"http://localhost:4000/keynotes_L4_architect_2_monitoring_15_hypervisor_exporter.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="1-概述">1. 概述</h2>
+
+<p>hypervisor主要是指服务器虚拟化的管理器，我们比较常见的IaaS有下面几种</p>
+
+<ul>
+  <li>vmware(vCenter + ESXi): vmware是商用软件，vCenter自身提供了一个监控工具，叫vRealize，这个工具需要购买Enterprise Licens才能使用。</li>
+  <li>rhv：红帽的IaaS解决方案之一，开源版的叫ovirt，底层使用的是KVM，管理工具叫rhv-m</li>
+  <li>hyperV：windows的虚拟化方案，商业解决方案中最便宜的，只要购买Windows正版授权，hyperV也免费使用。</li>
+  <li>Openstack：OpenStack目前在企业中应用的成功案例不多，但是一些公司，比如华为，阿里之类的公司基于Openstack的某个版本做了一下二次开发之后的产品倒是非常常见</li>
+</ul>
+
+<p>Windows的exporter很有意思，因为他不仅可以监控Windows系统本身，连上面一些常用的服务也可以监控起来，比如sql-server，iis，hyperv，exchange, .NET信息等等</p>
+
+<h2 id="2-监控方案">2. 监控方案</h2>
+
+<p>对于这类的监控，exporter基本都是去调用对应hypervisor的接口来实现监控的。基本都是由第三方工具来维护的，所以说解决方案不止一个，好的软件层出不穷，如果我们觉得都不好，还可以自己写一个。</p>
+
+<h3 id="21-vmware">2.1. vmware</h3>
+
+<ul>
+  <li>
+    <p>下载地址：<a href="https://github.com/pryorda/vmware_exporter">点这个</a></p>
+  </li>
+  <li>
+    <p>由于这个是python做的，建议大家直接使用docker镜像</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-it</span> <span class="nt">--rm</span>  <span class="nt">-p</span> 9272:9272 <span class="nt">-e</span> <span class="nv">VSPHERE_USER</span><span class="o">=</span><span class="k">${</span><span class="nv">VSPHERE_USERNAME</span><span class="k">}</span> <span class="nt">-e</span> <span class="nv">VSPHERE_PASSWORD</span><span class="o">=</span><span class="k">${</span><span class="nv">VSPHERE_PASSWORD</span><span class="k">}</span> <span class="nt">-e</span> <span class="nv">VSPHERE_HOST</span><span class="o">=</span><span class="k">${</span><span class="nv">VSPHERE_HOST</span><span class="k">}</span> <span class="nt">-e</span> <span class="nv">VSPHERE_IGNORE_SSL</span><span class="o">=</span>True <span class="nt">-e</span> <span class="nv">VSPHERE_SPECS_SIZE</span><span class="o">=</span>2000 <span class="nt">--name</span> vmware_exporter pryorda/vmware_exporter
+</code></pre></div>    </div>
+
+    <p>从命令可以看出来，我们必须需要三个信息</p>
+
+    <ul>
+      <li>VSPHERE_USER：只读账号，去找VM管理员要把</li>
+      <li>VSPHERE_PASSWORD：账号的密码</li>
+      <li>VSPHERE_HOST：一般来说，都是https://vmware-host。
+        <ul>
+          <li>注意1：他会默认去找https://vmware-host/sdk，如果我们的路径前端有代理，或者是修改过路径，就需要修改这个参数</li>
+          <li>注意2：这地址可以是vCenter的地址，也可以是ESXi的地址，区别就在于能够读取信息的多少</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>如果大家一定要直接安装，最好使用pip安装<code class="highlighter-rouge">pip install vmware_exporter</code>，然后使用<code class="highlighter-rouge">vmware_exporter -c /path/to/your/config</code>来启动他。</p>
+  </li>
+  <li>
+    <p>配置文件如下，有三个例子</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>default:
+    vsphere_host: <span class="s2">"vcenter"</span>
+    vsphere_user: <span class="s2">"user"</span>
+    vsphere_password: <span class="s2">"password"</span>
+    ignore_ssl: False
+    specs_size: 5000
+    fetch_custom_attributes: True
+    fetch_tags: True
+    fetch_alarms: True
+    collect_only:
+        vms: True
+        vmguests: True
+        datastores: True
+        hosts: True
+        snapshots: True
+  
+esx:
+    vsphere_host: vc.example2.com
+    vsphere_user: <span class="s1">'root'</span>
+    vsphere_password: <span class="s1">'password'</span>
+    ignore_ssl: True
+    specs_size: 5000
+    fetch_custom_attributes: True
+    fetch_tags: True
+    fetch_alarms: True
+    collect_only:
+        vms: False
+        vmguests: True
+        datastores: False
+        hosts: True
+        snapshots: True
+  
+limited:
+    vsphere_host: slowvc.example.com
+    vsphere_user: <span class="s1">'administrator@vsphere.local'</span>
+    vsphere_password: <span class="s1">'password'</span>
+    ignore_ssl: True
+    specs_size: 5000
+    fetch_custom_attributes: True
+    fetch_tags: True
+    fetch_alarms: False
+    collect_only:
+        vms: False
+        vmguests: False
+        datastores: True
+        hosts: False
+        snapshots: False
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>配置prometheus，同样是三个例子</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  - job_name: <span class="s1">'vmware_vcenter'</span>
+    metrics_path: <span class="s1">'/metrics'</span>
+    static_configs:
+      - targets:
+        - <span class="s1">'vcenter.company.com'</span>
+    relabel_configs:
+      - source_labels: <span class="o">[</span>__address__]
+        target_label: __param_target
+      - source_labels: <span class="o">[</span>__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: localhost:9272
+  
+  - job_name: <span class="s1">'vmware_esx'</span>
+    metrics_path: <span class="s1">'/metrics'</span>
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/esx.yml
+    params:
+      section: <span class="o">[</span>esx]
+    relabel_configs:
+      - source_labels: <span class="o">[</span>__address__]
+        target_label: __param_target
+      - source_labels: <span class="o">[</span>__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: localhost:9272
+  
+<span class="c"># Example of Multiple vCenter usage per #23</span>
+  
+- job_name: vmware_export
+    metrics_path: /metrics
+    static_configs:
+    - targets:
+      - vcenter01
+      - vcenter02
+      - vcenter03
+    relabel_configs:
+    - source_labels: <span class="o">[</span>__address__]
+      target_label: __param_target
+    - source_labels: <span class="o">[</span>__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: exporter_ip:9272
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="22-rhv">2.2. rhv</h3>
+
+<ul>
+  <li>
+    <p>下载地址：<a href="https://github.com/czerwonk/ovirt_exporter">点这个</a></p>
+  </li>
+  <li>
+    <p>使用命令的方式</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ovirt_exporter <span class="nt">-api</span>.url <span class="k">${</span><span class="nv">RHV_HOST</span><span class="k">}</span> <span class="nt">-api</span>.username <span class="k">${</span><span class="nv">RHV_USERNAME</span><span class="k">}</span> <span class="nt">-api</span>.password <span class="k">${</span><span class="nv">RHV_PASSWORD</span><span class="k">}</span> <span class="nt">-api</span>.insecure-cert
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="23-hyperv">2.3. hyperV</h3>
+
+<ul>
+  <li>主要还是使用windows-exporter中的hyperV选项</li>
+</ul>
+
+<h3 id="24-openstack">2.4. Openstack</h3>
+
+<ul>
+  <li>下载地址：<a href="https://github.com/openstack-exporter/openstack-exporter">点这里</a></li>
+</ul>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

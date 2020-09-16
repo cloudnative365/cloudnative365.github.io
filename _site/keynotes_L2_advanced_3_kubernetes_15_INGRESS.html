@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>INGRESS和INGRESS控制器 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="INGRESS和INGRESS控制器" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L2_advanced_3_kubernetes_15_INGRESS.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L2_advanced_3_kubernetes_15_INGRESS.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"INGRESS和INGRESS控制器","url":"http://localhost:4000/keynotes_L2_advanced_3_kubernetes_15_INGRESS.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="1-ingress简介">1. INGRESS简介</h2>
+<p>在前面的章节中，我们学习了如何使用service在集群外暴露容器化应用程序。我们使用Ingress控制器和Rule来执行相同的功能。区别在于效率。您可以根据请求主机或路径路由流量，而不是使用Service（如LoadBalancer）。这允许将许多服务从一个地址来访问后端。从而实现了7层负载均衡。</p>
+
+<p>INGRESS控制器不同于大多数控制器，因为它不作为kube-controller-manager二进制文件的一部分运行。我们可以部署多个控制器，每个控制器具有唯一的配置。控制器使用Ingress规则来处理进出集群外部的流量。</p>
+
+<p>有许多入口控制器，如GKE，nginx，Traefik，Contour和Envoy等。任何能够反向代理的工具都应该可以正常工作。这些代理使用规则并侦听特定的流量。Ingress是一个API资源，可以使用<strong>kubectl</strong>创建。创建该资源时，它会重新编排并重新配置Ingress控制器，以允许流量从外部流向内部服务。我们可以将Service配置为ClusterIP类型，它的值为none，并使用Ingress规则定义如何将流量路由到该内部服务。</p>
+
+<p>Ingress 暴露了从集群外部到集群内 services 的 HTTP 和 HTTPS 路由。 流量路由由 Ingress 资源上定义的规则控制。</p>
+
+<p>可以将 Ingress 配置为提供服务外部可访问的 URL、负载均衡流量、终止 SSL / TLS，以及提供基于名称的虚拟主机。Ingress 控制器 通常负责通过负载均衡器来实现 Ingress，尽管它也可以配置边缘路由器或其他前端来帮助处理流量。</p>
+
+<p>Ingress 不会公开任意端口或协议。 将 HTTP 和 HTTPS 以外的服务公开到 Internet 时，通常使用 Service.Type=NodePort 或者 Service.Type=LoadBalancer 类型的服务。</p>
+
+<h2 id="2-ingress-controller">2. Ingress Controller</h2>
+
+<p>Ingress Controller是一个运行在Pod中的守护进程，它监视API服务器上的<strong>入口</strong>端点，新对象创建时，该资源位于<strong>networking.k8s.io/v1beta1</strong>组下。当创建新的endpoint时，守护进程使用配置的规则集来允许到服务的入站连接，通常是HTTP通信。这使得无论Pod部署在哪里，都可以通过边缘路由器轻松访问Pod服务。</p>
+
+<p>可以部署多个入口控制器。流量应该使用annotations来选择正确的控制器。缺少匹配的注释将导致每个控制器尝试满足入口流量。</p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/15_INGRESS/5ln4zg2183da-TheIngress.png" alt="5ln4zg2183da-TheIngress" /></p>
+
+<h2 id="3-使用nginx的ingress">3. 使用nginx的Ingress</h2>
+
+<p>通过使用提供的YAML文件，部署nginx控制器变得很容易，可以在 <a href="https://github.com/kubernetes/ingress-nginx/tree/master/deploy">ingress-nginx/deploy GitHub repository</a>找到相关的配置</p>
+
+<p>这个页面有配置文件，可以在多个平台上配置nginx，比如AWS、GKE、Azure和bare metal等等。</p>
+
+<p>对于任何Ingress控制器，都有一些正确部署的配置要求。可以通过ConfigMap、Annotations或自定义模板进行自定义：</p>
+
+<ul>
+  <li>Easy integration with RBAC （与RBAC轻易集成）</li>
+  <li>Uses the annotation <strong>kubernetes.io/ingress.class: “nginx”</strong></li>
+  <li>L7 traffic requires the <strong>proxy-real-ip-cidr</strong> setting（七层流量需要配置proxy-real-ip-cidr配置）</li>
+  <li>Bypasses kube-proxy to allow session affinity（可以通过kube-proxy实现session的粘性）</li>
+  <li>Does not use <strong>conntrack</strong> entries for iptables DNAT（不需要使用iptables DNAT的conntrack入口）</li>
+  <li>TLS requires the host field to be defined.（TLS的配置需要在host的地方去定义）</li>
+</ul>
+
+<h2 id="4-ingress-api资源">4. Ingress API资源</h2>
+
+<p>Ingress对象属于 networking.k8s.io这个API，但是仍然是一个beta版本的对象。典型的Ingress对象我们可以使用下面的清单文件来创建</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1beta1</span> 
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span> 
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ghost</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">ghost.192.168.99.100.nip.io</span>
+<span class="na">http</span><span class="pi">:</span>
+<span class="na">paths</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+            <span class="na">serviceName</span><span class="pi">:</span> <span class="s">ghost</span>
+            <span class="na">servicePort</span><span class="pi">:</span> <span class="s">2368</span> 
+</code></pre></div></div>
+
+<p>我们可以像管理其他资源一样管理ingress</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get ingress
+
+<span class="nv">$ </span>kubectl delete ingress &lt;ingress_name&gt;
+
+<span class="nv">$ </span>kubectl edit ingress &lt;ingress_name&gt;
+</code></pre></div></div>
+
+<h2 id="5-部署ingress-controller">5. 部署Ingress Controller</h2>
+
+<p>部署Ingress Controller非常简单，我们可以直接使用kubectl来部署。部署的样例可以在<a href="https://github.com/kubernetes/ingress-nginx/tree/master/deploy">GitHub</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl apply <span class="nt">-f</span> https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/baremetal/deploy.yaml
+</code></pre></div></div>
+
+<p>部署完成之后会生产一些由RC管理的pod还有一些service。默认的HTTP后端会返回404页面</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods,rc,svc
+NAME                               READY  STATUS   RESTARTS  AGE
+po/default-http-backend-xvep8      1/1    Running  0         4m
+po/nginx-ingress-controller-fkshm  1/1    Running  0         4m
+
+NAME                     DESIRED  CURRENT  READY  AGE
+rc/default-http-backend  1        1        0      4m
+
+NAME                      CLUSTER-IP  EXTERNAL-IP  PORT<span class="o">(</span>S<span class="o">)</span>  AGE
+svc/default-http-backend  10.0.0.212  &lt;none&gt;       80/TCP   4m
+svc/kubernetes            10.0.0.1    &lt;none&gt;       443/TCP  77d
+</code></pre></div></div>
+
+<h2 id="6-创建ingress规则">6. 创建Ingress规则</h2>
+
+<p>我们在刚才的环境中创建一个规则</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl run ghost <span class="nt">--image</span><span class="o">=</span>ghost
+
+<span class="nv">$ </span>kubectl expose deployments ghost <span class="nt">--port</span><span class="o">=</span>2368
+</code></pre></div></div>
+
+<p>deployment暴露和Ingress规则创建之后，我们就可以从外部访问应用了</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">ghost</span>
+<span class="na">spec</span><span class="pi">:</span>
+    <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">ghost.192.168.99.100.nip.io</span>
+      <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+            <span class="na">serviceName</span><span class="pi">:</span> <span class="s">ghost</span>
+            <span class="na">servicePort</span><span class="pi">:</span> <span class="s">2368</span>
+</code></pre></div></div>
+
+<p>定义多个规则</p>
+
+<p>在刚才的例子中，我们定义了一个规则。如果我们还有更多的服务，我们可以在一个Ingress中定义多个规则</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">rules</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">ghost.192.168.99.100.nip.io</span>
+  <span class="na">http</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+        <span class="na">serviceName</span><span class="pi">:</span> <span class="s">ghost</span>
+        <span class="na">servicePort</span><span class="pi">:</span> <span class="s">2368</span>
+<span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">nginx.192.168.99.100.nip.io</span>
+  <span class="na">http</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+        <span class="na">serviceName</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>使用kubeadm安装kubernetes master | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="使用kubeadm安装kubernetes master" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L3_senior_2_kubernetes_1_install_kubernetes_kubeadm.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L3_senior_2_kubernetes_1_install_kubernetes_kubeadm.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"使用kubeadm安装kubernetes master","url":"http://localhost:4000/keynotes_L3_senior_2_kubernetes_1_install_kubernetes_kubeadm.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="课程目标">课程目标</h2>
+
+<ul>
+  <li>使用kubeadm在已经建好的etcd集群上安装kubernetes</li>
+</ul>
+
+<h2 id="1-简介">1. 简介</h2>
+
+<p>我们安装kubernetes高可用集群的方式非常的多，我们会在架构师课程中专门安排一个专题来说kubernetes的各种高可用安装方式，这个高级课程中，我们只说使用kubeadm安装的各种高可用集群。最简单的方式，请移步我的gitpage。</p>
+
+<p><a href="https://cloudnative365.github.io/keynotes_L4_architect_1_HA_1_k8s_cluster_kubeadm_yum.html">用kubeadm搭建k8s高可用（yum版）</a>，<a href="https://cloudnative365.github.io/keynotes_L4_architect_1_HA_2_k8s_cluster_kubeadm_apt.html">用kubeadm搭建k8s高可用（apt版）</a></p>
+
+<h2 id="2-架构与环境">2. 架构与环境</h2>
+
+<h3 id="21-架构">2.1. 架构</h3>
+
+<ul>
+  <li>我们这次要说的是在外挂etcd的架构上安装kubernetes集群。架构图如下</li>
+</ul>
+
+<p><img src="/pages/keynotes/L3_senior/2_kubernetes/pics/1_install_kubernetes_kubeadm/image-20200623144543807.png" alt="image-20200623144543807" /></p>
+
+<ul>
+  <li>
+    <p>etcd集群的安装方式我们前面已经说了，我们这里假设etcd集群已经安装好的，我们需要安装的是除了etcd的其他部分。</p>
+  </li>
+  <li>
+    <p>机器</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>IP</th>
+          <th>hostname</th>
+          <th>用途</th>
+          <th>组件</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10.0.1.94</td>
+          <td>lb</td>
+          <td>loadbalance和jumpserver</td>
+          <td>nginx</td>
+        </tr>
+        <tr>
+          <td>10.0.11.202</td>
+          <td>control1</td>
+          <td>apiserver/controller-manager/scheduler</td>
+          <td>apiserver/controller-manager/scheduler</td>
+        </tr>
+        <tr>
+          <td>10.0.12.249</td>
+          <td>control2</td>
+          <td>control plane</td>
+          <td>apiserver/controller-manager/scheduler</td>
+        </tr>
+        <tr>
+          <td>10.0.13.82</td>
+          <td>control3</td>
+          <td>control plane</td>
+          <td>apiserver/controller-manager/scheduler</td>
+        </tr>
+        <tr>
+          <td>10.0.11.201</td>
+          <td>etcd1</td>
+          <td>etcd host</td>
+          <td>etcd</td>
+        </tr>
+        <tr>
+          <td>10.0.12.248</td>
+          <td>etcd2</td>
+          <td>etcd host</td>
+          <td>etcd</td>
+        </tr>
+        <tr>
+          <td>10.0.13.81</td>
+          <td>etcd3</td>
+          <td>etcd host</td>
+          <td>etcd</td>
+        </tr>
+        <tr>
+          <td>10.0.12.135</td>
+          <td>node1</td>
+          <td>worker node</td>
+          <td>kubelet/kube-proxy</td>
+        </tr>
+        <tr>
+          <td>10.0.13.253</td>
+          <td>node2</td>
+          <td>worker node</td>
+          <td>kubelet/kube-proxy</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>loadbalance的选型：支持4层负载均衡的均衡器都可以，但是如果在生产上一定要做两个负载均衡来保证</p>
+  </li>
+  <li>
+    <p>使用kubeadm安装的kubernetes集群会把kube-api，kube-scheduler和kube-controller-manager都运行为容器，而kubelet和容器runtime（docker或者containerd）会托管给systemd</p>
+  </li>
+  <li>
+    <p>为了满足国内朋友的需求，我会使用国内的环境来搭建，所以咱们会指定镜像仓库为国内的仓库（阿里云的仓库）</p>
+  </li>
+</ul>
+
+<h3 id="22-软件环境">2.2. 软件环境</h3>
+
+<ul>
+  <li>
+    <p>需要准备已经安装好etcd的3台机器，参考<a href="https://cloudnative365.github.io/keynotes_L3_senior_1_etcd_2_install_etcd.html">二进制安装etcd</a>，<a href="https://cloudnative365.github.io/keynotes_L3_senior_1_etcd_3_install_etcd_with_kubeadm.html">kubeadm安装etcd</a>，etcd的版本是3.4.9</p>
+  </li>
+  <li>
+    <p>同时，要检查etcd的证书</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>/etc/kubernetes/
+├── manifests
+│   └── etcd.yaml
+└── pki
+    ├── apiserver-etcd-client.crt
+    ├── apiserver-etcd-client.key
+    └── etcd
+        ├── ca.crt
+        ├── ca.key
+        ├── healthcheck-client.crt
+        ├── healthcheck-client.key
+        ├── peer.crt
+        ├── peer.key
+        ├── server.crt
+        └── server.key
+  
+3 directories, 11 files
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="3-安装">3. 安装</h2>
+
+<h3 id="31-安装nginx">3.1. 安装nginx</h3>
+
+<p>负载均衡可以选择Nginx，Haproxy，lvs或者traefik甚至apache都可以，基本上所有的4层负载均衡或者7层负载均衡都可以，负载均衡的主要作用就是前端使用一个统一的IP地址，后端映射api-server。让每个node通讯的时候，都通过负载均衡器来调度请求。</p>
+
+<p>这里，我们就使用最常见，最容器实现的nginx来做负载均衡。下面的操作需要在lb机器上做。</p>
+
+<ul>
+  <li>安装nginx</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yum <span class="nt">-y</span> install nginx
+</code></pre></div></div>
+
+<ul>
+  <li>我这边使用AWS的linux安装的</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>amazon-linux-extras install nginx1.12
+</code></pre></div></div>
+
+<ul>
+  <li>在<code class="highlighter-rouge">/etc/nginx/nginx.conf</code>里面添加一个include，让nginx读取目录下的配置文件</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>include /etc/nginx/conf.d/tcp.d/<span class="k">*</span>.conf<span class="p">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>添加kubernetes的4层代理配置文件<code class="highlighter-rouge">/etc/nginx/conf.d/tcp.d/kube-api-server.conf</code></li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stream</span> <span class="p">{</span>
+    <span class="n">log_format</span> <span class="n">main</span> <span class="err">'$</span><span class="n">remote_addr</span> <span class="err">$</span><span class="n">upstream_addr</span> <span class="o">-</span> <span class="p">[</span><span class="err">$</span><span class="n">time_local</span><span class="p">]</span> <span class="err">$</span><span class="n">status</span> <span class="err">$</span><span class="n">upstream_bytes_sent</span><span class="err">'</span><span class="p">;</span>
+    <span class="n">access_log</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">k8s</span><span class="o">-</span><span class="n">access</span><span class="p">.</span><span class="n">log</span> <span class="n">main</span><span class="p">;</span>
+    <span class="n">upstream</span> <span class="n">k8s</span><span class="o">-</span><span class="n">apiserver</span> <span class="p">{</span>
+        <span class="n">server</span> <span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">11</span><span class="p">.</span><span class="mi">202</span><span class="o">:</span><span class="mi">6443</span><span class="p">;</span>
+        <span class="n">server</span> <span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">12</span><span class="p">.</span><span class="mi">249</span><span class="o">:</span><span class="mi">6443</span><span class="p">;</span>
+        <span class="n">server</span> <span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">13</span><span class="p">.</span><span class="mi">82</span><span class="o">:</span><span class="mi">6443</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">server</span> <span class="p">{</span>
+        <span class="n">listen</span> <span class="mi">10</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">94</span><span class="o">:</span><span class="mi">6443</span><span class="p">;</span>
+        <span class="n">proxy_pass</span> <span class="n">k8s</span><span class="o">-</span><span class="n">apiserver</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>查看端口是否在监听了</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netstat <span class="nt">-untlp</span>|grep 6443
+tcp        0      0 10.0.1.94:6443          0.0.0.0:<span class="k">*</span>               LISTEN      3410/nginx: master
+</code></pre></div></div>
+
+<h3 id="32-安装docker">3.2. 安装docker</h3>
+
+<ul>
+  <li>
+    <p>私有云<a href="https://developer.aliyun.com/mirror/docker-ce?spm=a2c6h.13651102.0.0.3e221b11OiZivH">点这里</a></p>
+  </li>
+  <li>
+    <p>AWS</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">-y</span> install docker
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>注意：一定要把docker的cgroups的方式和kubelet的cgroup方式修改成一致的，否则会报错</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Setup daemon.</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> /etc/docker/daemon.json <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2",
+  "registry-mirrors": ["https://gvfjy25r.mirror.aliyuncs.com"]
+}
+</span><span class="no">EOF
+
+</span>mkdir <span class="nt">-p</span> /etc/systemd/system/docker.service.d
+
+<span class="c"># Restart docker.</span>
+systemctl daemon-reload
+systemctl restart docker
+</code></pre></div></div>
+
+<h3 id="33-kubeadmkubelet">3.3. kubeadm，kubelet</h3>
+
+<ul>
+  <li>正常方式<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl">点这里</a></li>
+  <li>国内环境<a href="https://developer.aliyun.com/mirror/kubernetes?spm=a2c6h.13651102.0.0.3e221b11OiZivH">点这里</a></li>
+</ul>
+
+<h3 id="34-准备kubeadm配置文件">3.4. 准备kubeadm配置文件</h3>
+
+<ul>
+  <li>创建<code class="highlighter-rouge">kubeadm-config.yaml</code></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+kubernetesVersion: stable
+controlPlaneEndpoint: <span class="s2">"LOAD_BALANCER_DNS:LOAD_BALANCER_PORT"</span>
+etcd:
+    external:
+        endpoints:
+        - https://ETCD_0_IP:2379
+        - https://ETCD_1_IP:2379
+        - https://ETCD_2_IP:2379
+        caFile: /etc/kubernetes/pki/etcd/ca.crt
+        certFile: /etc/kubernetes/pki/apiserver-etcd-client.crt
+        keyFile: /etc/kubernetes/pki/apiserver-etcd-client.key
+</code></pre></div></div>
+
+<ul>
+  <li>修改<code class="highlighter-rouge">kubeadm-config.yaml</code></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+kubernetesVersion: stable
+controlPlaneEndpoint: <span class="s2">"10.0.1.94:6443"</span>
+etcd:
+    external:
+        endpoints:
+        - https://10.0.11.201:2379
+        - https://10.0.12.248:2379
+        - https://10.0.13.81:2379
+        caFile: /etc/kubernetes/pki/etcd/ca.crt
+        certFile: /etc/kubernetes/pki/apiserver-etcd-client.crt
+        keyFile: /etc/kubernetes/pki/apiserver-etcd-client.key
+networking:
+  podSubnet: <span class="s2">"192.168.0.0/16"</span>
+imageRepository: <span class="s2">"registry.cn-hangzhou.aliyuncs.com/google_containers"</span>
+</code></pre></div></div>
+
+<ul>
+  <li>初始化第一个节点</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init <span class="nt">--config</span> kubeadm-config.yaml <span class="nt">--upload-certs</span>
+</code></pre></div></div>
+
+<ul>
+  <li>成功后会出现提示</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>addons] Applied essential addon: CoreDNS
+<span class="o">[</span>addons] Applied essential addon: kube-proxy
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir <span class="nt">-p</span> <span class="nv">$HOME</span>/.kube
+  <span class="nb">sudo </span>cp <span class="nt">-i</span> /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+  <span class="nb">sudo </span>chown <span class="k">$(</span>id <span class="nt">-u</span><span class="k">)</span>:<span class="k">$(</span>id <span class="nt">-g</span><span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run <span class="s2">"kubectl apply -f [podnetwork].yaml"</span> with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of the control-plane node running the following <span class="nb">command </span>on each as root:
+
+  kubeadm join 10.0.1.94:6443 <span class="nt">--token</span> nzjpz8.vkfaw9phnwh32jol <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:89022963a3104da98a595443b6be361c7920700bd3f43fd29491eb0d4c18e0eb <span class="se">\</span>
+    <span class="nt">--control-plane</span> <span class="nt">--certificate-key</span> 24a95f134489a05e39168c21135f7ea67152568fcc6e9d69105400fb1d008f81
+
+Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
+As a safeguard, uploaded-certs will be deleted <span class="k">in </span>two hours<span class="p">;</span> If necessary, you can use
+<span class="s2">"kubeadm init phase upload-certs --upload-certs"</span> to reload certs afterward.
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 10.0.1.94:6443 <span class="nt">--token</span> nzjpz8.vkfaw9phnwh32jol <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:89022963a3104da98a595443b6be361c7920700bd3f43fd29491eb0d4c18e0eb
+</code></pre></div></div>
+
+<ul>
+  <li>配置kubelet</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  mkdir <span class="nt">-p</span> <span class="nv">$HOME</span>/.kube
+  <span class="nb">sudo </span>cp <span class="nt">-i</span> /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+  <span class="nb">sudo </span>chown <span class="k">$(</span>id <span class="nt">-u</span><span class="k">)</span>:<span class="k">$(</span>id <span class="nt">-g</span><span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+</code></pre></div></div>
+
+<ul>
+  <li>在其他的master节点上执行</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  kubeadm join 10.0.1.94:6443 <span class="nt">--token</span> nzjpz8.vkfaw9phnwh32jol <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:89022963a3104da98a595443b6be361c7920700bd3f43fd29491eb0d4c18e0eb <span class="se">\</span>
+    <span class="nt">--control-plane</span> <span class="nt">--certificate-key</span> 24a95f134489a05e39168c21135f7ea67152568fcc6e9d69105400fb1d008f81
+</code></pre></div></div>
+
+<ul>
+  <li>在其他的worker节点上执行</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm join 10.0.1.94:6443 <span class="nt">--token</span> nzjpz8.vkfaw9phnwh32jol <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:89022963a3104da98a595443b6be361c7920700bd3f43fd29491eb0d4c18e0eb
+</code></pre></div></div>
+
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

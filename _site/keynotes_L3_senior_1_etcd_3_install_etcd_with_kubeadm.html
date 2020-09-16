@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>使用kubeadm安装etcd | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="使用kubeadm安装etcd" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L3_senior_1_etcd_3_install_etcd_with_kubeadm.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L3_senior_1_etcd_3_install_etcd_with_kubeadm.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"使用kubeadm安装etcd","url":"http://localhost:4000/keynotes_L3_senior_1_etcd_3_install_etcd_with_kubeadm.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="课程目标">课程目标</h2>
+
+<ul>
+  <li>使用kubeadm安装etcd集群</li>
+  <li>使用kubeadm创建etcd的证书</li>
+</ul>
+
+<h2 id="1-使用kubeadm安装etcd集群">1. 使用kubeadm安装etcd集群</h2>
+
+<h3 id="11-环境">1.1. 环境</h3>
+
+<ul>
+  <li>三个可以通过 2379 和 2380 端口相互通信的主机。本文档使用这些作为默认端口。不过，它们可以通过 kubeadm 的配置文件进行自定义。</li>
+  <li>一些可以用来在主机间复制文件的基础设施。例如 <code class="highlighter-rouge">ssh</code> 和 <code class="highlighter-rouge">scp</code> 就可以满足需求。</li>
+</ul>
+
+<h3 id="12-安装所需的软件">1.2. 安装所需的软件</h3>
+
+<ul>
+  <li>
+    <p>docker</p>
+
+    <ul>
+      <li>
+        <p>私有云<a href="https://developer.aliyun.com/mirror/docker-ce?spm=a2c6h.13651102.0.0.3e221b11OiZivH">点这里</a></p>
+      </li>
+      <li>
+        <p>AWS</p>
+
+        <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">-y</span> install docker
+</code></pre></div>        </div>
+      </li>
+    </ul>
+
+    <p>注意：一定要把docker的cgroups的方式和kubelet的cgroup方式修改成一致的，否则会报错</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Setup daemon.</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> /etc/docker/daemon.json <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2",
+  "registry-mirrors": ["https://gvfjy25r.mirror.aliyuncs.com"]
+}
+</span><span class="no">EOF
+  
+</span>mkdir <span class="nt">-p</span> /etc/systemd/system/docker.service.d
+  
+<span class="c"># Restart docker.</span>
+systemctl daemon-reload
+systemctl restart docker
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>kubeadm，kubelet</p>
+
+    <ul>
+      <li>正常方式<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl">点这里</a></li>
+      <li>国内环境<a href="https://developer.aliyun.com/mirror/kubernetes?spm=a2c6h.13651102.0.0.3e221b11OiZivH">点这里</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="13-建立集群">1.3. 建立集群</h3>
+
+<ul>
+  <li>
+    <p>将 kubelet 配置为 etcd 的服务管理器。由于 etcd 是首先创建的，因此必须通过创建具有更高优先级的新文件来覆盖 kubeadm 提供的 kubelet 单元文件。</p>
+
+    <p>注意：不同的操作系统的systemd是略有区别的，主要配置文件的位置，可以使用</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> &gt; /usr/lib/systemd/system/kubelet.service.d/20-etcd-service-manager.conf
+[Service]
+ExecStart=
+#  Replace "systemd" with the cgroup driver of your container runtime. The default value in the kubelet is "cgroupfs".
+ExecStart=/usr/bin/kubelet --address=127.0.0.1 --pod-manifest-path=/etc/kubernetes/manifests --cgroup-driver=systemd
+Restart=always
+</span><span class="no">EOF
+</span>systemctl daemon-reload
+systemctl restart kubelet
+</code></pre></div>    </div>
+
+    <p>注意：不同的操作系统的systemd是略有区别的，主要配置文件的位置，可以使用<code class="highlighter-rouge">systemctl status kubelet</code>来查看systemd文件的位置</p>
+  </li>
+  <li>
+    <p>为 kubeadm 创建配置文件，使用以下脚本为每个将要运行 etcd 成员的主机生成一个 kubeadm 配置文件</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 使用 IP 或可解析的主机名替换 HOST0、HOST1 和 HOST2</span>
+<span class="nb">export </span><span class="nv">HOST0</span><span class="o">=</span>172.31.33.72
+<span class="nb">export </span><span class="nv">HOST1</span><span class="o">=</span>172.31.32.70
+<span class="nb">export </span><span class="nv">HOST2</span><span class="o">=</span>172.31.43.7
+  
+<span class="c"># 创建临时目录来存储将被分发到其它主机上的文件</span>
+<span class="nv">$ </span>mkdir <span class="nt">-p</span> /tmp/<span class="k">${</span><span class="nv">HOST0</span><span class="k">}</span>/ /tmp/<span class="k">${</span><span class="nv">HOST1</span><span class="k">}</span>/ /tmp/<span class="k">${</span><span class="nv">HOST2</span><span class="k">}</span>/
+  
+<span class="nv">ETCDHOSTS</span><span class="o">=(</span><span class="k">${</span><span class="nv">HOST0</span><span class="k">}</span> <span class="k">${</span><span class="nv">HOST1</span><span class="k">}</span> <span class="k">${</span><span class="nv">HOST2</span><span class="k">}</span><span class="o">)</span>
+<span class="nv">NAMES</span><span class="o">=(</span><span class="s2">"infra0"</span> <span class="s2">"infra1"</span> <span class="s2">"infra2"</span><span class="o">)</span>
+  
+<span class="k">for </span>i <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="p">!ETCDHOSTS[@]</span><span class="k">}</span><span class="s2">"</span><span class="p">;</span> <span class="k">do
+</span><span class="nv">HOST</span><span class="o">=</span><span class="k">${</span><span class="nv">ETCDHOSTS</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="k">}</span>
+<span class="nv">NAME</span><span class="o">=</span><span class="k">${</span><span class="nv">NAMES</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="k">}</span>
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> &gt; /tmp/</span><span class="k">${</span><span class="nv">HOST</span><span class="k">}</span><span class="sh">/kubeadmcfg.yaml
+apiVersion: "kubeadm.k8s.io/v1beta2"
+kind: ClusterConfiguration
+etcd:
+    local:
+        serverCertSANs:
+        - "</span><span class="k">${</span><span class="nv">HOST</span><span class="k">}</span><span class="sh">"
+        peerCertSANs:
+        - "</span><span class="k">${</span><span class="nv">HOST</span><span class="k">}</span><span class="sh">"
+        extraArgs:
+            initial-cluster: infra0=https://</span><span class="k">${</span><span class="nv">ETCDHOSTS</span><span class="p">[0]</span><span class="k">}</span><span class="sh">:2380,infra1=https://</span><span class="k">${</span><span class="nv">ETCDHOSTS</span><span class="p">[1]</span><span class="k">}</span><span class="sh">:2380,infra2=https://</span><span class="k">${</span><span class="nv">ETCDHOSTS</span><span class="p">[2]</span><span class="k">}</span><span class="sh">:2380
+            initial-cluster-state: new
+            name: </span><span class="k">${</span><span class="nv">NAME</span><span class="k">}</span><span class="sh">
+            listen-peer-urls: https://</span><span class="k">${</span><span class="nv">HOST</span><span class="k">}</span><span class="sh">:2380
+            listen-client-urls: https://</span><span class="k">${</span><span class="nv">HOST</span><span class="k">}</span><span class="sh">:2379
+            advertise-client-urls: https://</span><span class="k">${</span><span class="nv">HOST</span><span class="k">}</span><span class="sh">:2379
+            initial-advertise-peer-urls: https://</span><span class="k">${</span><span class="nv">HOST</span><span class="k">}</span><span class="sh">:2380
+</span><span class="no">EOF
+</span><span class="k">done</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>生成证书颁发机构CA</p>
+
+    <ul>
+      <li>
+        <p>如果已经拥有 CA，那么唯一的操作是复制 CA 的 <code class="highlighter-rouge">crt</code> 和 <code class="highlighter-rouge">key</code> 文件到 <code class="highlighter-rouge">/etc/kubernetes/pki/etcd/ca.crt</code> 和 <code class="highlighter-rouge">/etc/kubernetes/pki/etcd/ca.key</code>。复制完这些文件后继续下一步，“为每个成员创建证书”。</p>
+      </li>
+      <li>
+        <p>如果还没有 CA，则在 <code class="highlighter-rouge">$HOST0</code>（您为 kubeadm 生成配置文件的位置）上运行此命令。</p>
+
+        <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init phase certs etcd-ca
+</code></pre></div>        </div>
+
+        <p>创建了如下两个文件</p>
+
+        <ul>
+          <li><code class="highlighter-rouge">/etc/kubernetes/pki/etcd/ca.crt</code></li>
+          <li><code class="highlighter-rouge">/etc/kubernetes/pki/etcd/ca.key</code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>为每个成员创建证书</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init phase certs etcd-server <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST2</span><span class="k">}</span>/kubeadmcfg.yaml
+kubeadm init phase certs etcd-peer <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST2</span><span class="k">}</span>/kubeadmcfg.yaml
+kubeadm init phase certs etcd-healthcheck-client <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST2</span><span class="k">}</span>/kubeadmcfg.yaml
+kubeadm init phase certs apiserver-etcd-client <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST2</span><span class="k">}</span>/kubeadmcfg.yaml
+cp <span class="nt">-R</span> /etc/kubernetes/pki /tmp/<span class="k">${</span><span class="nv">HOST2</span><span class="k">}</span>/
+<span class="c"># 清理不可重复使用的证书</span>
+find /etc/kubernetes/pki <span class="nt">-not</span> <span class="nt">-name</span> ca.crt <span class="nt">-not</span> <span class="nt">-name</span> ca.key <span class="nt">-type</span> f <span class="nt">-delete</span>
+  
+kubeadm init phase certs etcd-server <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST1</span><span class="k">}</span>/kubeadmcfg.yaml
+kubeadm init phase certs etcd-peer <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST1</span><span class="k">}</span>/kubeadmcfg.yaml
+kubeadm init phase certs etcd-healthcheck-client <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST1</span><span class="k">}</span>/kubeadmcfg.yaml
+kubeadm init phase certs apiserver-etcd-client <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST1</span><span class="k">}</span>/kubeadmcfg.yaml
+cp <span class="nt">-R</span> /etc/kubernetes/pki /tmp/<span class="k">${</span><span class="nv">HOST1</span><span class="k">}</span>/
+find /etc/kubernetes/pki <span class="nt">-not</span> <span class="nt">-name</span> ca.crt <span class="nt">-not</span> <span class="nt">-name</span> ca.key <span class="nt">-type</span> f <span class="nt">-delete</span>
+  
+kubeadm init phase certs etcd-server <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST0</span><span class="k">}</span>/kubeadmcfg.yaml
+kubeadm init phase certs etcd-peer <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST0</span><span class="k">}</span>/kubeadmcfg.yaml
+kubeadm init phase certs etcd-healthcheck-client <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST0</span><span class="k">}</span>/kubeadmcfg.yaml
+kubeadm init phase certs apiserver-etcd-client <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST0</span><span class="k">}</span>/kubeadmcfg.yaml
+<span class="c"># 不需要移动 certs 因为它们是给 HOST0 使用的</span>
+  
+<span class="c"># 清理不应从此主机复制的证书</span>
+find /tmp/<span class="k">${</span><span class="nv">HOST2</span><span class="k">}</span> <span class="nt">-name</span> ca.key <span class="nt">-type</span> f <span class="nt">-delete</span>
+find /tmp/<span class="k">${</span><span class="nv">HOST1</span><span class="k">}</span> <span class="nt">-name</span> ca.key <span class="nt">-type</span> f <span class="nt">-delete</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>复制证书和 kubeadm 配置，证书已生成，现在必须将它们移动到对应的主机。</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">USER</span><span class="o">=</span>ec2-user
+<span class="nv">HOST</span><span class="o">=</span><span class="k">${</span><span class="nv">HOST1</span><span class="k">}</span>
+scp <span class="nt">-r</span> /tmp/<span class="k">${</span><span class="nv">HOST</span><span class="k">}</span>/<span class="k">*</span> <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>@<span class="k">${</span><span class="nv">HOST</span><span class="k">}</span>:
+ssh <span class="k">${</span><span class="nv">USER</span><span class="k">}</span>@<span class="k">${</span><span class="nv">HOST</span><span class="k">}</span>
+USER@HOST <span class="c"># sudo -Es</span>
+root@HOST <span class="c"># chown -R root:root pki</span>
+root@HOST <span class="c"># mv pki /etc/kubernetes/</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>确保已经所有预期的文件都存在</p>
+
+    <p><code class="highlighter-rouge">$HOST0</code> 所需文件的完整列表如下：</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/tmp/<span class="k">${</span><span class="nv">HOST0</span><span class="k">}</span>
+└── kubeadmcfg.yaml
+<span class="nt">---</span>
+  /etc/kubernetes/pki
+├── apiserver-etcd-client.crt
+├── apiserver-etcd-client.key
+└── etcd
+    ├── ca.crt
+    ├── ca.key
+    ├── healthcheck-client.crt
+    ├── healthcheck-client.key
+    ├── peer.crt
+    ├── peer.key
+    ├── server.crt
+    └── server.key
+</code></pre></div>    </div>
+
+    <p>在 <code class="highlighter-rouge">$HOST1</code>:</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$HOME</span>
+└── kubeadmcfg.yaml
+<span class="nt">---</span>
+/etc/kubernetes/pki
+├── apiserver-etcd-client.crt
+├── apiserver-etcd-client.key
+└── etcd
+    ├── ca.crt
+    ├── healthcheck-client.crt
+    ├── healthcheck-client.key
+    ├── peer.crt
+    ├── peer.key
+    ├── server.crt
+    └── server.key
+</code></pre></div>    </div>
+
+    <p>在 <code class="highlighter-rouge">$HOST2</code></p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$HOME</span>
+└── kubeadmcfg.yaml
+<span class="nt">---</span>
+/etc/kubernetes/pki
+├── apiserver-etcd-client.crt
+├── apiserver-etcd-client.key
+└── etcd
+    ├── ca.crt
+    ├── healthcheck-client.crt
+    ├── healthcheck-client.key
+    ├── peer.crt
+    ├── peer.key
+    ├── server.crt
+    └── server.key
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建静态 Pod 清单，既然证书和配置已经就绪，是时候去创建清单了。在每台主机上运行 <code class="highlighter-rouge">kubeadm</code> 命令来生成 etcd 使用的静态清单。</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@HOST0 <span class="nv">$ </span>kubeadm init phase etcd <span class="nb">local</span> <span class="nt">--config</span><span class="o">=</span>/tmp/<span class="k">${</span><span class="nv">HOST0</span><span class="k">}</span>/kubeadmcfg.yaml
+root@HOST1 <span class="nv">$ </span>kubeadm init phase etcd <span class="nb">local</span> <span class="nt">--config</span><span class="o">=</span>/home/ec2-user/kubeadmcfg.yaml
+root@HOST2 <span class="nv">$ </span>kubeadm init phase etcd <span class="nb">local</span> <span class="nt">--config</span><span class="o">=</span>/home/ec2-user/kubeadmcfg.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>注意：修改<code class="highlighter-rouge">/etc/kubernetes/manifests/etcd.yaml</code>镜像地址</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  image: registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.4.3-0
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>注意：手动拉取pause镜像并修改tag</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.2
+docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.2 k8s.gcr.io/pause:3.2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>重新启动kubelet</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart kubelet
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>检查群集运行状况</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">ETCD_TAG</span><span class="o">=</span>3.4.3-0
+docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="se">\</span>
+<span class="nt">--net</span> host <span class="se">\</span>
+<span class="nt">-v</span> /etc/kubernetes:/etc/kubernetes registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:<span class="k">${</span><span class="nv">ETCD_TAG</span><span class="k">}</span> etcdctl <span class="se">\</span>
+<span class="nt">--cert</span> /etc/kubernetes/pki/etcd/peer.crt <span class="se">\</span>
+<span class="nt">--key</span> /etc/kubernetes/pki/etcd/peer.key <span class="se">\</span>
+<span class="nt">--cacert</span> /etc/kubernetes/pki/etcd/ca.crt <span class="se">\</span>
+<span class="nt">--endpoints</span> https://<span class="k">${</span><span class="nv">HOST0</span><span class="k">}</span>:2379 endpoint health <span class="nt">--cluster</span>
+...
+https://[HOST0 IP]:2379 is healthy: successfully committed proposal: took <span class="o">=</span> 16.283339ms
+https://[HOST1 IP]:2379 is healthy: successfully committed proposal: took <span class="o">=</span> 19.44402ms
+https://[HOST2 IP]:2379 is healthy: successfully committed proposal: took <span class="o">=</span> 35.926451ms
+</code></pre></div>    </div>
+
+    <ul>
+      <li>
+        <p>将 <code class="highlighter-rouge">${ETCD_TAG}</code> 设置为你的 etcd 镜像的版本标签，例如 <code class="highlighter-rouge">3.4.3-0</code>。要查看 kubeadm 使用的 etcd 镜像和标签，请执行 <code class="highlighter-rouge">kubeadm config images list --kubernetes-version ${K8S_VERSION}</code>，其中 <code class="highlighter-rouge">${K8S_VERSION}</code> 是 <code class="highlighter-rouge">v1.17.0</code> 作为例子。</p>
+      </li>
+      <li>
+        <p>将 <code class="highlighter-rouge">${HOST0}</code> 设置为要测试的主机的 IP 地址</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

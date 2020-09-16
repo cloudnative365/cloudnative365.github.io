@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>安装ingress-nginx | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="安装ingress-nginx" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L3_senior_2_kubernetes_2_install_ingress_nginx.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L3_senior_2_kubernetes_2_install_ingress_nginx.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"安装ingress-nginx","url":"http://localhost:4000/keynotes_L3_senior_2_kubernetes_2_install_ingress_nginx.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="课程目标">课程目标</h2>
+
+<ul>
+  <li>安装ingress控制器</li>
+  <li>创建Ingress资源</li>
+  <li>认识Ingress类</li>
+  <li>Ingress用法</li>
+  <li>更新Ingress</li>
+</ul>
+
+<h2 id="1-安装ingress控制器">1. 安装ingress控制器</h2>
+
+<p><a href="https://docs.nginx.com/nginx-ingress-controller/installation/?_ga=2.87051160.1809112633.1593511491-2130300903.1593399596">nginx官方文档</a>上提供了三种安装方法，镜像，manifest或者是helm。我们比较常用的是使用manifest或者helm，咱们这里使用manifest安装。</p>
+
+<h3 id="11-使用manifest安装">1.1. 使用manifest安装</h3>
+
+<ul>
+  <li>
+    <p>从git上下载</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git clone https://github.com/nginxinc/kubernetes-ingress/
+<span class="nv">$ </span><span class="nb">cd </span>kubernetes-ingress/deployments
+<span class="nv">$ </span>git checkout v1.7.2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建namespace</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl apply <span class="nt">-f</span> common/ns-and-sa.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>配置RBAC</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl apply <span class="nt">-f</span> rbac/rbac.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建TLS证书</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl apply <span class="nt">-f</span> common/default-server-secret.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>nginx的配置文件</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl apply <span class="nt">-f</span> common/nginx-config.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>自定义资源</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># VirtualServer</span>
+<span class="nv">$ </span>kubectl apply <span class="nt">-f</span> common/vs-definition.yaml
+<span class="c"># VirtualServerRoute</span>
+<span class="nv">$ </span>kubectl apply <span class="nt">-f</span> common/vsr-definition.yaml
+<span class="c"># TransportServer</span>
+<span class="nv">$ </span>kubectl apply <span class="nt">-f</span> common/ts-definition.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>（可选）如果想配置四层（TCP，UDP）的负载均衡就运行下面的</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 自定义资源</span>
+<span class="nv">$ </span>kubectl apply <span class="nt">-f</span> common/gc-definition.yaml
+<span class="c"># 全局配置</span>
+<span class="nv">$ </span>kubectl apply <span class="nt">-f</span> common/global-configuration.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>配置Ingress控制器</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl apply <span class="nt">-f</span> deployment/nginx-ingress.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>或者选择DeamonSet的Ingress控制器</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl apply <span class="nt">-f</span> daemon-set/nginx-ingress.yaml
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建nodePort方式的Service</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> service/nodeport.yaml
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="12-使用helm安装">1.2. 使用helm安装</h3>
+
+<p>不建议使用这种方式安装，因为使用helm安装会使用google的镜像源，需要先下载manifest文件进行编辑，然后再安装，而且需要手动指定名称空间，实在不太方便，所以这里并不推荐</p>
+
+<h2 id="2-创建ingress">2. 创建Ingress</h2>
+
+<p>我们先来看一个最简单的例子</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test-ingress</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/testpath</span>
+        <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+        <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">test</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<p>既然是k8s的一个资源类型，那么他就一定是一个对象，在定义它的时候就需要使用<code class="highlighter-rouge">apiversion</code>,<code class="highlighter-rouge">kind</code>,<code class="highlighter-rouge">metadata</code>和<code class="highlighter-rouge">spec</code>字段</p>
+
+<h3 id="21-ingress的规则">2.1. Ingress的规则</h3>
+
+<p>每个HTTP规则都包含下面的信息</p>
+
+<ul>
+  <li>可选主机。在此示例中，未指定主机，因此该规则适用于通过指定 IP 地址的所有入站 HTTP 通信。如果提供了主机（例如 foo.bar.com），则规则适用于该主机。</li>
+  <li>路径列表（例如，<code class="highlighter-rouge">/testpath</code>）,每个路径都有一个由 <code class="highlighter-rouge">serviceName</code> 和 <code class="highlighter-rouge">servicePort</code> 定义的关联后端。在负载均衡器将流量定向到引用的服务之前，主机和路径都必须匹配传入请求的内容。</li>
+  <li>后端是 <a href="https://kubernetes.io/docs/concepts/services-networking/service/">Service 文档</a>中所述的服务和端口名称的组合。与规则的主机和路径匹配的对 Ingress 的 HTTP（和 HTTPS ）请求将发送到列出的后端。</li>
+</ul>
+
+<p>通常在 Ingress 控制器中配置默认后端，以服务任何不符合规范中路径的请求。</p>
+
+<h3 id="22-默认的backend">2.2. 默认的backend</h3>
+
+<p>没有规则的 Ingress 将所有流量发送到单个默认后端。默认后端通常是 <a href="https://kubernetes.io/docs/concepts/services-networking/ingress-controllers">Ingress 控制器</a>的配置选项，并且未在 Ingress 资源中指定。</p>
+
+<p>如果没有主机或路径与 Ingress 对象中的 HTTP 请求匹配，则流量将路由到您的默认后端。</p>
+
+<h3 id="23-路径类型">2.3. 路径类型</h3>
+
+<p>Ingress 中的每个路径都有对应的路径类型。支持三种类型：</p>
+
+<ul>
+  <li><em><code class="highlighter-rouge">ImplementationSpecific</code></em> （默认）：对于这种类型，匹配取决于 IngressClass. 具体实现可以将其作为单独的 <code class="highlighter-rouge">pathType</code> 处理或者与 <code class="highlighter-rouge">Prefix</code> 或 <code class="highlighter-rouge">Exact</code> 类型作相同处理。</li>
+  <li><em><code class="highlighter-rouge">Exact</code></em>：精确匹配 URL 路径且对大小写敏感。</li>
+  <li><em><code class="highlighter-rouge">Prefix</code></em>：基于以 <code class="highlighter-rouge">/</code> 分割的 URL 路径前缀匹配。匹配对大小写敏感，并且对路径中的元素逐个完成。路径元素指的是由 <code class="highlighter-rouge">/</code> 分隔符分割的路径中的标签列表。如果每个 <em>p</em> 都是请求路径 <em>p</em> 的元素前缀，则请求与路径 <em>p</em> 匹配。</li>
+</ul>
+
+<h3 id="24-多重匹配">2.4. 多重匹配</h3>
+
+<p>在某些情况下，Ingress 中的多条路径会匹配同一个请求。这种情况下最长的匹配路径优先。如果仍然有两条同等的匹配路径，则精确路径类型优先于前缀路径类型。</p>
+
+<h2 id="3-ingress-类">3. Ingress 类</h2>
+
+<p>Ingress 可以由不同的控制器实现，通常使用不同的配置。每个 Ingress 应当指定一个类，一个对 IngressClass 资源的引用，该资源包含额外的配置，其中包括应当实现该类的控制器名称。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">IngressClass</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">external-lb</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">controller</span><span class="pi">:</span> <span class="s">example.com/ingress-controller</span>
+  <span class="na">parameters</span><span class="pi">:</span>
+    <span class="na">apiGroup</span><span class="pi">:</span> <span class="s">k8s.example.com/v1alpha</span>
+    <span class="na">kind</span><span class="pi">:</span> <span class="s">IngressParameters</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">external-lb</span>
+</code></pre></div></div>
+
+<p>IngressClass 资源包含一个可选的参数字段。可用于引用该类的额外配置。</p>
+
+<h3 id="31-废弃的注解">3.1. 废弃的注解</h3>
+
+<p>在 IngressClass 资源和 <code class="highlighter-rouge">ingressClassName</code> 字段被引入 Kubernetes 1.18 之前，Ingress 类是通过 Ingress 中的一个 <code class="highlighter-rouge">kubernetes.io/ingress.class</code> 注解来指定的。这个注解从未被正式定义过，但是得到了 Ingress 控制器的广泛支持。</p>
+
+<p>Ingress 中新的 <code class="highlighter-rouge">ingressClassName</code> 字段是该注解的替代品，但并非完全等价。该注解通常用于引用实现该 Ingress 的控制器的名称， 而这个新的字段则是对一个包含额外 Ingress 配置的 IngressClass 资源的引用，包括 Ingress 控制器的名称。</p>
+
+<h3 id="32-默认-ingress-类">3.2. 默认 Ingress 类</h3>
+
+<p>您可以将一个特定的 IngressClass 标记为集群默认项。将一个 IngressClass 资源的 <code class="highlighter-rouge">ingressclass.kubernetes.io/is-default-class</code> 注解设置为 <code class="highlighter-rouge">true</code> 将确保新的未指定 <code class="highlighter-rouge">ingressClassName</code> 字段的 Ingress 能够分配为这个默认的 IngressClass.</p>
+
+<blockquote>
+  <p><strong>注意：</strong> 如果集群中有多个 IngressClass 被标记为默认，准入控制器将阻止创建新的未指定 <code class="highlighter-rouge">ingressClassName</code> 字段的 Ingress 对象。 解决这个问题只需确保集群中最多只能有一个 IngressClass 被标记为默认。</p>
+</blockquote>
+
+<h2 id="4-ingress用法">4. Ingress用法</h2>
+
+<h3 id="41-单服务-ingress">4.1. 单服务 Ingress</h3>
+
+<p>现有的 Kubernetes 概念允许您暴露单个 Service (查看<a href="https://kubernetes.io/zh/docs/concepts/services-networking/ingress/#alternatives">替代方案</a>)，您也可以通过指定无规则的 <em>默认后端</em> 来对 Ingress 进行此操作。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test-ingress</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">backend</span><span class="pi">:</span>
+    <span class="na">serviceName</span><span class="pi">:</span> <span class="s">testsvc</span>
+    <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<p>如果使用 <code class="highlighter-rouge">kubectl apply -f</code> 创建它，则应该能够查看刚刚添加的 Ingress 的状态：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get ingress test-ingress
+NAME           HOSTS     ADDRESS           PORTS     AGE
+test-ingress   <span class="k">*</span>         203.0.113.123     80        59s
+</code></pre></div></div>
+
+<p>其中 <code class="highlighter-rouge">203.0.113.123</code> 是由 Ingress 控制器分配以满足该 Ingress 的 IP。</p>
+
+<blockquote>
+  <p><strong>说明：</strong> 入口控制器和负载平衡器可能需要一两分钟才能分配IP地址。 在此之前，您通常会看到地址字段的值被设定为 <code class="highlighter-rouge">&lt;pending&gt;</code>。</p>
+</blockquote>
+
+<h3 id="42-简单分列">4.2. 简单分列</h3>
+
+<p>一个分列配置根据请求的 HTTP URI 将流量从单个 IP 地址路由到多个服务。 Ingress 允许您将负载均衡器的数量降至最低。例如，这样的设置：</p>
+
+<pre><code class="language-none">foo.bar.com -&gt; 178.91.123.132 -&gt; / foo    service1:4200
+                                 / bar    service2:8080
+</code></pre>
+
+<p>将需要一个 Ingress，例如：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">simple-fanout-example</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="s">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">foo.bar.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/foo</span>
+        <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service1</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">4200</span>
+      <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/bar</span>
+        <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service2</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">8080</span>
+</code></pre></div></div>
+
+<p>当您使用 <code class="highlighter-rouge">kubectl apply -f</code> 创建 Ingress 时：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe ingress simple-fanout-example
+Name:             simple-fanout-example
+Namespace:        default
+Address:          178.91.123.132
+Default backend:  default-http-backend:80 <span class="o">(</span>10.8.2.3:8080<span class="o">)</span>
+Rules:
+  Host         Path  Backends
+  <span class="nt">----</span>         <span class="nt">----</span>  <span class="nt">--------</span>
+  foo.bar.com
+               /foo   service1:4200 <span class="o">(</span>10.8.0.90:4200<span class="o">)</span>
+               /bar   service2:8080 <span class="o">(</span>10.8.0.91:8080<span class="o">)</span>
+Annotations:
+  nginx.ingress.kubernetes.io/rewrite-target:  /
+Events:
+  Type     Reason  Age                From                     Message
+  <span class="nt">----</span>     <span class="nt">------</span>  <span class="nt">----</span>               <span class="nt">----</span>                     <span class="nt">-------</span>
+  Normal   ADD     22s                loadbalancer-controller  default/test
+</code></pre></div></div>
+
+<p>Ingress 控制器将提供实现特定的负载均衡器来满足 Ingress，只要 Service (<code class="highlighter-rouge">service1</code>，<code class="highlighter-rouge">service2</code>) 存在。 当它这样做了，您会在地址栏看到负载均衡器的地址。</p>
+
+<blockquote>
+  <p><strong>说明：</strong> 根据您使用的 <a href="https://kubernetes.io/docs/concepts/services-networking/ingress-controllers">Ingress 控制器</a>，您可能需要创建默认 HTTP 后端 <a href="https://kubernetes.io/docs/concepts/services-networking/service/">Service</a>。</p>
+</blockquote>
+
+<h3 id="43-基于名称的虚拟托管">4.3. 基于名称的虚拟托管</h3>
+
+<p>基于名称的虚拟主机支持将 HTTP 流量路由到同一 IP 地址上的多个主机名。</p>
+
+<pre><code class="language-none">foo.bar.com --|                 |-&gt; foo.bar.com service1:80
+              | 178.91.123.132  |
+bar.foo.com --|                 |-&gt; bar.foo.com service2:80
+</code></pre>
+
+<p>以下 Ingress 让后台负载均衡器基于<a href="https://tools.ietf.org/html/rfc7230#section-5.4">主机 header</a> 路由请求。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">name-virtual-host-ingress</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">foo.bar.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service1</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">bar.foo.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service2</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<p>如果您创建的 Ingress 资源没有规则中定义的任何主机，则可以匹配到您 Ingress 控制器 IP 地址的任何网络流量，而无需基于名称的虚拟主机。</p>
+
+<p>例如，以下 Ingress 资源会将 <code class="highlighter-rouge">first.bar.com</code> 请求的流量路由到 <code class="highlighter-rouge">service1</code>，将 <code class="highlighter-rouge">second.foo.com</code> 请求的流量路由到 <code class="highlighter-rouge">service2</code>，而没有在请求中定义主机名的 IP 地址的流量路由（即，不提供请求标头）到 <code class="highlighter-rouge">service3</code>。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">name-virtual-host-ingress</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">first.bar.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service1</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">second.foo.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service2</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+  <span class="pi">-</span> <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service3</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<h3 id="44-tls">4.4. TLS</h3>
+
+<p>您可以通过指定包含 TLS 私钥和证书的 secret <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Secret</a> 来加密 Ingress。 目前，Ingress 只支持单个 TLS 端口 443，并假定 TLS 终止。</p>
+
+<p>如果 Ingress 中的 TLS 配置部分指定了不同的主机，那么它们将根据通过 SNI TLS 扩展指定的主机名（如果 Ingress 控制器支持 SNI）在同一端口上进行复用。 TLS Secret 必须包含名为 <code class="highlighter-rouge">tls.crt</code> 和 <code class="highlighter-rouge">tls.key</code> 的密钥，这些密钥包含用于 TLS 的证书和私钥，例如：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">testsecret-tls</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="s">tls.crt</span><span class="pi">:</span> <span class="s">base64 encoded cert</span>
+  <span class="s">tls.key</span><span class="pi">:</span> <span class="s">base64 encoded key</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">kubernetes.io/tls</span>
+</code></pre></div></div>
+
+<p>在 Ingress 中引用此 Secret 将会告诉 Ingress 控制器使用 TLS 加密从客户端到负载均衡器的通道。您需要确保创建的 TLS secret 来自包含 <code class="highlighter-rouge">sslexample.foo.com</code> 的公用名称（CN）的证书，也被称为全限定域名（FQDN）。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">tls-example-ingress</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">tls</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">sslexample.foo.com</span>
+    <span class="na">secretName</span><span class="pi">:</span> <span class="s">testsecret-tls</span>
+  <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">sslexample.foo.com</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+          <span class="na">backend</span><span class="pi">:</span>
+            <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service1</span>
+            <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>说明：</strong> 各种 Ingress 控制器所支持的 TLS 功能之间存在差异。请参阅有关文件 <a href="https://kubernetes.github.io/ingress-nginx/user-guide/tls/">nginx</a>、 <a href="https://git.k8s.io/ingress-gce/README.md#frontend-https">GCE</a> 或者任何其他平台特定的 Ingress 控制器，以了解 TLS 如何在您的环境中工作。</p>
+</blockquote>
+
+<h3 id="45-负载均衡">4.5. 负载均衡</h3>
+
+<p>Ingress 控制器使用一些适用于所有 Ingress 的负载均衡策略设置进行自举，例如负载均衡算法、后端权重方案和其他等。更高级的负载均衡概念（例如，持久会话、动态权重）尚未通过 Ingress 公开。您可以通过用于服务的负载均衡器来获取这些功能。</p>
+
+<p>值得注意的是，即使健康检查不是通过 Ingress 直接暴露的，但是在 Kubernetes 中存在并行概念，比如 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/">就绪检查</a>，它允许您实现相同的最终结果。 请检查控制器特殊说明文档，以了解他们是怎样处理健康检查的 ( <a href="https://git.k8s.io/ingress-nginx/README.md">nginx</a>， <a href="https://git.k8s.io/ingress-gce/README.md#health-checks">GCE</a>)。</p>
+
+<h2 id="5-更新-ingress">5. 更新 Ingress</h2>
+
+<p>要更新现有的 Ingress 以添加新的 Host，可以通过编辑资源来对其进行更新：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe ingress <span class="nb">test
+</span>Name:             <span class="nb">test
+</span>Namespace:        default
+Address:          178.91.123.132
+Default backend:  default-http-backend:80 <span class="o">(</span>10.8.2.3:8080<span class="o">)</span>
+Rules:
+  Host         Path  Backends
+  <span class="nt">----</span>         <span class="nt">----</span>  <span class="nt">--------</span>
+  foo.bar.com
+               /foo   service1:80 <span class="o">(</span>10.8.0.90:80<span class="o">)</span>
+Annotations:
+  nginx.ingress.kubernetes.io/rewrite-target:  /
+Events:
+  Type     Reason  Age                From                     Message
+  <span class="nt">----</span>     <span class="nt">------</span>  <span class="nt">----</span>               <span class="nt">----</span>                     <span class="nt">-------</span>
+  Normal   ADD     35s                loadbalancer-controller  default/test
+kubectl edit ingress <span class="nb">test</span>
+</code></pre></div></div>
+
+<p>这将弹出具有 YAML 格式的现有配置的编辑器。 修改它来增加新的主机：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">foo.bar.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service1</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+        <span class="na">path</span><span class="pi">:</span> <span class="s">/foo</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">bar.baz.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service2</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="s">80</span>
+        <span class="na">path</span><span class="pi">:</span> <span class="s">/foo</span>
+<span class="s">..</span>
+</code></pre></div></div>
+
+<p>保存更改后，kubectl 将更新 API 服务器中的资源，该资源将告诉 Ingress 控制器重新配置负载均衡器。</p>
+
+<p>验证：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe ingress <span class="nb">test
+</span>Name:             <span class="nb">test
+</span>Namespace:        default
+Address:          178.91.123.132
+Default backend:  default-http-backend:80 <span class="o">(</span>10.8.2.3:8080<span class="o">)</span>
+Rules:
+  Host         Path  Backends
+  <span class="nt">----</span>         <span class="nt">----</span>  <span class="nt">--------</span>
+  foo.bar.com
+               /foo   service1:80 <span class="o">(</span>10.8.0.90:80<span class="o">)</span>
+  bar.baz.com
+               /foo   service2:80 <span class="o">(</span>10.8.0.91:80<span class="o">)</span>
+Annotations:
+  nginx.ingress.kubernetes.io/rewrite-target:  /
+Events:
+  Type     Reason  Age                From                     Message
+  <span class="nt">----</span>     <span class="nt">------</span>  <span class="nt">----</span>               <span class="nt">----</span>                     <span class="nt">-------</span>
+  Normal   ADD     45s                loadbalancer-controller  default/test
+</code></pre></div></div>
+
+<p>您可以通过 <code class="highlighter-rouge">kubectl replace -f</code> 命令调用修改后的 Ingress yaml 文件来获得同样的结果。</p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

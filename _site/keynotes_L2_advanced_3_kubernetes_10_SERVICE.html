@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>service | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="service" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L2_advanced_3_kubernetes_10_SERVICE.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L2_advanced_3_kubernetes_10_SERVICE.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"service","url":"http://localhost:4000/keynotes_L2_advanced_3_kubernetes_10_SERVICE.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="课程目标">课程目标</h2>
+<ul>
+  <li>学习service工作原理</li>
+  <li>暴露应用</li>
+  <li>讨论service的类型</li>
+  <li>启动一个本地的proxy</li>
+  <li>使用集群的DNS</li>
+</ul>
+
+<h2 id="1-简介">1. 简介</h2>
+<p>kubernetes的架构是通过一系列无状态的，解耦的对象组合在一起的。而Service就是把这些pod连接在一起的组件，就好像我们前面说的班主任，他还可以提供对外访问的接口，并且有探活功能，知道后端的pod哪个可能被终止了，或者重建了。这些功能都是使用Label实现的，因此重建后的Pod也可以重新注册到Service之上，后端服务通过Endpoint对象向外提供资源。Google在研究ESP（Extensible Service Proxy），这是一款基于nginx HTTP反向代理的代理服务，他能够提供比Endpoint更加便捷和强大的功能，但是ESP还没有和Google App引擎或者GKE环境完美的结合。</p>
+
+<p>service可以多种类型并存，并且可以根据需要添加更多的类型。每种服务都可以向内或者向外暴露端口。而每个service都可以连接内部或者外部资源，比如可以连接第三方的数据库。</p>
+
+<p>kube-proxy会一直循环监控kube-api，一旦有新的service或者endpoint在节点上创立，就会打开一个随机的端口，并且监听在<code class="highlighter-rouge">ClusterIP:Port</code>之上，并且把流量随机的导向一个后端的endpoint之上。</p>
+
+<p>service通过查询匹配的标签，会向后端提供自动的负载均衡功能。他还提供了session亲和性功能，可以把流量都指向一个IP地址。同时，还可以配置headless service无头服务，没有固定IP的负载均衡。</p>
+
+<p>获得的IP地址会注册在etcd中，以保证唯一性，Service使用iptables来路由服务，但是很有可能在未来的版本出现新的组件，来提供连接到资源的功能。</p>
+
+<h2 id="2-service升级时候的匹配模式">2. service升级时候的匹配模式</h2>
+
+<p>service通过标签来选择谁会做为自己的后端。我们知道，对象的标签是可以动态更新的，这样的话，也可能影响到连接到service的Pods。</p>
+
+<p>默认的升级是匹配滚动更新的，随着新pod的创建，即使存在一个应用的不同版本，由于自动负载均衡，流量依然会被导向之前版本的应用。</p>
+
+<p>如果部署的应用程序存在差异，以致客户端在与不同版本通信时出现问题，则可以考虑为部署设置一个更具体的标签，其中包括版本号。当部署为更新创建新的replication controller时，标签将不匹配。一旦创建了新的pod，并且完全初始化完成，我们再编辑service连接的标签。流量将转移到新的就绪版本，从而最大限度地减少客户机版本混淆。</p>
+
+<h2 id="3-通过service访问某个应用">3. 通过service访问某个应用</h2>
+
+<p>使用kubectl创建一个service</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl expose deployment/nginx <span class="nt">--port</span><span class="o">=</span>80 <span class="nt">--type</span><span class="o">=</span>NodePort
+
+
+<span class="nv">$ </span>kubectl get svc
+NAME        TYPE       CLUSTER-IP  EXTERNAL-IP  PORT<span class="o">(</span>S<span class="o">)</span>        AGE
+kubernetes  ClusterIP  10.0.0.1    &lt;none&gt;       443/TCP        18h
+nginx       NodePort   10.0.0.112  &lt;none&gt;       80:31230/TCP   5s
+
+<span class="nv">$ </span>kubectl get svc nginx <span class="nt">-o</span> yaml
+apiVersion: v1
+kind: Service
+...
+spec:
+    clusterIP: 10.0.0.112
+    ports:
+    - nodePort: 31230
+...
+</code></pre></div></div>
+
+<p>Open browser http://Public-IP:31230.</p>
+
+<p><code class="highlighter-rouge">kubectl expose</code>命令为nginx deployment创建了一个服务。这个服务使用80端口，并且在所有的节点上都启动了一个随机的端口。我们也可以手动指定port和targetPort。targetPort默认和port一直，但是我们也可以给他别的值，可以是后端pod上的任何一个端口。每个pod都可以有不同的端口，这不会影响网络流量。但是把流量切换到另外的端口会让我们的客户端需要重新配置端口，比如说更换软件的版本时候。</p>
+
+<p><code class="highlighter-rouge">kubectl get svc</code>命令会列出所有的service，我们可以看到nginx服务，他是使用内部的clusterIP模式创建的。</p>
+
+<p>cluster IPs的范围和NodePort的随机地址段都是在API server中配置的（启动选项中）。</p>
+
+<p>service还可以指向在不同名称空间中的另外一个service，甚至是集群外的资源，比如说，不在kubernetes当中运行的传统资源（使用ExternalName）</p>
+
+<h2 id="4-service的类型">4. Service的类型</h2>
+
+<ul>
+  <li>ClusterIP</li>
+</ul>
+
+<p>这个是Service的默认模式，这种模式下，只能提供向内部访问的接口（除非我们手动创建一个外部的endpoint）。他的地址范围是API server的启动选项中所定义的。</p>
+
+<ul>
+  <li>NodePort</li>
+</ul>
+
+<p>NodePort方式方便我们找出问题，但是如果我们想要一个静态的IP，比如说在防火墙上打开某个端口。NodePort的范围需要在集群的配置当中定义。</p>
+
+<ul>
+  <li>LoadBalancer</li>
+</ul>
+
+<p>这种类型是为了能够把请求传递给公有云提供商，比如GKE或者AWS。私有云如果想使用这个类型需要额外的插件，比如CloudStack和OpenStack。即使没有公有云，地址还是公开的，并且可以把请求转发到同一个deployment中的所有pod上。</p>
+
+<ul>
+  <li>ExternalName</li>
+</ul>
+
+<p>A newer service is ExternalName, which is a bit different. It has no selectors, nor does it define ports or endpoints. It allows the return of an alias to an external service. The redirection happens at the DNS level, not via a proxy or forward. This object can be useful for services not yet brought into the Kubernetes cluster. A simple change of the type in the future would redirect traffic to the internal objects.</p>
+
+<p>这个类型和其他的有一点不同，他没有selector，也不需要定义port或者endpoint。他允许暴露一个DNS的别名给外部的服务。这个是由DNS来做的，不是代理或者转发。这种方式在暴露不由kubernetes集群管理的对象的时候非常有用。只需要改动类型，就可以把请求直接指向内部的对象。</p>
+
+<h2 id="5-service的代理模式">5. Service的代理模式</h2>
+
+<p>在节点上运行的kube-proxy时刻监控着API server上的service资源。除了<strong>ExternalName</strong>之外的其他资源。这个模式尽管Kubernetes的版本有更新，但是一直在沿用。</p>
+
+<p>在1.0版本，service使用的是基于IP的TCP/UDP 4层的用户空间模式。</p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/10_SERVICE/services-userspace-overview.svg" alt="Services overview diagram for userspace proxy" /></p>
+
+<p>在1.1版本之后，变成了由iptables来代理的模式，在1.2就成为了默认的模式。</p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/10_SERVICE/services-iptables-overview.svg" alt="Services overview diagram for iptables proxy" /></p>
+
+<p>在iptables的模式中，kube-proxy会持续监控着API server中Service的变动和endpoint对象，任何一个对象有创建或者删除的话，他就会更新规则。新模式的一个限制是，如果原始请求失败，将无法连接到Pod，因此它使用就绪性探测来确保连接前所有容器都正常工作。此模式允许最多5000个节点。假设每个节点有多个服务和pod，这会导致内核出现瓶颈。</p>
+
+<p>在1.9版本后，iptables换成了ipvs</p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/10_SERVICE/services-ipvs-overview.svg" alt="Services overview diagram for IPVS proxy" /></p>
+
+<p>这个时候虽然是在beta版中，并且可能会发生变化，但它在内核空间中的工作速度更快，并且可配置负载平衡算法，例如循环、最短延迟、最少连接和其他一些算法。这对大型集群很有帮助，大大超过了以前5000个节点的限制。此模式假定IPV内核模块在kube代理之前安装并运行。</p>
+
+<p>想更改kube-proxy的模式，就需要在初始化的时候添加一个参数<code class="highlighter-rouge">mode=iptables</code>或者使用ipvs或者userspace，默认使用的是ipvs，当然，要系统支持，如果不支持，有可能会降级为iptables</p>
+
+<h2 id="6-使用本地的代理">6. 使用本地的代理</h2>
+
+<p>在开发应用程序或服务时，检查服务的一个快速方法是使用<strong>kubectl</strong>运行本地代理。它会捕获shell，除非你把它放在后台中运行。运行时，可以在本地主机上调用Kubernetes API，也可以在其API URL上访问ClusterIP服务。proxy侦听的IP和端口可以使用命令参数配置。</p>
+
+<p>启动proxy</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl proxy
+Starting to serve on 127.0.0.1:8001
+</code></pre></div></div>
+
+<p>如果我们要使用本地的代理访问<strong>ghost</strong>服务，我们就使用下面的地址，比如<strong>http://localhost:8001/api/v1/namespaces/default/services/ghost</strong>. 我们就可以看到他的端口了。</p>
+
+<h2 id="7-dns">7. DNS</h2>
+
+<p>在kubernetes的1.13版本之后，DNS服务默认是由CoreDNS来提供的。使用CoreDNS可以让DNS服务更加方便。一旦有容器启动，他就会为对应的区域启动一个server，随时准备为他服务。然后，每个server都可以加载一个或者多个插件来提供其他的功能。这个server是说配置当中的一个段，可以理解为一个正向和反向解析记录。</p>
+
+<p>目前有30多个插件，他们可以实现大部分的功能，开启功能或者自己开发一个功能也是很容易的。</p>
+
+<p>Common插件可以为prometheus提供metrics，错误日志，健康报告，或者配置TLS证书和gRPC服务。</p>
+
+<p>我们可以去<a href="https://coredns.io/plugins/">CoreDNS Plugins web page</a>来查找更多的插件</p>
+
+<h2 id="8-验证dns的注册考试重点">8. 验证DNS的注册（考试重点）</h2>
+
+<p>为了确保DNS的配置是正确的，并且服务也注册到DNS服务器了，最简单的办法就是在集群中运行一个pod，并且执行DNS lookup</p>
+
+<p>我们先创建一个busybox</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">busybox</span>
+    <span class="na">namespace</span><span class="pi">:</span> <span class="s">default</span>
+<span class="na">spec</span><span class="pi">:</span>
+    <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">busy</span>
+      <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">sleep</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">3600"</span>
+</code></pre></div></div>
+
+<p>然后使用<strong>kubectl exec</strong> 来 <strong>nslookup</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl <span class="nb">exec</span> <span class="nt">-ti</span> busybox <span class="nt">--</span> nslookup nginx
+Server: 10.0.0.10
+Address 1: 10.0.0.10
+Name: nginx
+Address 1: 10.0.0.112
+</code></pre></div></div>
+
+<p>我们可以发现DNS记录<code class="highlighter-rouge">nginx</code>是被注册成为ClusterIP的。</p>
+
+<p>我们还可以通过查看容器的<code class="highlighter-rouge">/etc/resolv.conf</code>文件来定位问题。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl <span class="nb">exec </span>busybox <span class="nb">cat</span> /etc/resolv.conf
+</code></pre></div></div>
+
+<p>最后，查看每个<code class="highlighter-rouge">kube-dns</code>pod中写着W（warning）或者E（error）或者F（failure）的行。并且确保DNS服务是启动的，并且DNS的后端是被暴露出来的。</p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

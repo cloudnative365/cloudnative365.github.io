@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>使用kubespray创建集群 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="使用kubespray创建集群" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L4_architect_1_HA_5_kubespray_ubuntu.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L4_architect_1_HA_5_kubespray_ubuntu.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"使用kubespray创建集群","url":"http://localhost:4000/keynotes_L4_architect_1_HA_5_kubespray_ubuntu.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="1-简介">1. 简介</h2>
+
+<p>kubespray是kubernetes官方推荐的部署方法之一，他代表了另外一个比较流行的kubernetes管理方法，利用其它自动化管理工具框架，通过编写执行流程来安装部署kubernetes。流行的框架就比如说ansible这种传统的，或者是terraform这种新兴的。而kubespray对于这些都有涉猎，他支持在公有云上安装kubernetes集群，而在IaaS层面上就是使用的terraform在AWS,GCE,Azure上面部署，在部署kubernetes的时候，就使用ansible这种编排工具来安装。其实，我感觉他更像是一个个小工具的集合，功能很全面，但是每个功能都是独立存在的，并没有太大的联系，从零构建kubernetes集群的时候，好像是一个个的pipeline。</p>
+
+<h2 id="2-功能">2. 功能</h2>
+
+<ul>
+  <li>可以部署在 <strong>AWS, GCE, Azure, OpenStack, vSphere, Packet (bare metal), Oracle Cloud Infrastructure (实验阶段), or 裸机</strong></li>
+  <li>高可用集群</li>
+  <li>可以选择网络方案</li>
+  <li>支持大部分的Linux发行版</li>
+  <li>持续集成测试</li>
+</ul>
+
+<h2 id="3-快速部署">3. 快速部署</h2>
+
+<ul>
+  <li>安装ansible和python3-pip</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update <span class="o">&amp;&amp;</span> apt install <span class="nt">-y</span> ansible python3-pip
+</code></pre></div></div>
+
+<ul>
+  <li>git项目到管理机</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/kubernetes-sigs/kubespray.git
+</code></pre></div></div>
+
+<ul>
+  <li>安装python需要的依赖包</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>kubespray/
+<span class="nb">sudo </span>pip3 install <span class="nt">-r</span> requirements.txt
+</code></pre></div></div>
+
+<ul>
+  <li>把配置的模板复制一份</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp <span class="nt">-rfp</span> inventory/sample inventory/mycluster
+</code></pre></div></div>
+
+<ul>
+  <li>把所有节点的IP声明一下</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">declare</span> <span class="nt">-a</span> <span class="nv">IPS</span><span class="o">=(</span>10.0.11.219 10.0.12.225 10.0.13.101 10.0.12.155 10.0.13.217<span class="o">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>生成配置文件</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">CONFIG_FILE</span><span class="o">=</span>inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py <span class="k">${</span><span class="nv">IPS</span><span class="p">[@]</span><span class="k">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>这两个文件就是所有的清单文件了，想要修改集群的信息，就在里面改，不修改的话，是两个master和3个worker</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>inventory/mycluster/group_vars/all/all.yml
+<span class="nb">cat </span>inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+</code></pre></div></div>
+
+<ul>
+  <li>最后就是play了</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook <span class="nt">--private-key</span> /tmp/js.key <span class="nt">-i</span> inventory/mycluster/hosts.yaml  <span class="nt">--become</span> <span class="nt">--become-user</span><span class="o">=</span>root cluster.yml
+</code></pre></div></div>
+
+<ul>
+  <li>等待一段时间，登录到第一台机器，也就是10.0.11.219上，使用kubectl命令</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@node1:~# kubectl get nodes
+NAME    STATUS   ROLES    AGE   VERSION
+node1   Ready    master   35m   v1.16.8
+node2   Ready    master   34m   v1.16.8
+node3   Ready    &lt;none&gt;   33m   v1.16.8
+node4   Ready    &lt;none&gt;   34m   v1.16.8
+node5   Ready    &lt;none&gt;   33m   v1.16.8
+</code></pre></div></div>
+
+<h2 id="4-参考文档">4. 参考文档</h2>
+
+<p>kubespray中还有很多的小工具，比如在AWS使用terraform创建资源，<a href="https://github.com/kubernetes-sigs/kubespray/tree/master/contrib/terraform/aws">点这里</a>。我就不一一演示了，我想告诉他家的是一种思路，使用编排工具安装kubernetes的思路。而kubespray就是代表之一，如果想查看更多相关的信息，可以参考<a href="https://github.com/kubernetes-sigs/kubespray">代码仓库</a></p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

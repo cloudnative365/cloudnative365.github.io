@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>管理kubernetes集群 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="管理kubernetes集群" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L3_senior_2_kubernetes_3_manage_kubernetes.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L3_senior_2_kubernetes_3_manage_kubernetes.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"管理kubernetes集群","url":"http://localhost:4000/keynotes_L3_senior_2_kubernetes_3_manage_kubernetes.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="课程目标">课程目标</h2>
+
+<ul>
+  <li>使用kubeadm增删master节点</li>
+  <li>使用kubeadm增删node节点</li>
+  <li>使用二进制安装的集群增删master节点</li>
+  <li>使用二进制安装的集群增删master节点</li>
+</ul>
+
+<h2 id="1-使用kubeadm增加masternode节点">1. 使用kubeadm增加master/node节点</h2>
+
+<h3 id="11-查看token">1.1. 查看token</h3>
+
+<p>下面那个23h的是我们的，发现还没过期。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubeadm token list
+TOKEN                     TTL         EXPIRES                USAGES                   DESCRIPTION                                                EXTRA GROUPS
+424h2b.bmvx996zclz8uu5k   1h          2020-06-30T08:24:55Z   &lt;none&gt;                   Proxy <span class="k">for </span>managing TTL <span class="k">for </span>the kubeadm-certs secret        &lt;none&gt;
+nzjpz8.vkfaw9phnwh32jol   23h         2020-07-01T06:24:55Z   authentication,signing   &lt;none&gt;                                                     system:bootstrappers:kubeadm:default-node-token
+<span class="o">[</span>ec2-user@ip-10-0-12-135 ~]<span class="err">$</span>
+</code></pre></div></div>
+
+<h3 id="12-合成加入集群的命令">1.2. 合成加入集群的命令</h3>
+
+<ul>
+  <li>直接获取证书的hash值</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl x509 <span class="nt">-pubkey</span> <span class="nt">-in</span> /etc/kubernetes/pki/ca.crt | openssl rsa <span class="nt">-pubin</span> <span class="nt">-outform</span> der 2&gt;/dev/null | openssl dgst <span class="nt">-sha256</span> <span class="nt">-hex</span> | sed <span class="s1">'s/^.* //'</span>
+89022963a3104da98a595443b6be361c7920700bd3f43fd29491eb0d4c18e0eb
+</code></pre></div></div>
+
+<ul>
+  <li>重新生成certificate key</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubeadm init phase upload-certs <span class="nt">--upload-certs</span>
+W0630 07:14:53.905530   28330 configset.go:202] WARNING: kubeadm cannot validate component configs <span class="k">for </span>API groups <span class="o">[</span>kubelet.config.k8s.io kubeproxy.config.k8s.io]
+<span class="o">[</span>upload-certs] Storing the certificates <span class="k">in </span>Secret <span class="s2">"kubeadm-certs"</span> <span class="k">in </span>the <span class="s2">"kube-system"</span> Namespace
+<span class="o">[</span>upload-certs] Using certificate key:
+6e8d24cb72dc0e9096394d602f95b027907bcf3d16750e72cccde33c00177f74
+</code></pre></div></div>
+
+<ul>
+  <li>所以加入的命令为</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># master节点加入</span>
+  kubeadm join 10.0.1.94:6443 <span class="nt">--token</span> nzjpz8.vkfaw9phnwh32jol <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:89022963a3104da98a595443b6be361c7920700bd3f43fd29491eb0d4c18e0eb <span class="se">\</span>
+    <span class="nt">--control-plane</span> <span class="nt">--certificate-key</span> 6e8d24cb72dc0e9096394d602f95b027907bcf3d16750e72cccde33c00177f74
+
+<span class="c"># node节点加入</span>
+
+kubeadm join 10.0.1.94:6443 <span class="nt">--token</span> nzjpz8.vkfaw9phnwh32jol <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:89022963a3104da98a595443b6be361c7920700bd3f43fd29491eb0d4c18e0eb
+</code></pre></div></div>
+
+<ul>
+  <li>node节点加入也可以直接使用这个命令（证书过期会生成新的）</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubeadm token create <span class="nt">--print-join-command</span>
+W0630 07:13:25.055002   26926 configset.go:202] WARNING: kubeadm cannot validate component configs <span class="k">for </span>API groups <span class="o">[</span>kubelet.config.k8s.io kubeproxy.config.k8s.io]
+kubeadm join 10.0.1.94:6443 <span class="nt">--token</span> 2pvbmf.24m09oruy70t6bzj     <span class="nt">--discovery-token-ca-cert-hash</span> sha256:89022963a3104da98a595443b6be361c7920700bd3f43fd29491eb0d4c18e0eb
+</code></pre></div></div>
+
+<h2 id="2-使用kubeadm删除masternode节点">2. 使用kubeadm删除master/node节点</h2>
+
+<ul>
+  <li>在master上执行</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl drain k8s-node2 <span class="nt">--delete-local-data</span> <span class="nt">--force</span> <span class="nt">--ignore-daemonsets</span>
+kubectl delete node k8s-node2
+</code></pre></div></div>
+
+<ul>
+  <li>node上执行</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm reset
+</code></pre></div></div>
+
+<h2 id="3-使用二进制方式安装的集群增加master节点">3. 使用二进制方式安装的集群增加master节点</h2>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

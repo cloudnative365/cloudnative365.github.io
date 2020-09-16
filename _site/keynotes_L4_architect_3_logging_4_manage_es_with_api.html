@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>日志系统概述 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="日志系统概述" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L4_architect_3_logging_4_manage_es_with_api.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L4_architect_3_logging_4_manage_es_with_api.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"日志系统概述","url":"http://localhost:4000/keynotes_L4_architect_3_logging_4_manage_es_with_api.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="学习目标">学习目标</h2>
+
+<p>使用http请求的方式来管理es</p>
+
+<h2 id="概述">概述</h2>
+
+<p>对于管理员和用户来说，kibana是一个非常方便的管理工具，他涵盖了基本上所有的管理和使用功能。但是，作为一个专业的管理人员来说，还是使用命令行来管理系统更加专业。在最新的版本中，es提供了一个叫做elasticsearch-cli的东东，不过这个东西还在测试阶段，有兴趣的同学可以持续关注。我们一般是使用http请求的方式来操作elasticsearch的，也就是使用curl命令。</p>
+
+<p>查询一般是这样的</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 没有安全措施的</span>
+curl http://localhost:9200/_cluster/health
+<span class="c"># 带了很多安全措施的</span>
+<span class="c"># -k 信任自签证书</span>
+<span class="c"># -u 服务器的用户名和密码</span>
+<span class="c"># --cert &lt;certificate[:password]&gt; ssl证书和密码</span>
+<span class="c"># --key 私有证书的位置</span>
+<span class="c"># --cacert ca证书</span>
+curl <span class="nt">-k</span> <span class="nt">-u</span> admin:admin <span class="nt">--cert</span> my.cert <span class="nt">--key</span> my.key <span class="nt">--cacert</span> my.pem https://localhost:9200/_cluster/health
+</code></pre></div></div>
+
+<h2 id="1-集群级别的操作">1. 集群级别的操作</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询集群健康状态</span>
+GET _cluster/health
+
+<span class="c"># 查询所有节点</span>
+GET _cat/nodes
+
+<span class="c"># 查询索引及分片的分布</span>
+GET _cat/shards
+
+<span class="c"># 查询指定索引分片的分布</span>
+GET _cat/shards/.kibana
+
+<span class="c"># 查询所有插件</span>
+GET _cat/plugins
+</code></pre></div></div>
+
+<h2 id="2-索引级别的操作">2. 索引级别的操作</h2>
+
+<h3 id="21-查询">2.1. 查询</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询所有索引及容量</span>
+GET _cat/indices
+
+<span class="c"># 查询索引映射结构</span>
+GET my_index/_mapping
+
+<span class="c"># 查询所有索引映射结构    </span>
+GET _all
+
+<span class="c"># 查询所有的相同前缀索引</span>
+GET my-<span class="k">*</span>/_search
+
+<span class="c"># 查询所有索引模板   </span>
+GET _template
+
+<span class="c"># 查询具体索引模板</span>
+GET _template/my_template
+</code></pre></div></div>
+
+<h3 id="22-创建">2.2. 创建</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 创建模板</span>
+PUT _template/test_hot_cold_template
+<span class="o">{</span>
+    <span class="s2">"index_patterns"</span>: <span class="s2">"test_*"</span>,
+    <span class="s2">"settings"</span>: <span class="o">{</span>
+        <span class="s2">"number_of_shards"</span> : 3,
+        <span class="s2">"index.number_of_replicas"</span>: 1
+     <span class="o">}</span>,
+    <span class="s2">"mappings"</span>: <span class="o">{</span>
+      <span class="s2">"order"</span>: <span class="o">{</span>
+          <span class="s2">"dynamic"</span>: <span class="nb">false</span>, 
+          <span class="s2">"properties"</span>: <span class="o">{</span>
+              <span class="s2">"id"</span>: <span class="o">{</span><span class="s2">"type"</span>: <span class="s2">"long"</span><span class="o">}</span>,
+              <span class="s2">"name"</span>: <span class="o">{</span><span class="s2">"type"</span>: <span class="s2">"keyword"</span><span class="o">}</span>
+          <span class="o">}</span>
+      <span class="o">}</span>    
+    <span class="o">}</span>,
+    <span class="s2">"aliases"</span>: <span class="o">{</span>
+      <span class="s2">"test"</span>: <span class="o">{}</span>
+    <span class="o">}</span>      
+<span class="o">}</span>
+
+<span class="c"># 根据模板创建索引并写入数据</span>
+POST test_hot_cold-2019-12-01/order
+<span class="o">{</span>
+  <span class="s2">"id"</span>:1,
+  <span class="s2">"name"</span>:<span class="s2">"cwx"</span>
+<span class="o">}</span>
+
+<span class="c"># 直接创建索引</span>
+PUT my_index
+<span class="o">{</span>
+  <span class="s2">"mappings"</span>: <span class="o">{</span>
+    <span class="s2">"doc"</span>: <span class="o">{</span>
+      <span class="s2">"properties"</span>: <span class="o">{</span>
+        <span class="s2">"name"</span>: <span class="o">{</span>
+          <span class="s2">"type"</span>: <span class="s2">"text"</span>
+        <span class="o">}</span>,
+        <span class="s2">"blob"</span>: <span class="o">{</span>
+          <span class="s2">"type"</span>: <span class="s2">"binary"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="23-删除">2.3. 删除</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DELETE my-index
+</code></pre></div></div>
+
+<h3 id="24-修改">2.4. 修改</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 修改配置</span>
+PUT /test_hot_cold-2019-12-01/_settings 
+<span class="o">{</span> 
+  <span class="s2">"settings"</span>: <span class="o">{</span> 
+    <span class="s2">"index.routing.allocation.require.hotwarm_type"</span>: <span class="s2">"cold"</span>
+  <span class="o">}</span> 
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="3-dsl查询">3. DSL查询</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">--1</span>.查询所有
+GET _search
+<span class="o">{</span>
+  <span class="s2">"query"</span>: <span class="o">{</span>
+    <span class="s2">"match_all"</span>: <span class="o">{}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nt">--2</span>.查询单个索引 的 固定属性
+<span class="nt">--</span>精确匹配
+GET _search
+<span class="o">{</span>
+  <span class="s2">"query"</span>: <span class="o">{</span>
+    <span class="s2">"term"</span>: <span class="o">{</span> <span class="s2">"name"</span> : <span class="s2">"you"</span> <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nt">--</span>模糊匹配
+GET _search
+<span class="o">{</span>
+  <span class="s2">"query"</span>: <span class="o">{</span>
+    <span class="s2">"match"</span>: <span class="o">{</span> <span class="s2">"name"</span> : <span class="s2">"you"</span> <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nt">--</span>范围查找
+GET _search
+<span class="o">{</span>
+  <span class="s2">"query"</span>: <span class="o">{</span>
+    <span class="s2">"range"</span>: <span class="o">{</span>
+        <span class="s2">"age"</span>:<span class="o">{</span> <span class="s2">"gte"</span> : 15 , <span class="s2">"lte"</span> : 25 <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+　GET indexName/_search
+　<span class="o">{</span>
+　　　<span class="s2">"query"</span>: <span class="o">{</span>
+　　　　　<span class="s2">"wildcard"</span>:<span class="o">{</span><span class="s2">"relateId"</span>:<span class="s2">"*672499460503*"</span><span class="o">}</span>
+　　　<span class="o">}</span>
+　<span class="o">}</span>
+
+
+<span class="nt">--3</span>.功能性查询
+<span class="nt">--</span>过滤
+GET my_index/_search
+<span class="o">{</span>
+  <span class="s2">"query"</span>: <span class="o">{</span>
+    <span class="s2">"bool"</span>: <span class="o">{</span>
+      <span class="s2">"filter"</span>: <span class="o">{</span>
+        <span class="s2">"term"</span>:<span class="o">{</span><span class="s2">"age"</span>:1095<span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nt">--</span>或 or
+GET my - <span class="nb">test</span> / _search 
+<span class="o">{</span>
+　　<span class="s2">"query"</span>: <span class="o">{</span>
+　　　　<span class="s2">"bool"</span>: <span class="o">{</span>
+　　　　　　<span class="s2">"should"</span>: <span class="o">[{</span>
+　　　　　　　　<span class="s2">"term"</span>: <span class="o">{</span>
+　　　　　　　　　　<span class="s2">"name"</span>: <span class="s2">"you"</span>
+　　　　　　　　<span class="o">}</span>
+　　　　　　　　<span class="o">}</span>, <span class="o">{</span>
+　　　　　　　　<span class="s2">"match"</span>: <span class="o">{</span>
+　　　　　　　　　　<span class="s2">"age"</span>: 20
+　　　　　　　　<span class="o">}</span>
+　　　　　　<span class="o">}]</span>
+　　　　<span class="o">}</span>
+　　<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nt">--</span>与 AND
+GET my-test/_search
+<span class="o">{</span>
+  <span class="s2">"query"</span>: <span class="o">{</span>
+    <span class="s2">"bool"</span>: <span class="o">{</span>
+      <span class="s2">"must"</span> : <span class="o">[{</span>
+        <span class="s2">"match"</span> : <span class="o">{</span>
+          <span class="s2">"name"</span> : <span class="s2">"you"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>,<span class="o">{</span>
+        <span class="s2">"range"</span>:<span class="o">{</span>
+        <span class="s2">"age"</span>:<span class="o">{</span>
+          <span class="s2">"from"</span> : 10 , <span class="s2">"to"</span> : 20
+        <span class="o">}</span> 
+        <span class="o">}</span>
+      <span class="o">}]</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nt">--</span>必须 <span class="o">=</span>
+GET my_index/_search
+<span class="o">{</span>
+  <span class="s2">"query"</span>: <span class="o">{</span>
+    <span class="s2">"bool"</span>: <span class="o">{</span>
+      <span class="s2">"must"</span> : <span class="o">{</span>
+        <span class="s2">"range"</span> : <span class="o">{</span>
+          <span class="s2">"age"</span> : <span class="o">{</span> <span class="s2">"from"</span> : 10, <span class="s2">"to"</span> : 20 <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nt">--</span>必须不 not
+GET my_index/_search
+<span class="o">{</span>
+  <span class="s2">"query"</span>: <span class="o">{</span>
+    <span class="s2">"bool"</span>: <span class="o">{</span>
+      <span class="s2">"must_not"</span> : <span class="o">{</span>
+        <span class="s2">"term"</span> : <span class="o">{</span>
+          <span class="s2">"name"</span> : <span class="s2">"you"</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nt">--</span>复合查找
+GET my_index/_search 
+<span class="o">{</span>
+<span class="s2">"query"</span>: <span class="o">{</span>
+<span class="s2">"bool"</span>: <span class="o">{</span>
+<span class="s2">"should"</span>: <span class="o">[{</span>
+<span class="s2">"match"</span>: <span class="o">{</span>
+<span class="s2">"age"</span>: 40
+<span class="o">}</span>
+<span class="o">}</span>, 
+<span class="o">{</span>
+<span class="s2">"match"</span>: <span class="o">{</span>
+<span class="s2">"age"</span>: 20
+<span class="o">}</span>
+<span class="o">}]</span>,
+<span class="s2">"filter"</span>: <span class="o">{</span>
+  <span class="s2">"match"</span>:<span class="o">{</span>
+    <span class="s2">"name"</span>:<span class="s2">"you"</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="o">}</span>
+<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nt">--4</span>.索引迁移
+<span class="nt">--</span>场景 从A索引 复制到B索引
+POST _reindex
+<span class="o">{</span>
+  <span class="s2">"source"</span>: <span class="o">{</span>
+    <span class="s2">"index"</span>: <span class="s2">"my_index"</span>
+  <span class="o">}</span>,
+  <span class="s2">"dest"</span>: <span class="o">{</span>
+    <span class="s2">"index"</span>: <span class="s2">"new_my_index"</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+
+<span class="nt">--5</span>.基于查询的删除
+POST test-index/_delete_by_query
+<span class="o">{</span>
+  <span class="s2">"query"</span>:<span class="o">{</span>
+        <span class="s2">"term"</span>: <span class="o">{</span>
+         <span class="s2">"cameraId"</span>:<span class="s2">"00000000002"</span>
+        <span class="o">}</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+
+<span class="nt">--</span>查询
+GET test-index/_search
+<span class="o">{</span>
+  <span class="s2">"query"</span>:<span class="o">{</span>
+        <span class="s2">"term"</span>: <span class="o">{</span>
+         <span class="s2">"cameraId"</span>:<span class="s2">"00000000002"</span>
+        <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>时间范围查找</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET order_stpprdinf_2019-12/_search
+<span class="o">{</span>
+  <span class="s2">"size"</span>:10,
+  <span class="s2">"query"</span>:<span class="o">{</span>
+    <span class="s2">"range"</span>:<span class="o">{</span>
+      <span class="s2">"order_time"</span>:<span class="o">{</span>
+        <span class="s2">"gte"</span>:<span class="s2">"2019-12-11T00:00:00+08:00"</span>,
+        <span class="s2">"lte"</span>:<span class="s2">"2019-12-11T23:59:59+08:00"</span>
+      <span class="o">}</span> 
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>按照条件删除</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET order_stpprdinf_2019-12/_delete_by_query?conflicts<span class="o">=</span>proceed
+<span class="o">{</span>
+  <span class="s2">"query"</span>:<span class="o">{</span>
+    <span class="s2">"range"</span>:<span class="o">{</span>
+      <span class="s2">"order_time"</span>:<span class="o">{</span>
+        <span class="s2">"gte"</span>:<span class="s2">"2019-12-11T00:00:00+08:00"</span>,
+        <span class="s2">"lte"</span>:<span class="s2">"2019-12-11T23:59:59+08:00"</span>
+      <span class="o">}</span> 
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="5-备份和恢复">5. 备份和恢复</h2>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

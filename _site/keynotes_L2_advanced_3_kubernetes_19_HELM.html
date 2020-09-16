@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Helm入门 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Helm入门" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L2_advanced_3_kubernetes_19_HELM.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L2_advanced_3_kubernetes_19_HELM.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"Helm入门","url":"http://localhost:4000/keynotes_L2_advanced_3_kubernetes_19_HELM.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="学习目标">学习目标</h2>
+
+<ul>
+  <li>使用Helm简单的部署Kubernetes的deployment</li>
+  <li>了解Chart模板是怎样描述应用应该如何部署的</li>
+  <li>讨论Tiller是怎样技术Chart创建Deployment的</li>
+  <li>在集群中初始化一个Helm</li>
+</ul>
+
+<h2 id="1-简介">1. 简介</h2>
+
+<p>我们使用了Kubernetes工具来部署简单的Docker应用程序。从v1.4版本开始，我们的目标是为软件提供一个标准的规范。Helm类似于<strong>yum</strong>或<strong>apt</strong>这样的包管理器，Chart类似于包。而Helm v3与v2有着显著的不同。
+典型的容器化应用程序会包含很多清单。Deployment、Service和ConfigMap的清单。我们可能还会创建一些Secret、Ingress和其他对象。每一个都需要一份清单。
+有了Helm，你可以打包所有这些清单文件，并使它们作为一个单独的tar包使用。我们可以将tar包放在一个存储库中，搜索该存储库，发现一个应用程序，然后使用一个命令部署并启动整个应用程序。
+服务器运行在Kubernetes集群中，而客户机是本地的，甚至是本地笔记本电脑。使用客户机，您可以连接到多个应用程序存储库。
+我们还可以从命令行轻松地升级或回滚应用程序。</p>
+
+<h2 id="2-helm的两个版本">2. Helm的两个版本</h2>
+
+<h3 id="21-helm-v2和tiller">2.1. Helm v2和Tiller</h3>
+
+<p>helm工具使用一系列YAML文件将Kubernetes应用程序打包成一个chart或包。这中方式允许用户之间简单的共享，使用模板方案进行优化，以及来源跟踪等。</p>
+
+<p><img src="/pages/keynotes/L2_advanced/3_kubernetes/pics/19_HELM/zgxbwiuexxtg-BasicFlow-HelmandTiller.png" alt="zgxbwiuexxtg-BasicFlow-HelmandTiller" /></p>
+
+<h4 id="基础的helm和tiller的流程">基础的Helm和Tiller的流程</h4>
+
+<p>Helm的v2版本是由两个组件构成的</p>
+
+<ul>
+  <li>服务器端叫Tiller，运行在kubernetes集群之中</li>
+  <li>客户端叫Helm，在我们本地的机器上运行</li>
+</ul>
+
+<p>Helm v2会在集群中部署一个Tiller的pod。这样会引发很多安全和集群权限的问题。而Helm v3就不用部署这个pod了.</p>
+
+<p>使用Helm客户端，您可以浏览包存储库（包含已发布的Chart），并在Kubernetes集群上部署这些Chart。kubernetes将下载Chart并将请求传递给Tiller来创建应用。这个应用是由运行在Kubernetes集群中的各种资源组成。</p>
+
+<h3 id="22-helm-v3">2.2. Helm v3</h3>
+
+<p>最近Helm彻底的翻修了一遍，流程和命令都有很大的改变。如果我们正在使用Helm的v2版本，那么可能需要花些时间去升级和集成这些改变。</p>
+
+<p>最显著的变化之一就是Tiller的移除。这是一个一直存在的安全问题，因为pod需要提升权限才能部署Chart。在新版本中，这个功能被单独放在了命令行中，不再需要初始化才能使用。</p>
+
+<p>在v2中，对chart和deployment的更新需要使用双向策略合并来完成。这需要将先前的manifest和预期的menifest进行比较，而不是在<strong>helm</strong>命令之外进行编辑。目前的检查是使用另外的方法，检查目前对象的状态。</p>
+
+<p>还有其他的改变，比如软件安装不再自动生成名称。我们必须手动指定名称，要不就传递<code class="highlighter-rouge">--generated name</code>参数</p>
+
+<h2 id="3-chart">3. Chart</h2>
+
+<h3 id="31-chart中的内容">3.1. Chart中的内容</h3>
+
+<p><strong>Chart</strong>是组成分布式应用程序的Kubernetes资源清单的存档集，您可以从<a href="https://helm.sh/docs/topics/charts">Helm 3文档</a>中了解更多信息。我们还可以使用其他的方式轻松地创建，例如由供应商提供软件。Chart类似于独立的yum存储库的使用。</p>
+
+<p><strong>├── Chart.yaml
+├── README.md
+├── templates
+│  ├── NOTES.txt
+│  ├── _helpers.tpl
+│  ├── configmap.yaml
+│  ├── deployment.yaml
+│  ├── pvc.yaml
+│  ├── secrets.yaml
+│  └── svc.yaml
+└── values.yaml</strong></p>
+
+<ul>
+  <li>Chart.yaml</li>
+</ul>
+
+<p><strong>Chart.yaml</strong>文件包含很多Chart的元数据，比如name, version, keywords等等</p>
+
+<ul>
+  <li>values.yaml</li>
+</ul>
+
+<p><strong>values.yaml</strong>文件包含了k-v，用来生成集群中的某个release。这些值会被资源清单中的值所替代，他使用的是Go的模板语法。</p>
+
+<ul>
+  <li>templates</li>
+</ul>
+
+<p><strong>templates</strong>文件夹包含了创建这个MariaDB应用所需的所有的清单文件</p>
+
+<h3 id="32-模板">3.2. 模板</h3>
+
+<p>模板是使用Go模板化语法的资源清单。例如，在<strong>values</strong>文件中定义的变量在创建发布时被注入到模板中。在我们提供的MariaDB示例中，数据库密码存储在Kubernetes secret中，数据库配置存储在Kubernetes ConfigMap中。</p>
+
+<p>我们可以看到，在Secret metadat中使用chart名称、Release名称等定义了一组标签。而实际的值都是来自于<strong>values.yaml</strong>文件。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
+<span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> 
+    <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> 
+        <span class="na">chart</span><span class="pi">:</span> <span class="s2">"</span><span class="s">-"</span>
+        <span class="na">release</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+        <span class="na">heritage</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
+<span class="na">data</span><span class="pi">:</span>
+    <span class="na">mariadb-root-password</span><span class="pi">:</span> 
+    <span class="na">mariadb-password</span><span class="pi">:</span> 
+</code></pre></div></div>
+
+<h2 id="4-初始化helm-v2">4. 初始化Helm v2</h2>
+
+<p>Helm v3是不需要执行这个操作的</p>
+
+<p>我们可以从源代码中构建Helm，或者下载tar包。我们希望很快能看到稳定版本的Linux包（yum或者apt）。当前部署helm的RBAC安全需求需要创建一个新的<strong>serviceaccount</strong>，并分配权限和角色。有几个可选的设置可以传递给<strong>helm init</strong>命令，通常是针对特定的安全问题、存储选项和试运行选项。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>helm init
+...
+Tiller <span class="o">(</span>the helm server side component<span class="o">)</span> has been installed into your Kubernetes Cluster.
+Happy Helming!
+
+<span class="nv">$ </span>kubectl get deployments <span class="nt">--namespace</span><span class="o">=</span>kube-system
+NAMESPACE    NAME           READY  UP-TO-DATE  AVAILABLE  AGE
+kube-system  tiller-deploy  1/1    1           1          15s
+</code></pre></div></div>
+
+<p>helm v2在初始化的过程当中会在集群当中创建一个叫做<strong>tiller-deploy</strong>的pod。这个会在kube-system的名称空间中创建一个deployment</p>
+
+<p>客户端需要通过pod转发和tiller的pod进行通信。因此，我们不会看到任何的service来暴露tiller</p>
+
+<h3 id="41-chart的仓库">4.1. Chart的仓库</h3>
+
+<p>初始化helm时包含默认存储库，但添加其他存储库是常见的。存储库目前是简单的HTTP服务器，包含一个索引文件和所有Chart的tar包。</p>
+
+<p>您可以使用<strong>helm repo</strong>命令与存储库交互。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>helm repo add testing http://storage.googleapis.com/kubernetes-charts-testing
+
+<span class="nv">$ </span>helm repo list
+NAME URL
+stable http://storage.googleapis.com/kubernetes-charts
+<span class="nb">local </span>http://localhost:8879/charts
+testing http://storage.googleapis.com/kubernetes-charts...
+</code></pre></div></div>
+
+<p>一旦仓库是可用的，我们就可以使用关键字来搜索Chart。下面我们来搜索redis的Chart</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>helm search redis
+WARNING: Deprecated index file format. Try <span class="s1">'helm repo update'</span>
+NAME                     VERSION DESCRIPTION
+testing/redis-cluster    0.0.5   Highly available Redis cluster with multiple se...
+testing/redis-standalone 0.0.1   Standalone Redis Master testing/...
+</code></pre></div></div>
+
+<p>如果我们在仓库中找到对应的Chart，我们就可以部署了。</p>
+
+<h3 id="42-deploying-a-chart">4.2. Deploying a Chart</h3>
+
+<p>要部署Chart，只需使用<strong>helm install</strong>命令。安装成功可能需要几个资源，例如与chart PVC匹配的可用pv。目前，发现哪些资源需要存在的唯一方法是读取每个图表的<strong>READMEs</strong>：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>helm install testing/redis-standalone
+Fetched testing/redis-standalone to redis-standalone-0.0.1.tgz
+amber-eel
+Last Deployed: Fri Oct 21 12:24:01 2016
+Namespace: default
+Status: DEPLOYED
+
+Resources:
+<span class="o">==&gt;</span> v1/ReplicationController
+NAME             DESIRED CURRENT READY AGE
+redis-standalone 1       1       0     1s
+
+<span class="o">==&gt;</span> v1/Service
+NAME  CLUSTER-IP EXTERNAL-IP PORT<span class="o">(</span>S<span class="o">)</span>  AGE
+redis 10.0.81.67 &lt;none&gt;      6379/TCP 0s
+
+</code></pre></div></div>
+
+<p>我们还可以列出可用版本，删除，或者升级和回滚</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>helm list
+NAME      REVISION UPDATED                  STATUS   CHART
+amber-eel 1        Fri Oct 21 12:24:01 2016 DEPLOYED redis-standalone-0.0.1
+</code></pre></div></div>
+
+<p>系统将为部署的每个helm实例创建一个独特的、多样的名称。您还可以使用kubectl查看集群中创建的新资源Helm。</p>
+
+<p>应仔细审查部署的结果。它通常包含有关访问内部应用程序的信息。如果集群中没有所需的集群，则输出通常是开始故障排除的第一步。</p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

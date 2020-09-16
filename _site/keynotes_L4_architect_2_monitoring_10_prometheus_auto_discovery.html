@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>prometheus自动发现 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="prometheus自动发现" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L4_architect_2_monitoring_10_prometheus_auto_discovery.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L4_architect_2_monitoring_10_prometheus_auto_discovery.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"prometheus自动发现","url":"http://localhost:4000/keynotes_L4_architect_2_monitoring_10_prometheus_auto_discovery.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="1-概述">1. 概述</h2>
+
+<p>在我们传统的监控系统中，自动发现和主动注册是两个步骤</p>
+
+<ul>
+  <li>自动发现：服务器去某个网段扫描符合条件的机器，然后把他加入到我们的监控列表中</li>
+  <li>主动注册：客户端在启动某些符合条件的进程之后（比如zabbix-agent），主动去服务端注册自己的信息，然后加入到我们的监控列表</li>
+</ul>
+
+<p>而prometheus的监控方式主要是服务器端主动去客户端采集数据，客户端（一般说是exporter）通过http(s)暴露指标，所以他没有主动注册这个功能。我们只能通过服务器自动发现去主动的采集客户端信息。</p>
+
+<p>我们在前面的demo中，配置过了配置文件的<code class="highlighter-rouge">scrape_configs</code>参数，scrape就是采集的意思，我们采集的都是静态的内容，也就是<code class="highlighter-rouge">static_configs</code>，我们会直接把要采集的endpoint通过IP地址的方式采集过来。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scrape_configs:
+  - job_name: <span class="s1">'prometheus'</span>
+    scrape_interval: 5s
+    static_configs:
+      - targets: <span class="o">[</span><span class="s1">'localhost:9090'</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>实际上，在官方网站中，还有非常多的采集方式，或者叫做采集目标，比如：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># List of Azure service discovery configurations.</span>
+azure_sd_configs:
+  <span class="o">[</span> - &lt;azure_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of Consul service discovery configurations.</span>
+consul_sd_configs:
+  <span class="o">[</span> - &lt;consul_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of DNS service discovery configurations.</span>
+dns_sd_configs:
+  <span class="o">[</span> - &lt;dns_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of EC2 service discovery configurations.</span>
+ec2_sd_configs:
+  <span class="o">[</span> - &lt;ec2_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of file service discovery configurations.</span>
+file_sd_configs:
+  <span class="o">[</span> - &lt;file_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of DigitalOcean service discovery configurations.</span>
+digitalocean_sd_configs:
+  <span class="o">[</span> - &lt;digitalocean_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of Docker Swarm service discovery configurations.</span>
+dockerswarm_sd_configs:
+  <span class="o">[</span> - &lt;dockerswarm_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of GCE service discovery configurations.</span>
+gce_sd_configs:
+  <span class="o">[</span> - &lt;gce_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of Kubernetes service discovery configurations.</span>
+kubernetes_sd_configs:
+  <span class="o">[</span> - &lt;kubernetes_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of Marathon service discovery configurations.</span>
+marathon_sd_configs:
+  <span class="o">[</span> - &lt;marathon_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of AirBnB's Nerve service discovery configurations.</span>
+nerve_sd_configs:
+  <span class="o">[</span> - &lt;nerve_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of OpenStack service discovery configurations.</span>
+openstack_sd_configs:
+  <span class="o">[</span> - &lt;openstack_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of Zookeeper Serverset service discovery configurations.</span>
+serverset_sd_configs:
+  <span class="o">[</span> - &lt;serverset_sd_config&gt; ... <span class="o">]</span>
+
+<span class="c"># List of Triton service discovery configurations.</span>
+triton_sd_configs:
+  <span class="o">[</span> - &lt;triton_sd_config&gt; ... <span class="o">]</span>
+</code></pre></div></div>
+
+<p>从名字上，我们就可以看出来，他支持直接从各种软件中读取信息，从而实现自动化监控。我们这套课程主要讲的是三种</p>
+
+<ul>
+  <li>consul_sd_configs: 今天要讲的内容，我们就是要把endpoint注册到consul中，然后让prometheus去consul中查询要监控的目标</li>
+  <li>file_sd_configs: 把配置写到另外的文件当中，实现分类管理，这个好理解，我们后面一带而过</li>
+  <li>kubernetes_sd_configs: 最后集成kubernetes的时候再讲，可以直接去etcd中拿信息进行监控</li>
+</ul>
+
+<h2 id="2-consul">2. consul</h2>
+
+<p>consul是HashiCorp的产品，HashiCorp是由Mitchell Hashimoto和Armon Dadgar联合创办，总部位于美国旧金山，致力于为企业提供服务，通过数据中心管理技术研发，让开发者通过工具构建完整的开发环境，提高开发效率。他们还有一些知名的产品</p>
+
+<ul>
+  <li>Vagrant： 虚拟环境，轻量级的虚拟机</li>
+  <li>Terraform：IaC工具，用于构建基础架构，和ansible这种软件的集成也非常流畅</li>
+  <li>Packer：构建镜像的工具</li>
+  <li>Vault：密码管理工具</li>
+  <li>Nomad：集群调度工具，数据中心级别</li>
+</ul>
+
+<h3 id="21-架构">2.1. 架构</h3>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/10_prometheus_auto_discovery/about-architecture.png" alt="See the source image" /></p>
+
+<p>consul是一个服务注册中心，功能上和zookeeper，etcd并称为三大注册中心，是目前微服务时代比较流行的解决方案之一。Consul是用golang语言开发的，非常轻量，效率也非常高。我们这次demo只用一个单实例的服务端，后面讲微服务的时候，我们再说他的集群架构。</p>
+
+<h3 id="22-下载与安装">2.2. 下载与安装</h3>
+
+<p>我们这里使用的是v1.8.3，使用Docker启动</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> consul <span class="nt">-d</span> <span class="nt">-p</span> 8500:8500 consul
+</code></pre></div></div>
+
+<p>或者使用命令行启动</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>consul agent <span class="nt">-dev</span> <span class="nt">-ui</span> <span class="nt">-client</span> 0.0.0.0
+</code></pre></div></div>
+
+<p>说明：consul秉承了golang语言开发的特点，所有的功能都在一个可执行文件当中了</p>
+
+<p>这个时候打开浏览器就可以看到界面了，http://localhost:8500</p>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/10_prometheus_auto_discovery/image-20200908172131264.png" alt="image-20200908172131264" /></p>
+
+<h3 id="23-添加一个node_exporter节点">2.3. 添加一个node_exporter节点</h3>
+
+<p>假设我们已经在机器上安装好了node_exporter，暴露在9100端口，我们使用curl向consul中提交一个endpoint的注册请求。在consul中，所有的endpoint，也就是exporter都是被注册为service的。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-X</span> PUT <span class="nt">-d</span> <span class="s1">'{
+  "id": "node-exporter",
+  "name": "node-exporter-172-16-0-1",
+  "address": "172.16.0.1",
+  "port": 9100,
+  "tags": ["master1"],
+  "checks": [{"http": "http://172.16.0.1:9100/metrics", "interval": "5s"}]
+}'</span> http://localhost:8500/v1/agent/service/register
+</code></pre></div></div>
+
+<p>这个时候，我们可以在界面上看到多出了一个service</p>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/10_prometheus_auto_discovery/image-20200908173846448.png" alt="image-20200908173846448" /></p>
+
+<p>Instance的信息</p>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/10_prometheus_auto_discovery/image-20200908173905278.png" alt="image-20200908173905278" /></p>
+
+<h3 id="24-prometheus采集consul信息实现自动发现">2.4. prometheus采集consul信息实现自动发现</h3>
+
+<p>我们在prometheus的配置文件中增加consul的服务发现</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+- job_name: <span class="s1">'consul-prometheus'</span>
+  consul_sd_configs:
+  - server: <span class="s1">'localhost:8500'</span>
+    services: <span class="o">[]</span>  
+</code></pre></div></div>
+
+<p>然后访问prometheus的9090端口，点击target选项</p>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/10_prometheus_auto_discovery/image-20200908180257580.png" alt="image-20200908180257580" /></p>
+
+<h3 id="25-通过relabel来匹配我们所需要的">2.5. 通过relabel来匹配我们所需要的</h3>
+
+<p>我们发现除了我们所需要的metrics之外，竟然还多了一个consul的配置，这是我们不需要的，我们可以通过<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config">relabel</a>方式来匹配我们所需要的。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+- job_name: <span class="s1">'consul-prometheus'</span>
+  consul_sd_configs:
+    - server: <span class="s1">'localhost:8500'</span>
+      services: <span class="o">[]</span>  
+  relabel_configs:
+    - source_labels: <span class="o">[</span>__meta_consul_tags]
+      regex: .<span class="k">*</span>master1.<span class="k">*</span>
+      action: keep
+</code></pre></div></div>
+
+<p>重启prometheus之后发现，consul已经没有了，我们来说说咱们配置的relabel的这几行的意思。</p>
+
+<ul>
+  <li>
+    <p>relabel_configs：就是需要修改label，<code class="highlighter-rouge">label</code>是K-V的数据，而consul中没有label，只有<code class="highlighter-rouge">tag</code>和<code class="highlighter-rouge">meta</code>，tag是单值的。我们刚才传值的时候给被监控节点传递的是<code class="highlighter-rouge">"tags": ["master1"],</code>。</p>
+  </li>
+  <li>source_labels：这里的<code class="highlighter-rouge">__meta_consul_tags</code>是一个系统的内置变量，（所有的内置变量在<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config">这里</a>），我们要匹配的是consul的tag</li>
+  <li>regex：是正则匹配的意思，这里有个小坑，这里的正则是<a href="https://github.com/google/re2/wiki/Syntax">RE2 regular expression</a>，不是我们平时的perl类型的正则，想匹配tag是master1的，必须这样写<code class="highlighter-rouge">.*master1.*</code></li>
+  <li>action：匹配到了之后，就要做操作了（所有操作在<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#regex">这里</a>），这里是匹配到的留下，没有匹配到的就不要了，因为service consul默认是没有标签的，所有匹配不到，就被过滤掉了</li>
+</ul>
+
+<p>这个时候，consul服务已经没有了</p>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/10_prometheus_auto_discovery/image-20200909112622775.png" alt="image-20200909112622775" /></p>
+
+<h3 id="26-优化注册的服务">2.6. 优化注册的服务</h3>
+
+<h4 id="261-打标签">2.6.1. 打标签</h4>
+
+<p>标签很重要，他是作为分配一个endpoint的重要依据，不仅是在prometheus与consul中，在alertmanager中进行报警的时候也非常重要。我们参考一下aws上的<a href="https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html">最佳实践</a></p>
+
+<h4 id="262-json文件">2.6.2. JSON文件</h4>
+
+<p>我们把我们要PUT的内容都写在json文件中，在使用curl的时候，直接读取这个文件就可以了，对于日后的脚本化，自动化运维非常重要。我们把刚才的内容打上标签再写成JSON文件</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span>
+  <span class="s2">"ID"</span>: <span class="s2">"node-exporter"</span>,
+  <span class="s2">"Name"</span>: <span class="s2">"node-exporter-172-16-0-1"</span>,
+  <span class="s2">"Tags"</span>: <span class="o">[</span>
+    <span class="s2">"master1"</span>
+  <span class="o">]</span>,
+  <span class="s2">"Address"</span>: <span class="s2">"172.16.0.1"</span>,
+  <span class="s2">"Port"</span>: 9100,
+  <span class="s2">"Meta"</span>: <span class="o">{</span>
+    <span class="s2">"app"</span>: <span class="s2">"elasticsearch"</span>,
+    <span class="s2">"team"</span>: <span class="s2">"bigdata"</span>,
+    <span class="s2">"project"</span>: <span class="s2">"log-analyze"</span>
+  <span class="o">}</span>,
+  <span class="s2">"EnableTagOverride"</span>: <span class="nb">false</span>,
+  <span class="s2">"Check"</span>: <span class="o">{</span>
+    <span class="s2">"HTTP"</span>: <span class="s2">"http://172.16.0.1:9100/metrics"</span>,
+    <span class="s2">"Interval"</span>: <span class="s2">"10s"</span>
+  <span class="o">}</span>,
+  <span class="s2">"Weights"</span>: <span class="o">{</span>
+    <span class="s2">"Passing"</span>: 10,
+    <span class="s2">"Warning"</span>: 1
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>上传到git上之后，下次我们在初始化某个节点的时候就可以下载这个json文件然后进行注册了。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--request</span> PUT <span class="nt">--data</span> @node_exporter-1.json http://localhost:8500/v1/agent/service/register
+<span class="c"># 以前的版本中需要加这个参数?replace-existing-checks=1，新版没有这个参数了，会直接覆盖原来的数据</span>
+</code></pre></div></div>
+
+<p>打开界面，我们发现多了几个标签</p>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/10_prometheus_auto_discovery/image-20200909121856818.png" alt="image-20200909121856818" /></p>
+
+<p>修改prometheus配置</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  - job_name: <span class="s1">'consul-prometheus'</span>
+    consul_sd_configs:
+    - server: <span class="s1">'localhost:8500'</span>
+      services: <span class="o">[]</span>
+    relabel_configs:
+    - source_labels: <span class="o">[</span>__meta_consul_tags]
+      regex: .<span class="k">*</span>master1.<span class="k">*</span>
+      action: keep
+    - regex: __meta_consul_service_metadata_<span class="o">(</span>.+<span class="o">)</span>
+      action: labelmap
+</code></pre></div></div>
+
+<p>我们增加了<code class="highlighter-rouge">__meta_consul_service_metadata_</code>的配置，匹配到的是以这个开头的标签，捕获到了之后作为新的标签使用，也就是说，系统会添加<code class="highlighter-rouge">__meta_consul_service_metadata_app=elasticsearch</code>、<code class="highlighter-rouge">__meta_consul_service_metadata_team=bigdata</code>、<code class="highlighter-rouge">__meta_consul_service_metadata_project=log-analyze</code>三个标签，经过relabel后，prometheus会新增<code class="highlighter-rouge">app=elasticsearch</code>,<code class="highlighter-rouge">team=bigdata</code>,<code class="highlighter-rouge">project=log-analyze</code>三个标签</p>
+
+<p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/10_prometheus_auto_discovery/image-20200909122651414.png" alt="image-20200909122651414" /></p>
+
+<h4 id="263-将发现的服务分类">2.6.3. 将发现的服务分类</h4>
+
+<p>和上面打标签的方式类似，这里我们区分服务的时候使用tag来区分，也就是对service打上tag，我们同样使用的是relabel_configs，我们创建两种不同的服务，node-exporter（node-exporter-1.json）和kafka-exporter（kafka_exporter.json）。</p>
+
+<ul>
+  <li>
+    <p>node-exporter-1.json</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span>
+  <span class="s2">"ID"</span>: <span class="s2">"node-exporter"</span>,
+  <span class="s2">"Name"</span>: <span class="s2">"node-exporter-172-16-0-1"</span>,
+  <span class="s2">"Tags"</span>: <span class="o">[</span>
+    <span class="s2">"node-exporter"</span>
+  <span class="o">]</span>,
+  <span class="s2">"Address"</span>: <span class="s2">"172.16.0.1"</span>,
+  <span class="s2">"Port"</span>: 9100,
+  <span class="s2">"Meta"</span>: <span class="o">{</span>
+    <span class="s2">"app"</span>: <span class="s2">"elasticsearch"</span>,
+    <span class="s2">"team"</span>: <span class="s2">"bigdata"</span>,
+    <span class="s2">"project"</span>: <span class="s2">"log-analyze"</span>
+  <span class="o">}</span>,
+  <span class="s2">"EnableTagOverride"</span>: <span class="nb">false</span>,
+  <span class="s2">"Check"</span>: <span class="o">{</span>
+    <span class="s2">"HTTP"</span>: <span class="s2">"http://172.16.0.1:9100/metrics"</span>,
+    <span class="s2">"Interval"</span>: <span class="s2">"10s"</span>
+  <span class="o">}</span>,
+  <span class="s2">"Weights"</span>: <span class="o">{</span>
+    <span class="s2">"Passing"</span>: 10,
+    <span class="s2">"Warning"</span>: 1
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>kafka_exporter.json</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span>
+  <span class="s2">"ID"</span>: <span class="s2">"kafka-exporter"</span>,
+  <span class="s2">"Name"</span>: <span class="s2">"kafka-exporter-172-16-0-1"</span>,
+  <span class="s2">"Tags"</span>: <span class="o">[</span>
+    <span class="s2">"kafka-exporter"</span>
+  <span class="o">]</span>,
+  <span class="s2">"Address"</span>: <span class="s2">"172.16.0.1"</span>,
+  <span class="s2">"Port"</span>: 9308,
+  <span class="s2">"Meta"</span>: <span class="o">{</span>
+    <span class="s2">"app"</span>: <span class="s2">"kafka"</span>,
+    <span class="s2">"team"</span>: <span class="s2">"bigdata"</span>,
+    <span class="s2">"project"</span>: <span class="s2">"log-analyze"</span>
+  <span class="o">}</span>,
+  <span class="s2">"EnableTagOverride"</span>: <span class="nb">false</span>,
+  <span class="s2">"Check"</span>: <span class="o">{</span>
+    <span class="s2">"HTTP"</span>: <span class="s2">"http://172.16.0.1:9100/metrics"</span>,
+    <span class="s2">"Interval"</span>: <span class="s2">"10s"</span>
+  <span class="o">}</span>,
+  <span class="s2">"Weights"</span>: <span class="o">{</span>
+    <span class="s2">"Passing"</span>: 10,
+    <span class="s2">"Warning"</span>: 1
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>注册两个服务</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-XPUT</span> <span class="nt">--data</span> @node_exporter-1.json http://localhost:8500/v1/agent/service/register
+curl <span class="nt">-XPUT</span> <span class="nt">--data</span> @kafka_exporter.json http://localhost:8500/v1/agent/service/register
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>界面上看一下</p>
+
+    <p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/10_prometheus_auto_discovery/image-20200909134359711.png" alt="image-20200909134359711" /></p>
+  </li>
+  <li>
+    <p>修改prometheus配置如下</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  - job_name: <span class="s1">'consul-node-exporter'</span>
+    consul_sd_configs:
+      - server: <span class="s1">'localhost:8500'</span>
+        services: <span class="o">[]</span>  
+    relabel_configs:
+      - source_labels: <span class="o">[</span>__meta_consul_tags]
+        regex: .<span class="k">*</span>node-exporter.<span class="k">*</span>
+        action: keep
+      - regex: __meta_consul_service_metadata_<span class="o">(</span>.+<span class="o">)</span>
+        action: labelmap
+  
+  - job_name: <span class="s1">'consul-kafka-exproter'</span>
+    consul_sd_configs:
+      - server: <span class="s1">'localhost:8500'</span>
+        services: <span class="o">[]</span>
+    relabel_configs:
+      - source_labels: <span class="o">[</span>__meta_consul_tags]
+        regex: .<span class="k">*</span>kafka-exporter.<span class="k">*</span>
+        action: keep
+      - regex: __meta_consul_service_metadata_<span class="o">(</span>.+<span class="o">)</span>
+        action: labelmap
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>这个时候界面上就体现出来target的分组了</p>
+
+    <p><img src="/pages/keynotes/L4_architect/2_monitoring/pics/10_prometheus_auto_discovery/image-20200909134710101.png" alt="image-20200909134710101" /></p>
+  </li>
+</ul>
+
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

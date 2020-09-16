@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Ingress简介 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Ingress简介" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L3_senior_2_kubernetes_1_ingress.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L3_senior_2_kubernetes_1_ingress.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"Ingress简介","url":"http://localhost:4000/keynotes_L3_senior_2_kubernetes_1_ingress.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="课程目标">课程目标</h2>
+
+<ul>
+  <li>ingress概念</li>
+  <li>ingress控制器</li>
+  <li>ingress原理</li>
+  <li>ingress与service</li>
+</ul>
+
+<h2 id="1-ingress概念">1. ingress概念</h2>
+
+<ul>
+  <li>
+    <p>ingress的中文意思是进入，也就是流量的入口，词缀<code class="highlighter-rouge">in</code>代表的是进，那么对应的，我们还有<code class="highlighter-rouge">e</code>，也就是<code class="highlighter-rouge">egress</code>，翻译为<code class="highlighter-rouge">出口流量</code>。我们可以把这个简单理解为由集群外部进入应用的请求和从应用发出到集群外部的请求，都需要经过<code class="highlighter-rouge">ingress</code>和<code class="highlighter-rouge">egress</code>进入和离开。</p>
+  </li>
+  <li>
+    <p>在kubernetes中，ingress和egress实际上都是一种资源类型。我们会在资源清单中定义好相应的规则，让进入集群的流量按照我们的规则来转发请求。</p>
+
+    <p>感觉这好像我们的负载均衡啊！其实ingress就是借助了一些带有负载均衡的软件来实现的，我们会单独拿出两个课时来详细介绍nginx和envoy。</p>
+
+    <p>可以将 Ingress 配置为提供服务外部可访问的 URL、负载均衡流量、终止 SSL / TLS，以及提供基于名称的虚拟主机。Ingress 控制器 通常负责通过负载均衡器来实现 Ingress，尽管它也可以配置边缘路由器或其他前端来帮助处理流量。</p>
+  </li>
+  <li>
+    <p>但是，不管是ingress还是egress，他们本身并不是kubernetes的核心资源，我们需要额外安装Ingress控制器，然后在控制器的资源指定要使用的ingress类型</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">kubernetes.io/ingress.class</span><span class="pi">:</span> <span class="s2">"</span><span class="s">nginx"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>官方对于ingress的定义如下</p>
+
+    <blockquote>
+      <p>Ingress 公开了从集群外部到集群内 services 的 HTTP 和 HTTPS 路由。 流量路由由 Ingress 资源上定义的规则控制。</p>
+    </blockquote>
+
+    <p>然后他给了一张丑丑的图</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    internet
+        |
+   <span class="o">[</span> Ingress <span class="o">]</span>
+   <span class="nt">--</span>|-----|--
+   <span class="o">[</span> Services <span class="o">]</span>
+</code></pre></div>    </div>
+
+    <p>意思是说，外部的流量是经过ingress到达Service的，也就是说Ingress和Service是互相帮助的地位，而Ingress是不可以取代Service的，这个我们后面也会有章节说。</p>
+  </li>
+  <li>
+    <p>最后，我们今天要讨论的是ingress，应用最广泛的也是ingress，而egress在service mesh中才会用到，我们后面讲service mesh的时候再详细说。</p>
+  </li>
+</ul>
+
+<h2 id="2-ingress控制器">2. ingress控制器</h2>
+
+<p>ingress作为集群中的一个API，是有一个控制器来管理ingress的。他与<code class="highlighter-rouge">kube-controller-manager</code>管理下的controllers是不同的，这个控制器不会随controller-manager的启动而自动启动。我们有<a href="https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/">很多的控制器</a>可以选择：</p>
+
+<ul>
+  <li>AKS Application Gateway Ingress Controller is an ingress controller that enables ingress to AKS clusters using the Azure Application Gateway.</li>
+  <li>Ambassador API Gateway is an Envoy based ingress controller with community or commercial support from Datawire.</li>
+  <li>AppsCode Inc. offers support and maintenance for the most widely used HAProxy based ingress controller Voyager.</li>
+  <li>AWS ALB Ingress Controller enables ingress using the AWS Application Load Balancer.</li>
+  <li>Contour is an Envoy based ingress controller provided and supported by VMware.</li>
+  <li>Citrix provides an Ingress Controller for its hardware (MPX), virtualized (VPX) and free containerized (CPX) ADC for baremetal and cloud deployments.</li>
+  <li>F5 Networks provides support and maintenance for the F5 BIG-IP Controller for Kubernetes.</li>
+  <li>Gloo is an open-source ingress controller based on Envoy which offers API Gateway functionality with enterprise support from solo.io.</li>
+  <li>HAProxy Ingress is a highly customizable community-driven ingress controller for HAProxy.</li>
+  <li>HAProxy Technologies offers support and maintenance for the HAProxy Ingress Controller for Kubernetes. See the official documentation.</li>
+  <li>Istio based ingress controller Control Ingress Traffic.</li>
+  <li>Kong offers community or commercial support and maintenance for the Kong Ingress Controller for Kubernetes.</li>
+  <li>NGINX, Inc. offers support and maintenance for the NGINX Ingress Controller for Kubernetes.</li>
+  <li>Skipper HTTP router and reverse proxy for service composition, including use cases like Kubernetes Ingress, designed as a library to build your custom proxy</li>
+  <li>Traefik is a fully featured ingress controller (Let’s Encrypt, secrets, http2, websocket), and it also comes with commercial support by Containous.</li>
+</ul>
+
+<h2 id="3-ingress原理">3. Ingress原理</h2>
+
+<p>ingress的底层是借助于带有虚拟主机，基于URL重定向，TLS/SSL，负载均衡等功能的软件来实现从集群外部请求导入集群内部。我们以nginx为例</p>
+
+<ul>
+  <li>当我们部署好ingress控制器之后，会生成一个或者若干个nginx pod，但是里面没有任何规则。</li>
+  <li>然后，我们就可以创建ingress资源了，创建ingress资源的时候就像写nginx的配置文件一样可以配置虚拟主机，负载均衡等等。</li>
+  <li>当我们使用kubectl把清单文件提交给kubernetes之后，ingress控制器会负责把我们的配置文件转换成nginx的配置文件，丢给nginx作为他的配置文件使用。</li>
+</ul>
+
+<p><img src="/pages/keynotes/L3_senior/3_ingress/pics/1_ingress/NGINX-Plus-Ingress-Controller-1-7-0_ecosystem-1024x535.png" alt="img" /></p>
+
+<ul>
+  <li>同时，ingress-controller也是通过service方式暴露出来的，ingress的service默认会暴露80和443端口，如果没有添加任何规则的时候，我们通过ingress请求后端服务的时候是会显示404的。</li>
+</ul>
+
+<h2 id="4-ingress与service">4. ingress与service</h2>
+
+<p>刚才说了，ingress和service是相辅相成的，只不过请求不是由service转发的，因为service的ClusterIP会被设置为NONE，也就是我们常说的headless，无头服务。在这里，Service把请求的转发权让给了ingress，但是其他的功能，比如endpoint的管理还是由service通过nodeselector来管理的，只不过service不会去转发请求了，因为规则是NONE。</p>
+
+<p>也正是因为ingress是基于7层的转发，所以我们可以做很多的规则限制，从而实现虚拟主机，基于URL重定向，TLS/SSL，负载均衡等功能，而service是基于4层的，可以做的事情很少，所以真正的生产中，我们就需要借助于ingress来做入口流量控制。</p>
+
+<p>最后，我们在工作中，通常会把ingress的流量叫做入栈流量，egress的叫出栈流量。这样叫起来是不是有一点点专业的味道了呢。</p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

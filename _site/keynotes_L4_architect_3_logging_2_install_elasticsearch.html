@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>安装elastic stack所有工具 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="安装elastic stack所有工具" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L4_architect_3_logging_2_install_elasticsearch.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L4_architect_3_logging_2_install_elasticsearch.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"安装elastic stack所有工具","url":"http://localhost:4000/keynotes_L4_architect_3_logging_2_install_elasticsearch.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="学习目标">学习目标</h2>
+
+<p>安装elasticsearch</p>
+
+<p>安装kibana</p>
+
+<p>安装logstash</p>
+
+<p>安装插件</p>
+
+<h2 id="概述">概述</h2>
+
+<p>我们看到很多教程都是使用一台机器安装elasticsearch，然后kibana，然后各种组件全部怼到了一台机器上。有的教育机构资源比较丰富的，会找三个节点来安装一个小集群。他们主要是教大家怎样入门elasticsearch，但是我们的教程是生产级的，又是保姆级的，我们会教大家搭建一个相对稳定的架构，并且教大家怎样维护他，就像给客户做了一个完整的项目一样。但是，不积跬步无以至千里，我们要先从最基本的学起，这篇我们Demo一下单节点，三节点和一些工具的安装和配置</p>
+
+<h2 id="1-单节点elasticsearch">1. 单节点elasticsearch</h2>
+
+<ul>
+  <li>
+    <p>JDK：运行elasticsearch需要jvm，所以我们需要在机器上安装java。java的版本需要在1.8之上，如果我们从官网链接跳转下载地址，是会下载自带jdk的elasticsearch的。</p>
+
+    <ul>
+      <li>下载地址：https://www.elastic.co/cn/downloads/elasticsearch</li>
+      <li>不带jdk的：https://www.elastic.co/cn/downloads/elasticsearch-no-jdk</li>
+    </ul>
+
+    <p>es自带的jdk是java的最新版，目前是jdk14。大部分公司对于java的版本是有要要求的，不管是出于安全考虑还是管控的考虑，所以大家可以使用公司指定的jdk版本，先安装java，在安装es。（没有公司再用java1.6或者1.7了吧。。。。）</p>
+
+    <p>另外，如果我们的安装时候的系统环境比较特殊，比如非x86架构，也需要使用自己的java环境，比如我们这次实验的环境就是ARM架构（树莓派），我们就选择操作系统的镜像源中的java。</p>
+  </li>
+  <li>
+    <p>安装elasticsearch：根据管理方式的不一样，启动方式可能不一样</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># x86版本</span>
+yum install <span class="nt">-y</span> https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.9.0-x86_64.rpm
+<span class="c"># 我用的是ubuntu 20.04 LTS for ARM，用的是这个</span>
+dpkg <span class="nt">-i</span> https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.9.0-arm64.deb
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>完成后什么都不用配置就能启动了</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl start elasticsearch
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>启动后测试一下</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@node1:/opt/packages/elastic# curl localhost:9200
+<span class="o">{</span>
+  <span class="s2">"name"</span> : <span class="s2">"node1"</span>,
+  <span class="s2">"cluster_name"</span> : <span class="s2">"elasticsearch"</span>,
+  <span class="s2">"cluster_uuid"</span> : <span class="s2">"_na_"</span>,
+  <span class="s2">"version"</span> : <span class="o">{</span>
+    <span class="s2">"number"</span> : <span class="s2">"7.9.0"</span>,
+    <span class="s2">"build_flavor"</span> : <span class="s2">"default"</span>,
+    <span class="s2">"build_type"</span> : <span class="s2">"deb"</span>,
+    <span class="s2">"build_hash"</span> : <span class="s2">"a479a2a7fce0389512d6a9361301708b92dff667"</span>,
+    <span class="s2">"build_date"</span> : <span class="s2">"2020-08-11T21:36:48.204330Z"</span>,
+    <span class="s2">"build_snapshot"</span> : <span class="nb">false</span>,
+    <span class="s2">"lucene_version"</span> : <span class="s2">"8.6.0"</span>,
+    <span class="s2">"minimum_wire_compatibility_version"</span> : <span class="s2">"6.8.0"</span>,
+    <span class="s2">"minimum_index_compatibility_version"</span> : <span class="s2">"6.0.0-beta1"</span>
+  <span class="o">}</span>,
+  <span class="s2">"tagline"</span> : <span class="s2">"You Know, for Search"</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>当然，作为专业的人员，总是要做一些配置的，修改/etc/elasticsearch/elasticsearch.yml</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 指定监听的端口，默认是localhost</span>
+network.host: 0.0.0.0
+<span class="c"># 这个是说指定了服务器起来之后去哪发现这个集群，这里的172.16.0.1就是本机的地址</span>
+discovery.seed_hosts: <span class="o">[</span><span class="s2">"172.16.220.11"</span><span class="o">]</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>再重启一下看看是不是正常</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart elasticsearch
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="2-单节点kibana">2. 单节点kibana</h2>
+
+<ul>
+  <li>
+    <p>下载地址：https://www.elastic.co/cn/downloads/kibana</p>
+  </li>
+  <li>
+    <p>安装，请根据情况安装，这里米有arm版本的，我只好在我的笔记本上启了一个虚拟机</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># x86版本</span>
+yum install <span class="nt">-y</span> https://artifacts.elastic.co/downloads/kibana/kibana-7.9.0-x86_64.rpm
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>修改/etc/kibana/kibana.yml</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 监听的IP地址</span>
+server.host: <span class="s2">"0.0.0.0"</span>
+<span class="c"># kibana服务器显示的名字，可以不配置</span>
+server.name: <span class="s2">"master1"</span>
+<span class="c"># ES的地址</span>
+elasticsearch.hosts: <span class="o">[</span><span class="s2">"http://172.16.220.11:9200"</span><span class="o">]</span>
+<span class="c"># 忽略自签证书</span>
+elasticsearch.ssl.verificationMode: none
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>启动kibana</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start kibana
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>打开浏览器，访问http://172.16.220.11:5601，就可以看到界面了</p>
+  </li>
+</ul>
+
+<h2 id="3-三节点elasticsearch">3. 三节点elasticsearch</h2>
+
+<ul>
+  <li>
+    <p>下载地址：https://www.elastic.co/cn/downloads/elasticsearch</p>
+  </li>
+  <li>
+    <p>我们在刚才的基础上修改配置文件，我们假设有三台机器，master1，master2，master3，地址分为别172.16.220.11，172.16.220.12，172.16.220.13</p>
+
+    <p>master1上的/etc/elasticsearch/elasticsearch.yml</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 集群需要一个名字（必须的）</span>
+cluster.name: es-enterprise-demo
+<span class="c"># 节点也需要一个名字</span>
+node.name: master1
+<span class="c"># 节点的属性，我们可以认为是标签</span>
+node.attr.dc: 803
+node.attr.row: 2
+node.attr.enclosure: 3
+node.attr.rack: r1
+<span class="c"># 存数据的目录</span>
+path.data: /data/es/data
+<span class="c"># 存日志的目录（是es系统的日志，不是存放在es中的数据的日志）</span>
+path.logs: /data/es/logs
+<span class="c"># 在系统启动的时候，是否首先分配所有的内存，如果我们的堆内存heap配置为系统的一半的时候，就把这个选项打开，生产环境建议打开</span>
+bootstrap.memory_lock: <span class="nb">true</span>
+<span class="c"># 监听的端口，建议每个机器有两个网口，这个用于通讯的使用万兆光纤</span>
+network.host: 172.16.220.11
+<span class="c"># 服务的监听端口</span>
+http.port: 9200
+<span class="c"># 集群发现的地址</span>
+discovery.seed_hosts: <span class="o">[</span><span class="s2">"172.16.220.11"</span>, <span class="s2">"172.16.220.12"</span>, <span class="s2">"172.16.220.13"</span><span class="o">]</span>
+<span class="c"># 集群启动的时候发现集群的地址，如果没有指定，会去整个网段扫描</span>
+cluster.initial_master_nodes: <span class="o">[</span><span class="s2">"172.16.220.11"</span>, <span class="s2">"172.16.220.12"</span>, <span class="s2">"172.16.220.13"</span><span class="o">]</span>
+<span class="c"># 一个集群中的N个节点启动后,才允许进行数据恢复处理</span>
+gateway.recover_after_nodes: 3
+<span class="c"># 设置是否可以通过正则或者_all删除或者关闭索引库，默认true表示必须需要显式指定索引库名称</span>
+<span class="c"># 生产环境建议设置为true，删除索引库的时候必须显式指定，否则可能会误删索引库中的索引库。</span>
+action.destructive_requires_name: <span class="nb">true</span>
+</code></pre></div>    </div>
+
+    <p>master2上的/etc/elasticsearch/elasticsearch.yml</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 集群需要一个名字（必须的）</span>
+cluster.name: es-enterprise-demo
+<span class="c"># 节点也需要一个名字</span>
+node.name: master2
+<span class="c"># 节点的属性，我们可以认为是标签</span>
+node.attr.dc: 803
+node.attr.row: 2
+node.attr.enclosure: 4
+node.attr.rack: r3
+<span class="c"># 存数据的目录</span>
+path.data: /data/es/data
+<span class="c"># 存日志的目录（是es系统的日志，不是存放在es中的数据的日志）</span>
+path.logs: /data/es/logs
+<span class="c"># 在系统启动的时候，是否首先分配所有的内存，如果我们的堆内存heap配置为系统的一半的时候，就把这个选项打开，生产环境建议打开</span>
+bootstrap.memory_lock: <span class="nb">true</span>
+<span class="c"># 监听的端口，建议每个机器有两个网口，这个用于通讯的使用万兆光纤</span>
+network.host: 172.16.220.12
+<span class="c"># 服务的监听端口</span>
+http.port: 9200
+<span class="c"># 集群发现的地址</span>
+discovery.seed_hosts: <span class="o">[</span><span class="s2">"172.16.220.11"</span>, <span class="s2">"172.16.220.12"</span>, <span class="s2">"172.16.220.13"</span><span class="o">]</span>
+<span class="c"># 集群启动的时候发现集群的地址，如果没有指定，会去整个网段扫描</span>
+cluster.initial_master_nodes: <span class="o">[</span><span class="s2">"172.16.220.11"</span>, <span class="s2">"172.16.220.12"</span>, <span class="s2">"172.16.220.13"</span><span class="o">]</span>
+<span class="c"># 一个集群中的N个节点启动后,才允许进行数据恢复处理</span>
+gateway.recover_after_nodes: 3
+<span class="c"># 设置是否可以通过正则或者_all删除或者关闭索引库，默认true表示必须需要显式指定索引库名称</span>
+<span class="c"># 生产环境建议设置为true，删除索引库的时候必须显式指定，否则可能会误删索引库中的索引库。</span>
+action.destructive_requires_name: <span class="nb">true</span>
+</code></pre></div>    </div>
+
+    <p>master3上的/etc/elasticsearch/elasticsearch.yml</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 集群需要一个名字（必须的）</span>
+cluster.name: es-enterprise-demo
+<span class="c"># 节点也需要一个名字</span>
+node.name: master3
+<span class="c"># 节点的属性，我们可以认为是标签</span>
+node.attr.dc: 803
+node.attr.row: 4
+node.attr.enclosure: 6
+node.attr.rack: r3
+<span class="c"># 存数据的目录</span>
+path.data: /data/es/data
+<span class="c"># 存日志的目录（是es系统的日志，不是存放在es中的数据的日志）</span>
+path.logs: /data/es/logs
+<span class="c"># 在系统启动的时候，是否首先分配所有的内存，如果我们的堆内存heap配置为系统的一半的时候，就把这个选项打开，生产环境建议打开</span>
+bootstrap.memory_lock: <span class="nb">true</span>
+<span class="c"># 监听的端口，建议每个机器有两个网口，这个用于通讯的使用万兆光纤</span>
+network.host: 172.16.220.13
+<span class="c"># 服务的监听端口</span>
+http.port: 9200
+<span class="c"># 集群发现的地址</span>
+discovery.seed_hosts: <span class="o">[</span><span class="s2">"172.16.220.11"</span>, <span class="s2">"172.16.220.12"</span>, <span class="s2">"172.16.220.13"</span><span class="o">]</span>
+<span class="c"># 集群启动的时候发现集群的地址，如果没有指定，会去整个网段扫描</span>
+cluster.initial_master_nodes: <span class="o">[</span><span class="s2">"172.16.220.11"</span>, <span class="s2">"172.16.220.12"</span>, <span class="s2">"172.16.220.13"</span><span class="o">]</span>
+<span class="c"># 一个集群中的N个节点启动后,才允许进行数据恢复处理</span>
+gateway.recover_after_nodes: 3
+<span class="c"># 设置是否可以通过正则或者_all删除或者关闭索引库，默认true表示必须需要显式指定索引库名称</span>
+<span class="c"># 生产环境建议设置为true，删除索引库的时候必须显式指定，否则可能会误删索引库中的索引库。</span>
+action.destructive_requires_name: <span class="nb">true</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>启动集群</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start elasticsearch
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>查看一下状态</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> curl <span class="nt">-XGET</span> master1:9200/_cat/health?v
+epoch      timestamp cluster            status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
+1599016520 03:15:20  es-enterprise-demo green           3         3      0   0    0    0        0             0                  -                100.0%
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="4-双节点kibana">4. 双节点kibana</h2>
+
+<ul>
+  <li>
+    <p>下载地址：https://www.elastic.co/cn/downloads/kibana</p>
+  </li>
+  <li>
+    <p>kibana自己是带一个proxy的，但是免费版中没有，我们需要借助其他的工具来做负载均衡，比如nginx之类，我们这里安装的时候不用考虑这么多，只需要在kibana中指定所有es的地址就可以了，因为kibana的信息是存放在es之中的，默认是叫<code class="highlighter-rouge">.kibana</code>的一个index，所以不管哪个kibana节点上看到的信息都是一样的，不管几个kibana节点都一样</p>
+  </li>
+  <li>
+    <p>编辑/etc/kibana/kibana.yml</p>
+
+    <p>master1</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server.host: <span class="s2">"172.16.220.11"</span>
+server.name: <span class="s2">"master1"</span>
+elasticsearch.hosts: <span class="o">[</span><span class="s2">"http://172.16.220.11:9200"</span>, <span class="s2">"http://172.16.220.12:9200"</span>, <span class="s2">"http://172.16.220.13:9200"</span><span class="o">]</span>
+</code></pre></div>    </div>
+
+    <p>master2</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server.host: <span class="s2">"172.16.220.12"</span>
+server.name: <span class="s2">"master2"</span>
+elasticsearch.hosts: <span class="o">[</span><span class="s2">"http://172.16.220.11:9200"</span>, <span class="s2">"http://172.16.220.12:9200"</span>, <span class="s2">"http://172.16.220.13:9200"</span><span class="o">]</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="5-logstash简单使用">5. logstash简单使用</h2>
+
+<ul>
+  <li>下载地址：</li>
+</ul>
+
+<h2 id="6-怎样安装插件">6. 怎样安装插件</h2>
+
+<p>插件顾名思义就是为了扩展ES本身不具备的功能的时候才需要安装的，集成在ES内部的程序，随着ES的启动一起启动。而在ES和kibana的内部都提供了插件管理机制，有一套比较完整的规范，而我们安装插件的时候，只需要运行elasticsearch-plugin或者kibana-plugin，就可以轻松安装插件了。</p>
+
+<p>如果一些插件是官方提供的，我们直接运行命令安装就可以（官方插件<a href="https://github.com/elastic/elasticsearch/tree/master/plugins">地址</a>），如果没有的话，就需要指定插件位置，比如</p>
+
+<ul>
+  <li>
+    <p>直接安装</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bin/elasticsearch-plugin repository-s3
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>指定URL位置，指定http或者https也行</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./bin/elasticsearch-plugin install com.floragunn:search-guard-7:7.8.1-43.0
+./bin/elasticsearch-plugin install https://url/to/search-guard-elasticsearch-plugin-&lt;version&gt;.zip 
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>下载到本地，指定文件位置</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/elasticsearch-plugin install file:///path/to/search-guard-elasticsearch-plugin-&lt;version&gt;.zip
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>kibana同理。</p>
+
+<p>需要注意的是，很多教程中提到了很重要的安全插件x-pack，这个插件在6.2之后就被集成到了系统之中，不用额外安装，我们只需要在配置中把<code class="highlighter-rouge">xpack.security.enabled</code>配置成true就可以了，而官方文档中，把x-pack的文件放在了<a href="https://www.elastic.co/guide/en/security/current/index.html">security</a>一章，我们专门找一章再说安全相关的知识。</p>
+
+<h2 id="7-添加license">7. 添加license</h2>
+
+<ul>
+  <li>
+    <p>界面添加：</p>
+
+    <p><img src="/pages/keynotes/L4_architect/3_logging/pics/2_install_elasticsearch/image-20200902112610387.png" alt="image-20200902112610387" /></p>
+  </li>
+  <li>
+    <p>上传许可证（license），我们可以去找官方申请一个，一般来说会通过邮件的形式发送一个连接，然后我们可以下载，下载之后是一个json文件，点击Update your license</p>
+
+    <p><img src="/pages/keynotes/L4_architect/3_logging/pics/2_install_elasticsearch/image-20200903112727392.png" alt="image-20200903112727392" /></p>
+  </li>
+  <li>
+    <p>成功之后就会显示日期</p>
+
+    <p><img src="/pages/keynotes/L4_architect/3_logging/pics/2_install_elasticsearch/image-20200903112957049.png" alt="image-20200903112957049" /></p>
+  </li>
+</ul>
+
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

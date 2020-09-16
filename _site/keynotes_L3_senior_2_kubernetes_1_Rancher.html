@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Rancher简介 | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Rancher简介" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L3_senior_2_kubernetes_1_Rancher.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L3_senior_2_kubernetes_1_Rancher.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"Rancher简介","url":"http://localhost:4000/keynotes_L3_senior_2_kubernetes_1_Rancher.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="课程目标">课程目标</h2>
+
+<ul>
+  <li>了解常见的kubernetes管理工具</li>
+  <li>rancher简介</li>
+  <li>安装Rancher</li>
+  <li>使用rancher部署一个集群</li>
+</ul>
+
+<h2 id="1-kubernetes管理工具">1. kubernetes管理工具</h2>
+
+<p>我们这里说的管理工具，其实在CNCF项目的<a href="https://landscape.cncf.io/category=platform&amp;format=card-mode&amp;grouping=category">landscape</a>中是有四个分类的</p>
+
+<ul>
+  <li><a href="https://landscape.cncf.io/category=certified-kubernetes-distribution&amp;format=card-mode&amp;grouping=category">Certified Kubernetes - Distribution</a> 发行商，大部分都是在kubenetes中加入了各种工具，或者自定义资源，让kubernetes的功能更加完善，更加趋于PaaS平台</li>
+  <li><a href="https://landscape.cncf.io/category=certified-kubernetes-hosted&amp;format=card-mode&amp;grouping=category">Certified Kubernetes - Hosted</a> 主持kubernetes，实际上就是一些公有云厂商，可以把kubernetes直接运行在他们的平台上</li>
+  <li><a href="https://landscape.cncf.io/category=certified-kubernetes-installer&amp;format=card-mode&amp;grouping=category">Certified Kubernetes - Installer</a>这个好理解，就是安装kubernetes的一些工具。</li>
+  <li><a href="https://landscape.cncf.io/category=paa-s-container-service&amp;format=card-mode&amp;grouping=category">PaaS/Container Service</a>PaaS云，可以把代码直接运行在云上打包运行为容器而不用关心操作系统。</li>
+</ul>
+
+<p>个人意见，其实在管理工具方面，我推荐的是两个，一个是红帽的openshift，他是一个非常完善的PaaS平台。而另外一个就是Rancher，我觉得从功能和界面来看，他的潜力是非常大的。</p>
+
+<h2 id="2-rancher简介">2. Rancher简介</h2>
+
+<h3 id="21-rancher和它的项目们">2.1. rancher和它的项目们</h3>
+
+<p>Rancher是公司的名字，也是他主要项目的名字，Rancher项目本身是一个带有图形界面的工具，但是，他也提供了命令行方式和API接口，是一个github上的开源项目，遵循apache2.0协议，大家可以免费下载和使用。当然，他免费的是软件，收费的是服务，如果企业想要选用Rancher作为自己的容器管理平台，要么，有牛人可以hold住这头小牛，要么就买rancher的服务。平台再好，不会使用，没有最佳实践，最后只能是给自己挖坑。</p>
+
+<p>Rancher被誉为容器化的一个非常完整的解决方案。他几乎集成了DevOps所有的工具，是一个非常好用的，支持不同架构的多kubernetes集成平台。</p>
+
+<p>业界对于Rancher非常看好，就在咱们这篇文章截稿的前一天，2020年3月17号，rancher完成D轮4000万美元融资。而在几个月前，CEO梁胜入选CNCF 2020技术监督委员会（TOC），成为了CNCF圆桌骑士之一。Rancher可谓是如火如荼，占领了容器管理软件市场的的量份额。</p>
+
+<p>同时，rancher公司的其他项目也非常有潜力，比如：</p>
+
+<ul>
+  <li>kubernetes发行版rke</li>
+  <li>适用于物联网的k3s和k3os</li>
+  <li>最近GA的、在CNCF孵化的项目longhorn</li>
+</ul>
+
+<p>我们的课程会在后面的架构师课程中专门放一个rancher专题，我们这里会带大家感受一下使用图形界面，通过点点点去管理kubernetes。</p>
+
+<h3 id="22-功能">2.2. 功能</h3>
+
+<ul>
+  <li>
+    <p>第一个多容器云管理平台</p>
+  </li>
+  <li>
+    <p>让我们可以专注于想做的事情，不需要担心软件或者硬件</p>
+    <ul>
+      <li>降低kubernetes学习的成本（# Rancher来帮你搭建kubernetes）</li>
+      <li>提高kubernetes的适应性（# Rancher来帮你操作kubernetes）</li>
+      <li>让开发着专注写代码（# Rancher来帮你管理kubernetes）</li>
+      <li>加速创新（# Rancher来帮你升级kubernetes）</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="3-安装rancher">3. 安装Rancher</h2>
+
+<ul>
+  <li>
+    <p>我们使用最简单的docker方式来安装rancher</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>访问http://你的IP，会让我们重置密码</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629161404349.png" alt="image-20200629161404349" /></p>
+  </li>
+  <li>
+    <p>输入URL地址，以后就会使用https访问了</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162023678.png" alt="image-20200629162023678" /></p>
+  </li>
+  <li>
+    <p>现在我们登陆为admin用户</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162103821.png" alt="image-20200629162103821" /></p>
+  </li>
+  <li>
+    <p>点击add cluster</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162134099.png" alt="image-20200629162134099" /></p>
+  </li>
+  <li>
+    <p>选择AWS（或者任意你喜欢的，不过我们这里使用AWS为例子）</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162352617.png" alt="image-20200629162352617" /></p>
+  </li>
+  <li>
+    <p>添加templete</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162624337.png" alt="image-20200629162624337" /></p>
+  </li>
+  <li>
+    <p>输入key的信息</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162829503.png" alt="image-20200629162829503" /></p>
+  </li>
+  <li>
+    <p>选择vpc和subnet</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162921280.png" alt="image-20200629162921280" /></p>
+  </li>
+  <li>
+    <p>选择新建安全组</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162949511.png" alt="image-20200629162949511" /></p>
+  </li>
+  <li>
+    <p>选择镜像的信息，不选就是用ubuntu</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629163135620.png" alt="image-20200629163135620" /></p>
+  </li>
+  <li>
+    <p>起个名字就可以create了</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629163224379.png" alt="image-20200629163224379" /></p>
+  </li>
+  <li>
+    <p>填写必须的信息，如果想要创建集群的话，就在这里多创建几个模板，让每个模板在不同的region，不同的vpc，不同的sg，然后分配不同的职责，从而构建集群。</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629164104658.png" alt="image-20200629164104658" /></p>
+  </li>
+  <li>
+    <p>创建就好了</p>
+
+    <p><img src="/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629164143052.png" alt="image-20200629164143052" /></p>
+  </li>
+</ul>
+
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

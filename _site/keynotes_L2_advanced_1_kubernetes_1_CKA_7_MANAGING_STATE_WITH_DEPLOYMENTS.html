@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>MANAGING STATE WITH DEPLOYMENTS | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="MANAGING STATE WITH DEPLOYMENTS" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"MANAGING STATE WITH DEPLOYMENTS","url":"http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="learning-objectives">Learning Objectives</h2>
+
+<p>By the end of this chapter, you should be able to:</p>
+
+<ul>
+  <li>Discuss Deployment configuration details.</li>
+  <li>Scale a Deployment up and down.</li>
+  <li>Implement rolling updates and rollback.</li>
+  <li>Use Labels to select various objects.</li>
+</ul>
+
+<h2 id="managing-state-with-deployments">MANAGING STATE WITH DEPLOYMENTS</h2>
+
+<h3 id="overview">Overview</h3>
+
+<p>The default controller for a container deployed via <strong>kubectl run</strong> is a Deployment. While we have been working with them already, we will take a closer look at configuration options.</p>
+
+<p>As with other objects, a deployment can be made from a YAML or JSON spec file. When added to the cluster, the controller will create a ReplicaSet and a Pod automatically. The containers, their settings and applications can be modified via an update, which generates a new ReplicaSet, which, in turn, generates new Pods.</p>
+
+<p>The updated objects can be staged to replace previous objects as a block or as a rolling update, which is determined as part of the deployment specification. Most updates can be configured by editing a YAML file and running <strong>kubectl apply</strong>. You can also use <strong>kubectl edit</strong> to modify the in-use configuration. Previous versions of the ReplicaSets are kept, allowing a rollback to return to a previous configuration.</p>
+
+<p>We will also talk more about labels. Labels are essential to administration in Kubernetes, but are not an API resource. They are user-defined key-value pairs which can be attached to any resource, and are stored in the metadata. Labels are used to query or select resources in your cluster, allowing for flexible and complex management of the cluster.</p>
+
+<p>As a label is arbitrary, you could select all resources used by developers, or belonging to a user, or any attached string, without having to figure out what kind or how many of such resources exist.</p>
+
+<h3 id="deployments">Deployments</h3>
+
+<p><strong>ReplicationControllers</strong> (RC) ensure that a specified number of pod replicas is running at any one time. ReplicationControllers also give you the ability to perform rolling updates. However, those updates are managed on the client side. This is problematic if the client loses connectivity, and can leave the cluster in an unplanned state. To avoid problems when scaling the ReplicationControllers on the client side, a new resource was introduced in the <strong>apps/v1</strong> API group: Deployments.</p>
+
+<p>Deployments allow server-side updates to pods at a specified rate. They are used for canary and other deployment patterns. Deployments generate ReplicaSets, which offer more selection features than ReplicationControllers, such as <strong>matchExpressions</strong>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl create deployment dev-web --image=nginx:1.13.7-alpine
+deployment "dev-web" created
+</code></pre></div></div>
+
+<h3 id="object-relationship">Object Relationship</h3>
+
+<p>Here you can see the relationship between objects from the container, which Kubernetes does not directly manage, up to the deployment.</p>
+
+<p><img src="/pages/keynotes/L2_advanced/1_CKA/pics/7_MANAGING_STATE_WITH_DEPLOYMENTS/40s2dh0mf9gz-NestedObjects.png" alt="img" /></p>
+
+<h4 id="nested-objects">Nested Objects</h4>
+
+<p>The boxes and shapes are logical, in that they represent the controllers, or watch loops, running as a thread of the kube-controller-manager. Each controller queries the kube-apiserver for the current state of the object they track. The state of each object on a worker node is sent back from the local kubelet.</p>
+
+<p>The graphic in the upper left represents a container running nginx 1.11. Kubernetes does not directly manage the container. Instead, the kubelet daemon checks the pod specifications by asking the container engine, which could be Docker or cri-o, for the current status. The graphic to the right of the container shows a pod which represents a watch loop checking the container status. kubelet compares the current pod spec against what the container engine replies and will terminate and restart the pod if necessary.</p>
+
+<p>A multi-container pod is shown next. While there are several names used, such as <em>sidecar</em> or <em>ambassador</em>, these are all multi-container pods. The names are used to indicate the particular reason to have a second container in the pod, instead of denoting a new kind of pod.</p>
+
+<p>On the lower left we see a <strong>replicaSet</strong>. This controller will ensure you have a certain number of pods running. The pods are all deployed with the same <strong>podSpec</strong>, which is why they are called replicas. Should a pod terminate or a new pod be found, the replicaSet will create or terminate pods until the current number of running pods matches the specifications. Any of the current pods could be terminated should the spec demand fewer pods running.</p>
+
+<p>The graphic in the lower right shows a deployment. This controller allows us to manage the versions of images deployed in the pods. Should an edit be made to the deployment, a new <strong>replicaSet</strong> is created, which will deploy pods using the new <strong>podSpec</strong>. The deployment will then direct the old <strong>replicaSet</strong> to shut down pods as the new <strong>replicaSet</strong> pods become available. Once the old pods are all terminated, the deployment terminates the old <strong>replicaSet</strong> and the deployment returns to having only one <strong>replicaSet</strong> running.</p>
+
+<h3 id="deployment-details">Deployment Details</h3>
+
+<p>In the previous page, we created a new deployment running a particular version of the nginx web server.</p>
+
+<p>To generate the YAML file of the newly created objects, do:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get deployments,rs,pods <span class="nt">-o</span> yaml
+</code></pre></div></div>
+
+<p>Sometimes, a JSON output can make it more clear:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get deployments,rs,pods <span class="nt">-o</span> json
+</code></pre></div></div>
+
+<p>Now we will look at the YAML output, which also shows default values not passed to the object when created:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">items</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+</code></pre></div></div>
+
+<h4 id="explanation-of-objects">Explanation of Objects</h4>
+
+<ul>
+  <li>apiVersion</li>
+</ul>
+
+<p>A value of <strong>v1</strong> shows that this object is considered to be a stable resource. In this case, it is not the deployment. It is a reference to the <strong>List</strong> type.</p>
+
+<ul>
+  <li>items</li>
+</ul>
+
+<p>As the previous line is a <strong>List</strong>, this declares the list of items the command is showing.</p>
+
+<ul>
+  <li>- apiVersion</li>
+</ul>
+
+<p>The dash is a YAML indication of the first item, which declares the <strong>apiVersion</strong> of the object as <strong>apps/v1</strong>. This indicates the object is considered stable. Deployments are controller used in most cases.</p>
+
+<ul>
+  <li>kind</li>
+</ul>
+
+<p>This is where the type of object to create is declared, in this case, a deployment.</p>
+
+<h3 id="deployment-configuration-metadata">Deployment Configuration Metadata</h3>
+
+<p>Continuing with the YAML output, we see the next general block of output concerns the metadata of the deployment. This is where we would find labels, annotations, and other non-configuration information. Note that this output will not show all possible configuration. Many settings which are set to false by default are not shown, like <strong>podAffinity</strong> or <strong>nodeAffinity</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>metadata:
+  annotations:
+    deployment.kubernetes.io/revision: <span class="s2">"1"</span>
+  creationTimestamp: 2017-12-21T13:57:07Z
+  generation: 1
+  labels:
+    app: dev-web
+  name: dev-web
+  namespace: default
+  resourceVersion: <span class="s2">"774003"</span>
+  selfLink: /apis/apps/v1/namespaces/default/deployments/dev-web
+  uid: d52d3a63-e656-11e7-9319-42010a800003
+</code></pre></div></div>
+
+<ul>
+  <li>annotations</li>
+</ul>
+
+<p>These values do not configure the object, but provide further information that could be helpful to third-party applications or administrative tracking. Unlike labels, they cannot be used to select an object with <strong>kubectl</strong>.</p>
+
+<ul>
+  <li>creationTimestamp</li>
+</ul>
+
+<p>Shows when the object was originally created. Does not update if the object is edited.</p>
+
+<ul>
+  <li>generation</li>
+</ul>
+
+<p>How many times this object has been edited, such as changing the number of replicas, for example.</p>
+
+<ul>
+  <li>labels</li>
+</ul>
+
+<p>Arbitrary strings used to select or exclude objects for use with <strong>kubectl</strong>, or other API calls. Helpful for administrators to select objects outside of typical object boundaries.</p>
+
+<ul>
+  <li>name</li>
+</ul>
+
+<p>This is a <em>required</em> string, which we passed from the command line. The name must be unique to the namespace.</p>
+
+<ul>
+  <li>resourceVersion</li>
+</ul>
+
+<p>A value tied to the etcd database to help with concurrency of objects. Any changes to the database will cause this number to change.</p>
+
+<ul>
+  <li>selfLink</li>
+</ul>
+
+<p>References how the kube-apiserver will ingest this information into the API.</p>
+
+<ul>
+  <li>uid</li>
+</ul>
+
+<p>Remains a unique ID for the life of the object.</p>
+
+<h3 id="deployment-configuration-spec">Deployment Configuration Spec</h3>
+
+<p>There are two <strong>spec</strong> declarations for the deployment. The first will modify the ReplicaSet created, while the second will pass along the Pod configuration.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spec:  
+  progressDeadlineSeconds: 600   
+  replicas: 1  
+  revisionHistoryLimit: 10   
+  selector:     
+    matchLabels:       
+      app: dev-web  
+  strategy:     
+    rollingUpdate:       
+      maxSurge: 25%        
+      maxUnavailable: 25%     
+    <span class="nb">type</span>: RollingUpdate
+</code></pre></div></div>
+
+<ul>
+  <li>spec</li>
+</ul>
+
+<p>A declaration that the following items will configure the object being created.</p>
+
+<ul>
+  <li>progressDeadlineSeconds</li>
+</ul>
+
+<p>Time in seconds until a progress error is reported during a change. Reasons could be quotas, image issues, or limit ranges.</p>
+
+<ul>
+  <li>replicas</li>
+</ul>
+
+<p>As the object being created is a ReplicaSet, this parameter determines how many Pods should be created. If you were to use <strong>kubectl edit</strong> and change this value to two, a second Pod would be generated.</p>
+
+<ul>
+  <li>revisionHistoryLimit</li>
+</ul>
+
+<p>How many old ReplicaSet specifications to retain for rollback.</p>
+
+<ul>
+  <li>selector</li>
+</ul>
+
+<p>A collection of values ANDed together. All must be satisfied for the replica to match. Do not create Pods which match these selectors, as the deployment controller may try to control the resource, leading to issues.</p>
+
+<ul>
+  <li>matchLabels</li>
+</ul>
+
+<p>Set-based requirements of the Pod selector. Often found with the <strong>matchExpressions</strong> statement, to further designate where the resource should be scheduled.</p>
+
+<ul>
+  <li>strategy</li>
+</ul>
+
+<p>A header for values having to do with updating Pods. Works with the later listed <strong>type</strong>. Could also be set to <strong>Recreate</strong>, which would delete all existing pods before new pods are created. With <strong>RollingUpdate</strong>, you can control how many Pods are deleted at a time with the following parameters.</p>
+
+<ul>
+  <li>maxSurge</li>
+</ul>
+
+<p>Maximum number of Pods over desired number of Pods to create. Can be a percentage, default of 25%, or an absolute number. This creates a certain number of new Pods before deleting old ones, for continued access.</p>
+
+<ul>
+  <li>maxUnavailable</li>
+</ul>
+
+<p>A number or percentage of Pods which can be in a state other than <strong>Ready</strong> during the update process.</p>
+
+<ul>
+  <li>type</li>
+</ul>
+
+<p>Even though listed last in the section, due to the level of white space indentation, it is read as the type of object being configured. (e.g. <strong>RollingUpdate</strong>).</p>
+
+<h3 id="deployment-configuration-pod-template">Deployment Configuration Pod Template</h3>
+
+<p>Next, we will take a look at a configuration template for the pods to be deployed. We will see some similar values.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template:
+  metadata:
+  creationTimestamp: null
+    labels:
+      app: dev-web
+  spec:
+    containers:
+    - image: nginx:1.13.7-alpine
+      imagePullPolicy: IfNotPresent
+      name: dev-web
+      resources: <span class="o">{}</span>
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+    dnsPolicy: ClusterFirst
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: <span class="o">{}</span>
+    terminationGracePeriodSeconds: 30
+</code></pre></div></div>
+
+<ul>
+  <li>template</li>
+</ul>
+
+<p>Data being passed to the ReplicaSet to determine how to deploy an object (in this case, containers).</p>
+
+<ul>
+  <li>containers</li>
+</ul>
+
+<p>Key word indicating that the following items of this indentation are for a container.</p>
+
+<ul>
+  <li>image</li>
+</ul>
+
+<p>This is the image name passed to the container engine, typically Docker. The engine will pull the image and create the Pod.</p>
+
+<ul>
+  <li>imagePullPolicy</li>
+</ul>
+
+<p>Policy settings passed along to the container engine, about when and if an image should be downloaded or used from a local cache.</p>
+
+<ul>
+  <li>name</li>
+</ul>
+
+<p>The leading stub of the Pod names. A unique string will be appended.</p>
+
+<ul>
+  <li>resources</li>
+</ul>
+
+<p>By default, empty. This is where you would set resource restrictions and settings, such as a limit on CPU or memory for the containers.</p>
+
+<ul>
+  <li>terminationMessagePath</li>
+</ul>
+
+<p>A customizable location of where to output success or failure information of a container.</p>
+
+<ul>
+  <li>terminationMessagePolicy</li>
+</ul>
+
+<p>The default value is <strong>File</strong>, which holds the termination method. It could also be set to <strong>FallbackToLogsOnError</strong>, which will use the last chunk of container log if the message file is empty and the container shows an error.</p>
+
+<ul>
+  <li>dnsPolicy</li>
+</ul>
+
+<p>Determines if DNS queries should go to <strong>coredns</strong> or, if set to <strong>Default</strong>, use the node’s DNS resolution configuration.</p>
+
+<ul>
+  <li>restartPolicy</li>
+</ul>
+
+<p>Should the container be restarted if killed? Automatic restarts are part of the typical strength of Kubernetes.</p>
+
+<ul>
+  <li>scheduleName</li>
+</ul>
+
+<p>Allows for the use of a custom scheduler, instead of the Kubernetes default.</p>
+
+<ul>
+  <li>securityContext</li>
+</ul>
+
+<p>Flexible setting to pass one or more security settings, such as SELinux context, AppArmor values, users and UIDs for the containers to use.</p>
+
+<ul>
+  <li>terminationGracePeriodSeconds</li>
+</ul>
+
+<p>The amount of time to wait for a <strong>SIGTERM</strong> to run until a <strong>SIGKILL</strong> is used to terminate the container.</p>
+
+<h3 id="deployment-configuration-status">Deployment Configuration Status</h3>
+
+<p>The <strong>status</strong> output is generated when the information is requested:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>status:
+  availableReplicas: 2
+  conditions:
+  - lastTransitionTime: 2017-12-21T13:57:07Z
+    lastUpdateTime: 2017-12-21T13:57:07Z
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: <span class="s2">"True"</span>
+    <span class="nb">type</span>: Available
+  observedGeneration: 2
+  readyReplicas: 2
+  replicas: 2
+  updatedReplicas: 2
+</code></pre></div></div>
+
+<p>The output above shows what the same deployment were to look like if the number of replicas were increased to two. The times are different than when the deployment was first generated.</p>
+
+<h4 id="explanation-of-additional-elements">Explanation of Additional Elements</h4>
+
+<ul>
+  <li>availableReplicas</li>
+</ul>
+
+<p>Indicates how many were configured by the ReplicaSet. This would be compared to the later value of <strong>readyReplicas</strong>, which would be used to determine if all replicas have been fully generated and without error.</p>
+
+<ul>
+  <li>observedGeneration</li>
+</ul>
+
+<p>Shows how often the deployment has been updated. This information can be used to understand the rollout and rollback situation of the deployment.</p>
+
+<h3 id="scaling-and-rolling-updates">Scaling and Rolling Updates</h3>
+
+<p>The API server allows for the configurations settings to be updated for most values. There are some immutable values, which may be different depending on the version of Kubernetes you have deployed.</p>
+
+<p>A common update is to change the number of replicas running. If this number is set to zero, there would be no containers, but there would still be a ReplicaSet and Deployment. This is the backend process when a Deployment is deleted.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl scale deploy/dev-web <span class="nt">--replicas</span><span class="o">=</span>4
+deployment <span class="s2">"dev-web"</span> scaled
+
+<span class="nv">$ </span>kubectl get deployments
+NAME     READY   UP-TO-DATE  AVAILABLE  AGE
+dev-web  4/4     4           4          20s
+</code></pre></div></div>
+
+<p>Non-immutable values can be edited via a text editor, as well. Use edit to trigger an update. For example, to change the deployed version of the nginx web server to an older version:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl edit deployment nginx
+....
+      containers:
+      - image: nginx:1.8 <span class="c">#&lt;&lt;---Set to an older version </span>
+        imagePullPolicy: IfNotPresent
+                name: dev-web
+....
+</code></pre></div></div>
+
+<p>This would trigger a rolling update of the deployment. While the deployment would show an older age, a review of the Pods would show a recent update and older version of the web server application deployed.</p>
+
+<h3 id="deployment-rollbacks">Deployment Rollbacks</h3>
+
+<p>With some of the previous ReplicaSets of a Deployment being kept, you can also roll back to a previous revision by scaling up and down. The number of previous configurations kept is configurable, and has changed from version to version. Next, we will have a closer look at rollbacks, using the <strong>–record</strong> option of the <strong>kubectl create</strong> command, which allows annotation in the resource definition.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create deploy ghost <span class="nt">--image</span><span class="o">=</span>ghost <span class="nt">--record</span>
+
+<span class="nv">$ </span>kubectl get deployments ghost <span class="nt">-o</span> yaml
+deployment.kubernetes.io/revision: <span class="s2">"1"</span> 
+kubernetes.io/change-cause: kubectl create deploy ghost <span class="nt">--image</span><span class="o">=</span>ghost <span class="nt">--record</span>
+</code></pre></div></div>
+
+<p>Should an update fail, due to an improper image version, for example, you can roll back the change to a working version with <strong>kubectl rollout undo</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl <span class="nb">set </span>image deployment/ghost <span class="nv">ghost</span><span class="o">=</span>ghost:09 <span class="nt">--all</span>
+
+<span class="nv">$ </span>kubectl rollout <span class="nb">history </span>deployment/ghost deployments <span class="s2">"ghost"</span>:
+REVISION   CHANGE-CAUSE
+1          kubectl create deploy ghost <span class="nt">--image</span><span class="o">=</span>ghost <span class="nt">--record</span>
+2          kubectl <span class="nb">set </span>image deployment/ghost <span class="nv">ghost</span><span class="o">=</span>ghost:09 <span class="nt">--all</span>
+
+<span class="nv">$ </span>kubectl get pods
+NAME                    READY  STATUS            RESTARTS  AGE
+ghost-2141819201-tcths  0/1    ImagePullBackOff  0         1m
+
+<span class="nv">$ </span>kubectl rollout undo deployment/ghost <span class="p">;</span> kubectl get pods
+
+NAME                    READY  STATUS   RESTARTS  AGE
+ghost-3378155678-eq5i6  1/1    Running  0         7s
+</code></pre></div></div>
+
+<p>You can roll back to a specific revision with the –to-revision=2 option.</p>
+
+<p>You can also edit a Deployment using the kubectl edit command.</p>
+
+<p>You can also pause a Deployment, and then resume.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl rollout pause deployment/ghost
+
+<span class="nv">$ </span>kubectl rollout resume deployment/ghost
+</code></pre></div></div>
+
+<p>Please note that you can still do a rolling update on ReplicationControllers with the <strong>kubectl rolling-update</strong> command, but this is done on the client side. Hence, if you close your client, the rolling update will stop.</p>
+
+<h3 id="using-daemonsets">Using DaemonSets</h3>
+
+<p>A newer object to work with is the DaemonSet. This controller ensures that a single pod exists on each node in the cluster. Every Pod uses the same image. Should a new node be added, the DaemonSet controller will deploy a new Pod on your behalf. Should a node be removed, the controller will delete the Pod also.</p>
+
+<p>The use of a DaemonSet allows for ensuring a particular container is always running. In a large and dynamic environment, it can be helpful to have a logging or metric generation application on every node without an administrator remembering to deploy that application.</p>
+
+<p>Use <strong>kind: DaemonSet</strong>.</p>
+
+<p>There are ways of effecting the kube-apischeduler such that some nodes will not run a DaemonSet.</p>
+
+<h3 id="labels">Labels</h3>
+
+<p>Part of the metadata of an object is a label. Though labels are not API objects, they are an important tool for cluster administration. They can be used to select an object based on an arbitrary string, regardless of the object type. Labels are immutable as of API version <strong>apps/v1</strong>.</p>
+
+<p>Every resource can contain labels in its metadata. By default, creating a Deployment with <strong>kubectl create</strong> adds a label, as we saw in:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">....</span> 
+    <span class="s">labels</span><span class="pi">:</span>
+        <span class="na">pod-template-hash</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3378155678"</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">ghost ....</span>
+</code></pre></div></div>
+
+<p>You could then view labels in new columns:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods <span class="nt">-l</span> <span class="nv">run</span><span class="o">=</span>ghost
+NAME                    READY  STATUS   RESTARTS  AGE
+ghost-3378155678-eq5i6  1/1    Running  0         10m
+
+<span class="nv">$ </span>kubectl get pods <span class="nt">-L</span> run
+NAME                    READY  STATUS   RESTARTS  AGE  RUN
+ghost-3378155678-eq5i6  1/1    Running  0         10m  ghost
+nginx-3771699605-4v27e  1/1    Running  1         1h   nginx
+</code></pre></div></div>
+
+<p>While you typically define labels in pod templates and in the specifications of Deployments, you can also add labels on the fly:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl label pods ghost-3378155678-eq5i6 <span class="nv">foo</span><span class="o">=</span>bar
+
+<span class="nv">$ </span>kubectl get pods <span class="nt">--show-labels</span>
+NAME                    READY  STATUS   RESTARTS  AGE  LABELS
+ghost-3378155678-eq5i6  1/1    Running  0         11m  <span class="nv">foo</span><span class="o">=</span>bar, pod-template-hash<span class="o">=</span>3378155678,run<span class="o">=</span>ghost
+</code></pre></div></div>
+
+<p>For example, if you want to force the scheduling of a pod on a specific node, you can use a nodeSelector in a pod definition, add specific labels to certain nodes in your cluster and use those labels in the pod.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">....</span>
+<span class="na">spec</span><span class="pi">:</span>
+    <span class="na">containers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+    <span class="na">nodeSelector</span><span class="pi">:</span>
+        <span class="na">disktype</span><span class="pi">:</span> <span class="s">ssd</span>
+</code></pre></div></div>
+
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

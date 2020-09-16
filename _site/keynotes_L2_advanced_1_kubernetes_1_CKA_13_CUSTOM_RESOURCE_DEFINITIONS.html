@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>CUSTOM_RESOURCE_DEFINITIONS | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="CUSTOM_RESOURCE_DEFINITIONS" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"CUSTOM_RESOURCE_DEFINITIONS","url":"http://localhost:4000/keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="learning-objectives">Learning Objectives</h2>
+
+<p>By the end of this chapter, you should be able to:</p>
+
+<ul>
+  <li>Grow available Kubernetes objects.</li>
+  <li>Deploy a new Custom Resource Definition.</li>
+  <li>Deploy a new resource and API endpoint.</li>
+  <li>Discuss aggregated APIs.</li>
+</ul>
+
+<h2 id="custom-resource-definitions">CUSTOM RESOURCE DEFINITIONS</h2>
+
+<h3 id="custom-resources">Custom Resources</h3>
+
+<p>We have been working with built-in resources, or API endpoints. The flexibility of Kubernetes allows for the dynamic addition of new resources as well. Once these Custom Resources have been added, the objects can be created and accessed using standard calls and commands, like <strong>kubectl</strong>. The creation of a new object stores new structured data in the etcd database and allows access via kube-apiserver.</p>
+
+<p>To make a new custom resource part of a declarative API, there needs to be a controller to retrieve the structured data continually and act to meet and maintain the declared state. This controller, or operator, is an agent that creates and manages one or more instances of a specific stateful application. We have worked with built-in controllers such as Deployments, DaemonSets and other resources.</p>
+
+<p>The functions encoded into a custom operator should be all the tasks a human would need to perform if deploying the application outside of Kubernetes. The details of building a custom controller are outside the scope of this course, and thus, not included.</p>
+
+<p>There are two ways to add custom resources to your Kubernetes cluster. The easiest way, but less flexible, is by adding a Custom Resource Definition (CRD) to the cluster. The second way, which is more flexible, is the use of Aggregated APIs (AA), which requires a new API server to be written and added to the cluster.</p>
+
+<p>Either way of adding a new object to the cluster, as distinct from a built-in resource, is called a Custom Resource.</p>
+
+<p>If you are using RBAC for authorization, you probably will need to grant access to the new CRD resource and controller. If using an Aggregated API, you can use the same or a different authentication process.</p>
+
+<h3 id="custom-resource-definitions-1">Custom Resource Definitions</h3>
+
+<p>As we have already learnt, the decoupled nature of Kubernetes depends on a collection of watcher loops, or controllers, interrogating the kube-apiserver to determine if a particular configuration is true. If the current state does not match the declared state, the controller makes API calls to modify the state until they do match. If you add a new API object and controller, you can use the existing kube-apiserver to monitor and control the object. The addition of a Custom Resource Definition will be added to the cluster API path, currently under <strong>apiextensions.k8s.io/v1</strong>.</p>
+
+<p>While this is the easiest way to add a new object to the cluster, it may not be flexible enough for your needs. Only the existing API functionality can be used. Objects must respond to REST requests and have their configuration state validated and stored in the same manner as built-in objects. They would also need to exist with the protection rules of built-in objects.</p>
+
+<p>A CRD allows the resource to be deployed in a namespace or be available in the entire cluster. The YAML file sets this with the <strong>scope:</strong> parameter, which can be set to <strong>Namespaced</strong> or <strong>Cluster</strong>.</p>
+
+<p>Prior to v1.8, there was a resource type called ThirdPartyResource (TPR). This has been deprecated and is no longer available. All resources will need to be rebuilt as CRD. After upgrading, existing TPRs will need to be removed and replaced by CRDs such that the API URL points to functional objects.</p>
+
+<h3 id="configuration-example">Configuration Example</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apiextensions.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">CustomResourceDefinition</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">backups.stable.linux.com</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">group</span><span class="pi">:</span> <span class="s">stable.linux.com</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s">v1</span>
+  <span class="na">scope</span><span class="pi">:</span> <span class="s">Namespaced</span>
+  <span class="na">names</span><span class="pi">:</span>
+    <span class="na">plural</span><span class="pi">:</span> <span class="s">backups</span>
+    <span class="na">singular</span><span class="pi">:</span> <span class="s">backup</span>
+    <span class="na">shortNames</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">bks</span>
+    <span class="na">kind</span><span class="pi">:</span> <span class="s">BackUp</span>
+</code></pre></div></div>
+
+<h4 id="explanation-of-configuration-fiels">Explanation of Configuration Fiels</h4>
+
+<ul>
+  <li>apiVersion</li>
+</ul>
+
+<p>This should match the current level of stability, which is <strong>apiextensions.k8s.io/v1</strong>.</p>
+
+<ul>
+  <li>kind: CustomResourceDefinition</li>
+</ul>
+
+<p>The object type being inserted by the kube-apiserver.</p>
+
+<ul>
+  <li>name: backups.stable.linux.com</li>
+</ul>
+
+<p>The name must match the <strong>spec</strong> field declared later. The syntax must be &lt;plural name&gt;.&lt;group&gt;</p>
+
+<ul>
+  <li>group: stable.linux.com</li>
+</ul>
+
+<p>The group name will become part of the REST API under <strong>/apis/&lt;group&gt;/&lt;version&gt;</strong> or <strong>/apis/stable/v1</strong> in this case with the version set to v1.</p>
+
+<ul>
+  <li>scope</li>
+</ul>
+
+<p>Determines if the object exists in a single namespace or is cluster-wide.</p>
+
+<ul>
+  <li>plural</li>
+</ul>
+
+<p>Defines the last part of the API URL, such as <strong>apis/stable/v1/backups</strong>.</p>
+
+<ul>
+  <li>singular and shortNames</li>
+</ul>
+
+<p>They represent the name displayed and make CLI usage easier.</p>
+
+<ul>
+  <li>kind</li>
+</ul>
+
+<p>A CamelCased singular type used in resource manifests.</p>
+
+<h3 id="new-object-configuration">New Object Configuration</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s2">"</span><span class="s">stable.linux.com/v1"</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">BackUp</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">a-backup-object</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">timeSpec</span><span class="pi">:</span> <span class="s2">"</span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*/5"</span>
+  <span class="na">image</span><span class="pi">:</span> <span class="s">linux-backup-image</span>
+<span class="na">replicas</span><span class="pi">:</span> <span class="s">5</span>
+</code></pre></div></div>
+
+<p>Note that the <strong>apiVersion</strong> and <strong>kind</strong> match the CRD we created in a previous step. The <strong>spec</strong> parameters depend on the controller.</p>
+
+<p>The object will be evaluated by the controller. If the syntax, such as <strong>timeSpec</strong>, does not match the expected value, you will receive and error, should validation be configured. Without validation, only the existence of the variable is checked, not its details.</p>
+
+<h3 id="optional-hooks">Optional Hooks</h3>
+
+<p>Just as with built-in objects, you can use an asynchronous pre-delete hook known as a <strong>Finalizer</strong>. If an API <strong>delete</strong> request is received, the object metadata field <strong>metadata.deletionTimestamp</strong> is updated. The controller then triggers whichever finalizer has been configured. When the finalizer completes, it is removed from the list. The controller continues to complete and remove finalizers until the string is empty. Then, the object itself is deleted.</p>
+
+<p>Finalizer:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">finalizers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">finalizer.stable.linux.com</span>
+</code></pre></div></div>
+
+<p>Validation:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">validation</span><span class="pi">:</span>
+    <span class="na">openAPIV3Schema</span><span class="pi">:</span>
+      <span class="na">properties</span><span class="pi">:</span>
+        <span class="na">spec</span><span class="pi">:</span>
+          <span class="na">properties</span><span class="pi">:</span>
+            <span class="na">timeSpec</span><span class="pi">:</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">string</span> 
+              <span class="na">pattern</span><span class="pi">:</span> <span class="s1">'</span><span class="s">^(\d+|\*)(/\d+)?(\s+(\d+|\*)(/\d+)?){4}$'</span>
+            <span class="na">replicas</span><span class="pi">:</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">integer</span>
+              <span class="na">minimum</span><span class="pi">:</span> <span class="s">1</span>
+              <span class="na">maximum</span><span class="pi">:</span> <span class="s">10</span>
+</code></pre></div></div>
+
+<p>A feature in beta starting with v1.9 allows for validation of custom objects via the OpenAPI v3 schema. This will check various properties of the object configuration being passed by the API server. In the example above, the <strong>timeSpec</strong> must be a string matching a particular pattern and the number of allowed replicas is between 1 and 10. If the validation does not match, the error returned is the failed line of validation.</p>
+
+<h3 id="understanding-aggregated-apis">Understanding Aggregated APIs</h3>
+
+<p>The use of Aggregated APIs allows adding additional Kubernetes-type API servers to the cluster. The added server acts as a subordinate to kube-apiserver, which, as of v1.7, runs the aggregation layer in-process. When an extension resource is registered, the aggregation layer watches a passed URL path and proxies any requests to the newly registered API service.</p>
+
+<p>The aggregation layer is easy to enable. Edit the flags passed during startup of the kube-apiserver to include <strong>–enable-aggregator-routing=true</strong>. Some vendors enable this feature by default.</p>
+
+<p>The creation of the exterior can be done via YAML configuration files or APIs. Configuring TLS authorization between components and RBAC rules for various new objects is also required. A <a href="https://github.com/kubernetes/sample-apiserver">sample API server</a> is available on GitHub. A project currently in the incubation stage is an <a href="https://github.com/kubernetes-sigs/apiserver-builder-alpha">API server builder</a> which should handle much of the security and connection configuration.</p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>

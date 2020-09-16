@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>用kubeadm搭建k8s高可用（apt版） | cloudnative365.github.io</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="用kubeadm搭建k8s高可用（apt版）" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/keynotes_L4_architect_1_HA_2_k8s_cluster_kubeadm_apt.html" />
+<meta property="og:url" content="http://localhost:4000/keynotes_L4_architect_1_HA_2_k8s_cluster_kubeadm_apt.html" />
+<meta property="og:site_name" content="cloudnative365.github.io" />
+<script type="application/ld+json">
+{"headline":"用kubeadm搭建k8s高可用（apt版）","url":"http://localhost:4000/keynotes_L4_architect_1_HA_2_k8s_cluster_kubeadm_apt.html","@type":"WebPage","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=481468f1311b237dbb8ec4fec8c1099b04cbcc76">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">cloudnative365.github.io</a></h1>
+      
+
+      <h2 id="1-介绍">1. 介绍</h2>
+
+<h3 id="11-kubeadm">1.1. kubeadm</h3>
+
+<p>前面讲kubeadm的时候，我们已经介绍过kubeadm的功能的，我么这里只说一下kubeadm创建集群时候的操作</p>
+
+<h3 id="2-架构图">2 架构图</h3>
+
+<h3 id="21-整体架构图">2.1. 整体架构图</h3>
+
+<p><img src="/pages/keynotes/L4_architect/1_HA/pics/2_k8s_cluster_kubeadm_apt/ha-master-gce-5290449.png" alt="ha-master-gce" /></p>
+
+<h2 id="3-资源清单">3. 资源清单</h2>
+
+<h3 id="31-测试环境">3.1. 测试环境</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>机器名</th>
+      <th>IP</th>
+      <th>组件</th>
+      <th>CPU</th>
+      <th>内存</th>
+      <th>磁盘</th>
+      <th>操作系统</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>master1</td>
+      <td>10.0.11.73</td>
+      <td>etcd1，master1</td>
+      <td>2C</td>
+      <td>4G</td>
+      <td>64G</td>
+      <td>ubuntu16/ubuntu18/raspberryPi</td>
+    </tr>
+    <tr>
+      <td>master2</td>
+      <td>10.0.12.20</td>
+      <td>etcd2，master2</td>
+      <td>2C</td>
+      <td>4G</td>
+      <td>64G</td>
+      <td>ubuntu16/ubuntu18/raspberryPi</td>
+    </tr>
+    <tr>
+      <td>master3</td>
+      <td>10.0.13.199</td>
+      <td>etcd3，master3</td>
+      <td>2C</td>
+      <td>4G</td>
+      <td>64G</td>
+      <td>ubuntu16/ubuntu18/raspberryPi</td>
+    </tr>
+    <tr>
+      <td>worker1</td>
+      <td>10.0.12.91</td>
+      <td>worker1</td>
+      <td>2C</td>
+      <td>4G</td>
+      <td>128G</td>
+      <td>ubuntu16/ubuntu18/raspberryPi</td>
+    </tr>
+    <tr>
+      <td>worker2</td>
+      <td>10.0.13.162</td>
+      <td>worker2</td>
+      <td>2C</td>
+      <td>4G</td>
+      <td>128G</td>
+      <td>ubuntu16/ubuntu18/raspberryPi</td>
+    </tr>
+    <tr>
+      <td>lb</td>
+      <td>10.0.1.152</td>
+      <td>loadbalancer（nginx）</td>
+      <td>1C</td>
+      <td>2G</td>
+      <td>64G</td>
+      <td>ubuntu16/ubuntu18/raspberryPi</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="32-生产环境">3.2. 生产环境</h3>
+
+<h2 id="4-安装与配置">4. 安装与配置</h2>
+
+<h3 id="41-初始化">4.1. 初始化</h3>
+
+<ul>
+  <li>修改机器名</li>
+</ul>
+
+<pre><code class="language-BASH">hostnamectl set-hostname XXX
+</code></pre>
+
+<ul>
+  <li>关闭防火墙</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#停止当前防火墙服务</span>
+systemctl stop firewalld.service
+<span class="c">#禁用防火墙启动</span>
+systemctl disable firewalld.service
+<span class="c">#查看防火墙状态</span>
+firewall-cmd <span class="nt">--state</span>
+</code></pre></div></div>
+
+<ul>
+  <li>配置host文件/etc/hosts，在生产系统中，我们通常会使用DNS服务器，但是为了简化，我们这里就使用本地的解析</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>10.0.11.73 master1
+10.0.12.20 master2
+10.0.13.199 master3
+10.0.12.91 worker1
+10.0.13.162 worker2
+10.0.1.152 lb-server
+</code></pre></div></div>
+
+<ul>
+  <li>（有的系统已经配置好了，检查一下就好）桥接网络配置</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 加载模块</span>
+<span class="nv">$ </span>modprobe br_netfilter
+<span class="c"># 验证模块是否生效</span>
+<span class="nv">$ </span>lsmod | <span class="nb">grep </span>br_netfilter
+br_netfilter           24576  0
+bridge                172032  1 br_netfilter
+
+<span class="c">#新建k8s.conf文件，并添加以下内容，这个是防止由于 iptables 被绕过而导致流量无法正确路由的问题。</span>
+<span class="nv">$ </span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> &gt;  /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+</span><span class="no">EOF
+
+</span><span class="c">#执行修改的桥接网络设置</span>
+<span class="nv">$ </span>sysctl <span class="nt">-p</span> /etc/sysctl.d/k8s.conf
+
+<span class="c"># 验证桥接的参数</span>
+<span class="nv">$ </span><span class="nb">ls</span> /proc/sys/net/bridge
+bridge-nf-call-arptables  bridge-nf-call-iptables        bridge-nf-filter-vlan-tagged
+bridge-nf-call-ip6tables  bridge-nf-filter-pppoe-tagged  bridge-nf-pass-vlan-input-dev
+</code></pre></div></div>
+
+<h3 id="42-配置apt源">4.2. 配置apt源</h3>
+
+<ul>
+  <li>(可选，apt的国外源也OK，就是稍微有点慢)更换apt源为国内源</li>
+</ul>
+
+<p>修改/etc/apt/sources.list中的内容，把原来的注释掉，添加国内源，例如，ubuntu更换阿里云的源，<a href="https://developer.aliyun.com/mirror/ubuntu">看这里</a>。</p>
+
+<p>我使用的是树莓派，所以我更换了下面的源</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+</code></pre></div></div>
+
+<ul>
+  <li>添加docker国内源，例如，添加阿里云的docker源，可以<a href="https://developer.aliyun.com/mirror/docker-ce">参考这个</a></li>
+</ul>
+
+<p>我使用的是官方的源</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-fsSL</span> https://download.docker.com/linux/debian/gpg | <span class="nb">sudo </span>apt-key add -
+
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> &gt;/etc/apt/sources.list.d/docker.list
+deb [arch=armhf] https://download.docker.com/linux/raspbian buster stable
+</span><span class="no">EOF
+
+</span>apt-get update
+</code></pre></div></div>
+
+<ul>
+  <li>使用kubernetes国内源</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get update <span class="o">&amp;&amp;</span> apt-get install <span class="nt">-y</span> apt-transport-https
+
+curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -
+
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> &gt;/etc/apt/sources.list.d/kubernetes.list
+deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+</span><span class="no">EOF
+
+</span>apt-get update
+</code></pre></div></div>
+
+<h3 id="43-安装软件">4.3. 安装软件</h3>
+
+<ul>
+  <li>Docker</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>apt-get <span class="nt">-y</span> install docker-ce
+</code></pre></div></div>
+
+<ul>
+  <li>kubectl, kubelet和kubeadm</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>apt-get <span class="nt">-y</span> install kubectl kubelet kubeadm
+</code></pre></div></div>
+
+<h3 id="44-修改docker的源为国内的源">4.4. 修改Docker的源为国内的源</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> /etc/docker/daemon.json <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+{
+  "registry-mirrors": ["https://gvfjy25r.mirror.aliyuncs.com"]
+}
+</span><span class="no">EOF
+</span></code></pre></div></div>
+
+<p>记得<code class="highlighter-rouge">systemctl daemon-reload</code>和<code class="highlighter-rouge">systemctl restart docker</code></p>
+
+<h3 id="45-负载均衡器">4.5. 负载均衡器</h3>
+
+<p>负载均衡可以选择Nginx，Haproxy，lvs或者traefik甚至apache都可以，基本上所有的4层负载均衡或者7层负载均衡都可以，负载均衡的主要作用就是前端使用一个统一的IP地址，后端映射api-server。让每个node通讯的时候，都通过负载均衡器来调度请求。</p>
+
+<p>这里，我们就使用最常见，最容器实现的nginx来做负载均衡。</p>
+
+<p><strong><em>下面的步骤在负载均衡节点master-lb上做</em></strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>apt-get install <span class="nt">-y</span> nginx
+</code></pre></div></div>
+
+<p>在<code class="highlighter-rouge">/etc/nginx/nginx.conf</code>里面添加一个include，让nginx读取目录下的配置文件</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>include /etc/nginx/conf.d/tcp.d/<span class="k">*</span>.conf<span class="p">;</span>
+</code></pre></div></div>
+
+<p>添加kubernetes的4层代理配置文件<code class="highlighter-rouge">/etc/nginx/conf.d/tcp.d/kube-api-server.conf</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stream <span class="o">{</span>
+    log_format main <span class="s1">'$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent'</span><span class="p">;</span>
+    access_log /var/log/nginx/k8s-access.log main<span class="p">;</span>
+    upstream k8s-apiserver <span class="o">{</span>
+        server 10.0.11.73:6443<span class="p">;</span>
+        server 10.0.12.20:6443<span class="p">;</span>
+        server 10.0.13.199:6443<span class="p">;</span>
+    <span class="o">}</span>
+    server <span class="o">{</span>
+        listen 10.0.1.152:6443<span class="p">;</span>
+        proxy_pass k8s-apiserver<span class="p">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>查看端口是否在监听了</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>netstat <span class="nt">-untlp</span>|grep 6443
+tcp        0      0 10.0.1.152:6443         0.0.0.0:<span class="k">*</span>               LISTEN      15105/nginx: master
+</code></pre></div></div>
+
+<p><strong><em>上面的步骤在负载均衡节点master-lb上做</em></strong></p>
+
+<h3 id="46-使用kubeadm初始化第一个master节点">4.6. 使用kubeadm初始化第一个master节点</h3>
+
+<ul>
+  <li>检查网络是否通畅(使用telnet也可以)</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc <span class="nt">-v</span> 10.0.1.152 6443
+Connection to 10.0.1.152 6443 port <span class="o">[</span>tcp/<span class="k">*</span><span class="o">]</span> succeeded!
+</code></pre></div></div>
+
+<ul>
+  <li>把LOAD_BALANCER_DNS:LOAD_BALANCER_PORT替换成刚才nginx的IP和端口</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init <span class="nt">--control-plane-endpoint</span> <span class="s2">"LOAD_BALANCER_DNS:LOAD_BALANCER_PORT"</span> <span class="nt">--upload-certs</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init <span class="nt">--control-plane-endpoint</span> <span class="s2">"10.0.1.152:6443"</span> <span class="nt">--upload-certs</span> <span class="nt">--pod-network-cidr</span><span class="o">=</span>192.168.0.0/16 <span class="nt">--image-repository</span> registry.cn-hangzhou.aliyuncs.com/google_containers
+</code></pre></div></div>
+
+<ul>
+  <li>注意：在国内是没办法直接下载的，我们需要先把镜像拉下来再做的这种方法是<code class="highlighter-rouge">不正确的！！</code>，新版的kubeadm命令支持在初始化的时候直接指定镜像仓库的方法<code class="highlighter-rouge">--image-repository</code></li>
+</ul>
+
+<p>成功之后，会有下面的提示，找个小本本记下来吧</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir <span class="nt">-p</span> <span class="nv">$HOME</span>/.kube
+  <span class="nb">sudo </span>cp <span class="nt">-i</span> /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+  <span class="nb">sudo </span>chown <span class="k">$(</span>id <span class="nt">-u</span><span class="k">)</span>:<span class="k">$(</span>id <span class="nt">-g</span><span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run <span class="s2">"kubectl apply -f [podnetwork].yaml"</span> with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of the control-plane node running the following <span class="nb">command </span>on each as root:
+
+  kubeadm join 10.0.1.152:6443 <span class="nt">--token</span> bh7okr.gp161f6cdrfgx1o3 <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:f0845e17f83581113fb3643a6f30c07cb6e3e8145fb5795c4ce483387bf0eaf5 <span class="se">\</span>
+    <span class="nt">--control-plane</span> <span class="nt">--certificate-key</span> c999218aecb003e11bcc36fea534c1439fcbab4290380d7b2260c626cf778bbf
+
+Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
+As a safeguard, uploaded-certs will be deleted <span class="k">in </span>two hours<span class="p">;</span> If necessary, you can use
+<span class="s2">"kubeadm init phase upload-certs --upload-certs"</span> to reload certs afterward.
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 10.0.1.152:6443 <span class="nt">--token</span> bh7okr.gp161f6cdrfgx1o3 <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:f0845e17f83581113fb3643a6f30c07cb6e3e8145fb5795c4ce483387bf0eaf5
+</code></pre></div></div>
+
+<h3 id="47-初始化master2和master3">4.7. 初始化master2和master3</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm join 10.0.1.152:6443 <span class="nt">--token</span> bh7okr.gp161f6cdrfgx1o3 <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:f0845e17f83581113fb3643a6f30c07cb6e3e8145fb5795c4ce483387bf0eaf5 <span class="se">\</span>
+    <span class="nt">--control-plane</span> <span class="nt">--certificate-key</span> c999218aecb003e11bcc36fea534c1439fcbab4290380d7b2260c626cf778bbf
+</code></pre></div></div>
+
+<h3 id="48-初始化worker1和worker2">4.8. 初始化worker1和worker2</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm join 10.0.1.152:6443 <span class="nt">--token</span> bh7okr.gp161f6cdrfgx1o3 <span class="se">\</span>
+    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:f0845e17f83581113fb3643a6f30c07cb6e3e8145fb5795c4ce483387bf0eaf5
+</code></pre></div></div>
+
+<h3 id="49-最后是网络方案这次我们用calico">4.9. 最后是网络方案，这次我们用calico</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> https://docs.projectcalico.org/manifests/calico.yaml
+</code></pre></div></div>
+
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+    
+  </body>
+</html>
