@@ -1,0 +1,50 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  product: 免费课程
+  version: 
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: 1.0tlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+  - title: 知识普及系列讲座
+    output: web, pdf
+    folderitems:
+
+    - title: 课程体系介绍
+      url: /index.html
+      output: web, pdf
+      type: homepage
+
+      subfolders:
+      - title: 云原生知识普及
+        output: web, pdf
+        subfolderitems:
+
+        - title: 云原生的身世之谜
+          url: /mydoc_supported_features.html
+          output: web, pdf
+        
+        - title: 如何与CNCF愉快的玩耍
+          url: /mydoc_supported_features.html
+          output: web, pdf
+
+    - title: Infrastructure As Code
+      url: /mydoc_supported_features.html
+      output: web, pdf
+
+    - title: DevOps
+      url: /mydoc_supported_features.html
+      output: web, pdf

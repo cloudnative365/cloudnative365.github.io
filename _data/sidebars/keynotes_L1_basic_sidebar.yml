@@ -1,0 +1,97 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  product: 进阶课程
+  version: 
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: 1.0tlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+  - title: 课前准备
+    output: web, pdf
+    folderitems:
+
+    - title: Git的安装配置和使用
+      url: /keynotes_L1_basic_git_blog.html
+      output: web, pdf
+
+    - title: MarkDown语言的使用
+      url: /keynotes_L1_basic_markdown_blog.html
+      output: web, pdf
+
+    - title: 使用GitPages搭建免费的个人博客
+      url: /keynotes_L1_basic_gitpage_blog.html
+      output: web, pdf
+
+    - title: 薅aws的羊毛
+      url: /keynotes_L1_basic_aws_blog.html
+      output: web, pdf
+
+  - title: 第一章 容器化基础
+    output: web, pdf
+    folderitems:
+
+    - title: 第一节 容器化基础
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第二节 使用Docker
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第三节 Docker的网络
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第四节 Docker的存储卷
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第五节 Docker资源限制
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+
+  - title: 第二章 容器化基础
+    output: web, pdf
+    folderitems:
+
+    - title: 第一节 Docker镜像
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第二节 私有镜像仓库
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第三节 Dockerfile
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第四节 harbor
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+  - title: 第三章 容器运行时
+    output: web, pdf
+    folderitems:
+
+    - title: 第一节 containerd
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+    - title: 第二节 cri-o
+      url: /mydoc_release_notes_60.html
+      output: web, pdf

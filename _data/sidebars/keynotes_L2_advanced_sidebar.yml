@@ -1,0 +1,181 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  product: 进阶课程
+  version: 
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: 1.0tlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+  - title: 第一章 CKA官方教程
+    output: web, pdf
+    folderitems:
+
+    - title: 1 COURSE_INTRODUCTION
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_1_COURSE_INTRODUCTION.html
+      output: web, pdf
+
+    - title: 2 BASICS_OF_KUBERNETES
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_2_BASICS_OF_KUBERNETES.html
+      output: web, pdf
+
+    - title: 3 INSTALLATION_AND_CONFIGURATION
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_3_INSTALLATION_AND_CONFIGURATION.html
+      output: web, pdf
+
+    - title: 4 KUBERNETES_ARCHITECTURE
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_4_KUBERNETES_ARCHITECTURE.html
+      output: web, pdf
+
+    - title: 5 APIS_AND_ACCESS
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_5_APIS_AND_ACCESS.html
+      output: web, pdf
+
+    - title: 6 API_OBJECTS
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_6_API_OBJECTS.html
+      output: web, pdf
+
+    - title: 7 MANAGING_STATE_WITH_DEPLOYMENTS
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_7_MANAGING_STATE_WITH_DEPLOYMENTS.html
+      output: web, pdf
+
+    - title: 8 SERVICES
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_8_SERVICES.html
+      output: web, pdf
+
+    - title: 9 VOLUMES_AND_DATA
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_9_VOLUMES_AND_DATA.html
+      output: web, pdf
+
+    - title: 10 INGRESS
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_10_INGRESS.html
+      output: web, pdf
+
+    - title: 11 SCHEDULING
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_11_SCHEDULING.html
+      output: web, pdf
+
+    - title: 12 LOGGING_AND_TROUBLESHOOTING
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_12_LOGGING_AND_TROUBLESHOOTING.html
+      output: web, pdf
+
+    - title: 13 CUSTOM_RESOURCE_DEFINITIONS
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_13_CUSTOM_RESOURCE_DEFINITIONS.html
+      output: web, pdf
+
+    - title: 14 HELM
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_14_HELM.html
+      output: web, pdf
+
+    - title: 15 SECURITY
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_15_SECURITY.html
+      output: web, pdf
+
+    - title: 16 HIGH_AVAILABILITY
+      url: /keynotes_L2_advanced_1_kubernetes_1_CKA_16_HIGH_AVAILABILITY.html
+      output: web, pdf
+
+  - title: 第二章 CKAD官方教程
+    output: web, pdf
+    folderitems:
+
+    - title: CloudNative Roadmap
+      url: /mydoc_release_notes_60.html
+      output: web, pdf
+
+  - title: 第三章 kubernetes入门讲座
+    output: web, pdf
+    folderitems:
+
+    - title: 1. 课程介绍
+      url: /keynotes_L2_advanced_3_kubernetes_1_COURSE_INTRODUCTION.html
+      output: web, pdf
+
+    - title: 2. 认识kubernetes
+      url: /keynotes_L2_advanced_3_kubernetes_2_BASICS_OF_KUBERNETES.html
+      output: web, pdf
+
+    - title: 3. kubernetes架构和基础概念
+      url: /keynotes_L2_advanced_3_kubernetes_3_KUBERNETES_ARCHITECTURE.html
+      output: web, pdf
+
+    - title: 4. 安装和配置kubernetes实验环境
+      url: /keynotes_L2_advanced_3_kubernetes_4_INSTALLATION_AND_CONFIGURATION.html
+      output: web, pdf
+
+    - title: 5. 使用命令行管理资源
+      url: /keynotes_L2_advanced_3_kubernetes_5_MANAGE_RESOURCES_WITH_CMD.html
+      output: web, pdf
+
+    - title: 6. 使用清单文件管理资源
+      url: /keynotes_L2_advanced_3_kubernetes_6_MANAGE_RESOURCES_WITH_MANIFEST.html
+      output: web, pdf
+
+    - title: 7. POD
+      url: /keynotes_L2_advanced_3_kubernetes_7_POD.html
+      output: web, pdf
+
+    - title: 8. 标签和标签选择器
+      url: /keynotes_L2_advanced_3_kubernetes_8_LABEL_AND_SELECTOR.html
+      output: web, pdf
+
+    - title: 9. Deployment
+      url: /keynotes_L2_advanced_3_kubernetes_9_CONTROLLER.html
+      output: web, pdf
+
+    - title: 10. Service
+      url: /keynotes_L2_advanced_3_kubernetes_10_SERVICE.html
+      output: web, pdf
+
+    - title: 11. pv
+      url: /keynotes_L2_advanced_3_kubernetes_11_PV.html
+      output: web, pdf
+
+    - title: 12. configmap和secret
+      url: /keynotes_L2_advanced_3_kubernetes_12_SECRET_AND_CONFIGMAP.html
+      output: web, pdf
+
+    - title: 13. API
+      url: /keynotes_L2_advanced_3_kubernetes_13_APIS_AND_ACCESS.html
+      output: web, pdf
+
+    - title: 14. STATEFULSET
+      url: /keynotes_L2_advanced_3_kubernetes_14_STATEFULSET.html
+      output: web, pdf
+
+    - title: 15. INGRESS
+      url: /keynotes_L2_advanced_3_kubernetes_15_INGRESS.html
+      output: web, pdf
+
+    - title: 16. 调度
+      url: /keynotes_L2_advanced_3_kubernetes_16_SCHEDULING.html
+      output: web, pdf
+
+    - title: 17. 日志和错误定位
+      url: /keynotes_L2_advanced_3_kubernetes_17_LOGGING_AND_TROUBLESHOOTING.html
+      output: web, pdf
+
+    - title: 18. 自定义资源
+      url: /keynotes_L2_advanced_3_kubernetes_18_CUSTOM_RESOURCE_DEFINTIONS.html
+      output: web, pdf
+
+    - title: 19. HELM
+      url: /keynotes_L2_advanced_3_kubernetes_19_HELM.html
+      output: web, pdf
+
+    - title: 20. SECURITY
+      url: /keynotes_L2_advanced_3_kubernetes_20_SECURITY.html
+      output: web, pdf
+

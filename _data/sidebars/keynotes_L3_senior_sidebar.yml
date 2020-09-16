@@ -1,0 +1,90 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  product: 高级课程
+  version: 
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: 1.0tlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+  - title: 1.etcd
+    output: web, pdf
+    folderitems:
+
+    - title: 1.etcd概览
+      url: /keynotes_L3_senior_1_etcd_1_etcd_overview.html
+      output: web, pdf
+
+    - title: 2.安装etcd
+      url: /keynotes_L3_senior_1_etcd_2_install_etcd.html
+      output: web, pdf
+
+    - title: 3.使用kubeadm安装etcd
+      url: /keynotes_L3_senior_1_etcd_3_install_etcd_with_kubeadm.html
+      output: web, pdf
+
+    - title: 4.管理etcd集群
+      url: /keynotes_L3_senior_1_etcd_4_manage_etcd.html
+      output: web, pdf
+
+  - title: 2.kubernetes集群管理
+    output: web, pdf
+    folderitems:
+
+    - title: 1.使用kubeadm安装kubernetes集群（外挂etcd）
+      url: /keynotes_L3_senior_2_kubernetes_1_install_kubernetes_kubeadm.html
+      output: web, pdf
+
+    - title: 2.比hard way还hard的方式安装kubernetes集群
+      url: /keynotes_L3_senior_2_kubernetes_2_hardest_way.html
+      output: web, pdf
+
+
+    - title: 3.管理kubernetes集群
+      url: /keynotes_L3_senior_2_kubernetes_3_manage_kubernetes.html
+      output: web, pdf
+
+  - title: 3.ingress
+    output: web, pdf
+    folderitems:
+
+    - title: 1.ingress
+      url: /keynotes_L3_senior_2_kubernetes_1_ingress.html
+      output: web, pdf
+
+    - title: 2.安装ingress-nginx
+      url: /keynotes_L3_senior_2_kubernetes_2_install_ingress_nginx.html
+      output: web, pdf
+
+    - title: 3.安装ingress-envoy
+      url: /keynotes_L3_senior_2_kubernetes_3_install_ingress_envoy.html
+      output: web, pdf
+
+  - title: 4.helm
+    output: web, pdf
+    folderitems:
+
+    - title: 1.helm简介
+      url: /keynotes_L3_senior_2_kubernetes_1_helm.html
+      output: web, pdf
+
+  - title: 5.Rancher
+    output: web, pdf
+    folderitems:
+
+    - title: 1.Rancher简介
+      url: /keynotes_L3_senior_2_kubernetes_1_Rancher.html
+      output: web, pdf
+
