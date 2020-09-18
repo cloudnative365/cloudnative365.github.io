@@ -134,7 +134,7 @@ oracledb_test_value_2 2
 
 ## 3. mysql_exporter
 
-我们先启动一个测试用的mysql
+### 3.1. 启动测试的mysql
 
 ``` bash
 docker run --name mysql-server -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=mysql docker.io/mysql
@@ -194,7 +194,7 @@ mysql> select host,user from user;
 
 ```
 
-### 3.1. 使用docker的方式运行
+### 3.2. 使用docker的方式运行
 
 + 下载镜像
 
@@ -235,13 +235,126 @@ mysql> select host,user from user;
   curl localhost:9104/metrics
   ```
 
+### 3.3. 二进制包
+
++ 下载地址：[点这里](https://github.com/prometheus/mysqld_exporter)
+
++ 启动exporter
+
+  ``` bash
+  export DATA_SOURCE_NAME='user:password@(hostname:3306)/'
+  ./mysqld_exporter <flags>
+  ```
+
 ## 4. mssql_exporter
 
+### 4.1. 搭建测试sqlserver
 
+由于微软目前也支持linux的sqlserver了，所以我们可以使用docker的方式快速启动一个sqlserver，官方网站是[这个](https://hub.docker.com/_/microsoft-mssql-server)
+
++ 拉取镜像
+
+  ``` bash
+  docker pull mcr.microsoft.com/mssql/server:2017-latest
+  ```
+
++ 启动镜像
+
+  ``` bash
+  docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Passw0rd' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-latest
+  ```
+
++ 使用命令测试下链接
+
+  ``` bash
+  docker exec -it <container_id|container_name> /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Passw0rd
+  
+  1> select @@VERSION
+  2> go
+                                                                                                                                                                                                                                                                                                              
+  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Microsoft SQL Server 2017 (RTM-CU22) (KB4577467) - 14.0.3356.20 (X64) 
+  	Aug 20 2020 22:33:27 
+  	Copyright (C) 2017 Microsoft Corporation
+  	Developer Edition (64-bit) on Linux (Ubuntu 16.04.7 LTS)                                                                                                           
+  
+  (1 rows affected)
+  1> 
+  ```
+
+### 4.2. 使用docker方式运行
+
++ 拉取镜像
+
+  ``` bash
+  docker pull awaragi/prometheus-mssql-exporter
+  ```
+
++ 启动程序
+
+  ``` bash
+  docker run -e SERVER=172.17.0.3 -e USERNAME=sa -e PASSWORD=Passw0rd -e DEBUG=app -p 4000:4000 --name prometheus-mssql-exporter awaragi/prometheus-mssql-exporter
+  ```
+
++ 拿取数据
+
+  ``` bash
+  curl localhost:4000/metrics
+  ```
+
+### 4.3. 二进制包
+
++ 下载地址：[点这里](https://github.com/awaragi/prometheus-mssql-exporter)
+
++ 安装依赖
+
+  ``` bash
+  yum install -y nodejs
+  ```
+
++ 启动程序
+
+  ``` bash
+  SERVER=sqlserver PORT=sqlport<1443> USERNAME=sqluser PASSWORD=sqluserpassword EXPOSE=webport<4000> node ./index.js
+  ```
 
 ## 5. pgsql_exporter
 
+### 5.1. 搭建测试pgsql
 
++ 下载镜像
+
+  ``` bash
+  docker pull postgre
+  ```
+
++ 启动服务
+
+  ``` bash
+  docker run --net=host -it -d -e POSTGRES_PASSWORD=Passw0rd postgres
+  ```
+
++ 测试链接
+
+  ``` bash
+  
+  ```
+
+### 5.2. 使用docker方式安装
+
++ 下载镜像
+
+  ``` bash
+  docker pull wrouesnel/postgres_exporter
+  ```
+
++ 启动客户端
+
+  ``` bash
+  docker run --net=host -e DATA_SOURCE_NAME="postgresql://postgres:password@localhost:5432/postgres?sslmode=disable" -p 9187:9187 wrouesnel/postgres_exporter
+  ```
+
+  
 
 ## 6. elasticsearch_exporter
 
