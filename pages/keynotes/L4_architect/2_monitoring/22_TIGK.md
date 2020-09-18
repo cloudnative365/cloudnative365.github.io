@@ -1,9 +1,9 @@
 ---
 title: TIGK
-keywords: keynotes, L4_architect, monitoring, 1_TIGK
-permalink: keynotes_L4_architect_1_solutions_design_2_monitoring_1_TIGK.html
+keywords: keynotes, L4_architect, monitoring, 22_TIGK
+permalink: keynotes_L4_architect_1_solutions_design_2_monitoring_22_TIGK.html
 sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/1_TIGK
+typora-copy-images-to: ./pics/22_TIGK
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---
@@ -31,7 +31,7 @@ Telegraf Influx Grafana Kapacitor（TIGK）是在公有云（AWS，Aliyun，Azur
 
 ### 2.1. 整体架构
 
-![image6-2](/pages/keynotes/L4_architect/1_solutions_design/1_monitoring/pics/1_TIGK/image6-2.png)
+![image6-2](/pages/keynotes/L4_architect/2_monitoring/pics/22_TIGK/image6-2.png)
 
 ### 2.2.  Telegraf
 
@@ -249,9 +249,9 @@ Kapacitor是时序数据分析、处理引擎。它可以处理来自InfluxDB的
 
 + 来看看效果吧
 
-  ![image-20200214154002998](/pages/keynotes/L4_architect/1_solutions_design/1_monitoring/pics/1_TIGK/image-20200214154002998.png)
+  ![image-20200214154002998](/pages/keynotes/L4_architect/2_monitoring/pics/22_TIGK/image-20200214154002998.png)
 
-  ![image-20200214154117108](/pages/keynotes/L4_architect/1_solutions_design/1_monitoring/pics/1_TIGK/image-20200214154117108.png)
+  ![image-20200214154117108](/pages/keynotes/L4_architect/2_monitoring/pics/22_TIGK/image-20200214154117108.png)
 
 + 我们发现网络的部分是没有数据的，因为我们没有加载网络监控的配置。我们继续编辑`/etc/telegraf/telegraf.conf`文件，修改下面的配置并重启服务。
 
@@ -272,7 +272,7 @@ Kapacitor是时序数据分析、处理引擎。它可以处理来自InfluxDB的
 
 + 这个时候我们再看，发现网络流量已经可以监控了
 
-  ![image-20200214155424402](/pages/keynotes/L4_architect/1_solutions_design/1_monitoring/pics/1_TIGK/image-20200214155424402.png)
+  ![image-20200214155424402](/pages/keynotes/L4_architect/2_monitoring/pics/22_TIGK/image-20200214155424402.png)
 
 + 参考[官方文档](https://grafana.com/docs/grafana/latest/installation/rpm/)
 
