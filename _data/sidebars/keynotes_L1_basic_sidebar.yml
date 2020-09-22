@@ -44,25 +44,32 @@ entries:
     folderitems:
 
     - title: 第一节 容器化基础
-      url: /mydoc_release_notes_60.html
+      url: /keynotes_L1_basic_1_containerization_1_container_basic.html
       output: web, pdf
 
     - title: 第二节 使用Docker
-      url: /mydoc_release_notes_60.html
+      url: /keynotes_L1_basic_1_containerization_2_use_docker.html
       output: web, pdf
 
-    - title: 第三节 Docker的网络
-      url: /mydoc_release_notes_60.html
+    - title: 第三节 Docker镜像管理基础
+      url: /keynotes_L1_basic_1_containerization_3_docker_image.html
       output: web, pdf
 
-    - title: 第四节 Docker的存储卷
-      url: /mydoc_release_notes_60.html
+    - title: 第四节 Docker网络管理
+      url: /keynotes_L1_basic_1_containerization_4_docker_network.html
       output: web, pdf
 
-    - title: 第五节 Docker资源限制
-      url: /mydoc_release_notes_60.html
+    - title: 第五节 Docker的存储卷
+      url: /keynotes_L1_basic_1_containerization_5_docker_volume.html
       output: web, pdf
 
+    - title: 第六节 Docker镜像管理基础
+      url: /keynotes_L1_basic_1_containerization_6_docker_limit.html
+      output: web, pdf
+
+    - title: 第七节 Docker file
+      url: /keynotes_L1_basic_1_containerization_7_docker_file.html
+      output: web, pdf
 
   - title: 第二章 容器化基础
     output: web, pdf

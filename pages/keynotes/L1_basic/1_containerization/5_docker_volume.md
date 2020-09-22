@@ -1,5 +1,5 @@
 ---
-title: Docker镜像管理基础
+title: Docker的存储卷
 keywords: keynotes, basic, containerization, docker_image
 permalink: keynotes_L1_basic_1_containerization_5_docker_volume.html
 sidebar: keynotes_L1_basic_sidebar

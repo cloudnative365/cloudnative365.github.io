@@ -1,7 +1,7 @@
 ---
-title: Docker镜像管理基础
+title: Docker file
 keywords: keynotes, basic, containerization, docker_image
-permalink: keynotes_L1_basic_1_containerization_3_docker_image.html
+permalink: keynotes_L1_basic_1_containerization_7_docker_file.html
 sidebar: keynotes_L1_basic_sidebar
 typora-copy-images-to: ./pics/3_docker_image
 typora-root-url: ../../../../../cloudnative365.github.io
