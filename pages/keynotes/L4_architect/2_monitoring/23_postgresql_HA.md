@@ -484,4 +484,105 @@ repmgr管理工具对集群节点的管理是基于一个分布式的管理系�
    2  | 192.168.220.12 | primary | * running |                | default  | 100      | 2        | host=192.168.220.12 user=repmgr dbname=repmgr connect_timeout=2
   ```
 
-  
+
++ 切换的过程
+
+  1. 根据执行地的repmgr 数据库中的记录，开始找到那个是当前的主节点，因为你是在从库执行的
+
+  2. 发现主节点，并且找到其node ID
+
+  3. 步连接到主节点通过SSH 协议
+
+  4. 检测当前的archive 文件
+
+  5. 检测主从之间的数据差距，通过wallog 来判断
+
+  6. 检测没有问题，关闭主节点，如果还有没有checkpoint的，就等待checkpoint
+
+  7. 开始执行 -m fast sotp 命令，快速关闭pg 主库
+
+  8. 开始等待关闭，时间为1分钟，每秒侦测一次到底关没有关 （可以调节）
+
+  9. 开始对从库 promote  执行promote 命令
+
+  10. 开始检查从库是否promote 成功  时间1 分钟
+
+  11. 将原来的主库重新加入，对比两个节点之间的日志差距
+
+  12. 原主节点变更为从节点
+
+### 3.5. 失败重做
+
++ 关闭原主库（用任何方法都可以），如果运维自动化，可以写脚本，KILL 
+
++ 打开主库，然后使用命令将其驱逐出 repmgr 集群
+
+  ``` bash
+  repmgr standby unregister -f /etc/repmgr.conf
+  ```
+
++ 关闭分离的从库
+
++ 清理数据目录
+
++ 重新注册
+
+  ``` bash
+  repmgr -h 192.168.220.11 -U repmgr -d repmgr -f /etc/repmgr.conf standby clone 
+  ```
+
++ 更改 postgresql.conf listen 地址
+
++ 启动从库
+
++ 重新注册从库
+
+  ``` bash
+  repmgr -f /etc/repmgr.conf standby register
+  ```
+
+## 4. 配置自动切换
+
+前面的手动切换是为了测试数据库是否可以来回的切换，在实际生产中为了保持业务的连续性，我们需要在出问题的时候实现自动切换，这个时候就有了另外一个组件来帮忙，也就是repmgrd
+
+### 4.1. repmgrd
+
+repmgrd是一个管理和监视守护进程，它在复制集群中的每个节点上运行。它可以自动执行一些操作，比如故障转移和更新备用服务器，并提供关于每个备用服务器状态的监视信息。
+
+在使用repmgrd 的情况下，需要将其与postgresql进行绑定，也就是需要在`shared_preload_libraries = 'repmgr'`  中进行配置,需要加载到共享库。
+
+在使用repmgrd 进行主从切换的有几个需要注意的地方：
+
++ 在主从切换的过程中，等待多长时间来判断主库已经无法启动了或不是因为网络原因造成的问题，或及时是网络造成的问题，多长时间能容忍，不切换。
+
++ 切换的过程如果不成功怎么办，什么可能的因素会导致切换失败
+
++ 多节点，如果切换，其他的节点是否可以连接到新的主上，并继续工作
+
++ 跨数据中心的怎么来进行高可用的规划。
+
+### 4.2. 配置自动切换需要考虑的问题
+
++ 主失败后等待切换时间，主要是两个参数重新连接主库的次数`reconnect_attempts` 和 时间间隔`reconnect_interval`，如果你的网络不稳定，或者跨机房，你自己就的适当的调整参数，已适应你出现问题后的情况。
++ 切换不成功的大概率可能性是从库在从事其他的工作，而不是standby，所以这你就需要衡量一下，到底你的这个standby 的重要性是什么，是要协同工作，读写分离，还是就是一个standby 随时待命来进行切换。当你有多个standby 的时候，你还可以调整你从库的 priority
++ 例如你有三个postgresql 的节点其中一主两从，当其中主节点失效后其中一个变为主节点，但另一个从节点也需要继续工作，需要链接到新的主上，这个工作在POSTGRESQL 怎么做，因为是物理复制，不是逻辑复制，所以也没有那么简单。
++ 跨数据中心的postgresql 则需要考虑的问题是跨数据中心的网络问题，以及脑裂问题，例如部署一定是单数节点，那单数节点的情况下，那边的节点数量要多，而多的那边放置的是什么节点，例如我就两台postgresql 主从，跨数据中心，但我怎么能防止脑裂，则就需要引入 wintness 服务器，也就是postgresql 见证服务器，他一般放置在数据中心的 主库位置，本身不参与数据的复制和分发，如果主变得不可用备用可以决定是否它能促进本身也不用担心“分裂的场景，如果它不能看到证人或主服务器,很可能有一个网络级中断,它不应该促进本身。如果它可以看到见证而不是主节点，这证明不存在网络中断，主节点本身不可用。
+
+### 4.3. 配置自动切换
+
+修改/etc/repmgr/12/repmgr.conf文件
+
+``` bash
+# 配置log，这个配置默认只给repmgr使用
+log_level='INFO'
+log_facility='STDERR'
+log_file='/var/log/repmgr/repmgr.log'
+log_status_interval=300
+
+# repmgrd配置
+failover='automatic'
+connection_check_type=ping
+promote_command='repmgr -f /etc/repmgr/12/repmgr.conf standby promote --log-to-file'
+follow_command='repmgr -f /etc/repmgr/12/repmgr.conf standby follow --log-to-file --upstream-node-id=%n'
+```
+
