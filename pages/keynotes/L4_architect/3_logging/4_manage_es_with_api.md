@@ -1,5 +1,5 @@
 ---
-title: 日志系统概述
+title: 使用API管理ES
 keywords: keynotes, architect, logging, 4_manage_es_with_api
 permalink: keynotes_L4_architect_3_logging_4_manage_es_with_api.html
 sidebar: keynotes_L4_architect_sidebar

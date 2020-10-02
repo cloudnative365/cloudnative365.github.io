@@ -1,5 +1,5 @@
 ---
-title: 日志系统概述
+title: 安装插件
 keywords: keynotes, architect, logging, logging_overview
 permalink: keynotes_L4_architect_3_logging_3_install_plugins.html
 sidebar: keynotes_L4_architect_sidebar

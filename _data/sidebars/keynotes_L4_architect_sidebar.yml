@@ -131,35 +131,66 @@ entries:
       url: /keynotes_L4_architect_2_monitoring_21_grafana_exporter.html
       output: web, pdf
 
-    - title: 22. TIGK
+    - title: 22.TIGK
       url: /keynotes_L4_architect_1_solutions_design_2_monitoring_22_TIGK.html
       output: web, pdf
 
-    - title: 23. postgresql_HA
+    - title: 23.postgresql_HA
       url: /keynotes_L4_architect_2_monitoring_23_postgresql_HA.html
       output: web, pdf
 
-  - title: 第三章 日志
+  - title: 第三章 日志系统
     output: web, pdf
     folderitems:
 
-    - title: 1 ELK
-      url: /keynotes_L4_architect_3_logging_1_Course_Introduction.html
+    - title: 1.日志系统概述
+      url: /keynotes_L4_architect_3_logging_1_logging_overview.html
       output: web, pdf
 
-    - title: 2 fluentd
-      url: /keynotes_L4_architect_3_logging_1_Course_Introduction.html
+    - title: 2.安装elastic stack
+      url: /keynotes_L4_architect_3_logging_2_install_elasticsearch.html
       output: web, pdf
 
-  - title: 第三章 日志
+    - title: 3.安装插件
+      url: /keynotes_L4_architect_3_logging_3_install_plugins.html
+      output: web, pdf
+
+    - title: 4.使用API管理ES
+      url: /keynotes_L4_architect_3_logging_4_manage_es_with_api.html
+      output: web, pdf
+
+    - title: 5.es中的概念
+      url: /keynotes_L4_architect_3_logging_5_conception.html
+      output: web, pdf
+
+    - title: 6.日志收集工具
+      url: /keynotes_L4_architect_3_logging_6_log_agent.html
+      output: web, pdf
+
+    - title: 7.x-pack
+      url: /keynotes_L4_architect_3_logging_7_x-pack.html
+      output: web, pdf
+
+    - title: 8.生产级别的es
+      url: /keynotes_L4_architect_3_logging_8_es_in_production.html
+      output: web, pdf
+
+    - title: 9.fluentd日志聚合
+      url: /keynotes_L4_architect_3_logging_9_fluentd.html
+      output: web, pdf
+
+  - title: 第四章 分布式存储
     output: web, pdf
     folderitems:
 
-    - title: 1 ELK
-      url: /keynotes_L4_architect_3_logging_1_Course_Introduction.html
+    - title: 1.分布式存储概述
+      url: /keynotes_L4_architect_4_storage_1_Course_Introduction.html
       output: web, pdf
 
-    - title: 2 fluentd
-      url: /keynotes_L4_architect_3_logging_1_Course_Introduction.html
+    - title: 2.MinIO
+      url: /keynotes_L4_architect_4_storage_1_Course_Introduction.html
       output: web, pdf
 
+    - title: 3. Ceph
+      url: /keynotes_L4_architect_4_storage_1_Course_Introduction.html
+      output: web, pdf

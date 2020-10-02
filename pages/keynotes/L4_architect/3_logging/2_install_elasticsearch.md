@@ -1,5 +1,5 @@
 ---
-title: 安装elastic stack所有工具
+title: 安装elastic stack工具
 keywords: keynotes, architect, logging, install_elasticsearch
 permalink: keynotes_L4_architect_3_logging_2_install_elasticsearch.html
 sidebar: keynotes_L4_architect_sidebar
