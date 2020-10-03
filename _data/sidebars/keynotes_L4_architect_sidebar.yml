@@ -123,8 +123,8 @@ entries:
       url: /keynotes_L4_architect_2_monitoring_19_snmp_exporter.html
       output: web, pdf
 
-    - title: 20.开发exporter
-      url: /keynotes_L4_architect_2_monitoring_20_writer_exporter.html
+    - title: 20.AlertManager
+      url: /keynotes_L4_architect_2_monitoring_20_alert_manager.html
       output: web, pdf
 
     - title: 21.grafana集成
@@ -132,11 +132,31 @@ entries:
       output: web, pdf
 
     - title: 22.TIGK
-      url: /keynotes_L4_architect_1_solutions_design_2_monitoring_22_TIGK.html
+      url: /keynotes_L4_architect_2_monitoring_22_TIGK.html
       output: web, pdf
 
-    - title: 23.postgresql_HA
-      url: /keynotes_L4_architect_2_monitoring_23_postgresql_HA.html
+    - title: 23.telegraf
+      url: /keynotes_L4_architect_2_monitoring_23_telegraf.html
+      output: web, pdf
+
+    - title: 24.postgresql高可用
+      url: /keynotes_L4_architect_2_monitoring_24_postgresql_HA.html
+      output: web, pdf
+
+    - title: 25.minio高可用
+      url: /keynotes_L4_architect_2_monitoring_25_minio_HA.html
+      output: web, pdf
+
+    - title: 26.thanos高可用
+      url: /keynotes_L4_architect_2_monitoring_26_thanos_HA.html
+      output: web, pdf
+
+    - title: 27.consul高可用
+      url: /keynotes_L4_architect_2_monitoring_27_consul_HA.html
+      output: web, pdf
+
+    - title: 28.alertmanager高可用
+      url: /keynotes_L4_architect_2_monitoring_28_alertmanager_HA.html
       output: web, pdf
 
   - title: 第三章 日志系统
@@ -177,6 +197,10 @@ entries:
 
     - title: 9.fluentd日志聚合
       url: /keynotes_L4_architect_3_logging_9_fluentd.html
+      output: web, pdf
+
+    - title: 10.loki+promtail
+      url: /keynotes_L4_architect_3_logging_10_loki+promtail.html
       output: web, pdf
 
   - title: 第四章 分布式存储

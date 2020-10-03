@@ -1,9 +1,9 @@
 ---
 title: postgresql高可用
 keywords: keynotes, architect, monitoring, thanos
-permalink: keynotes_L4_architect_2_monitoring_23_postgresql_HA.html
+permalink: keynotes_L4_architect_2_monitoring_24_postgresql_HA.html
 sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/23_postgresql_HA
+typora-copy-images-to: ./pics/24_postgresql_HA
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 

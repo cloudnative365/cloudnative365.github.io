@@ -1,9 +1,9 @@
 ---
-title: 开发exporter
-keywords: keynotes, architect, monitoring, thanos
-permalink: keynotes_L4_architect_2_monitoring_20_writer_exporter.html
+title: AlertManager
+keywords: keynotes, architect, monitoring, AlertManager
+permalink: keynotes_L4_architect_2_monitoring_20_alert_manager.html
 sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/20_writer_exporter
+typora-copy-images-to: ./pics/20_alert_manager
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 

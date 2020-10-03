@@ -1,9 +1,9 @@
 ---
-title: TIGK
-keywords: keynotes, L4_architect, monitoring, 22_TIGK
-permalink: keynotes_L4_architect_1_solutions_design_2_monitoring_22_TIGK.html
+title: consul高可用
+keywords: keynotes, L4_architect, monitoring, consul_HA
+permalink: keynotes_L4_architect_2_monitoring_27_consul_HA.html
 sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/22_TIGK
+typora-copy-images-to: ./pics/27_consul_HA
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---
