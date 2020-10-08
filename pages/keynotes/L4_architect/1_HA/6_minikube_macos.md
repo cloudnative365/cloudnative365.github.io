@@ -92,6 +92,14 @@ sudo mv minikube /usr/local/bin
 minikube start --image-repository='registry.cn-hangzhou.aliyuncs.com/google_containers'
 ```
 
+minikube是支持多种虚拟化引擎的，比如virtual-box，vmware fusion或者docker都可以，如果我们没有指定，那么默认是docker，如果我们想指定其他引擎，比如使用vmfusion，就需要使用
+
+``` bash
+minikube start --driver=<driver_name>
+```
+
+
+
 ### 3.2. 查看状态
 
 ``` bash
