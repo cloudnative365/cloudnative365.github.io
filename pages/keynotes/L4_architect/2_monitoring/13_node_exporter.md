@@ -215,7 +215,6 @@ ExecStart=/usr/local/bin/node_exporter \
           --collector.ntp \
           --collector.mountstats \
           --collector.systemd \
-          --collector.ntp \
           --collector.tcpstat
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
