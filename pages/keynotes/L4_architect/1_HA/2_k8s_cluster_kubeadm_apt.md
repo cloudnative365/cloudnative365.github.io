@@ -164,12 +164,19 @@ $ apt-get -y install docker-ce
 $ apt-get -y install kubectl kubelet kubeadm
 ```
 
-### 4.4. 修改Docker的源为国内的源
+### 4.4. 配置docker参数
 
 ``` bash
 cat > /etc/docker/daemon.json <<EOF
 {
-  "registry-mirrors": ["https://gvfjy25r.mirror.aliyuncs.com"]
+  "registry-mirrors": ["https://gvfjy25r.mirror.aliyuncs.com"],
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "graph": ["/var/lib/docker"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
 }
 EOF
 ```
@@ -241,6 +248,20 @@ kubeadm init --control-plane-endpoint "10.0.1.152:6443" --upload-certs --pod-net
 ```
 
 + 注意：在国内是没办法直接下载的，我们需要先把镜像拉下来再做的这种方法是`不正确的！！`，新版的kubeadm命令支持在初始化的时候直接指定镜像仓库的方法`--image-repository`
+
++ 注意：如果使用的是平台是树莓派或者arm的主机，会出现报错
+
+  ``` bash
+  [ERROR SystemVerification]: missing required cgroups: memory
+  ```
+
+  需要找到`/boot/cmdline.txt`或者`/boot/firmware/cmdline.txt`添加下面两个参数
+
+  ``` bash
+  cgroup_memory=1 cgroup_enable=memory
+  ```
+
+  
 
 成功之后，会有下面的提示，找个小本本记下来吧
 

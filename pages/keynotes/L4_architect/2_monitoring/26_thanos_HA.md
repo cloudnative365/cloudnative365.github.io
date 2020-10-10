@@ -25,15 +25,89 @@ thanos是无状态服务，所以并不存在传统集群中的数据同步，�
 + pgsql：上次也介绍过了，我们的pgsql不仅仅是为grafana的用户数据提供持久存储，还可以为zabbix，harbor，gitlab等大部分云原生软件提供持久存储，我们后面讲CI/CD时候还会用到。
 + consul：所有被监控的endpoint都会作为consul的service存储在consul中。
 
-最后，我们这次使用kubernetes来构建这些无状态的应用，包括exporters，都放在k8s集群中管理。也就是说，grafana，alertmanager，prometheus，thanos都放在k8s集群中。minIO，pgsql，consul都作为独立进程来管理。而consul，minIO由于特性决定，我们可以使用本地磁盘作为存储介质。也就是说把consul，minIO应用部署在k8s集群中，而使用hostpath方式把本地磁盘给consul和minio作为存储介质，然后绑定应用到某个节点，来实现高可用。
+在实际工作环境中，我们建议使用kubernetes来构建这些无状态的应用，包括exporters，都放在k8s集群中管理。也就是说，grafana，alertmanager，prometheus，thanos都放在k8s集群中。minIO，pgsql，consul都作为独立进程来管理。而consul，minIO由于特性决定，我们可以使用本地磁盘作为存储介质。也就是说把consul，minIO应用部署在k8s集群中，而使用hostpath方式把本地磁盘给consul和minio作为存储介质，然后绑定应用到某个节点，来实现高可用。
 
-## 3. 安装thanos
+## 3. 安装
 
-### 3.1. k8s集群
+这次我们使用systemd的方式来安装
 
-首先，我们要有一个k8s集群，请参考我们架构师第一部分的内容。
+### 3.1. prometheus
 
-### 3.2. prometheus
+我们分别在两台机器172.16.0.4/5上安装prometheus
 
-### 3.3. thanos sidecar
++ 下载
+
+  ``` bash
+  wget https://github.com/prometheus/prometheus/releases/download/v2.21.0/prometheus-2.21.0.linux-amd64.tar.gz
+  ```
+
++ 解压
+
+  ``` bash
+  tar xf prometheus-2.21.0.linux-amd64.tar.gz
+  ```
+
++ systemd文件
+
+  ``` bash
+  cat > /etc/systemd/system/prometheus.service << EOF
+  [Unit]
+  Description=prometheus
+  Documentation=https://prometheus.io/
+  After=network.target
+  [Service]
+  Type=simple
+  ExecStart=/opt/packages/prometheus/prometheus-2.21.0.linux-arm64/prometheus \
+            --config.file=/opt/packages/prometheus/prometheus-2.21.0.linux-arm64/prometheus.yml \
+            --web.listen-address=:9090 \
+            --web.enable-lifecycle \
+            --web.enable-admin-api \
+            --web.console.templates=/opt/packages/prometheus/prometheus-2.21.0.linux-arm64/console \
+            --web.console.libraries=/opt/packages/prometheus/prometheus-2.21.0.linux-arm64/console_libraries \
+            --storage.tsdb.path=/opt/packages/prometheus/prometheus-2.21.0.linux-arm64/data \
+            --log.level=info
+  ExecReload=/bin/kill -HUP 
+  TimeoutStopSec=20s
+  Restart=always
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+  ```
+
++ 配置文件`prometheus.yml`
+
+  ``` bash
+  # my global config
+  global:
+    scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+    evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+    # scrape_timeout is set to the global default (10s).
+  
+  # Alertmanager configuration
+  alerting:
+    alertmanagers:
+    - static_configs:
+      - targets:
+        # - alertmanager:9093
+  
+  # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+  rule_files:
+    # - "first_rules.yml"
+    # - "second_rules.yml"
+  
+  # A scrape configuration containing exactly one endpoint to scrape:
+  # Here it's Prometheus itself.
+  scrape_configs:
+    # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+    - job_name: 'prometheus'
+  
+      # metrics_path defaults to '/metrics'
+      # scheme defaults to 'http'.
+  
+      static_configs:
+      - targets: ['localhost:9090']
+  
+  ```
+
+  
 
