@@ -329,3 +329,80 @@ host这里改成机器的名字，防止后面日志报错
 新版的zabbix就长这个样子了
 
 ![image-20200818140607229](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200818140607229.png)
+
+## 4. 配置
+
+### 4.1. 配置认证
+
+zabbix支持的认证方式有4种
+
++ 本地认证，就是本地账号
++ http认证
++ ldap认证，支持openldap，AD，或者各种使用ldap认证的服务器
++ saml
+
+需要注意的是，认证不等于授权，这种方式只支持认证，而没有授权，也就是说，登录是去找ldap服务器认证的，而授权需要手动去配置，也可以使用脚本，直接通过抓取用户的某些信息，然后根据特定的规则，直接把用户添加到数据库中，来实现权限控制。最后把这个脚本做成crontab，定期同步ldap的信息，如果是mysql的数据库，可以在git上搜索zabbix-mysql-sync项目。
+
+我们这次使用的是AD认证，为了满足安全需求，需要在机器上安装根证书，比较麻烦
+
+#### 4.1.1. 准备工作
+
++ 有一个CA根证书，xxx.cer，去找你们的AD管理员要吧
+
++ 一个ldap用户，一般的公司会把用户account和服务的account分开，因为用户有可能变动，如果使用用户账户认证，如果这个员工离职了，AD账户被注销了，这个认证功能就不好使了，所以去找AD管理员要一个service账户
+
++ 需要安装的包
+
+  ``` bash
+  yum -y install ca-certificates openldap-clients
+  ```
+
++ 需要打开的端口是389，如果是ssl证书是636
+
+#### 4.1.2. 安装证书
+
++ 把证书cp到指定目录
+
+  ``` bash
+  ls -l /usr/share/pki/ca-trust-source/anchors
+  CA.crt
+  ```
+
++ 更新证书
+
+  ``` bash
+  update-ca-trust
+  ```
+
++ 他会更新证书文件`/etc/ssl/certs/ca-bundle.trust.crt`
+
+#### 4.1.3. 测试连通性
+
+使用ldapsearch命令
+
+``` bash
+ldapsearch -x "(&(objectCategory=Person)(memberof=CN=rol-infra-infra-s-g,OU=rol,OU=SecurityGroup,DC=yourdomain,DC=COM))" -LLL -H ldaps://lds.yourdomain.com:636 -b "dc=yourdomain,dc=COM" -D "cn=s000094,ou=ServiceAccount,dc=yourdomain,dc=COM" -w "YourPassword" displayname
+```
+
+#### 4.1.4. 重启所有zabbix服务
+
+``` bash
+systemctl restart zabbix-server zabbix-agent rh-nginx116-nginx rh-php72-php-fpm
+```
+
+### 4.2. 界面配置
+
+找到Administration--> Authentication--> LDAP Settings
+
++ Enable LDAP authentication打钩
++ LDAP host(ldapsearch的-H选项)：ldaps://lds.yourdomain.com
++ Port(ldapsearch的-H选项): 636
++ Base DN(ldapsearch的-b选项): dc=yourdomain,dc=COM
++ Search attribute(ldapsearch的-D选项中的ou): SAMAccountName
++ Bind DN(ldapsearch的-D选项): cn=s000094,ou=ServiceAccount,dc=yourdomain,dc=COM
++ Case sensitive login打钩
++ Bind password(ldapsearch的-D选项中cn的密码)
++ Test authentication：用你的ldap账户就可以，或者使用ServiceAccount的用户名密码
+
+最后点击update就可以了
+

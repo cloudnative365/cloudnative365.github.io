@@ -126,10 +126,19 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 + 我们在刚才的基础上修改配置文件，我们假设有三台机器，master1，master2，master3，地址分为别172.16.220.11，172.16.220.12，172.16.220.13
 
-  master1上的/etc/elasticsearch/elasticsearch.yml
++ 为数据创建独立的目录并且修改权限
 
   ``` bash
-  # 集群需要一个名字（必须的）
+  mkdir -p /data/es/data
+  mkdir -p /data/es/logs
+  
+  chown -R elasticsearch:elasticsearch /data/es/
+  ```
+
++ master1上的/etc/elasticsearch/elasticsearch.yml
+
+  ``` bash
+# 集群需要一个名字（必须的）
   cluster.name: es-enterprise-demo
   # 节点也需要一个名字
   node.name: master1
@@ -158,11 +167,11 @@ typora-root-url: ../../../../../cloudnative365.github.io
   # 生产环境建议设置为true，删除索引库的时候必须显式指定，否则可能会误删索引库中的索引库。
   action.destructive_requires_name: true
   ```
-
+  
   master2上的/etc/elasticsearch/elasticsearch.yml
 
   ``` bash
-  # 集群需要一个名字（必须的）
+# 集群需要一个名字（必须的）
   cluster.name: es-enterprise-demo
   # 节点也需要一个名字
   node.name: master2
@@ -191,11 +200,11 @@ typora-root-url: ../../../../../cloudnative365.github.io
   # 生产环境建议设置为true，删除索引库的时候必须显式指定，否则可能会误删索引库中的索引库。
   action.destructive_requires_name: true
   ```
-
+  
   master3上的/etc/elasticsearch/elasticsearch.yml
 
   ``` bash
-  # 集群需要一个名字（必须的）
+# 集群需要一个名字（必须的）
   cluster.name: es-enterprise-demo
   # 节点也需要一个名字
   node.name: master3
@@ -224,7 +233,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
   # 生产环境建议设置为true，删除索引库的时候必须显式指定，否则可能会误删索引库中的索引库。
   action.destructive_requires_name: true
   ```
-
+  
 + 启动集群
 
   ``` bash

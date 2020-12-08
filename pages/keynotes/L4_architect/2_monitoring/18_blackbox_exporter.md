@@ -9,10 +9,26 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 1. 概述
 
-微软系的产品其实我一直没怎么研究，主要是我个人非常喜欢开源产品，对于收费的产品基本没什么研究。这里说的不到位的地方希望大家谅解。
+blackbox_exporter是用来探测HTTP, HTTPS, DNS, TCP和ICMP的。用来探测这些服务或者端口是否正常运行。我们也可以认为他是prometheus功能的扩展。
 
-Windows的exporter很有意思，因为他不仅可以监控Windows系统本身，连上面一些常用的服务也可以监控起来，比如sql-server，iis，hyperv，exchange, .NET信息等等
+## 2. 安装
 
-## 2. 详解node_exporter
+下载地址：https://github.com/prometheus/blackbox_exporter/releases。当然，我们也可以选择使用容器化安装。
 
-和
+``` bash
+docker run --rm -d -p 9115:9115 --name blackbox_exporter -v `pwd`:/config prom/blackbox-exporter:master --config.file=/config/blackbox.yml
+```
+
+但是我们为了便于理解，使用二进制方式来安装。
+
+### 2.1. 配置服务
+
+下载并且解压二进制包
+
+``` bash
+wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.18.0/blackbox_exporter-0.18.0.linux-amd64.tar.gz
+tar xf blackbox_exporter-0.18.0.linux-amd64.tar.gz
+```
+
+
+

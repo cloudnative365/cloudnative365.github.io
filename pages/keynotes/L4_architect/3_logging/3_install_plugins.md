@@ -14,7 +14,9 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 1. 安装SearchGuard
 
-在早期的ES版本（6.2之前）中，使用的认证插件是X-pack，这是一个官方的插件，但是在v6.2之后，ES自己支持了安全认证功能，但是要购买license。而另外一个比较知名的安全插件就是我们今天要说的SearchGuard了。
+![Logo](/pages/keynotes/L4_architect/3_logging/pics/3_install_plugins/sg_dlic_small.png)
+
+在早期的ES版本（6.2之前）中，使用的认证插件是X-pack，这是一个官方的插件，但是在v6.2之后，ES自己支持了安全认证功能，但是要购买license。而另外一个比较知名的安全插件就是我们今天要说的SearchGuard了。SearchGuard在收费模式上和x-pack基本一致，也就是在粗粒度的安全级别上是免费的，比如index级别，但是到字段级别就需要收费了，我们一会再详细说。
 
 ### 1.1. 安装SearchGuard for ES
 

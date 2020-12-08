@@ -34,7 +34,7 @@ Loki
 
 ## 2. 日志系统与搜索引擎
 
-日志的格式基本都是以文本为主，所以搜索引擎首当其冲作为检索的工具是比较合适的，我们常见的搜索引擎有
+日志的格式基本都是以文本为主，所以搜索引擎首当其冲作为检索的工具是比较合适的，我们常见的开源搜索引擎有
 
 + lucene
 + ElasticSearch
@@ -128,5 +128,3 @@ Loki是grafana lab的另外一款产品，他专注的是日志的检索功能�
 既然是grafana的产品，不给他单独做一个dashboard就不太合适了，他的dashboard和ES差不多，同样是提供一个输入框，下面可以展示结果。
 
 ![See the source image](/pages/keynotes/L4_architect/3_logging/pics/1_logging_overview/loki_grafana_filtering.png)
-
-### 4.3. 功能

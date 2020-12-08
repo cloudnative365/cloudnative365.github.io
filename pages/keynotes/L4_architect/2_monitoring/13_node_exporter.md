@@ -118,84 +118,138 @@ node_exporter是prometheus官方提供的agent，项目被托管在prometheus的
 
 ### 2.5. TLS的配置
 
-我们默认暴露的都是http的请求的，也没有验证，也就是明文传输，很容易存在安全隐患，如果需要对数据加密，我们就要使用参数`./node_exporter --web.config=web-config.yml`，这个文件的内容如下
+我们默认暴露的都是http的请求的，也没有验证，也就是明文传输，很容易存在安全隐患，如果需要对数据加密，我们就要使用参数`./node_exporter --web.config=web-config.yml`。这个文件中含有TLS或者basic auth等选项的配置。我们先来配置TLS
+
++ 生成证书
+
+  ``` bash
+  # mkdir -p prometheus-tls
+  # cd prometheus-tls
+  # prometheus-tls openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj "/C=CN/ST=Beijing/L=Beijing/O=jormun.com/CN=localhost"
+  Generating a RSA private key
+  ...........................................+++++
+  ..+++++
+  writing new private key to 'node_exporter.key'
+  -----
+  # prometheus-tls ls
+  node_exporter.crt  node_exporter.key
+  ```
+
++ 配置web-config.yml文件
+
+  ``` yml
+  tls_server_config:
+    cert_file: node_exporter.crt
+    key_file: node_exporter.key
+  ```
+
+  
+
+### 2.6. 配置http的basic认证
+
+同样是修改`--web.config=web-config.yml`中的web-config.yml文件中的参数。我们需要使用一些工具来生成密码。比如，我们的用户名为prometheus，密码为node_exporter。
+
++ 注意：这个功能是在node_exporter 1.0.0之后才有的功能，老版本想要认证，就需要借助反向代理，比如nginx上的认证
+
+我们先配置node_exporter，这里面的密码是使用hash来加密的，我们常用的工具是htpasswd
 
 ``` bash
-tls_server_config:
-  # Certificate and key files for server to use to authenticate to client.
-  cert_file: <filename>
-  key_file: <filename>
-
-  # Server policy for client authentication. Maps to ClientAuth Policies.
-  # For more detail on clientAuth options: [ClientAuthType](https://golang.org/pkg/crypto/tls/#ClientAuthType)
-  [ client_auth_type: <string> | default = "NoClientCert" ]
-
-  # CA certificate for client certificate authentication to the server.
-  [ client_ca_file: <filename> ]
-
-  # Minimum TLS version that is acceptable.
-  [ min_version: <string> | default = "TLS12" ]
-
-  # Maximum TLS version that is acceptable.
-  [ max_version: <string> | default = "TLS13" ]
-
-  # List of supported cipher suites for TLS versions up to TLS 1.2. If empty,
-  # Go default cipher suites are used. Available cipher suites are documented
-  # in the go documentation:
-  # https://golang.org/pkg/crypto/tls/#pkg-constants
-  [ cipher_suites:
-    [ - <string> ] ]
-
-  # prefer_server_cipher_suites controls whether the server selects the
-  # client's most preferred ciphersuite, or the server's most preferred
-  # ciphersuite. If true then the server's preference, as expressed in
-  # the order of elements in cipher_suites, is used.
-  [ prefer_server_cipher_suites: <bool> | default = true ]
-
-  # Elliptic curves that will be used in an ECDHE handshake, in preference
-  # order. Available curves are documented in the go documentation:
-  # https://golang.org/pkg/crypto/tls/#CurveID
-  [ curve_preferences:
-    [ - <string> ] ]
-
-http_server_config:
-  # Enable HTTP/2 support. Note that HTTP/2 is only supported with TLS.
-  # This can not be changed on the fly.
-  [ http2: <bool> | default = true ]
-
-# Usernames and hashed passwords that have full access to the web
-# server via basic authentication. If empty, no basic authentication is
-# required. Passwords are hashed with bcrypt.
-basic_auth_users:
-  [ <string>: <secret> ... ]
-```
-
-这里面的密码是使用hash来加密的，我们常用的工具是htpasswd，比如，我们要加密密码Passw0rd
-
-``` bash
-htpasswd -nBC 10 "" | tr -d ':\n'
+htpasswd -nBC 12 '' | tr -d ':\n'
 New password: 
 Re-type new password: 
-$2y$10$6oDcZssS/R6yPy8ixVx7ue8LiPX7CHpNtXxdVGlYkNgzW3CT48TfC%
+$2y$12$YND5ZlkC/pbUh4pvKnE1wehfpnha2DRdR.GrmRSQAcLff1.gOmh0.
 ```
 
 使用不交互的方式，生成文件
 
 ``` bash
-htpasswd -bc /application/prometheus/conf/htpasswd admin Passw0rd
+htpasswd -bcBC 12 /application/prometheus/conf/htpasswd prometheus node_exporter
 ```
 
 在原有文件中添加一个用户
 
 ``` bash
-htpasswd -b /application/prometheus/conf/htpasswd admin Passw0rd
+htpasswd -bBC 12 /application/prometheus/conf/htpasswd prometheus node_exporter
 ```
 
 不更新密码文件，只在屏幕上输出用户名和经过加密后的密码
 
 ``` bash
-htpasswd -nb admin Passw0rd
+htpasswd -nbBC 12 prometheus node_exporter
 ```
+
+修改web-config.yml的配置如下
+
+``` bash
+basic_auth_users:
+  prometheus: $2y$12$c97Lg30Imrl6hXZJ8h9IC.KQ0YhL8rQtHCuKlfrgSYv6RmmUbBlXO
+```
+
+#### 2.6.1. 配置prometheus使用scrapy
+
+修改prometheus的配置如下
+
+``` bash
+global:
+  scrape_interval:     15s 
+  evaluation_interval: 15s 
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+
+  - job_name: 'node_exporter'
+    scheme: http
+    basic_auth:
+      username: prometheus
+      password: node_exporter
+    static_configs:
+    - targets: ['localhost:9100']
+```
+
+
+
+#### 2.6.2. 在consul中注册node_exporter
+
+如果要把node_exporter注册在consul中，从而给prometheus作为数据源的话，我们在前面介绍过了。在添加认证之后的node_exporter则需要在注册服务的同时，在check选项中，加入header字段。但是，header字段是通过username:password的方式同时传递给header的，因此，我们需要使用这个方式，把prometheus:node_exporter同时做base64处理。
+
+``` bash
+perl -e 'use MIME::Base64; print encode_base64("prometheus:node_exporter")'
+cHJvbWV0aGV1czpub2RlX2V4cG9ydGVy
+```
+
+然后在注册的时候，json文件如下
+
+``` bash
+{
+  "ID": "node-exporter-10-114-2-73",
+  "Name": "node-exporter-10-114-2-73",
+  "Tags": [
+    "node-exporter",
+    "nginx",
+    "keepalived"
+  ],
+  "Address": "10.114.2.73",
+  "Port": 9100,
+  "Meta": {
+    "team": "cloud",
+    "project": "monitoring"
+  },
+  "EnableTagOverride": false,
+  "Check": {
+    "HTTP": "http://10.114.2.73:9100/metrics",
+    "header": {"Authorization":["Basic cHJvbWV0aGV1czpub2RlX2V4cG9ydGVy"]},
+    "Interval": "10s"
+  },
+  "Weights": {
+    "Passing": 10,
+    "Warning": 1
+  }
+}
+```
+
+
 
 ### 2.6. systemd例子
 
