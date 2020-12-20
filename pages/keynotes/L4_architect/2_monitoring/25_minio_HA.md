@@ -82,6 +82,8 @@ minIO是目前一个比较轻量级的分布式文件系统，遵循apache 2.0�
 
 ### 3.2. MinIO集群
 
+#### 3.2.1 启动脚本的方式
+
 + 启动脚本/data/minio/run/run.sh
 
   ``` bash
@@ -131,6 +133,41 @@ minIO是目前一个比较轻量级的分布式文件系统，遵循apache 2.0�
   systemctl enable minio && systemctl start minio
   ```
 
+#### 3.2.2. 修改端口
+
+我们可以直接使用systemd文件来启动
+
+``` bash
+[Unit]
+Description=Minio service
+Documentation=https://docs.minio.io/
+
+[Service]
+WorkingDirectory=/minio/run/
+EnvironmentFile=/etc/minio/minio.pw
+
+ExecStart=/usr/local/sbin/minio server \
+--config-dir /etc/minio \
+--address :9001 \
+http://10.114.2.65:9001/minio/data \
+http://10.114.2.68:9001/minio/data \
+http://10.114.2.66:9001/minio/data \
+http://10.114.2.69:9001/minio/data
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+而密码文件通过环境变量读取文件/etc/minio/minio.pw
+
+``` bash
+MINIO_ACCESS_KEY=Minio
+MINIO_SECRET_KEY=Passw0rd
+```
+
 ### 3.3. 使用nginx做代理
 
 我们使用nginx来做负载均衡，当然，其他http代理也可以
@@ -152,6 +189,87 @@ server {
         }
 }
 ```
+
+## 4. 权限控制
+
+### 4.1.  客户端
+
+在下载页面还有一个下载链接，是[下载](https://dl.min.io/client/mc/release/linux-amd64/mc)mc的，这个就是minio的客户端，我们可以不用把客户端装在服务器上，可以装在笔记本上。下载完成后是一个文件，给一个执行权限
+
+``` bash
+chmod +x mc
+```
+
+mc和aws-cli类似，权限控制也是由profile控制的，只不过在minio中，他叫config
+
+``` bash
+mc config host list
+```
+
+我们先添加一个host
+
+``` bash
+mc config host add monitor http://localhost:9001 Minio
+mc: Configuration written to `/root/.mc/config.json`. Please update your access credentials.
+mc: Successfully created `/root/.mc/share`.
+mc: Initialized share uploads `/root/.mc/share/uploads.json` file.
+mc: Initialized share downloads `/root/.mc/share/downloads.json` file.
+Enter Secret Key: 
+Added `monitor` successfully.
+```
+
+这样就可以看到内容了
+
+### 4.2. policy
+
+和s3的权限控制类似，minio的用户也是通过policy来控制的，而写法也基本相同，都是json格式的，下面的例子是一个拥有所有权限的例子，all.json
+
+``` json
+{
+  "Version": "2012-10-17",         
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [                      //  可以做出的行动（权限）
+		"s3:ListAllMyBuckets",          //  查看所有的“桶”列表
+		"s3:ListBucket",               //  查看桶内的对象列表
+		"s3:GetBucketLocation",         
+		"s3:GetObject",               //   下载对象
+		"s3:PutObject",               //   上传对象
+		"s3:DeleteObject"             //   删除对象
+      ],
+      "Resource": [
+        "arn:aws:s3:::*"              // （应用到的资源，*表示所有，也可以用路径来控制范围。arn:aws:s3是命名空间）
+      ]
+    }
+  ]
+}
+```
+
+把这个policy添加到刚才的集群monitor当中
+
+``` bash
+mc admin policy add monitor all all.json
+Added policy `all` successfully.
+```
+
+### 4.3. 用户
+
+添加用户并且给密码
+
+``` bash
+mc admin user add monitor thanos Passw0rd
+Added user `thanos` successfully.
+```
+
+把我们刚才的policy赋给用户UserName
+
+``` bash
+mc admin policy set monitor all user=thanos
+Policy all is set on user `thanos`
+```
+
+
 
 
 
