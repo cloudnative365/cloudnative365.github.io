@@ -153,6 +153,8 @@ Windows的exporter很有意思，因为他不仅可以监控Windows系统本身�
   ./ovirt_exporter -api.url ${RHV_HOST} -api.username ${RHV_USERNAME} -api.password ${RHV_PASSWORD} -api.insecure-cert
   ```
 
++ 注意：在实际的生产系统当中，我们通常是会做统一登录认证的，比如AD，ldap等，如果是集成了AD认证，那么${RHV_USERNAME}就是yourAccount@yourdomain.com@yourdomain.com。
+
 ### 2.3. hyperV
 
 + 主要还是使用windows-exporter中的hyperV选项

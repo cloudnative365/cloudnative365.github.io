@@ -121,15 +121,13 @@ ldapsearch -x 'memberof=CN=rol-infra-infra-s-g,OU=rol,OU=SecurityGroup,DC=UBRMB,
 
 ### 3.2. 配置ldap同步脚本
 
-Zabbix的认证是去AD服务器认证的，但是账号还是需要手动创建，为了让我们的工作更加简便，我们会使用脚本的方式，定期把ldap中的用户信息导入到Zabbix中。这样，如果有新员工入职了，只要获得了AD的账户，并且获得了对应的AD权限，那么，他就可以登录Zabbix控制台，而不需要Zabbix管理员手动添加账户了。
+Zabbix的认证是去AD服务器认证的，但是账号还是需要手动创建，为了让我们的工作更加简便，我们会使用脚本的方式，定期把ldap中的用户信息导入到Zabbix中。这样，如果有新员工入职了，只要获得了AD的账户，并且获得了对应的AD权限，那么，他就可以登录Zabbix控制台，而不需要Zabbix管理员手动添加账户了。在5.0之前的版本，我们经常使用一个ldap的同步脚本[dnaeon/zabbix-ldap-sync](https://github.com/dnaeon/zabbix-ldap-sync)。这个脚本目前已经被zabbix收录在[zabbix-tooling](https://github.com/zabbix-tooling)这个仓库中，这个仓库中目前收录了一些社区贡献的代码。
 
 
 
-## 4. Zabbix监控vCenter和ESXi
+## 4. 设备的自动发现和注册
 
-### 4.1. 配置Zabbix监控vCenter或者ESXi
-
-Zabbix 5.0中，Zabbix的vmware监控模板对于vCenter7.0版本支持并不是很好，但是ESXi目前还好。如果一定要使用Zabbix监控ESXi，还是建议手动添加ESXi主机。
+### 4.1. 配置Zabbix自动发现规则
 
 ### 4.2. 对发现的主机自动分组和关联模板
 
@@ -137,7 +135,7 @@ Zabbix 5.0中，Zabbix的vmware监控模板对于vCenter7.0版本支持并不是
 
 ## 5. Zabbix与Grafana集成
 
-
+grafana是通过把zabbix作为数据源来把数据集成到grafana当中的。在grafana默认的配置当中，zabbix并不是标准的数据源，我们需要
 
 ## 6. Zabbix的proxy模式
 
