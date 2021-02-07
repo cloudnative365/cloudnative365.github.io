@@ -19,30 +19,30 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 截止到2021年01月12日，我们的比较项如下
 
-| 比较项          | PinPoint                                   | Skywalking                                                 |
-| --------------- | ------------------------------------------ | ---------------------------------------------------------- |
-| 版本            | v2.2.0                                     | v8.3.0                                                     |
-| 项目发起人      | Woonduk Kang                               | 吴晟                                                       |
-| GitHub星数      | 11.1k                                      | 15.8k                                                      |
-| 社区            | 非apache                                   | apache                                                     |
-| 文档            | http://skywalking.apache.org/docs/（详细） | https://pinpoint-apm.github.io/pinpoint/main.html（详细）  |
-| 用户            | 非常多                                     | 非常多                                                     |
-| 兼容OpenTracing | 不支持                                     | 支持                                                       |
-| 支持语言        | java,php, C/CPP, python                    | Java, LUA, python, node.js(官方),<br />.NET, php, Go(社区) |
-| 协议            | thrift                                     | gRPC                                                       |
-| 存储            | HBase（hbase+hadoop+zookeeper）+MySQL      | ES, H2, MySQL, TiDB, Sharding-Sphere                       |
-| UI丰富度        | 很高                                       | 很高（8.3版本）                                            |
-| 实现方式        | 字节码注入                                 | 字节码注入                                                 |
-| 代码侵入性      | 无                                         | 无                                                         |
-| 扩展性          | 地                                         | 高                                                         |
-| TraceId查询     | 不支持                                     | 支持                                                       |
-| 告警            | 支持                                       | 支持                                                       |
-| JVM监控         | 支持                                       | 支持                                                       |
-| 跟踪粒度        | 细                                         | 一般                                                       |
-| 过滤跟踪        | filter配置                                 | agent.config + apm-trace-ignore-plugin                     |
-| 性能消耗        | 高                                         | 低                                                         |
-| 组件            | collector+web+agent+存储                   | OAP+Web+agent+存储+zk                                      |
-| 发布包          | war                                        | jar                                                        |
+| 比较项          | PinPoint                                   | Skywalking                                                 | Jaeger |      |
+| --------------- | ------------------------------------------ | ---------------------------------------------------------- | ------ | ---- |
+| 版本            | v2.2.0                                     | v8.3.0                                                     |        |      |
+| 项目发起人      | Woonduk Kang                               | 吴晟                                                       |        |      |
+| GitHub星数      | 11.1k                                      | 15.8k                                                      |        |      |
+| 社区            | 非apache                                   | apache                                                     |        |      |
+| 文档            | http://skywalking.apache.org/docs/（详细） | https://pinpoint-apm.github.io/pinpoint/main.html（详细）  |        |      |
+| 用户            | 非常多                                     | 非常多                                                     |        |      |
+| 兼容OpenTracing | 不支持                                     | 支持                                                       |        |      |
+| 支持语言        | java,php, C/CPP, python                    | Java, LUA, python, node.js(官方),<br />.NET, php, Go(社区) |        |      |
+| 协议            | thrift                                     | gRPC                                                       |        |      |
+| 存储            | HBase（hbase+hadoop+zookeeper）+MySQL      | ES, H2, MySQL, TiDB, Sharding-Sphere                       |        |      |
+| UI丰富度        | 很高                                       | 很高（8.3版本）                                            |        |      |
+| 实现方式        | 字节码注入                                 | 字节码注入                                                 |        |      |
+| 代码侵入性      | 无                                         | 无                                                         |        |      |
+| 扩展性          | 地                                         | 高                                                         |        |      |
+| TraceId查询     | 不支持                                     | 支持                                                       |        |      |
+| 告警            | 支持                                       | 支持                                                       |        |      |
+| JVM监控         | 支持                                       | 支持                                                       |        |      |
+| 跟踪粒度        | 细                                         | 一般                                                       |        |      |
+| 过滤跟踪        | filter配置                                 | agent.config + apm-trace-ignore-plugin                     |        |      |
+| 性能消耗        | 高                                         | 低                                                         |        |      |
+| 组件            | collector+web+agent+存储                   | OAP+Web+agent+存储+zk                                      |        |      |
+| 发布包          | war                                        | jar                                                        |        |      |
 
 ## 3. 社区比较
 
