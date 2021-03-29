@@ -30,7 +30,7 @@ loki是grafana公司的另外一款主打产品，目前是grafana公司继prome
 
 ### 2.1. 组件
 
-![轻量级日志采集系统Loki+grafana搭建](/pages/keynotes/L4_architect/3_logging/pics/9_loki/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=.png)
+![agdfg](/pages/keynotes/L4_architect/3_logging/pics/9_loki/ZmFuZ3poZW5naGVpdGk.png)
 
 + Distributer 分发器，负责接收来自于客户端的日志，通过批处理来构建压缩数据
 + Ingester捕获器，负责构建和刷新chunks，满足特定条件在刷新到存储中去
@@ -40,13 +40,13 @@ loki是grafana公司的另外一款主打产品，目前是grafana公司继prome
 
 Loki同样是使用标签作为索引，一切的数据都是通过筛选标签来得到结果的。实际上，我们真正需要安装的只有grafana，loki和promtail
 
-![轻量级日志采集系统Loki+grafana搭建](/pages/keynotes/L4_architect/3_logging/pics/9_loki/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=-20210329233601933.png)
+![轻量级日志采集系统Loki+grafana搭建](/pages/keynotes/L4_architect/3_logging/pics/9_loki/20210329233601933.png)
 
 
 
 + Grafana：用于最终的展示，并且借助于官方网站上的[dashboard12559](https://grafana.com/grafana/dashboards/12559)来实现nginx日志的展示与监控
 
-  ![](/pages/keynotes/L4_architect/3_logging/pics/9_loki/image.jpeg)
+  ![asdf](/pages/keynotes/L4_architect/3_logging/pics/9_loki/image.jpeg)
 
 + Loki：我们上面介绍了Loki的主要组件，但是实际上Loki还包含了query frontend和存储相关的组件，数据的存储方式可以选择本地，也可以选择公有云存储或对象存储
 
@@ -236,7 +236,7 @@ nohup promtail -config.file=/etc/promtail/promtail-local-config.yaml &
 
 我们这个时候就可以切换到我们的界面上看到效果了
 
-![企业微信截图_c8bb18c9-8aed-4992-82ba-86ab11c0dfd4](/pages/keynotes/L4_architect/3_logging/pics/9_loki/企业微信截图_c8bb18c9-8aed-4992-82ba-86ab11c0dfd4.png)
+![c8bb18c9-8aed-4992-82ba-86ab11c0dfd4](/pages/keynotes/L4_architect/3_logging/pics/9_loki/c8bb18c9-8aed-4992-82ba-86ab11c0dfd4.png)
 
 
 
@@ -246,7 +246,7 @@ nohup promtail -config.file=/etc/promtail/promtail-local-config.yaml &
 
 我们可以在某个指标上直接报警，这个是通过grafana来实现的，但是这个报警严重依赖于grafana，功能非常受限
 
-![123](/pages/keynotes/L4_architect/3_logging/pics/9_loki/企业微信截图_5354deaf-05e6-4291-b984-6d2eb34bc162.png)
+![123](/pages/keynotes/L4_architect/3_logging/pics/9_loki/5354deaf-05e6-4291-b984-6d2eb34bc162.png)
 
 ### 4.2. alertmanager报警
 
@@ -332,5 +332,5 @@ groups:
 
 上面的报警规则是说如果日志中在一分钟内有一个404就来报警（为了好展示效果），我们可以随便访问一个不存在的地址，然后就会收到下面的报警了
 
-![企业微信截图_343348c8-0eba-49f4-bb66-958a8980b99d](/pages/keynotes/L4_architect/3_logging/pics/9_loki/企业微信截图_343348c8-0eba-49f4-bb66-958a8980b99d.png)
+![343348c8-0eba-49f4-bb66-958a8980b99d](/pages/keynotes/L4_architect/3_logging/pics/9_loki/343348c8-0eba-49f4-bb66-958a8980b99d.png)
 

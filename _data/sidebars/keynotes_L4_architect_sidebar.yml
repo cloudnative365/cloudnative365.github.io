@@ -195,12 +195,8 @@ entries:
       url: /keynotes_L4_architect_3_logging_8_es_in_production.html
       output: web, pdf
 
-    - title: 9.fluentd日志聚合
-      url: /keynotes_L4_architect_3_logging_9_fluentd.html
-      output: web, pdf
-
-    - title: 10.loki+promtail
-      url: /keynotes_L4_architect_3_logging_10_loki+promtail.html
+    - title: 9.loki
+      url: /keynotes_L4_architect_3_logging_9_loki.html
       output: web, pdf
 
   - title: 第四章 分布式存储
