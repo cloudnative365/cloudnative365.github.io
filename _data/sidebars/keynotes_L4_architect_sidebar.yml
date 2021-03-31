@@ -214,3 +214,11 @@ entries:
     - title: 3. Ceph
       url: /keynotes_L4_architect_4_storage_1_Course_Introduction.html
       output: web, pdf
+
+  - title: 第五章 容器安全
+    output: web, pdf
+    folderitems:
+
+    - title: 1.安全与容器安全
+      url: /keynotes_L4_architect_8_security_1_security_overview.html
+      output: web, pdf
