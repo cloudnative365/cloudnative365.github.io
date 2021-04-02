@@ -215,10 +215,54 @@ entries:
       url: /keynotes_L4_architect_4_storage_1_Course_Introduction.html
       output: web, pdf
 
-  - title: 第五章 容器安全
+  - title: 第四章 APM
+    output: web, pdf
+    folderitems:
+
+    - title: 1.APM概述
+      url: /keynotes_L4_architect_4_APM_1_APM_overview.html
+      output: web, pdf
+
+    - title: 2. pinpoint VS skywalking
+      url: /keynotes_L4_architect_4_storage_2_PinPoint_Skywalking.html
+      output: web, pdf
+
+  - title: 第五章 ServiceMesh
+    output: web, pdf
+    folderitems:
+
+    - title: 1.ServiceMesh概述
+      url: /keynotes_L4_architect_5_servicemesh_1_servicemesh_overview.html
+      output: web, pdf
+
+  - title: 第六章 IaC
+    output: web, pdf
+    folderitems:
+
+    - title: 1.IaC概述
+      url: /keynotes_L4_architect_5_servicemesh_1_servicemesh_overview.html
+      output: web, pdf
+
+  - title: 第七章 容器化
+    output: web, pdf
+    folderitems:
+
+    - title: 1.容器化概述
+      url: /keynotes_L4_architect_5_servicemesh_1_servicemesh_overview.html
+      output: web, pdf
+
+  - title: 第八章 容器安全
     output: web, pdf
     folderitems:
 
     - title: 1.安全与容器安全
       url: /keynotes_L4_architect_8_security_1_security_overview.html
+      output: web, pdf
+
+    - title: 2.准备安全的环境
+      url: /keynotes_L4_architect_8_security_2_prepare_cluster.html
+      output: web, pdf
+
+    - title: 3.CIS
+      url: /keynotes_L4_architect_8_security_3_CIS.html
       output: web, pdf
