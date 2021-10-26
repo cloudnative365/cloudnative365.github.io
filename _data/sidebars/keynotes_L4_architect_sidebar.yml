@@ -199,6 +199,30 @@ entries:
       url: /keynotes_L4_architect_3_logging_9_loki.html
       output: web, pdf
 
+    - title: 10.Opensearch
+      url: /keynotes_L4_architect_3_logging_10_opensearch.html
+      output: web, pdf
+
+    - title: 11.生产级别的Opensearch
+      url: /keynotes_L4_architect_3_logging_11_opensearch_in_production.html
+      output: web, pdf
+
+    - title: 12.fluentd
+      url: /keynotes_L4_architect_3_logging_12_fluentd.html
+      output: web, pdf
+
+    - title: 13.fluentd简单上手
+      url: /keynotes_L4_architect_3_logging_13_fluentd_demo.html
+      output: web, pdf
+
+    - title: 14.fluent-bit
+      url: /keynotes_L4_architect_3_logging_14_fluentbit.html
+      output: web, pdf
+
+    - title: 15.fluent-bit简单上手
+      url: /keynotes_L4_architect_3_logging_15_fluentbit_demo.html
+      output: web, pdf
+
   - title: 第四章 分布式存储
     output: web, pdf
     folderitems:
