@@ -10,327 +10,265 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 课程目标
 
-+ 认识loki，搭建loki服务
-+ 使用promtail进行日志收集
-+ 使用grafana进行日志展示
++ 认识OpenSearch
++ OpenSearch和ElasticSearch的产品线比较
++ 体验OpenSearch
++ OpenSearch最佳实践
 
-## 1. Loki
+## 1. OpenSearch
 
-loki是grafana公司的另外一款主打产品，目前是grafana公司继prometheus，grafana，cortex之后的第四款比较知名的产品。这是一款支持垂直扩展，支持高可用，多租户日志聚合的系统。他和我们前面讲的ES就在于降低了成本，操作简单。Loki并没有对日志的内容进行索引，而是对于每个日志流进行打标签的工作。这样，对于小规模的日志存取都非常方便，也就更加适合于我们对于日志监控的要求，让产品定位在了日志监控。而ES在日志监控方面的功能虽然也非常强大，但是操作复杂度和昂贵的价格会让我们望而生畏，因此，轻量且开源的Loki让我们有了另外的选择。
+### 1.1. 从ElasticSearch到OpenSearch
 
-但是Loki的缺点也是非常明显的，这也是大部分开源的云原生产品的共性：没有认证功能。如果想做认证，就需要通过其他的方式来实现，比如nginx，或者k8s ingress的认证，或者其他三方的工具来实现。
+2021年1月15日，Elastic 公司 CEO Shay Banon 在公司官网发文表示，他们决定将 Elasticsearch 和 Kibana 的开源协议由 Apache 2.0 变更为 SSPL 与 Elastic License。PDF版本点[这里](https://storage.courtlistener.com/recap/gov.uscourts.cand.348946/gov.uscourts.cand.348946.1.0_2.pdf)
 
-## 2. 架构图
+```
+“亚马逊于 2015 年基于 Elasticsearch 推出自己的服务，还将其称为 Amazon Elasticsearch Service，这是很明显的商标侵权行为。NOT OK。”
 
-一般来说，我们会通过logagent（比如promtail或者fluentd）挖掘日志，然后发送给Loki服务器，最后通过grafana进行展示。而主要的功能都集中在了loki服务器上
+“我在 2011 年借了一笔个人贷款来注册 Elasticsearch 商标...... 看到商标如此公然地滥用，我特别痛苦。亚马逊问题迫使我们提起诉讼。NOT OK。”
 
-![modes_diagram](/pages/keynotes/L4_architect/3_logging/pics/9_loki/modes_of_operation.png)
+“商标问题让用户感到困惑，以为是 Elastic 和亚马逊之间有合作，这不是真的。NOT OK。”
 
+“...... 多年来这种困惑仍然存在。NOT OK。”
 
+“亚马逊针对 Elasticsearch 的 Open Distro 分支，进一步分裂了我们的社区，引发了相当多的混乱。NOT OK。”
 
-### 2.1. 组件
-
-![agdfg](/pages/keynotes/L4_architect/3_logging/pics/9_loki/ZmFuZ3poZW5naGVpdGk.png)
-
-+ Distributer 分发器，负责接收来自于客户端的日志，通过批处理来构建压缩数据
-+ Ingester捕获器，负责构建和刷新chunks，满足特定条件在刷新到存储中去
-+ Querier查询器，根据时间和标签选择器，去索引查找并且匹配到指定的数据，同时去Ingester里面查找尚未刷新到存储中的数据
-
-### 2.2. 逻辑架构图
-
-Loki同样是使用标签作为索引，一切的数据都是通过筛选标签来得到结果的。实际上，我们真正需要安装的只有grafana，loki和promtail
-
-![轻量级日志采集系统Loki+grafana搭建](/pages/keynotes/L4_architect/3_logging/pics/9_loki/20210329233601933.png)
-
-
-
-+ Grafana：用于最终的展示，并且借助于官方网站上的[dashboard12559](https://grafana.com/grafana/dashboards/12559)来实现nginx日志的展示与监控
-
-  ![asdf](/pages/keynotes/L4_architect/3_logging/pics/9_loki/image.jpeg)
-
-+ Loki：我们上面介绍了Loki的主要组件，但是实际上Loki还包含了query frontend和存储相关的组件，数据的存储方式可以选择本地，也可以选择公有云存储或对象存储
-
-+ promtail：日志的agent，一般安装在需要采集日志的主机上来挖掘日志。
-
-## 3. 单机安装
-
-为了实现我们上面看到的效果，我们需要借助于nginx+GeoIP。我们选用的是AWS，实例是Amazon Linux2，选用Centos或者RHEL原理基本相同，需要注意的是，nginx需要一个叫做ngx_http_geoip_module.so的模块，如果我们使用的是系统自带的epel源的话，是没办法安装这个模块的，只能用编译的方式来安装这个模块。或者我们可以直接使用nginx官方提供的源。
-
-### 3.1. 安装Nginx和GEOIP
-
-配置nginx源,/etc/yum.repos.d/nginx.repo，我使用的是amazon linux2，所以baseurl我修改如下
-
-``` bash
-[nginx-stable]
-name=nginx stable repo
-baseurl=http://nginx.org/packages/centos/7/x86_64/
-gpgcheck=1
-enabled=1
-gpgkey=https://nginx.org/keys/nginx_signing.key
-module_hotfixes=true
+“..... 最近，我们发现了更多挑战道德底线的例子。我们已经在专有功能方面上与众不同，现在这些设计却被视为来自亚马逊的灵感。NOT OK。”
 ```
 
-安装相关包
+SSPL 是由 MongoDB 制定的源代码许可。针对云服务提供商做出了限制，即要求云服务提供商在未对项目做出贡献的情况下，不得发布自己的开源产品即服务。SSPL 允许用户以自由且不受限制的方式使用并修改代码成果，唯一的要求是：如果将产品以作为一种服务进行交付，那么必须同时公开发布所有关于修改及 SSPL 之下管理层的源代码。
 
-``` bash
-yum install -y nginx  # nginx主程序
-yum install -y nginx-module-geoip # geoip模块
-yum install -y GeoIP-data # geoip的数据文件
-```
+同年四月，那是一个春天，AWS在推出了OpenSearch，OpenSearch 项目由 OpenSearch (fork Elasticsearch 7.10.2) 和 OpenSearch Dashboards (fork Kibana 7.10.2) 组成，包括企业安全、告警、机器学习、SQL、索引状态管理等功能。OpenSearch 项目中的所有软件均采用了 Apache License 2.0 开源许可协议。
 
-配置nginx文件，在全局配置下加载模块
+AWS 介绍称，他们推出的 OpenSearch 删除了 Elasticsearch 中受 Elastic 商业许可证限制的功能、代码和商标，以兼容 Apache License 2.0，自称这是每个人都可以构建和创新的基础，任何人无需签署 CLA (Contributor License Agreement) 即可为项目贡献代码。
 
-``` bash
-load_module /etc/nginx/modules/ngx_http_geoip_module.so;
-load_module /etc/nginx/modules/ngx_stream_geoip_module.so;
-```
+![img](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/2021-opensearch-service-2.png)
 
-在http段中，增加日志格式并且加载地理文件
+### 1.2. RoadMap
 
-``` bash
-http {
-    include       /etc/nginx/mime.types;
-    default_type  application/octet-stream;
+OpenSearch的1.0版本GA是在2021年7月14日。
 
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
+![Prospective OpenSearch Release Schedule](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/1.png)
 
-    #access_log  /var/log/nginx/access.log  main;
+| OpenSearch version                                           | Release highlights                                           | Release date     |
+| :----------------------------------------------------------- | :----------------------------------------------------------- | :--------------- |
+| [1.1.0](https://github.com/opensearch-project/opensearch-build/tree/main/release-notes/opensearch-release-notes-1.1.0.md) | Adds cross-cluster replication, security for Index Management, bucket-level alerting, a CLI to help with upgrading from Elasticsearch OSS to OpenSearch, and enhancements to high cardinality data in the anomaly detection plugin. | 5 October 2021   |
+| [1.0.1](https://github.com/opensearch-project/opensearch-build/tree/main/release-notes/opensearch-release-notes-1.0.1.md) | Bug fixes.                                                   | 1 September 2021 |
+| [1.0.0](https://github.com/opensearch-project/opensearch-build/tree/main/release-notes/opensearch-release-notes-1.0.0.md) | General availability release. Adds compatibility setting for clients that require a version check before connecting. | 12 July 2021     |
+| [1.0.0-rc1](https://github.com/opensearch-project/opensearch-build/tree/main/release-notes/opensearch-release-notes-1.0.0-rc1.md) | First release candidate.                                     | 7 June 2021      |
+| [1.0.0-beta1](https://github.com/opensearch-project/opensearch-build/tree/main/release-notes/opensearch-release-notes-1.0.0-beta1.md) | Initial beta release. Refactors plugins to work with OpenSearch. | 13 May 2021      |
 
-    log_format json_analytics escape=json '{'
-                    '"msec": "$msec", ' # request unixtime in seconds with a milliseconds resolution
-                    '"connection": "$connection", ' # connection serial number
-                    '"connection_requests": "$connection_requests", ' # number of requests made in connection
-                    '"pid": "$pid", ' # process pid
-                    '"request_id": "$request_id", ' # the unique request id
-                    '"request_length": "$request_length", ' # request length (including headers and body)
-                    '"remote_addr": "$remote_addr", ' # client IP
-                    '"remote_user": "$remote_user", ' # client HTTP username
-                    '"remote_port": "$remote_port", ' # client port
-                    '"time_local": "$time_local", '
-                    '"time_iso8601": "$time_iso8601", ' # local time in the ISO 8601 standard format
-                    '"request": "$request", ' # full path no arguments if the request
-                    '"request_uri": "$request_uri", ' # full path and arguments if the request
-                    '"args": "$args", ' # args
-                    '"status": "$status", ' # response status code
-                    '"body_bytes_sent": "$body_bytes_sent", ' # the number of body bytes exclude headers sent to a client
-                    '"bytes_sent": "$bytes_sent", ' # the number of bytes sent to a client
-                    '"http_referer": "$http_referer", ' # HTTP referer
-                    '"http_user_agent": "$http_user_agent", ' # user agent
-                    '"http_x_forwarded_for": "$http_x_forwarded_for", ' # http_x_forwarded_for
-                    '"http_host": "$http_host", ' # the request Host: header
-                    '"server_name": "$server_name", ' # the name of the vhost serving the request
-                    '"request_time": "$request_time", ' # request processing time in seconds with msec resolution
-                    '"upstream": "$upstream_addr", ' # upstream backend server for proxied requests
-                    '"upstream_connect_time": "$upstream_connect_time", ' # upstream handshake time incl. TLS
-                    '"upstream_header_time": "$upstream_header_time", ' # time spent receiving upstream headers
-                    '"upstream_response_time": "$upstream_response_time", ' # time spend receiving upstream body
-                    '"upstream_response_length": "$upstream_response_length", ' # upstream response length
-                    '"upstream_cache_status": "$upstream_cache_status", ' # cache HIT/MISS where applicable
-                    '"ssl_protocol": "$ssl_protocol", ' # TLS protocol
-                    '"ssl_cipher": "$ssl_cipher", ' # TLS cipher
-                    '"scheme": "$scheme", ' # http or https
-                    '"request_method": "$request_method", ' # request method
-                    '"server_protocol": "$server_protocol", ' # request protocol, like HTTP/1.1 or HTTP/2.0
-                    '"pipe": "$pipe", ' # "p" if request was pipelined, "." otherwise
-                    '"gzip_ratio": "$gzip_ratio", '
-                    '"http_cf_ray": "$http_cf_ray",'
-                    '"geoip_country_code": "$geoip_country_code"'
-                    '}';
+截止到今天，OpenSearch的最新版本是1.1版，是在2021年10月5日发行的。
 
-    access_log /var/log/nginx/json_access.log json_analytics;
+关于项目今后的一些计划，我们可以关注[github](https://github.com/orgs/opensearch-project/projects/1)
 
-    geoip_country /usr/share/GeoIP/GeoIP.dat;
-    geoip_city /usr/share/GeoIP/GeoIPCity.dat;
-    
-    ...
-```
-
-启动nginx
-
-``` bash
-systemctl start nginx
-```
-
-### 3.2. 安装grafana
-
-目前版本是7.5，我们选用最新的就可以
-
-``` bash
-yum install -y https://dl.grafana.com/oss/release/grafana-7.5.1-1.x86_64.rpm
-```
-
-记得安装插件
-
-``` bash
-/usr/sbin/grafana-cli plugins install grafana-worldmap-panel
-```
-
-启动即可，访问IP：3000，默认密码是admin/admin
-
-### 3.3. 安装loki
-
-``` bash
-wget https://github.com/grafana/loki/releases/download/v2.2.0/loki-linux-amd64.zip # 下载
-unzip loki-linux-amd64.zip # 解压
-mv loki-linux-amd64 /usr/local/sbin/loki # 挪到$PATH下
-mkdir /etc/loki # 创建配置文件目录
-wget https://raw.githubusercontent.com/grafana/loki/master/cmd/loki/loki-local-config.yaml -O /etc/loki/loki-local-config.yaml # 下载样例
-nohup loki -config.file=/etc/loki/loki-local-config.yaml & # 直接启动就好
-```
-
-他会监听在本地的3100端口上，我们这个时候就可以用grafana使用loki作为数据源了
-
-### 3.4. 安装promtail
-
-``` bash
-wget https://github.com/grafana/loki/releases/download/v2.2.0/promtail-linux-amd64.zip # 下载
-unzip loki-linux-amd64.zip # 解压
-mv promtail-linux-amd64 /usr/local/sbin/promtail # 挪到$PATH下
-mkdir /etc/promtail # 创建配置文件目录
-```
-
-官方提供了配置文件样例
-
-``` bash
-wget https://raw.githubusercontent.com/grafana/loki/master/cmd/promtail/promtail-local-config.yaml
-```
-
-但是这里我们简化一下，为了更好的出图
-
-``` bash
-server:
-  http_listen_port: 9080
-  grpc_listen_port: 0
-
-positions:
-  filename: /tmp/positions.yaml
-
-clients:
-  - url: http://localhost:3100/loki/api/v1/push
-
-scrape_configs:
-    - job_name: nginx_location_json 
-      pipeline_stages:
-      - replace:
-          expression: '(?:[0-9]{1,3}\.){3}([0-9]{1,3})'
-          replace: '***'
-      static_configs:
-      - targets:
-         - localhost
-        labels:
-         job: nginx_access_log
-         host: appfelstrudel
-         agent: promtail
-         __path__: /var/log/nginx/json_access.log
-```
-
-启动
-
-``` bash
-nohup promtail -config.file=/etc/promtail/promtail-local-config.yaml &
-```
-
-### 3.5.  看图喽
-
-我们这个时候就可以切换到我们的界面上看到效果了
-
-![c8bb18c9-8aed-4992-82ba-86ab11c0dfd4](/pages/keynotes/L4_architect/3_logging/pics/9_loki/c8bb18c9-8aed-4992-82ba-86ab11c0dfd4.png)
+![image-20211026145514433](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/image-20211026145514433.png)
 
 
 
-## 4. 报警
+## 2. OpenSearch和ElasticSearch的产品线比较
 
-### 4.1. grafana报警
+### 2.1. 项目的对比
 
-我们可以在某个指标上直接报警，这个是通过grafana来实现的，但是这个报警严重依赖于grafana，功能非常受限
+我们可以参考这个[网站](https://www.libhunt.com/compare-OpenSearch-vs-elasticsearch)
 
-![123](/pages/keynotes/L4_architect/3_logging/pics/9_loki/5354deaf-05e6-4291-b984-6d2eb34bc162.png)
+![image-20211026162443499](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/image-20211026162443499.png)
 
-### 4.2. alertmanager报警
+### 2.2. OpenSearch的功能
 
-这个是我们比较推荐的方式
+OpenSearch提供了很多开源ES中不可用的功能
 
-``` bash
-wget https://github.com/prometheus/alertmanager/releases/download/v0.21.0/alertmanager-0.21.0.linux-amd64.tar.gz
-tar xf alertmanager-0.21.0.linux-amd64.tar.gz
-mv alertmanager-0.21.0.linux-amd64/alertmanager /usr/local/sbin/alertmanager
-```
+| **Features**                                                 | **Description**                                              |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [Advanced Security](https://github.com/opensearch-project/security) | Offers encryption, authentication, authorization, and auditing features. They include integrations with Active Directory, LDAP, SAML, Kerberos, JSON web tokens, and more. OpenSearch also provides fine-grained, role-based access control to indices, documents, and fields. |
+| [SQL Query Syntax](https://github.com/opensearch-project/sql) | Provides the familiar SQL query syntax. Use aggregations, group by, and where clauses to investigate your data. Read data as JSON documents or CSV tables so you have the flexibility to use the format that works best for you. |
+| [Reporting](https://github.com/opensearch-project/dashboards-reports) | Schedule, export, and share reports from dashboards, saved searches, alerts, and visualizations. |
+| [Anomaly Detection](https://github.com/opensearch-project/anomaly-detection) | Use machine learning anomaly detection based on the [Random Cut Forest (RCF) algorithm](https://github.com/aws/random-cut-forest-by-aws) to automatically detect anomalies as your data is ingested. Combine with [alerting](https://github.com/opensearch-project/alerting) to monitor data in near real time and send alert notifications automatically. |
+| [Index Management](https://github.com/opensearch-project/index-management) | Define custom policies to automate routine index management tasks, such as rollover and delete, apply them to indices and index patterns, and [transforms](https://opensearch.org/docs/im-plugin/index-transforms/index/). |
+| [Performance Analyzer and RCA Framework](https://github.com/opensearch-project/performance-analyzer) | Query numerous cluster performance metrics and aggregations. Use PerfTop, the command line interface (CLI) to quickly display and analyze those metrics. Use the root cause analysis (RCA) framework to investigate performance and reliability issues in clusters. |
+| [Asynchronous Search](https://github.com/opensearch-project/asynchronous-search) | Run complex queries without worrying about the query timing out with Asynchronous Search queries running in the background. Track query progress and retrieve partial results as they become available. |
+| [Trace Analytics](https://github.com/opensearch-project/trace-analytics) | Ingest and visualize OpenTelemetry data for distributed applications. Visualize the flow of events between these applications to identify performance problems. |
+| [Alerting](https://github.com/opensearch-project/alerting)   | Automatically monitor data and send alert notifications to stakeholders. With an intuitive interface and a powerful API, easily set up, manage, and monitor alerts. Craft highly specific alert conditions using OpenSearch’s full query language and scripting capabilities. |
+| [k-NN search](https://github.com/opensearch-project/k-NN)    | Using machine learning, run the nearest neighbor search algorithm on billions of documents across thousands of dimensions with the same ease as running any regular OpenSearch query. Use aggregations and filter clauses to further refine similarity search operations. k-NN similarity search powers use cases such as product recommendations, fraud detection, image and video search, related document search, and more. |
+| [Piped Processing Language](https://github.com/opensearch-project/piped-processing-language) | Provides a familiar query syntax with a comprehensive set of commands delimited by pipes (\|) to query data. |
+| [Dashboard Notebooks](https://github.com/opensearch-project/dashboards-notebooks) | Combine dashboards, visualizations, text, and more to provide context and detailed explanations when analyzing data. |
 
-修改一下配置文件/etc/alertmanager/alertmanager.yml
+### 2.3. 组件的对比
 
-``` bash
-global:
-  # global parameter
-  resolve_timeout: 5m
+![OpenSearch Projects](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/22.png)
 
-  # smtp parameter
-  smtp_smarthost: smtpdm.xxx.com:465
-  smtp_from: monitor@notify.xxx.com
-  smtp_auth_username: monitor@notify.xxx.com
-  smtp_auth_password: XXXXXX
-  smtp_require_tls: false
+从图上可以看出，原来的ES实例，就是OpenSearch实例。而Kibana在OpenSearch体系里面叫做OpenSearch Dashboards。原来为ES开发的插件OpenDistro完全变成了OpenSearch的插件，来实现我们刚才说的那些功能，且完全免费。
 
-route:
-  receiver: default-reciever
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 1h
-  group_by: ["alertname"]
+![img](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/1HrKE3nPzZSjCRKplfJySHg.png)
 
-receivers:
-- name: 'default-reciever'
-  email_configs:
-  - send_resolved: true
-    to: 'jormun@xxx.com'
+以X-Pack为例，在OpenSearch中叫做OpenSearch-security，以plugin的形式随着二进制包一起被下载。
 
-inhibit_rules:
-  - source_match:
-      severity: 'critical'
-    target_match:
-      severity: 'warning'
-    equal: ['alertname', 'env', 'instance', 'zone']
-```
+![img](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/1_u3TYQ5-_1IZJEiM_Umipg.png)
 
-启动
+## 3. 体验OpenSearch
 
-``` bash
-nohup alertmanager --config.file=/etc/alertmanager/alertmanager.yml &
-```
+[官方](https://opensearch.org/docs/latest/#docker-quickstart)提供了Docker的方式，但是我们这里使用二进制包的方式，搭建一个单机的OpenSearch。
 
-配置报警规则，在loki的配置/etc/loki/loki-local-config.yaml文件中有这么一段
+### 3.1.  准备
 
-``` bash
-ruler:
-  storage:
-    type: local
-    local:
-      directory: /tmp/loki/rules
-  rule_path: /tmp/loki/rules-temp
-  alertmanager_url: http://localhost:9093
-  ring:
-    kvstore:
-      store: inmemory
-  enable_api: true
-```
++ OpenSearch依赖于Java，尽管[官方](https://opensearch.org/docs/latest/opensearch/install/compatibility/)说JDK8和11都支持，但是使用JDK8会有Bug，我们就使用JDK11
 
-这就规定了报警规则的文件需要在/tmp/loki/rules下面，我们需要在/tmp/loki/rules下面创建一个文件夹，然后再写规则才能生效。。。囧。比如：/tmp/loki/rules/demo/example.yml
++ 而操作系统依然是那些常见的Red Hat Enterprise Linux 7, 8; CentOS 7, 8; Amazon Linux 2; Ubuntu 16.04, 18.04, 20.04
 
-``` bash
-groups:
-  - name: sample_alert
-    rules:
-      - alert: sample_alert
-        expr: 'sum by (filename) (count_over_time({filename=~".*json_access.log.*"} |~ "404" [1m]) > 0)'
-        annotations:
-          message: "404 alert"
-        for: 1m
-        labels:
-          severity: critical
-```
++ 程序不能由root用户启动，所以需要创建一个用户
 
-上面的报警规则是说如果日志中在一分钟内有一个404就来报警（为了好展示效果），我们可以随便访问一个不存在的地址，然后就会收到下面的报警了
+  ``` bash
+  useradd -M -r opensearch
+  ```
 
-![343348c8-0eba-49f4-bb66-958a8980b99d](/pages/keynotes/L4_architect/3_logging/pics/9_loki/343348c8-0eba-49f4-bb66-958a8980b99d.png)
++ 不管使用什么操作系统，在正式安装之前，我们需要修改一些[参数](https://opensearch.org/docs/latest/opensearch/install/important-settings/)
 
+  ``` bash
+  # 修改/etc/sysctl.conf
+  vm.max_map_count=262144
+  # reload生效
+  sudo sysctl -p
+  # 修改JAVA的启动参数，一般配置成整个系统内存的一半
+  OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+  # nofile参数根据不通的系统可能会有所不同，我们这里使用的是rhel/centos系统，需要配置下面两个地方
+  vim /etc/security/limits.conf
+  * soft nofile 65536
+  * hard nofile 131072
+  * soft nproc 65536
+  * hard nproc 131072
+  # 同时配置用户资源参数
+  vim /etc/security/limits.d/20-nproc.conf
+  opensearch soft nproc 65536
+  ```
+
+### 3.2. 安装
+
++ 下载安装包：https://opensearch.org/downloads.html
+
++ 解压安装包：
+
+  ``` bash
+  tar xf opensearch-1.0.0-linux-x64.tar.gz -C /data
+  ```
+
++ 创建数据和日志目录
+
+  ``` bash
+  mkdir -pv /data/opensearch/{data,logs} 
+  chown -R opensearch:opensearch /data/opensearch
+  chown -R opensearch:opensearch /data/opensearch-1.1.0
+  ```
+
++ 修改配置文件/data/opensearch-1.1.0/config/opensearch.yml：
+
+  ```
+  # 指定集群名称和主机名
+  cluster.name: opensearch-cluster
+  node.name: node01
+   
+  # 数据目录
+  path.data: /data/opensearch/data
+   
+  # log目录
+  path.logs: /data/opensearch/logs
+   
+  # 禁用交换内存
+  bootstrap.memory_lock: true
+   
+  # 修改监听地址，外部机器也可以访问
+  network.host: 0.0.0.0
+   
+  # 默认的端口号
+  http.port: 9200
+   
+  # 设置单机模式运行
+  discovery.type: single-node
+  ```
+
+### 3.3. 启动
+
++ 启动OpenSearch进程
+
+  ```
+  切换到opensearch用户启动
+  su - opensearch
+  ./opensearch-tar-install.sh
+  ```
+
++ 验证
+
+  ```
+  curl -XGET https://localhost:9200 -u 'admin:admin' --insecure
+  curl -XGET https://localhost:9200/_cat/plugins?v -u 'admin:admin' --insecure
+  ```
+
++ 我们会发现，其实这个启动脚本已经默认把证书配置好了，下次再启动就直接使用bin/opensearch命令启动
+
+### 3.4. opensearch-dashboard
+
++ 下载：https://opensearch.org/downloads.html
+
++ 解压
+
+  ``` bash
+  tar -zxvf opensearch-dashboards-1.1.0-linux-x64.tar.gz -C /data
+  ```
+
++ 修改配置文件opensearch-dashboards-1.1.0/config/opensearch_dashboards.yml
+
+  ``` bash
+  # 添加监听地址，外部机器也可以访问
+  server.host: 0.0.0.0
+  opensearch.hosts: ["https://localhost:9200"]
+  ```
+
++ 修改权限
+
+  ``` bash
+  chown -R opensearch:opensearch /data/opensearch-dashboards-1.1.0
+  ```
+
++ 启动
+
+  ``` bash
+  切换到opensearch用户启动
+  su - opensearch
+  ./bin/opensearch-dashboards
+  ```
+
++ 验证
+
+  ![img](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NoaW5haXFpbmc=,size_16,color_FFFFFF,t_70.png)
+
+## 4. OpenSearch最佳实践
+
+### 4.1. 集群
+
+![multi-node cluster architecture diagram](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/cluster.png)
+
+和ES一样，OpenSearch节点有多种功能，配置可以看[这里](https://opensearch.org/docs/latest/opensearch/cluster/)
+
+| Node type         | Description                                                  | Best practices for production                                |
+| :---------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| `Master`          | Manages the overall operation of a cluster and keeps track of the cluster state. This includes creating and deleting indices, keeping track of the nodes that join and leave the cluster, checking the health of each node in the cluster (by running ping requests), and allocating shards to nodes. | Three dedicated master nodes in three different zones is the right approach for almost all production use cases. This configuration ensures your cluster never loses quorum. Two nodes will be idle for most of the time except when one node goes down or needs some maintenance. |
+| `Master-eligible` | Elects one node among them as the master node through a voting process. | For production clusters, make sure you have dedicated master nodes. The way to achieve a dedicated node type is to mark all other node types as false. In this case, you have to mark all the other nodes as not master-eligible. |
+| `Data`            | Stores and searches data. Performs all data-related operations (indexing, searching, aggregating) on local shards. These are the worker nodes of your cluster and need more disk space than any other node type. | As you add data nodes, keep them balanced between zones. For example, if you have three zones, add data nodes in multiples of three, one for each zone. We recommend using storage and RAM-heavy nodes. |
+| `Ingest`          | Preprocesses data before storing it in the cluster. Runs an ingest pipeline that transforms your data before adding it to an index. | If you plan to ingest a lot of data and run complex ingest pipelines, we recommend you use dedicated ingest nodes. You can also optionally offload your indexing from the data nodes so that your data nodes are used exclusively for searching and aggregating. |
+| `Coordinating`    | Delegates client requests to the shards on the data nodes, collects and aggregates the results into one final result, and sends this result back to the client. | A couple of dedicated coordinating-only nodes is appropriate to prevent bottlenecks for search-heavy workloads. We recommend using CPUs with as many cores as you can. |
+
+### 4.2. SSL证书
+
+在上面的Demo中，我们会发现使用这个脚本`opensearch-tar-install.sh`启动之后，配置文件中会默认多出几个关于SSL证书的选项，OpenSearch实际上是帮我们默认生成了一些证书，并且把他们添加到配置文件当中去了。也就是说，我们在访问默认的9200端口的时候，需要使用httpsx协议，且需要信任证书。并且，如果我们跳过这个启动脚本，直接在bin目录下用opensearch命令启动的话，会无法启动实例。
+
+ssl证书的作用不仅仅是加密了访问端口，并且对于数据，也是使用这个证书来加密的，也就是说，如果我们要创建多节点的集群环境或者生成密码，加载配置文件等操作，也需要使用这些证书进行相应的操作。
+
+### 4.3. 容量估算
+
+容量估算的公式基本和ES的估算方式一样，且各个功能节点的预估也和ES一样。可以参考4.1中`Best practices for production`一列
+
+### 4.4. 认证集成
+
+和ES的x-pack一样，常见的认证方式都可以支持。
+
+![image-20211027095159060](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/image-20211027095159060.png)
+
+需要注意的是，权限的认证，授权是分开的，是基于RBAC的授权，且只能在配置文件中修改，然后同步到opensearch的隐藏表里面，opensearch-dashboard的图形界面里面是没办法配置的
