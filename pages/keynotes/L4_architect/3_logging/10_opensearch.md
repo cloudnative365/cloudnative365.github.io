@@ -14,6 +14,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 + OpenSearch和ElasticSearch的产品线比较
 + 体验OpenSearch
 + OpenSearch最佳实践
++ OpenSearch和其他日志类产品的比较
 
 ## 1. OpenSearch
 
@@ -237,7 +238,7 @@ OpenSearch提供了很多开源ES中不可用的功能
 
 + 验证
 
-  ![img](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NoaW5haXFpbmc=,size_16,color_FFFFFF,t_70.png)
+  ![img](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/ZmFuZ3poZW5naGVpdGkw.png)
 
 ## 4. OpenSearch最佳实践
 
@@ -272,3 +273,30 @@ ssl证书的作用不仅仅是加密了访问端口，并且对于数据，也�
 ![image-20211027095159060](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/image-20211027095159060.png)
 
 需要注意的是，权限的认证，授权是分开的，是基于RBAC的授权，且只能在配置文件中修改，然后同步到opensearch的隐藏表里面，opensearch-dashboard的图形界面里面是没办法配置的
+
+## 5. OpenSearch vs Loki vs Splunk
+
+### 5.1. 市面上的log产品
+
+我们可以从这个[网站](https://stackshare.io/elk/alternatives)来看elk同类的产品，这个网站有免费，也有收费产品
+
+![image-20211027114328790](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/image-20211027114328790.png)
+
+如果要CNCF认证的产品，我们可以到[cncf网站](https://landscape.cncf.io/)去找，找到[logging](https://landscape.cncf.io/card-mode?category=logging&grouping=category)这一栏
+
+![image-20211027114750971](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/image-20211027114750971.png)
+
+### 5.2. OpenSearch vs Loki vs Splunk
+
++ 产品比较
+
+|           | OpenSearch | ElasticSearch | Loki        | Splunk             |
+| --------- | ---------- | ------------- | ----------- | ------------------ |
+| 定位      | 搜索引擎   | 搜索引擎      | 日志存储    | 安全工具           |
+| 收费情况  | 免费       | 部分免费      | 免费        | 收费，按日志量收费 |
+| 公司/社区 | AWS        | Elastic       | Grafana Lab | Splunk             |
+
++ 性能比较
+
+![image-20211027143002209](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/image-20211027143002209.png)
+
