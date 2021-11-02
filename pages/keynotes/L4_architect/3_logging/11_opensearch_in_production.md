@@ -22,7 +22,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 2. OpenSearch集群
 
-2.1. 节点的类型
+### 2.1. 节点的类型
 
 | 节点类型        | 作用                                                         | 机器配置                     |
 | --------------- | ------------------------------------------------------------ | ---------------------------- |
@@ -32,7 +32,17 @@ typora-root-url: ../../../../../cloudnative365.github.io
 | Ingest(提取)    | Ingest节点和集群中的其他节点一样，但是它能够创建多个处理器管道，用以修改传入文档。类似 最常用的Logstash过滤器已被实现为处理器。<br />Ingest节点 可用于执行常见的数据转换和丰富。 处理器配置为形成管道。 在写入时，Ingest Node有20个内置处理器，例如grok，date，gsub，小写/大写，删除和重命名<br />在批量请求或索引操作之前，Ingest节点拦截请求，并对文档进行处理。 | CPU 内存 消耗一般            |
 | Coordinating    | 协调节点，是一种角色，而不是真实的Elasticsearch的节点，你没有办法通过配置项来配置哪个节点为协调节点。集群中的任何节点，都可以充当协调节点的角色。当一个节点A收到用户的查询请求后，会把查询子句分发到其它的节点，然后合并各个节点返回的查询结果，最后返回一个完整的数据集给用户。在这个过程中，节点A扮演的就是协调节点的角色。 | 资源大户，主要消耗磁盘，内存 |
 
+### 2.2. 常见的部署方式
 
+常见的集群部署方式可以归为两大类，一类是使用SaaS服务，比如AWS的OpenSearch服务，一类是自己搭建。而自己搭建的集群也有两种大类，一个是部署在虚拟机或者实例上，一个是在k8s集群中部署。
 
+在实例上部署：
 
+![image-20211102114231598](/pages/keynotes/L4_architect/3_logging/pics/11_opensearch_in_production/image-20211102114231598.png)
+
+在k8s上部署
+
+![image-20211102105336099](/pages/keynotes/L4_architect/3_logging/pics/11_opensearch_in_production/image-20211102105336099.png)
+
+![image-20211102105344439](/pages/keynotes/L4_architect/3_logging/pics/11_opensearch_in_production/image-20211102105344439.png)
 

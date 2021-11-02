@@ -17,32 +17,32 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ![image-20210120143026410](/pages/keynotes/L4_architect/4_APM/pics/2_PinPoint_Skywalking/image-20210120143026410.png)
 
-截止到2021年01月12日，我们的比较项如下
+截止到2021年11月2日，我们的比较项如下
 
-| 比较项          | PinPoint                                   | Skywalking                                                 | Jaeger |      |
-| --------------- | ------------------------------------------ | ---------------------------------------------------------- | ------ | ---- |
-| 版本            | v2.2.0                                     | v8.3.0                                                     |        |      |
-| 项目发起人      | Woonduk Kang                               | 吴晟                                                       |        |      |
-| GitHub星数      | 11.1k                                      | 15.8k                                                      |        |      |
-| 社区            | 非apache                                   | apache                                                     |        |      |
-| 文档            | http://skywalking.apache.org/docs/（详细） | https://pinpoint-apm.github.io/pinpoint/main.html（详细）  |        |      |
-| 用户            | 非常多                                     | 非常多                                                     |        |      |
-| 兼容OpenTracing | 不支持                                     | 支持                                                       |        |      |
-| 支持语言        | java,php, C/CPP, python                    | Java, LUA, python, node.js(官方),<br />.NET, php, Go(社区) |        |      |
-| 协议            | thrift                                     | gRPC                                                       |        |      |
-| 存储            | HBase（hbase+hadoop+zookeeper）+MySQL      | ES, H2, MySQL, TiDB, Sharding-Sphere                       |        |      |
-| UI丰富度        | 很高                                       | 很高（8.3版本）                                            |        |      |
-| 实现方式        | 字节码注入                                 | 字节码注入                                                 |        |      |
-| 代码侵入性      | 无                                         | 无                                                         |        |      |
-| 扩展性          | 地                                         | 高                                                         |        |      |
-| TraceId查询     | 不支持                                     | 支持                                                       |        |      |
-| 告警            | 支持                                       | 支持                                                       |        |      |
-| JVM监控         | 支持                                       | 支持                                                       |        |      |
-| 跟踪粒度        | 细                                         | 一般                                                       |        |      |
-| 过滤跟踪        | filter配置                                 | agent.config + apm-trace-ignore-plugin                     |        |      |
-| 性能消耗        | 高                                         | 低                                                         |        |      |
-| 组件            | collector+web+agent+存储                   | OAP+Web+agent+存储+zk                                      |        |      |
-| 发布包          | war                                        | jar                                                        |        |      |
+| 比较项          | PinPoint                                   | Skywalking                                                 | Jaeger                                                     |
+| --------------- | ------------------------------------------ | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| 版本            | v2.3.0                                     | v8.8.1                                                     | v1.27.0                                                    |
+| 项目发起人      | Woonduk Kang                               | 吴晟                                                       | Yuri Shkuro                                                |
+| GitHub星数      | 11.8k                                      | 18k                                                        | 14.5k                                                      |
+| 社区            | 非apache                                   | apache                                                     | CNCF                                                       |
+| 文档            | http://skywalking.apache.org/docs/（详细） | https://pinpoint-apm.github.io/pinpoint/main.html（详细）  | https://www.jaegertracing.io/docs/1.27/                    |
+| 用户            | 非常多                                     | 非常多                                                     | 非常多                                                     |
+| 兼容OpenTracing | 不支持                                     | 支持                                                       | 支持                                                       |
+| 支持语言        | java,php, C/CPP, python                    | Java, LUA, python, node.js(官方),<br />.NET, php, Go(社区) | Go, Java, Node, Python, C++ and C#                         |
+| 协议            | thrift                                     | gRPC                                                       |                                                            |
+| 存储            | HBase（hbase+hadoop+zookeeper）+MySQL      | ES, H2, MySQL, TiDB, Sharding-Sphere                       | Cassandra, Elasticsearch, memory                           |
+| UI丰富度        | 很高                                       | 很高（8.8版本）                                            | 一般                                                       |
+| 实现方式        | 字节码注入                                 | 字节码注入                                                 | 代码注入                                                   |
+| 代码侵入性      | 无                                         | 无                                                         | 高                                                         |
+| 扩展性          | 低                                         | 高                                                         | 高                                                         |
+| TraceId查询     | 不支持                                     | 支持                                                       | 支持                                                       |
+| 告警            | 支持                                       | 支持                                                       | 需要集成alertmanager                                       |
+| JVM监控         | 支持                                       | 支持                                                       | 支持                                                       |
+| 跟踪粒度        | 细                                         | 一般                                                       | 一般                                                       |
+| 过滤跟踪        | filter配置                                 | agent.config + apm-trace-ignore-plugin                     |                                                            |
+| 性能消耗        | 高                                         | 低                                                         | 低                                                         |
+| 组件            | collector+web+agent+存储                   | OAP+Web+agent+存储+zk                                      | jaeger-agent+jaeger-collector+jaeger-query+jaeger-ingester |
+| 发布包          | war                                        | jar                                                        | 注入式                                                     |
 
 ## 3. 社区比较
 
@@ -52,11 +52,15 @@ skywalking作为近两年的后起之秀的势头已经完全超越了pinpoint�
 
 pinpoint
 
-![image-20210120115943969](/pages/keynotes/L4_architect/4_APM/pics/2_PinPoint_Skywalking/image-20210120115943969.png)
+![image-20211102165345793](/pages/keynotes/L4_architect/4_APM/pics/2_PinPoint_Skywalking/image-20211102165345793.png)
 
 skywalking
 
-![image-20210120120232597](/pages/keynotes/L4_architect/4_APM/pics/2_PinPoint_Skywalking/image-20210120120232597.png)
+![image-20211102165325818](/pages/keynotes/L4_architect/4_APM/pics/2_PinPoint_Skywalking/image-20211102165325818.png)
+
+Jaeger
+
+![image-20211102165306112](/pages/keynotes/L4_architect/4_APM/pics/2_PinPoint_Skywalking/image-20211102165306112.png)
 
 ## 4. 支持语言
 
@@ -87,6 +91,10 @@ Pinpoint只支持Hbase，也就是说，如果想要扩展HBase就需要用到ha
 而pinpoint的UI同样非常出色，二者不相伯仲。
 
 ![Pinpoint](/pages/keynotes/L4_architect/4_APM/pics/2_PinPoint_Skywalking/ss_server-map.png)
+
+而Jaeger就相形见绌了，结合Grafana才能做出漂亮的图
+
+![Embed Trace view](/pages/keynotes/L4_architect/4_APM/pics/2_PinPoint_Skywalking/embed-trace-view-with-hide-details-and-hide-minimap.png)
 
 ## 8. 扩展性
 
