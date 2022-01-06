@@ -20,7 +20,7 @@ topnav_dropdowns:
         - title: 架构师课程-K8s方向
           url: /keynotes_L4_architect.html
         - title: 架构师课程-可观测性方向
-          url: /keynotes_L4_architect_observability.html
+          url: /keynotes_L5_architect_observability.html
 
     - title: 课堂风采
       folderitems:
