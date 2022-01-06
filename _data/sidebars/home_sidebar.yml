@@ -41,10 +41,6 @@ entries:
           url: /mydoc_supported_features.html
           output: web, pdf
 
-    - title: Infrastructure As Code
-      url: /mydoc_supported_features.html
-      output: web, pdf
-
-    - title: DevOps
+    - title: 学习前的准备
       url: /mydoc_supported_features.html
       output: web, pdf

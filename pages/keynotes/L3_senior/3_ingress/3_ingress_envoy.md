@@ -1,7 +1,7 @@
 ---
 title: 安装ingress-envoy
 keywords: keynotes, senior, kubernetes, install_ingress_envoy
-permalink: keynotes_L3_senior_2_kubernetes_3_install_ingress_envoy.html
+permalink: keynotes_L3_senior_3_ingress_3_install_ingress_envoy.html
 sidebar: keynotes_L3_senior_sidebar
 typora-copy-images-to: ./pics/2_install_ingress_envoy
 typora-root-url: ../../../../../cloudnative365.github.io

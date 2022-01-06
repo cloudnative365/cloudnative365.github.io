@@ -17,8 +17,10 @@ topnav_dropdowns:
           url: /keynotes_L2_advanced.html
         - title: 高级课程
           url: /keynotes_L3_senior.html
-        - title: 架构师课程
+        - title: 架构师课程-K8s方向
           url: /keynotes_L4_architect.html
+        - title: 架构师课程-可观测性方向
+          url: /keynotes_L4_architect_observability.html
 
     - title: 课堂风采
       folderitems:
@@ -26,7 +28,7 @@ topnav_dropdowns:
           url: /classes_teachers.html
         - title: 关于我们
           url: /classes_aboutus.html
-        - title: 优秀学员作品
+        - title: 优秀学员证书
           url: /classes_successd.html
 
     - title: 常用链接

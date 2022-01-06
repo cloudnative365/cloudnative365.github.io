@@ -1,9 +1,9 @@
 ---
 title: Rancher简介
 keywords: keynotes, senior, kubernetes, Rancher
-permalink: keynotes_L3_senior_2_kubernetes_1_Rancher.html
+permalink: keynotes_L3_senior_2_kubernetes_4_Rancher.html
 sidebar: keynotes_L3_senior_sidebar
-typora-copy-images-to: ./pics/1_Rancher
+typora-copy-images-to: ./pics/4_Rancher
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---
@@ -28,7 +28,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 2. Rancher简介
 
-### 2.1. rancher和它的项目们
+### 2.1. Rancher和它的项目们
 
 Rancher是公司的名字，也是他主要项目的名字，Rancher项目本身是一个带有图形界面的工具，但是，他也提供了命令行方式和API接口，是一个github上的开源项目，遵循apache2.0协议，大家可以免费下载和使用。当然，他免费的是软件，收费的是服务，如果企业想要选用Rancher作为自己的容器管理平台，要么，有牛人可以hold住这头小牛，要么就买rancher的服务。平台再好，不会使用，没有最佳实践，最后只能是给自己挖坑。
 
@@ -64,53 +64,53 @@ Rancher被誉为容器化的一个非常完整的解决方案。他几乎集成�
 
 + 访问http://你的IP，会让我们重置密码
 
-  ![image-20200629161404349](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629161404349.png)
+  ![image-20200629161404349](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629161404349.png)
 
 + 输入URL地址，以后就会使用https访问了
 
-  ![image-20200629162023678](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162023678.png)
+  ![image-20200629162023678](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629162023678.png)
 
 + 现在我们登陆为admin用户
 
-  ![image-20200629162103821](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162103821.png)
+  ![image-20200629162103821](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629162103821.png)
 
 + 点击add cluster
 
-  ![image-20200629162134099](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162134099.png)
+  ![image-20200629162134099](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629162134099.png)
 
 + 选择AWS（或者任意你喜欢的，不过我们这里使用AWS为例子）
 
-  ![image-20200629162352617](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162352617.png)
+  ![image-20200629162352617](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629162352617.png)
 
 + 添加templete
 
-  ![image-20200629162624337](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162624337.png)
+  ![image-20200629162624337](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629162624337.png)
 
 + 输入key的信息
 
-  ![image-20200629162829503](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162829503.png)
+  ![image-20200629162829503](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629162829503.png)
 
 + 选择vpc和subnet
 
-  ![image-20200629162921280](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162921280.png)
+  ![image-20200629162921280](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629162921280.png)
 
 + 选择新建安全组
 
-  ![image-20200629162949511](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629162949511.png)
+  ![image-20200629162949511](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629162949511.png)
 
 + 选择镜像的信息，不选就是用ubuntu
 
-  ![image-20200629163135620](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629163135620.png)
+  ![image-20200629163135620](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629163135620.png)
 
 + 起个名字就可以create了
 
-  ![image-20200629163224379](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629163224379.png)
+  ![image-20200629163224379](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629163224379.png)
 
 + 填写必须的信息，如果想要创建集群的话，就在这里多创建几个模板，让每个模板在不同的region，不同的vpc，不同的sg，然后分配不同的职责，从而构建集群。
 
-  ![image-20200629164104658](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629164104658.png)
+  ![image-20200629164104658](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629164104658.png)
 
 + 创建就好了
 
-  ![image-20200629164143052](/pages/keynotes/L3_senior/5_rancher/pics/1_Rancher/image-20200629164143052.png)
+  ![image-20200629164143052](/pages/keynotes/L3_senior/2_kubernetes/pics/4_Rancher/image-20200629164143052.png)
 

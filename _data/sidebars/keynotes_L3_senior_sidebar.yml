@@ -56,20 +56,24 @@ entries:
       url: /keynotes_L3_senior_2_kubernetes_3_manage_kubernetes.html
       output: web, pdf
 
+    - title: 4.Rancher简介
+      url: /keynotes_L3_senior_2_kubernetes_1_Rancher.html
+      output: web, pdf
+
   - title: 3.ingress
     output: web, pdf
     folderitems:
 
     - title: 1.ingress
-      url: /keynotes_L3_senior_2_kubernetes_1_ingress.html
+      url: /keynotes_L3_senior_3_ingress_1_ingress.html
       output: web, pdf
 
     - title: 2.安装ingress-nginx
-      url: /keynotes_L3_senior_2_kubernetes_2_install_ingress_nginx.html
+      url: /keynotes_L3_senior_3_ingress_2_install_ingress_nginx.html
       output: web, pdf
 
     - title: 3.安装ingress-envoy
-      url: /keynotes_L3_senior_2_kubernetes_3_install_ingress_envoy.html
+      url: /keynotes_L3_senior_3_ingress_3_install_ingress_envoy.html
       output: web, pdf
 
   - title: 4.helm
@@ -77,14 +81,13 @@ entries:
     folderitems:
 
     - title: 1.helm简介
-      url: /keynotes_L3_senior_2_kubernetes_1_helm.html
+      url: /keynotes_L3_senior_4_helm_4_helm.html
       output: web, pdf
 
-  - title: 5.Rancher
+  - title: 5.metrics
     output: web, pdf
     folderitems:
 
-    - title: 1.Rancher简介
-      url: /keynotes_L3_senior_2_kubernetes_1_Rancher.html
+    - title: 1.prometheus
+      url: /keynotes_L3_senior_5_metrics_1_Prometheus_overview.html
       output: web, pdf
-

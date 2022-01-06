@@ -1,7 +1,7 @@
 ---
 title: Helm简介
 keywords: keynotes, senior, kubernetes, helm
-permalink: keynotes_L3_senior_2_kubernetes_1_helm.html
+permalink: keynotes_L3_senior_4_helm_1_helm.html
 sidebar: keynotes_L3_senior_sidebar
 typora-copy-images-to: ./pics/1_helm
 typora-root-url: ../../../../../cloudnative365.github.io
