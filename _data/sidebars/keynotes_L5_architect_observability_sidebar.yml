@@ -48,7 +48,6 @@ entries:
     - title: Logging日志监控概述
       url: /index.html
       output: web, pdf
-      type: homepage
 
       subfolders:
       - title: OpenSearch
@@ -83,7 +82,6 @@ entries:
     - title: Tracing链路追踪概述
       url: /index.html
       output: web, pdf
-      type: homepage
 
       subfolders:
       - title: SkyWalking
