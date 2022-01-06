@@ -9,7 +9,10 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 课程目标
 
-使用fluent-bit收集服务器上的日志
+使用fluentd收集服务器上的日志到
+
++ elasticsearch
++ opensearch
 
 ## 1. 简介
 

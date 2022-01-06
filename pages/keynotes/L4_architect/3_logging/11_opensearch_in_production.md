@@ -16,9 +16,9 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 1. OpenSearch插件
 
-从上一篇文章中，我们知道，OpenSearch插件的前身就是Open Distro。这些插件是默认安装的。他们被安装在`OPENSEARCH_HOME/plugins`目录下面，
+从上一篇文章中，我们知道，OpenSearch插件的前身就是Open Distro。这些插件是默认安装的。他们被安装在`OPENSEARCH_HOME/plugins`目录下面。这些插件很大程度上丰富了整个系统的功能，但是到目前位置，社区上的很多插件还是适配ES的，而不是OpenSearch。如果我们强行把ES上的插件搬到OpenSearch用，大概率会起不来。但是有AWS这棵大树，OpenSearch不是一个人在奋斗，相信在不久的将来，大量开发者就会转向OpenSearch。
 
-
+从这次Log4j的风波就可以看出来，AWS对于OpenSearch的支持力度可是杠杠的，补丁基本上是0day就放出了，让运维升着放心，让开发用着安心。
 
 ## 2. OpenSearch集群
 

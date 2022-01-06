@@ -296,6 +296,12 @@ ssl证书的作用不仅仅是加密了访问端口，并且对于数据，也�
 | 收费情况  | 免费       | 部分免费      | 免费        | 收费，按日志量收费 |
 | 公司/社区 | AWS        | Elastic       | Grafana Lab | Splunk             |
 
+OpenSearch和Elasticsearch本是同根生，在数据引擎方面基本一致，不一致的部分是一些插件，而真正满足客户需要的正是这些插件。ElasticSearch的插件基本是吸收了社区中比较优秀的代码，然后整合到了自己的产品中，比如xPack。而OpenSearch的插件是基于Open Distro，Open Distro是AWS自己基于免费版ElasticSearch而开发的一些功能。
+
+Loki是Grafana Lab的一款产品，虽然影响力没有ES这么大，但是也是有自己的市场的，Loki主要解决了日志大量写的问题，因为Loki是没有索引的，所以他的读写效率都比较平均，适合海量存储。
+
+Splunk的定位是安全产品，他的亮点在于对于日志的分析，他提供的大量模板让用户在应对安全问题时可以很快的找到切入点。
+
 + 性能比较
 
 ![image-20211027143002209](/pages/keynotes/L4_architect/3_logging/pics/10_opensearch/image-20211027143002209.png)
