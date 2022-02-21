@@ -19,7 +19,7 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: 1.etcd
+  - title: 第一章 etcd
     output: web, pdf
     folderitems:
 
@@ -39,7 +39,7 @@ entries:
       url: /keynotes_L3_senior_1_etcd_4_manage_etcd.html
       output: web, pdf
 
-  - title: 2.kubernetes集群管理
+  - title: 第二章 kubernetes集群管理
     output: web, pdf
     folderitems:
 
@@ -60,7 +60,7 @@ entries:
       url: /keynotes_L3_senior_2_kubernetes_1_Rancher.html
       output: web, pdf
 
-  - title: 3.ingress
+  - title: 第三章 ingress
     output: web, pdf
     folderitems:
 
@@ -76,7 +76,7 @@ entries:
       url: /keynotes_L3_senior_3_ingress_3_install_ingress_envoy.html
       output: web, pdf
 
-  - title: 4.helm
+  - title: 第四章 helm
     output: web, pdf
     folderitems:
 
@@ -84,10 +84,22 @@ entries:
       url: /keynotes_L3_senior_4_helm_4_helm.html
       output: web, pdf
 
-  - title: 5.metrics
+  - title: 第五章 metrics
     output: web, pdf
     folderitems:
 
     - title: 1.prometheus
       url: /keynotes_L3_senior_5_metrics_1_Prometheus_overview.html
+      output: web, pdf
+
+  - title: 第六章 logging
+    output: web, pdf
+    folderitems:
+
+    - title: 1.ELK
+      url: /keynotes_L3_senior_5_metrics_1_Prometheus_overview.html
+      output: web, pdf
+
+    - title: 2.fluentd概述
+      url: /keynotes_L3_senior_6_logging_2_fluentd_overview.html
       output: web, pdf
