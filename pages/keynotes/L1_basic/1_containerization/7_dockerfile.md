@@ -33,8 +33,9 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 2. 基于Dockerfile制作镜像
 
-![file](https://graph.baidu.com/resource/222eec1948efb190bd20b01586186175.png)
+![img](/pages/keynotes/L1_basic/1_containerization/pics/3_docker_image/874963-20200209160957298-684710888.png)
 我们前面讲过镜像的生成方式，一种是基于容器制作，一种是基于Dockerfile制作。Dockerfile是创建Docker镜像的源代码。
+
 + Docker可以通过读取Dockerfile中的内容，而自动构建镜像
 + Dockerfile是文本形式的，包含了用户在命令行可以调用的，集成在镜像中的所有指令。
 + 使用Docker build，用户可以创建一个自动构建，执行多个在命令行连续运行的指令。

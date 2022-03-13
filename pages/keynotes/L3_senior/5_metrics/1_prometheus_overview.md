@@ -1,9 +1,9 @@
 ---
 title: Prometheus概览
-keywords: keynotes, senior, metrics, Prometheus_overview
-permalink: keynotes_L3_senior_5_metrics_1_Prometheus_overview.html
+keywords: keynotes, senior, metrics, prometheus_overview
+permalink: keynotes_L3_senior_5_metrics_1_prometheus_overview.html
 sidebar: keynotes_L3_senior_sidebar
-typora-copy-images-to: ./pics/1_Prometheus_overview
+typora-copy-images-to: ./pics/1_prometheus_overview
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---
@@ -75,7 +75,7 @@ scrape_configs:
 
 ### 2.1. 架构图
 
-![Prometheus architecture](/pages/keynotes/L3_senior/5_metrics/pics/1_Prometheus_overview/architecture.png)
+![Prometheus architecture](/pages/keynotes/L3_senior/5_metrics/pics/1_prometheus_overview/architecture.png)
 
 ### 2.2. 一些概念
 
@@ -89,7 +89,7 @@ scrape_configs:
 
 我们可以从这个地址来采集metric [localhost:9090/metrics](http://localhost:9090/metrics), Prometheus所暴露的他自己的指标中，有一个metric叫 `prometheus_target_interval_length_seconds` (两次抓取指标的时间间隔). 我们把他输入到查询框中，然后执行Execute
 
-![image-20200607222651752](/pages/keynotes/L3_senior/5_metrics/pics/1_Prometheus_overview/image-20200607222651752.png)
+![image-20200607222651752](/pages/keynotes/L3_senior/5_metrics/pics/1_prometheus_overview/image-20200607222651752.png)
 
 
 
@@ -117,7 +117,7 @@ count(prometheus_target_interval_length_seconds)
 rate(prometheus_tsdb_head_chunks_created_total[1m])
 ```
 
-![image-20200608103548306](/pages/keynotes/L3_senior/5_metrics/pics/1_Prometheus_overview/image-20200608103548306.png)
+![image-20200608103548306](/pages/keynotes/L3_senior/5_metrics/pics/1_prometheus_overview/image-20200608103548306.png)
 
 ### 3.3. 启动一些样例的target
 
@@ -169,7 +169,7 @@ scrape_configs:
 
 去浏览器的表达式中查看，确认Prometheus已经拥有这些端点暴露出来的时间序列，比如 `rpc_durations_seconds` 
 
-![image-20200608173434649](/pages/keynotes/L3_senior/5_metrics/pics/1_Prometheus_overview/image-20200608173434649.png)
+![image-20200608173434649](/pages/keynotes/L3_senior/5_metrics/pics/1_prometheus_overview/image-20200608173434649.png)
 
 ### 3.5. 配置把抓取的数据聚合到新的时间序列
 
@@ -179,7 +179,7 @@ scrape_configs:
 avg(rate(rpc_durations_seconds_count[5m])) by (job, service)
 ```
 
-![image-20200608173621247](/pages/keynotes/L3_senior/5_metrics/pics/1_Prometheus_overview/image-20200608173621247.png)
+![image-20200608173621247](/pages/keynotes/L3_senior/5_metrics/pics/1_prometheus_overview/image-20200608173621247.png)
 
 ### 3.6. 创建新的规则
 
@@ -233,7 +233,7 @@ scrape_configs:
 
 用新的配置文件重启Prometheus并且确保使用新的metrics名字的时间序列`job_service:rpc_durations_seconds_count:avg_rate5m`可以被浏览器查询
 
-![image-20200608175311646](/pages/keynotes/L3_senior/5_metrics/pics/1_Prometheus_overview/image-20200608175311646.png)
+![image-20200608175311646](/pages/keynotes/L3_senior/5_metrics/pics/1_prometheus_overview/image-20200608175311646.png)
 
 ## 4. 概念解释
 
