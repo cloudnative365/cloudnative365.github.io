@@ -1,0 +1,103 @@
+# This is your sidebar TOC. The sidebar code loops through sections here and provides the appropriate formatting.
+
+entries:
+- title: sidebar
+  product: 架构师课程-DevOpsß
+  version: 
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: 1.0tlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+  - title: 第一章 Metrics指标监控
+    output: web, pdf
+    folderitems:
+
+    - title: Metrics指标监控概述
+      url: /index.html
+      output: web, pdf
+      type: homepage
+
+      subfolders:
+      - title: Thanos
+        output: web, pdf
+        subfolderitems:
+
+        - title: Thanos概述
+          url: /mydoc_supported_features.html
+          output: web, pdf
+        
+        - title: Thanos概念
+          url: /mydoc_supported_features.html
+          output: web, pdf
+
+  - title: 第二章 Logging日志监控
+    output: web, pdf
+    folderitems:
+
+    - title: Logging日志监控概述
+      url: /index.html
+      output: web, pdf
+
+      subfolders:
+      - title: OpenSearch
+        output: web, pdf
+        subfolderitems:
+
+        - title: OpenSearch
+          url: /mydoc_supported_features.html
+          output: web, pdf
+        
+        - title: 生产级别的OpenSearch
+          url: /mydoc_supported_features.html
+          output: web, pdf
+
+      subfolders:
+      - title: Fluentd和FluentBit
+        output: web, pdf
+        subfolderitems:
+
+        - title: Mysql->Fluentd->OpenSearch
+          url: /mydoc_supported_features.html
+          output: web, pdf
+        
+        - title: Logfile->Fluentbit->Fluentd->OpenSearch
+          url: /mydoc_supported_features.html
+          output: web, pdf
+
+  - title: 第三章 Tracing链路追踪
+    output: web, pdf
+    folderitems:
+
+    - title: Tracing链路追踪概述
+      url: /index.html
+      output: web, pdf
+
+      subfolders:
+      - title: SkyWalking
+        output: web, pdf
+        subfolderitems:
+
+        - title: SkyWwalking概述
+          url: /mydoc_supported_features.html
+          output: web, pdf
+        
+      subfolders:
+      - title: OpenTelmetry
+        output: web, pdf
+        subfolderitems:
+
+        - title: OpenTelmetry概述
+          url: /mydoc_supported_features.html
+          output: web, pdf
+        
