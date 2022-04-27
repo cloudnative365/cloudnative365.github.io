@@ -13,12 +13,18 @@ typora-root-url: ../../../cloudnative365.github.io
 
 ### Metrics
 
-+ Thanos
++ Thanos（填坑中）
++ Cortex（有机会再说）
++ Influxdb（有机会再说）
 
 ### Logging
 
-+ OpenSearch
++ OpenSearch（填坑中）
++ Logstash（填坑中）
++ Fluentd（填坑中）
++ Fluent-bit（填坑中）
 
 ### Tracing
 
-+ OpenTelemetry
++ OpenTelemetry（长期计划）
++ Skywalking（长期计划）

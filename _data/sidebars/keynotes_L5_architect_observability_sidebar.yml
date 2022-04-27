@@ -24,7 +24,7 @@ entries:
     folderitems:
 
     - title: Metrics指标监控概述
-      url: /index.html
+      url: /L5_architect_observability_overview.html
       output: web, pdf
       type: homepage
 
