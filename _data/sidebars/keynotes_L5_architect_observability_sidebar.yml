@@ -32,28 +32,27 @@ entries:
       - title: Thanos
         output: web, pdf
         subfolderitems:
-
         - title: Thanos概述
-          url: /mydoc_supported_features.html
+          url: /L5_architect_observability_thanos_overview.html
           output: web, pdf
         
         - title: Thanos概念
-          url: /mydoc_supported_features.html
+          url: /L5_architect_observability_thanos_conception.html
           output: web, pdf
-
+    
   - title: 第二章 Logging日志监控
     output: web, pdf
     folderitems:
-
+  
     - title: Logging日志监控概述
       url: /index.html
       output: web, pdf
-
+  
       subfolders:
       - title: OpenSearch
         output: web, pdf
         subfolderitems:
-
+  
         - title: OpenSearch
           url: /mydoc_supported_features.html
           output: web, pdf
@@ -61,12 +60,12 @@ entries:
         - title: 生产级别的OpenSearch
           url: /mydoc_supported_features.html
           output: web, pdf
-
+  
       subfolders:
       - title: Fluentd和FluentBit
         output: web, pdf
         subfolderitems:
-
+  
         - title: Mysql->Fluentd->OpenSearch
           url: /mydoc_supported_features.html
           output: web, pdf
@@ -74,30 +73,30 @@ entries:
         - title: Logfile->Fluentbit->Fluentd->OpenSearch
           url: /mydoc_supported_features.html
           output: web, pdf
-
+  
   - title: 第三章 Tracing链路追踪
     output: web, pdf
     folderitems:
-
+  
     - title: Tracing链路追踪概述
       url: /index.html
       output: web, pdf
-
+  
       subfolders:
       - title: SkyWalking
         output: web, pdf
         subfolderitems:
-
+  
         - title: SkyWwalking概述
           url: /mydoc_supported_features.html
           output: web, pdf
         
+      
       subfolders:
       - title: OpenTelmetry
         output: web, pdf
         subfolderitems:
-
+      
         - title: OpenTelmetry概述
           url: /mydoc_supported_features.html
           output: web, pdf
-        
