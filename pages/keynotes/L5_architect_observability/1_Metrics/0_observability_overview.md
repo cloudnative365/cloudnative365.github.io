@@ -14,6 +14,10 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 
 
+![prometheus-vs-zabbix](/pages/keynotes/L5_architect_observability/1_Metrics/pics/0_observability_overview/prometheus-vs-zabbix.webp)
+
+
+
 在云原生时代，监控体系也发生了本质上的变化。为了区别云原生体系下的监控产品，我们为它取了一个非常时尚的名字，叫Observability，可观测性。
 
 
@@ -23,6 +27,10 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 
 第一，什么是可观测性。
+
+
+
+![kubecon2019_tomkeynote_pillars](/pages/keynotes/L5_architect_observability/1_Metrics/pics/0_observability_overview/kubecon2019_tomkeynote_pillars.png)
 
 
 
@@ -42,6 +50,10 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 
 
+![Final_Banner_Observability_Marketing](/pages/keynotes/L5_architect_observability/1_Metrics/pics/0_observability_overview/Final_Banner_Observability_Marketing.webp)
+
+
+
 存在就一定是有道理的，如果可观测性系统能够完全取代传统监控，那么传统监控应该很快就消失了。但是我们经常能够看到在一个公司的IT运维体系里面同时存在各种监控系统，传统监控和可观测性系统并存，针对不同的系统，使用不同的监控手段。
 
 
@@ -54,6 +66,10 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 
 
+![unified-observability](/pages/keynotes/L5_architect_observability/1_Metrics/pics/0_observability_overview/unified-observability.png)
+
+
+
 如果我们确定了需要一个可观测性系统，我们就需要针对我们的架构来进行设计了，不同的架构体系中应该选择不同的系统进行协同工作。即使同一款产品，在不同的IT体系当中，也应该使用不同的架构当中来适配。
 
 
@@ -63,6 +79,10 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 
 第四，合理的报警
+
+
+
+![code-review](/pages/keynotes/L5_architect_observability/1_Metrics/pics/0_observability_overview/code-review.png)
 
 
 
@@ -82,7 +102,11 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 2. Prometheus杂谈
 
-说到指标监控的工具，我们第一个想到的就是prometheus了，prometheus和prometheus真的是一对非常好的CP。
+说到指标监控的工具，我们第一个想到的就是prometheus了，prometheus和kubernetes真的是一对非常好的CP。
+
+
+
+![kubernetes_prometheus](/pages/keynotes/L5_architect_observability/1_Metrics/pics/0_observability_overview/kubernetes_prometheus.webp)
 
 
 
