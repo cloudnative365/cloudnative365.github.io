@@ -137,3 +137,34 @@ prometheus本身是支持远程读写功能的，叫remote read和remote write�
 ![image-20220309232257114](/pages/keynotes/L3_senior/5_metrics/pics/2_prometheus_advanced/image-20220309232257114.png)
 
 但是要注意，并不是每种方案都经过严格的验证。特别是开源的软件，大家在选择的时候要特别小心不要被坑住，在正式投入生产之前一定要做充分的验证。而且，并不是每种存储都支持直接写入。我们在架构师的课程里面会挑出几种来做几套生产级别的解决方案。
+
+## 3. 注册中心
+
+我们在配置文件中，看到了一些xx_sd_config的配置，sd就是service discover的缩写。他的原理是把需要监控的endpoint信息都放在某些特殊的位置，而prometheus会去这些注册中心中拿信息，从而动态的获得监控目标的信息。比如：
+
++ Prometheus监控kubernetes集群就是通过kubernetes_sd_config来做的。
++ 对于常见的公有云，还有ec2，gce，azure的discovery。
++ 我们还可以针对一些专门的注册中心软件做配置，比如dns，consul和eureka。
++ 如果想自己开发的话，就可以使用http_sd_config，让prometheus去call特定的api，通过返回值来更新prometheus中的监控目标
+
+我们课程里面会使用consul来做例子，因为consul是一个非常典型的注册中心，架构非常完善。比较适合生产级别的系统，但是他和prometheus类似，都是提供了非常完善的API，而图形界面功能很单一，如果想商用，就需要自己开发。
+
+## 4. federation
+
+federation就是从一个prometheus实例去另外一个prometheus集群里面拿数据回来的过程。我们通常会分为分层联邦和跨服务联邦。
+
+![img](/pages/keynotes/L3_senior/5_metrics/pics/2_prometheus_advanced/webp)
+
+在数据展示和报警的时候，只需要去service prometheus去做就可以了。
+
+## 5. 集群
+
+prometheus是单实例的，无状态的，本身并没有数据库的什么流复制（mysql的MHA）或者共享盘（oracle的ASM）之类的机制。所以想做集群，我们只能简单的多做几个prometheus，让他们同时采集一个exporter上的数据并且储存起来，即使某一个实例挂了，另外一个实例还是正常运行的，我们就去另外的实例查询，通过类似于VIP的机制，如果一个prometheus挂了，就让IP飘到另外一个机器上，而grafana只需要去另外的集群查就好了。但是报警还是没办法，因为报警的rule是在prometheus上配置的，如果想做两个prometheus实例，就要写两份报警规则，我们其实也可以通过nfs的方式，把配置文件放到共享盘的方式来做。
+
+## 6. 数据展示
+
+数据展示我们基本都是用grafana来做的，很多的第三方也摒弃了重复造轮子的方式，而直接在web上内嵌了grafana的方式来做。而我们基本上只需要买车就可以了，社区里面有比较成熟的模板，我们下来直接使用就好了。当然，如果想多学习的话，我们还是要具备一些grafana dashboard的制作方法的。特别是需要一些手撸promsql的能力。
+
+## 7. 报警规则
+
+和展示一样，我们也需要一些手撸promsql的能力，但是我们也会给出一些很好的例子来，我们只需要明白原理，就可以随意进行修改了。

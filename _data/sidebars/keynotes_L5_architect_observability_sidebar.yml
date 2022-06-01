@@ -24,7 +24,7 @@ entries:
     folderitems:
 
     - title: Metrics指标监控概述
-      url: /L5_architect_observability_overview.html
+      url: /L5_architect_observability_metric_overview.html
       output: web, pdf
       type: homepage
 
@@ -39,13 +39,37 @@ entries:
         - title: Thanos概念
           url: /L5_architect_observability_thanos_conception.html
           output: web, pdf
-    
+
+        - title: Thanos查询集群
+          url: /L5_architect_observability_thanos_query_cluster.html
+          output: web, pdf
+
+        - title: Thanos存储集群
+          url: /L5_architect_observability_thanos_storage_cluster.html
+          output: web, pdf
+
+        - title: Thanos注册中心集群
+          url: /L5_architect_observability_thanos_service_cluster.html
+          output: web, pdf
+
+        - title: Thanos报警中心集群
+          url: /L5_architect_observability_thanos_alert_cluster.html
+          output: web, pdf
+
+        - title: Grafana展示集群
+          url: /L5_architect_observability_thanos_dashboard_cluster.html
+          output: web, pdf
+
+        - title: Thanos接收中心集群
+          url: /L5_architect_observability_thanos_receiver_cluster.html
+          output: web, pdf
+
   - title: 第二章 Logging日志监控
     output: web, pdf
     folderitems:
   
     - title: Logging日志监控概述
-      url: /index.html
+      url: /L5_architect_observability_log_overview.html
       output: web, pdf
   
       subfolders:
@@ -54,11 +78,11 @@ entries:
         subfolderitems:
   
         - title: OpenSearch
-          url: /mydoc_supported_features.html
+          url: /L5_architect_observability_opensearch_overview.html
           output: web, pdf
         
         - title: 生产级别的OpenSearch
-          url: /mydoc_supported_features.html
+          url: /L5_architect_observability_opensearch_cluster.html
           output: web, pdf
   
       subfolders:
