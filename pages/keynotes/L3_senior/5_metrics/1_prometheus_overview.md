@@ -91,8 +91,6 @@ scrape_configs:
 
 ![image-20200607222651752](/pages/keynotes/L3_senior/5_metrics/pics/1_prometheus_overview/image-20200607222651752.png)
 
-
-
 他会返回一系列不同的时间（每个后面都有一个value），所有的metrics都叫 `prometheus_target_interval_length_seconds`但是标签不同。这些标签标示不同的延迟百分比和目标组的间隔时间
 
 如果我们只对“99th percentile latencies”这一行感兴趣，我们就可以这样来取出这一行

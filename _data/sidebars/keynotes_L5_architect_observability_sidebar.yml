@@ -40,28 +40,28 @@ entries:
           url: /L5_architect_observability_thanos_conception.html
           output: web, pdf
 
-        - title: Thanos查询集群
-          url: /L5_architect_observability_thanos_query_cluster.html
+        - title: Thanos存储
+          url: /L5_architect_observability_thanos_store.html
           output: web, pdf
 
-        - title: Thanos存储集群
-          url: /L5_architect_observability_thanos_storage_cluster.html
+        - title: Thanos报警
+          url: /L5_architect_observability_thanos_ruler.html
           output: web, pdf
 
-        - title: Thanos注册中心集群
-          url: /L5_architect_observability_thanos_service_cluster.html
+        - title: Thanos前端缓存
+          url: /L5_architect_observability_thanos_frontend.html
           output: web, pdf
 
-        - title: Thanos报警中心集群
-          url: /L5_architect_observability_thanos_alert_cluster.html
+        - title: Consul集群
+          url: /L5_architect_observability_thanos_consul.html
           output: web, pdf
 
-        - title: Grafana展示集群
-          url: /L5_architect_observability_thanos_dashboard_cluster.html
+        - title: Thanos接受请求
+          url: /L5_architect_observability_thanos_receive.html
           output: web, pdf
 
-        - title: Thanos接收中心集群
-          url: /L5_architect_observability_thanos_receiver_cluster.html
+        - title: 夜莺
+          url: /L5_architect_observability_thanos_nightingale.html
           output: web, pdf
 
   - title: 第二章 Logging日志监控

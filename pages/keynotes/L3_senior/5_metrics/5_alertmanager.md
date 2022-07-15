@@ -5,8 +5,6 @@ permalink: keynotes_L3_senior_5_metrics_5_alertmanager.html
 sidebar: keynotes_L3_senior_sidebar
 typora-copy-images-to: ./pics/5_alertmanager
 typora-root-url: ../../../../../cloudnative365.github.io
-
-
 ---
 
 ## 1. 概述

@@ -89,7 +89,7 @@ entries:
     folderitems:
 
     - title: 1.prometheus
-      url: /keynotes_L3_senior_5_metrics_1_Prometheus_overview.html
+      url: /keynotes_L3_senior_5_metrics_1_prometheus_overview.html
       output: web, pdf
 
   - title: 第六章 logging
