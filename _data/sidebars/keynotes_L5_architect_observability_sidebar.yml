@@ -44,16 +44,16 @@ entries:
           url: /L5_architect_observability_thanos_store.html
           output: web, pdf
 
-        - title: Thanos报警
-          url: /L5_architect_observability_thanos_ruler.html
-          output: web, pdf
-
         - title: Thanos前端缓存
           url: /L5_architect_observability_thanos_frontend.html
           output: web, pdf
 
         - title: Consul集群
           url: /L5_architect_observability_thanos_consul.html
+          output: web, pdf
+
+        - title: Thanos报警
+          url: /L5_architect_observability_thanos_ruler.html
           output: web, pdf
 
         - title: Thanos接受请求

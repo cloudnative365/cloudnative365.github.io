@@ -1,9 +1,9 @@
 ---
 title: 安装elastic stack工具
 keywords: keynotes, architect, logging, install_elasticsearch
-permalink: keynotes_L4_architect_3_logging_2_install_elasticsearch.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/2_install_elasticsearch
+permalink: keynotes_L5_architect_observability_2_log_1_1_install_elasticsearch.html
+sidebar: keynotes_L5_architect_observability
+typora-copy-images-to: ./pics/1_1_install_elasticsearch.md
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---
@@ -200,7 +200,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
   # 生产环境建议设置为true，删除索引库的时候必须显式指定，否则可能会误删索引库中的索引库。
   action.destructive_requires_name: true
   ```
-  
+
   master3上的/etc/elasticsearch/elasticsearch.yml
 
   ``` bash
@@ -233,7 +233,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
   # 生产环境建议设置为true，删除索引库的时候必须显式指定，否则可能会误删索引库中的索引库。
   action.destructive_requires_name: true
   ```
-  
+
 + 启动集群
 
   ``` bash
@@ -309,15 +309,15 @@ kibana同理。
 
 + 界面添加：
 
-  ![image-20200902112610387](/pages/keynotes/L4_architect/3_logging/pics/2_install_elasticsearch/image-20200902112610387.png)
+  ![image-20200902112610387](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_install_elasticsearch/image-20200902112610387.png)
 
 + 上传许可证（license），我们可以去找官方申请一个，一般来说会通过邮件的形式发送一个连接，然后我们可以下载，下载之后是一个json文件，点击Update your license
 
-  ![image-20200903112727392](/pages/keynotes/L4_architect/3_logging/pics/2_install_elasticsearch/image-20200903112727392.png)
+  ![image-20200903112727392](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_install_elasticsearch/image-20200903112727392.png)
 
 + 成功之后就会显示日期
 
-  ![image-20200903112957049](/pages/keynotes/L4_architect/3_logging/pics/2_install_elasticsearch/image-20200903112957049.png)
+  ![image-20200903112957049](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_install_elasticsearch/image-20200903112957049.png)
 
   
 

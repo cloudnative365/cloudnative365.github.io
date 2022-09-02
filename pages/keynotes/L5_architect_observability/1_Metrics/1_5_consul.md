@@ -3,7 +3,7 @@ title: Consul集群
 keywords: keynotes, architect, observability, thanos, consul
 permalink: L5_architect_observability_thanos_consul.html
 sidebar: keynotes_L5_architect_observability_sidebar
-typora-copy-images-to: ./pics/1_6_Thanos_consul
+typora-copy-images-to: ./pics/1_5_Thanos_consul
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 
@@ -15,7 +15,7 @@ Prometheus可以通过拉取consul中的服务信息，从而把要监控的endp
 
 Prometheus天生支持service discovery的模式，我们要用到的是consul_sd模块。通过consul来探测exporter是不是正常工作，而不是由prometheus来直接探测。consul集群架构如下
 
-![consul_ha](/pages/keynotes/L5_architect_observability/1_Metrics/pics/1_6_Thanos_consul/consul_ha.png)
+![consul_ha](/pages/keynotes/L5_architect_observability/1_Metrics/pics/1_5_Thanos_consul/consul_ha.png)
 
 由于consul天生支持内网和外网探测两种方式，还自带集群模式，可以说是DC中prometheus的最好搭档。当然，还有一种模式也非常不错，就是通过DNS。
 
@@ -90,6 +90,27 @@ WantedBy=multi-user.target
 
 consul是使用api来进行管理的，虽然consul命令本身可以实现管理，但是本质依然是调用API，这个和kubernetes有一点像。我们就使用直接调用api的方式来把需要注册的信息传入consul中。
 
+我们来注册一个node_exporter的信息`curl --request PUT --data @node2.json http://10.0.1.12:8500/v1/agent/service/register`
+
+``` bash
+{
+      "id": "node_exporter-node2",
+      "name": "node_exporter-node2",
+      "address": "10.0.1.12",
+      "port": 9100,
+      "tags": ["node_exporter"],
+      "meta": {
+      	"project": "monitoring"
+      },
+      "checks": [{
+        "http": "http://10.0.1.12:9100/metrics",
+        "interval": "5s"
+      }]
+}
+```
+
+
+
 ## 4. 配置Prometheus读取Consul的信息
 
 Consul和Prometheus的结合方式是通过consul_sd来实现的。
@@ -118,7 +139,7 @@ scrape_configs:
         services: []
     relabel_configs:
       - source_labels: [__meta_consul_tags]
-        regex: .*node-exporter.*
+        regex: .*node_exporter.*
         action: keep
       - regex: __meta_consul_service_metadata_(.+)
         action: labelmap

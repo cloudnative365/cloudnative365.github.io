@@ -3,7 +3,7 @@ title: Thanos报警
 keywords: keynotes, architect, observability, thanos, ruler
 permalink: L5_architect_observability_thanos_ruler.html
 sidebar: keynotes_L5_architect_observability_sidebar
-typora-copy-images-to: ./pics/1_4_Thanos_ruler
+typora-copy-images-to: ./pics/1_6_Thanos_ruler
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 
@@ -21,7 +21,9 @@ AlertManager是天生支持集群模式的，他们的集群是通过两个实�
   wget https://github.com/prometheus/alertmanager/releases/download/v0.24.0/alertmanager-0.24.0.linux-amd64.tar.gz
   tar xf alertmanager-0.24.0.linux-amd64.tar.gz
   cd alertmanager-0.24.0.linux-amd64
-  mv alertmanager /usr/local/sbin
+  mv alertmanager amtool /usr/local/sbin
+  mkdir /etc/alertmanager
+  mv alertmanager.yml /etc/alertmanager/
   ```
 
 + 修改systemd文件，/etc/systemd/system/alertmanager.service，两台机器都这么配置，从而互相监听
@@ -56,10 +58,10 @@ global:
   resolve_timeout: 5m
 
   # smtp parameter
-  smtp_smarthost: smtpdm.aliyun.com:465
-  smtp_from: monitor@notify.eubrmb.com
-  smtp_auth_username: monitor@notify.eubrmb.com
-  smtp_auth_password: 2AFo5GwDpamD
+  smtp_smarthost: smtp.qq.com:465
+  smtp_from: 29371962@qq.com
+  smtp_auth_username: 29371962@qq.com
+  smtp_auth_password: qjrqmfxodukpbihc
   smtp_require_tls: false
 
 route:
@@ -129,7 +131,7 @@ ExecStart=/usr/local/sbin/thanos rule \
     --query.config-file=/etc/thanos/thanos-ruler-query.yml \
     --objstore.config-file=/etc/thanos/thanos-minio.yml \
     --web.external-prefix=http://10.0.0.11:10910 \ # 对外暴露的url
-    --label=cluster="aws"
+    --label=cluster="aws" \
     --label=replica="A" \ # 另外的集群写B
     --alert.label-drop="replica"
 ExecReload=/bin/kill -HUP 
@@ -151,14 +153,9 @@ alertmanagers:
 
 /etc/thanos/thanos-ruler-query.yml文件
 
-``` b ash
+``` bash
 - http_config:
-    basic_auth:
-      username: "viewer"
-      password: "viewer"
-    tls_config:
-      insecure_skip_verify: true
-  static_configs: ["http://10.0.0.11"]
+  static_configs: ["10.0.0.11:10903"]
   scheme: http
 ```
 

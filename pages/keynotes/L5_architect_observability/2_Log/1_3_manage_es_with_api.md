@@ -1,9 +1,9 @@
 ---
 title: 使用API管理ES
-keywords: keynotes, architect, logging, 4_manage_es_with_api
-permalink: keynotes_L4_architect_3_logging_4_manage_es_with_api.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/4_manage_es_with_api
+keywords: keynotes, architect, logging, manage_es_with_api
+permalink: keynotes_L5_architect_observability_2_log_1_3_manage_es_with_api.html
+sidebar: keynotes_L5_architect_observability
+typora-copy-images-to: ./pics/1_3_manage_es_with_api
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---

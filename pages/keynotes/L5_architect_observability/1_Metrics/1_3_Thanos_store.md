@@ -245,7 +245,7 @@ upstream minio-console {
   type: S3
   config:
     bucket: "thanos"
-    endpoint: "10.0.0.11:9000"
+    endpoint: "10.0.1.11:9000"
     access_key: "thanos"
     insecure: true
     secret_key: "Passw0rd"

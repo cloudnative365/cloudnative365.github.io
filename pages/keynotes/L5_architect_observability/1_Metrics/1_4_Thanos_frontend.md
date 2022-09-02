@@ -3,7 +3,7 @@ title: Thanos前端缓存
 keywords: keynotes, architect, observability, thanos, frontend
 permalink: L5_architect_observability_thanos_frontend.html
 sidebar: keynotes_L5_architect_observability_sidebar
-typora-copy-images-to: ./pics/1_5_Thanos_frontend
+typora-copy-images-to: ./pics/1_4_Thanos_frontend
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 

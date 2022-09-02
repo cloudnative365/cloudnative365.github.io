@@ -1,9 +1,9 @@
 ---
 title: 安装插件
-keywords: keynotes, architect, logging, logging_overview
-permalink: keynotes_L4_architect_3_logging_3_install_plugins.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/3_install_plugins
+keywords: keynotes, architect, logging, install_plugins
+permalink: keynotes_L5_architect_observability_2_log_1_2_install_plugins.html
+sidebar: keynotes_L5_architect_observability
+typora-copy-images-to: ./pics/1_2_install_plugins.md
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---
