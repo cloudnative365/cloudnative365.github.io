@@ -1,11 +1,10 @@
 ---
 title: x-pack
-keywords: keynotes, architect, logging, 7_x-pack
-permalink: keynotes_L4_architect_3_logging_7_x-pack.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/7_x-pack
+keywords: keynotes, senior, logging, x-pack
+permalink: keynotes_L3_senior_6_logging_3_xpack.html
+sidebar: keynotes_L3_senior_sidebar
+typora-copy-images-to: ./pics/3_xpack
 typora-root-url: ../../../../../cloudnative365.github.io
-
 ---
 
 ## 1. 概述
@@ -16,7 +15,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 elastic stack免费版提供的安全功能是非常有限的，在官方文档中的描述叫核心安全功能，而收费的叫高级安全功能，请参考[官方网站](https://www.elastic.co/cn/subscriptions)
 
-![image-20200904094700864](/pages/keynotes/L4_architect/3_logging/pics/7_x-pack/image-20200904094700864.png)
+![image-20200904094700864](/pages/keynotes/L3_senior/6_logging/pics/3_xpack/image-20200904094700864.png)
 
 其实我觉得他已经把一些亮点都总结的很好了
 
@@ -27,7 +26,7 @@ elastic stack免费版提供的安全功能是非常有限的，在官方文档�
 
 ### 1.2. 安全组件的工作流
 
-![Elastic Security workflow](/pages/keynotes/L4_architect/3_logging/pics/7_x-pack/workflow.png)
+![Elastic Security workflow](/pages/keynotes/L3_senior/6_logging/pics/3_xpack/workflow.png)
 
 ## 1. 开启安全认证
 

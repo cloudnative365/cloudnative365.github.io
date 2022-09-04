@@ -1,16 +1,11 @@
 ---
-title: 使用API管理ES
-keywords: keynotes, architect, logging, manage_es_with_api
-permalink: keynotes_L5_architect_observability_2_log_1_3_manage_es_with_api.html
-sidebar: keynotes_L5_architect_observability
-typora-copy-images-to: ./pics/1_3_manage_es_with_api
+title: 管理ES
+keywords: keynotes, senior, logging, manage_es
+permalink: keynotes_L3_senior_6_logging_5_manage_es.html
+sidebar: keynotes_L3_senior_sidebar
+typora-copy-images-to: ./pics/5_manage_es
 typora-root-url: ../../../../../cloudnative365.github.io
-
 ---
-
-## 学习目标
-
-使用http请求的方式来管理es
 
 ## 概述
 

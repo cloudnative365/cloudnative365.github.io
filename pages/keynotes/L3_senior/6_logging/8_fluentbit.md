@@ -1,18 +1,15 @@
 ---
-title: fluentd简单上手
+title: fluent-bit
 keywords: keynotes, architect, logging, fluent-bit
-permalink: keynotes_L4_architect_3_logging_13_fluentd_demo.html
+permalink: keynotes_L3_senior_6_logging_8_fluentbit.html
 sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/13_fluentd_demo
+typora-copy-images-to: ./pics/8_fluentbit
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 
 ## 课程目标
 
-使用fluentd收集服务器上的日志到
-
-+ elasticsearch
-+ opensearch
+使用fluent-bit收集服务器上的日志
 
 ## 1. 简介
 

@@ -88,18 +88,86 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 1.prometheus
+    - title: 1.Prometheus概览
       url: /keynotes_L3_senior_5_metrics_1_prometheus_overview.html
+      output: web, pdf
+
+    - title: 2.Prometheus进阶
+      url: /keynotes_L3_senior_5_metrics_2_prometheus_advanced.html
+      output: web, pdf
+
+    - title: 3.Exporter
+      url: /keynotes_L3_senior_5_metrics_3_exporter.html
+      output: web, pdf
+
+    - title: 4.grafana
+      url: /keynotes_L3_senior_5_metrics_4_grafana.html
+      output: web, pdf
+
+    - title: 5.alertmanager
+      url: /keynotes_L3_senior_5_metrics_5_alertmanager.html
+      output: web, pdf
+
+    - title: 6.prometheus查询
+      url: /keynotes_L3_senior_5_metrics_6_prometheus_query.html
+      output: web, pdf
+
+    - title: 7.prometheus服务自动发现
+      url: /keynotes_L3_senior_5_metrics_7_prometheus_auto_discovery.html
+      output: web, pdf
+
+    - title: 8.prometheus联邦
+      url: /keynotes_L3_senior_5_metrics_8_prometheus_federation.html
+      output: web, pdf
+
+    - title: 9.node_exporter
+      url: /keynotes_L3_senior_5_metrics_9_node_exporter.html
+      output: web, pdf
+
+    - title: 10.windows_exporter
+      url: /keynotes_L3_senior_5_metrics_10_windows_exporter.html
+      output: web, pdf
+
+    - title: 11.mysql_exporter
+      url: /keynotes_L3_senior_5_metrics_11_mysql_exporter.html
+      output: web, pdf
+
+    - title: 12.blackbox_exporter
+      url: /keynotes_L3_senior_5_metrics_12_blackbox_exporter.html
       output: web, pdf
 
   - title: 第六章 logging
     output: web, pdf
     folderitems:
 
-    - title: 1.ELK
-      url: /keynotes_L3_senior_5_metrics_1_Prometheus_overview.html
+    - title: 1.日志系统概述
+      url: /keynotes_L3_senior_6_logging_1_logging_overview.html
       output: web, pdf
 
-    - title: 2.fluentd概述
-      url: /keynotes_L3_senior_6_logging_2_fluentd_overview.html
+    - title: 2.ELK
+      url: /keynotes_L3_senior_6_logging_2_install_elk.html
       output: web, pdf
+
+    - title: 3.x-pack
+      url: /keynotes_L3_senior_6_logging_3_xpack.html
+      output: web, pdf
+
+    - title: 4.SearchGuard
+      url: /keynotes_L3_senior_6_logging_4_install_searchguard.html
+      output: web, pdf
+
+    - title: 5.管理ES
+      url: /keynotes_L3_senior_6_logging_5_manage_es.html
+      output: web, pdf
+
+    - title: 6.各种beats
+      url: /keynotes_L3_senior_6_logging_6_beats.html
+      output: web, pdf
+
+    - title: 7.fluentd
+      url: /keynotes_L3_senior_6_logging_7_fluentd.html
+      output: web, pdf
+
+    - title: 8.fluent-bit
+      url: /keynotes_L3_senior_6_logging_8_fluentbit.html
+      output: web, pdf    

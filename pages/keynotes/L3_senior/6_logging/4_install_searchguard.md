@@ -1,11 +1,10 @@
 ---
-title: 安装插件
-keywords: keynotes, architect, logging, install_plugins
-permalink: keynotes_L5_architect_observability_2_log_1_2_install_plugins.html
-sidebar: keynotes_L5_architect_observability
-typora-copy-images-to: ./pics/1_2_install_plugins.md
+title: 	
+keywords: keynotes, senior, logging, install_searchguard
+permalink: keynotes_L3_senior_6_logging_4_install_searchguard.html
+sidebar: keynotes_L3_senior_sidebar
+typora-copy-images-to: ./pics/4_install_searchguard
 typora-root-url: ../../../../../cloudnative365.github.io
-
 ---
 
 ## 学习目标
@@ -14,7 +13,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 1. 安装SearchGuard
 
-![Logo](/pages/keynotes/L4_architect/3_logging/pics/3_install_plugins/sg_dlic_small.png)
+![Logo](/pages/keynotes/L3_senior/6_logging/pics/4_install_searchguard/sg_dlic_small.png)
 
 在早期的ES版本（6.2之前）中，使用的认证插件是X-pack，这是一个官方的插件，但是在v6.2之后，ES自己支持了安全认证功能，但是要购买license。而另外一个比较知名的安全插件就是我们今天要说的SearchGuard了。SearchGuard在收费模式上和x-pack基本一致，也就是在粗粒度的安全级别上是免费的，比如index级别，但是到字段级别就需要收费了，我们一会再详细说。
 
@@ -24,7 +23,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 + 下载页面上的版本和ES的版本基本对应，但是对于非常新的版本可能会有一定延迟
 
-  ![image-20200826100253036](/pages/keynotes/L4_architect/3_logging/pics/3_install_plugins/image-20200826100253036.png)
+  ![image-20200826100253036](/pages/keynotes/L3_senior/6_logging/pics/3_install_plugins/image-20200826100253036.png)
 
 + 安装：
 
@@ -145,21 +144,21 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 + 登录 http://localhost:5601/就会看到界面了，使用admin/admin登录
 
-  ![image-20200826105021300](/pages/keynotes/L4_architect/3_logging/pics/3_install_plugins/image-20200826105021300.png)
+  ![image-20200826105021300](/pages/keynotes/L3_senior/6_logging/pics/4_install_searchguard/image-20200826105021300.png)
 
 ### 1.3. Search Guard GUI
 
 我们可以通过三种方式来管理SearchGuard，sgadmin命令行，REST API和Kibana上面的图形界面。当然，最简便的方式还是图形界面了，他可以配置，用户，角色和权限。点击左上角的展开图标。
 
-![image-20200826105845354](/pages/keynotes/L4_architect/3_logging/pics/3_install_plugins/image-20200826105845354.png)
+![image-20200826105845354](/pages/keynotes/L3_senior/6_logging/pics/4_install_searchguard/image-20200826105845354.png)
 
 选择Search Guard Configuration出现配置界面
 
-![image-20200826105939540](/pages/keynotes/L4_architect/3_logging/pics/3_install_plugins/image-20200826105939540.png)
+![image-20200826105939540](/pages/keynotes/L3_senior/6_logging/pics/4_install_searchguard/image-20200826105939540.png)
 
 在新版中，我们看到还有一个选项叫`Search Guard Signals`，这是新的报警功能。目前7.8.1版本只有Email，slack，Jira和pageduty几种报警方式
 
-![image-20200826110912773](/pages/keynotes/L4_architect/3_logging/pics/3_install_plugins/image-20200826110912773.png)
+![image-20200826110912773](/pages/keynotes/L3_senior/6_logging/pics/4_install_searchguard/image-20200826110912773.png)
 
 ### 1.4. 概念
 
@@ -242,4 +241,3 @@ SG有三个版本，社区版（community edition），专业版（enterprise ed
 ## 2. 分词器系列
 
 分词器是ES的特色之一，简单来说，分词器就是告诉ES怎样拆分一个句子中的词语，从而构建搜索的关键字的。比如，我们是小学生，那么分词器会把我们，小学生，作为搜索关键字来储存。一般来说，中文是需要中文的分词器的。而张三是小学生，就没办法识别，因为张三本身不是一个词，是一个名字，名字就无法被认为是一个词，而在实际生活中，明星的名字很有可能就是一个关键词，我们就需要手动为分词器添加关键字，也就是支持自定义关键字的分词器。比较常见的分词器有IK分词器，pinyin分词器。大家可以自己到[这里](https://github.com/medcl/)去下载，使用教程也比较详细，我们不着重说了。
-

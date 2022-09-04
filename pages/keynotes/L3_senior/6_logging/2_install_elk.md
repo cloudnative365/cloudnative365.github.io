@@ -1,11 +1,10 @@
 ---
 title: 安装elastic stack工具
-keywords: keynotes, architect, logging, install_elasticsearch
-permalink: keynotes_L5_architect_observability_2_log_1_1_install_elasticsearch.html
-sidebar: keynotes_L5_architect_observability
-typora-copy-images-to: ./pics/1_1_install_elasticsearch.md
+keywords: keynotes, senior, logging, install_elk
+permalink: keynotes_L3_senior_6_logging_2_install_elk.html
+sidebar: keynotes_L3_senior_sidebar
+typora-copy-images-to: ./pics/2_install_elk
 typora-root-url: ../../../../../cloudnative365.github.io
-
 ---
 
 ## 学习目标
@@ -138,34 +137,62 @@ typora-root-url: ../../../../../cloudnative365.github.io
 + master1上的/etc/elasticsearch/elasticsearch.yml
 
   ``` bash
+  
+  ```
+
 # 集群需要一个名字（必须的）
+
   cluster.name: es-enterprise-demo
+
   # 节点也需要一个名字
+
   node.name: master1
+
   # 节点的属性，我们可以认为是标签
+
   node.attr.dc: 803
   node.attr.row: 2
   node.attr.enclosure: 3
   node.attr.rack: r1
+
   # 存数据的目录
+
   path.data: /data/es/data
+
   # 存日志的目录（是es系统的日志，不是存放在es中的数据的日志）
+
   path.logs: /data/es/logs
+
   # 在系统启动的时候，是否首先分配所有的内存，如果我们的堆内存heap配置为系统的一半的时候，就把这个选项打开，生产环境建议打开
+
   bootstrap.memory_lock: true
+
   # 监听的端口，建议每个机器有两个网口，这个用于通讯的使用万兆光纤
+
   network.host: 172.16.220.11
+
   # 服务的监听端口
+
   http.port: 9200
+
   # 集群发现的地址
+
   discovery.seed_hosts: ["172.16.220.11", "172.16.220.12", "172.16.220.13"]
+
   # 集群启动的时候发现集群的地址，如果没有指定，会去整个网段扫描
+
   cluster.initial_master_nodes: ["172.16.220.11", "172.16.220.12", "172.16.220.13"]
+
   # 一个集群中的N个节点启动后,才允许进行数据恢复处理
+
   gateway.recover_after_nodes: 3
+
   # 设置是否可以通过正则或者_all删除或者关闭索引库，默认true表示必须需要显式指定索引库名称
+
   # 生产环境建议设置为true，删除索引库的时候必须显式指定，否则可能会误删索引库中的索引库。
+
   action.destructive_requires_name: true
+
   ```
   
   master2上的/etc/elasticsearch/elasticsearch.yml
@@ -309,15 +336,14 @@ kibana同理。
 
 + 界面添加：
 
-  ![image-20200902112610387](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_install_elasticsearch/image-20200902112610387.png)
+  ![image-20200902112610387](/pages/keynotes/L3_senior/6_logging/pics/2_install_elk/image-20200902112610387.png)
 
 + 上传许可证（license），我们可以去找官方申请一个，一般来说会通过邮件的形式发送一个连接，然后我们可以下载，下载之后是一个json文件，点击Update your license
 
-  ![image-20200903112727392](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_install_elasticsearch/image-20200903112727392.png)
+  ![image-20200903112727392](/pages/keynotes/L3_senior/6_logging/pics/2_install_elk/image-20200903112727392.png)
 
 + 成功之后就会显示日期
 
-  ![image-20200903112957049](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_install_elasticsearch/image-20200903112957049.png)
+  ![image-20200903112957049](/pages/keynotes/L3_senior/6_logging/pics/2_install_elk/image-20200903112957049.png)
 
   
-

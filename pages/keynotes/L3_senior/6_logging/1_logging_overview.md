@@ -1,9 +1,9 @@
 ---
-title: 搜索引擎类日志系统概述
-keywords: keynotes, architect, logging, search_engine_logging_overview
-permalink: keynotes_L5_architect_observability_2_log_1_0_search_engine_logging_overview.md
-sidebar: keynotes_L5_architect_observability
-typora-copy-images-to: ./pics/1_0_search_engine_logging_overview
+title: 日志系统概览
+keywords: keynotes, senior, logging, logging_overview
+permalink: keynotes_L3_senior_6_logging_1_logging_overview.html
+sidebar: keynotes_L3_senior_sidebar
+typora-copy-images-to: ./pics/1_logging_overview
 typora-root-url: ../../../../../cloudnative365.github.io
 
 ---
@@ -40,9 +40,9 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 原址：https://www.elastic.co/cn/downloads/
 
-![image-20200825171346720](/pages/keynotes/L5_architect_observability/2_Log/pics/1_0_search_engine_logging_overview/image-20200825171346720.png)
+![image-20200825171346720](/pages/keynotes/L3_senior/6_logging/pics/1_logging_overview/image-20200825171346720.png)
 
-![image-20200825171452720](/pages/keynotes/L5_architect_observability/2_Log/pics/1_0_search_engine_logging_overview/image-20200825171452720.png)
+![image-20200825171452720](/pages/keynotes/L3_senior/6_logging/pics/1_logging_overview/image-20200825171452720.png)
 
 + ElasticSearch：主要产品
 
@@ -70,7 +70,7 @@ beats作为ES的客户端，也就是我们常说的agent。ES把logstash定位�
 
 原址：https://www.elastic.co/cn/downloads/beats
 
-![image-20200825172059895](/pages/keynotes/L5_architect_observability/2_Log/pics/1_0_search_engine_logging_overview/image-20200825172059895.png)
+![image-20200825172059895](/pages/keynotes/L3_senior/6_logging/pics/1_logging_overview/image-20200825172059895.png)
 
 + filebeats：挖日志的
 + Packetbeat：研究网络的情况，丢包率等等
@@ -85,11 +85,11 @@ beats作为ES的客户端，也就是我们常说的agent。ES把logstash定位�
 
 大家可以自行参考自己关心的功能，我们这里主要说一下安全的功能。原址：https://www.elastic.co/cn/pricing/
 
-![image-20200825175543107](/pages/keynotes/L5_architect_observability/2_Log/pics/1_0_search_engine_logging_overview/image-20200825175543107.png)
+![image-20200825175543107](/pages/keynotes/L3_senior/6_logging/pics/1_logging_overview/image-20200825175543107.png)
 
-![image-20200825175713628](/pages/keynotes/L5_architect_observability/2_Log/pics/1_0_search_engine_logging_overview/image-20200825175713628.png)
+![image-20200825175713628](/pages/keynotes/L3_senior/6_logging/pics/1_logging_overview/image-20200825175713628.png)
 
-![image-20200825175742172](/pages/keynotes/L5_architect_observability/2_Log/pics/1_0_search_engine_logging_overview/image-20200825175742172.png)
+![image-20200825175742172](/pages/keynotes/L3_senior/6_logging/pics/1_logging_overview/image-20200825175742172.png)
 
 由于企业里面是需要用到认证功能的，所以我们需要安装其他的插件来解决这个问题，我们比较常用的就是searchguard，我们后面会有一章来介绍他。
 
@@ -101,13 +101,13 @@ Loki是grafana lab的另外一款产品，他专注的是日志的检索功能�
 
 + 物理架构
 
-  ![See the source image](/pages/keynotes/L5_architect_observability/2_Log/pics/1_0_search_engine_logging_overview/OIP.hlteEwpZJ72zcHXEzDmgRwHaDJ)
+  ![See the source image](/pages/keynotes/L3_senior/6_logging/pics/1_logging_overview/OIP.hlteEwpZJ72zcHXEzDmgRwHaDJ)
 
   物理上架构非常简单，日志是通过Promtail组件来挖取的，然后promtail会把日志发送到loki的服务器，最后通过grafana进行展示
 
 + 逻辑架构
 
-  ![See the source image](/pages/keynotes/L5_architect_observability/2_Log/pics/1_0_search_engine_logging_overview/loki-arch.png)
+  ![See the source image](/pages/keynotes/L3_senior/6_logging/pics/1_logging_overview/loki-arch.png)
 
 逻辑架构就比较复杂了，我们后面讲这个时候再一点点说
 
@@ -115,4 +115,4 @@ Loki是grafana lab的另外一款产品，他专注的是日志的检索功能�
 
 既然是grafana的产品，不给他单独做一个dashboard就不太合适了，他的dashboard和ES差不多，同样是提供一个输入框，下面可以展示结果。
 
-![See the source image](/pages/keynotes/L5_architect_observability/2_Log/pics/1_0_search_engine_logging_overview/loki_grafana_filtering.png)
+![See the source image](/pages/keynotes/L3_senior/6_logging/pics/1_logging_overview/loki_grafana_filtering.png)

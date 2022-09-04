@@ -1,11 +1,10 @@
 ---
-title: Prometheus概览
-keywords: keynotes, senior, logging, fluentd_overview
-permalink: keynotes_L3_senior_6_logging_2_fluentd_overview.html
-sidebar: keynotes_L3_senior_sidebar
-typora-copy-images-to: ./pics/2_fluentd_overview
+title: fluentd
+keywords: keynotes, architect, logging, fluent-bit
+permalink: keynotes_L3_senior_6_logging_7_fluentd.html
+sidebar: keynotes_L4_architect_sidebar
+typora-copy-images-to: ./pics/7_fluentd_demo
 typora-root-url: ../../../../../cloudnative365.github.io
-
 ---
 
 ## 课程目标
@@ -22,11 +21,11 @@ Fluentd is an open source data collector, which lets you unify the data collecti
 
 使用fluentd之前
 
-![img](/pages/keynotes/L3_senior/6_logging/pics/2_fluentd_overview/fluentd-before.png)
+![img](/pages/keynotes/L3_senior/6_logging/pics/7_fluentd/fluentd-before.png)
 
 使用Fluentd之后
 
-![img](/pages/keynotes/L3_senior/6_logging/pics/2_fluentd_overview/fluentd-architecture.png)
+![img](/pages/keynotes/L3_senior/6_logging/pics/7_fluentd/fluentd-architecture.png)
 
 fluentd就像一个管道一样，把数据源**统一**收取，通过filter/buffer/routing等组件，对数据进行格式化之后发送到后端。
 
@@ -36,19 +35,19 @@ fluentd就像一个管道一样，把数据源**统一**收取，通过filter/bu
 
   fluentd尽量把所有的数据都转化为JSON格式，这样可以更容易的对多种数据源和输出源进行收集，过滤，缓存和输出
 
-![img](/pages/keynotes/L3_senior/6_logging/pics/2_fluentd_overview/log-as-json.png)
+![img](/pages/keynotes/L3_senior/6_logging/pics/7_fluentd/log-as-json.png)
 
 - 可插拔的架构
 
   一个完整的日志传输过程包概，Input,Filter,Parser,Formater,Buffer，这些组件都支持自定义，我们可以Input各种类型的日志，经过一系列可以定制的转换，输出到各种类型的output，这些东西都是以插件相识存在的，我们可以通过td-agent-gem plugin list来查看安装了什么样的组件。
 
-![img](/pages/keynotes/L3_senior/6_logging/pics/2_fluentd_overview/pluggable.png)
+![img](/pages/keynotes/L3_senior/6_logging/pics/7_fluentd/pluggable.png)
 
 - 需求资源很少
 
   Fluentd的核心是C语言，而插件是由Ruby开发的，消耗资源比Logstash那种JRuby的方式要小的多的多
 
-![img](/pages/keynotes/L3_senior/6_logging/pics/2_fluentd_overview/c-and-ruby.png)
+![img](/pages/keynotes/L3_senior/6_logging/pics/7_fluentd/c-and-ruby.png)
 
 - 内置稳定性功能
 

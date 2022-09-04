@@ -1,7 +1,7 @@
 ---
-title: Exporter
+title: blackbox_exporter
 keywords: keynotes, senior, metrics, exporter
-permalink: keynotes_L3_senior_5_metrics_3_exporter.html
+permalink: keynotes_L3_senior_5_metrics_12_blackbox_exporter.html
 sidebar: keynotes_L3_senior_sidebar
 typora-copy-images-to: ./pics/3_exporter
 typora-root-url: ../../../../../cloudnative365.github.io
