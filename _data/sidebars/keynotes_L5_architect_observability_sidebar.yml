@@ -71,6 +71,7 @@ entries:
     - title: Logging日志监控概述
       url: /keynotes_L5_architect_observability_2_log_0_log_overview.html
       output: web, pdf
+      type: homepage
   
       subfolders:
       - title: OpenSearch
@@ -128,4 +129,4 @@ entries:
       
         - title: OpenTelmetry概述
           url: /mydoc_supported_features.html
-          output: web, pdf
+          output: web, pd
