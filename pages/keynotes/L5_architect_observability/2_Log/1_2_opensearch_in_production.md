@@ -1,11 +1,10 @@
 ---
 title: 生产级别的Opensearch
-keywords: keynotes, architect, logging, opensearch
-permalink: keynotes_L4_architect_3_logging_11_opensearch_in_production.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/11_opensearch_in_production
+keywords: keynotes, architect, observability, log, opensearch, opensearch_in_prodution
+permalink: keynotes_L5_architect_observability_2_log_1_2_opensearch_in_production.html
+sidebar: keynotes_L5_architect_observability
+typora-copy-images-to: ./pics/1_2_opensearch_in_production
 typora-root-url: ../../../../../cloudnative365.github.io
-
 ---
 
 ## 课程目标
@@ -38,13 +37,13 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 在实例上部署：
 
-![image-20211102114231598](/pages/keynotes/L4_architect/3_logging/pics/11_opensearch_in_production/image-20211102114231598.png)
+![image-20211102114231598](/pages/keynotes/L5_architect_observability/2_log/pics/1_2_opensearch_in_production/image-20211102114231598.png)
 
 在k8s上部署
 
-![image-20211102105336099](/pages/keynotes/L4_architect/3_logging/pics/11_opensearch_in_production/image-20211102105336099.png)
+![image-20211102105336099](/pages/keynotes/L5_architect_observability/2_log/pics/1_2_opensearch_in_production/image-20211102105336099.png)
 
-![image-20211102105344439](/pages/keynotes/L4_architect/3_logging/pics/11_opensearch_in_production/image-20211102105344439.png)
+![image-20211102105344439](/pages/keynotes/L5_architect_observability/2_log/pics/1_2_opensearch_in_production/image-20211102105344439.png)
 
 ## 3. 安装集群
 
