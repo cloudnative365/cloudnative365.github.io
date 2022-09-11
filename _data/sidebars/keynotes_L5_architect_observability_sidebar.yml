@@ -72,7 +72,7 @@ entries:
       url: /keynotes_L5_architect_observability_2_log_0_log_overview.html
       output: web, pdf
       type: homepage
-  
+
       subfolders:
       - title: OpenSearch
         output: web, pdf
