@@ -35,7 +35,7 @@ entries:
         - title: Thanos概述
           url: /L5_architect_observability_thanos_overview.html
           output: web, pdf
-        
+
         - title: Thanos概念
           url: /L5_architect_observability_thanos_conception.html
           output: web, pdf
@@ -67,11 +67,11 @@ entries:
   - title: 第二章 Logging日志监控
     output: web, pdf
     folderitems:
-  
+
     - title: Logging日志监控概述
       url: /keynotes_L5_architect_observability_2_log_0_log_overview.html
       output: web, pdf
-      type: homepage
+      type: homepage  
 
       subfolders:
       - title: OpenSearch
