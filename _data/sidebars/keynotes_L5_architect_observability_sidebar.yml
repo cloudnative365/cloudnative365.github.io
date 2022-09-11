@@ -71,7 +71,6 @@ entries:
     - title: Logging日志监控概述
       url: /keynotes_L5_architect_observability_2_log_0_log_overview.html
       output: web, pdf
-      type: homepage  
 
       subfolders:
       - title: OpenSearch
@@ -85,7 +84,6 @@ entries:
           url: /keynotes_L5_architect_observability_2_log_1_2_opensearch_in_production.html
           output: web, pdf
 
-      subfolders:
       - title: Fluentd
         output: web, pdf
         subfolderitems:
@@ -93,7 +91,6 @@ entries:
           url: /keynotes_L5_architect_observability_2_log_2_1_fluentd_basic.html
           output: web, pdf
 
-      subfolders:
       - title: Loki
         output: web, pdf
         subfolderitems:
