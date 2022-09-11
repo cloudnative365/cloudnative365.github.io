@@ -2,7 +2,7 @@
 title: 日志概述
 keywords: keynotes, architect, observability, log, log_overview
 permalink: keynotes_L5_architect_observability_2_log_0_log_overview.html
-sidebar: keynotes_L5_architect_observability
+sidebar: keynotes_L5_architect_observability_sidebar
 typora-copy-images-to: ./pics/0_log_overview
 typora-root-url: ../../../../../cloudnative365.github.io
 ---

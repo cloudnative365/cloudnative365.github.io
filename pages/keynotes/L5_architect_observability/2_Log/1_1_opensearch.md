@@ -2,7 +2,7 @@
 title: opensearch
 keywords: keynotes, architect, observability, log, opensearch, opensearch_basic
 permalink: keynotes_L5_architect_observability_2_log_1_1_opensearch.html
-sidebar: keynotes_L5_architect_observability
+sidebar: keynotes_L5_architect_observability_sidebar
 typora-copy-images-to: ./pics/1_1_opensearch
 typora-root-url: ../../../../../cloudnative365.github.io
 ---

@@ -2,7 +2,7 @@
 title: loki初体验
 keywords: keynotes, architect, observability, log, loki, loki_basic
 permalink: keynotes_L5_architect_observability_2_log_3_1_loki_basic.html
-sidebar: keynotes_L5_architect_observability
+sidebar: keynotes_L5_architect_observability_sidebar
 typora-copy-images-to: ./pics/3_1_loki_basic
 typora-root-url: ../../../../../cloudnative365.github.io
 

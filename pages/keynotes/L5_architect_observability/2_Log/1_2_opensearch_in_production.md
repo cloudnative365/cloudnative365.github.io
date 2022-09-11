@@ -2,7 +2,7 @@
 title: 生产级别的Opensearch
 keywords: keynotes, architect, observability, log, opensearch, opensearch_in_prodution
 permalink: keynotes_L5_architect_observability_2_log_1_2_opensearch_in_production.html
-sidebar: keynotes_L5_architect_observability
+sidebar: keynotes_L5_architect_observability_sidebar
 typora-copy-images-to: ./pics/1_2_opensearch_in_production
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
