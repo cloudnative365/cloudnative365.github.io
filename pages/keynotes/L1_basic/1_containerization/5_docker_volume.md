@@ -5,8 +5,6 @@ permalink: keynotes_L1_basic_1_containerization_5_docker_volume.html
 sidebar: keynotes_L1_basic_sidebar
 typora-copy-images-to: ./pics/5_docker_volume
 typora-root-url: ../../../../../cloudnative365.github.io
-
-
 ---
 
 ## 1. 为什么要使用存储卷

@@ -5,8 +5,6 @@ permalink: keynotes_L1_basic_1_containerization_6_docker_limit.html
 sidebar: keynotes_L1_basic_sidebar
 typora-copy-images-to: ./pics/6_docker_limit
 typora-root-url: ../../../../../cloudnative365.github.io
-
-
 ---
 
 ## 限制容器的资源

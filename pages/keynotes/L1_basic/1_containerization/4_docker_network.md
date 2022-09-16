@@ -5,8 +5,6 @@ permalink: keynotes_L1_basic_1_containerization_4_docker_network.html
 sidebar: keynotes_L1_basic_sidebar
 typora-copy-images-to: ./pics/4_docker_network
 typora-root-url: ../../../../../cloudnative365.github.io
-
-
 ---
 
 ## 1. 简介

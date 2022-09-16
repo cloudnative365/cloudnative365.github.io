@@ -5,8 +5,6 @@ permalink: keynotes_L1_basic_1_containerization_3_docker_image.html
 sidebar: keynotes_L1_basic_sidebar
 typora-copy-images-to: ./pics/3_docker_image
 typora-root-url: ../../../../../cloudnative365.github.io
-
-
 ---
 
 ## 1. Docker镜像

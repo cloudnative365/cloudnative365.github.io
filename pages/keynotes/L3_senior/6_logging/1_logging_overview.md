@@ -5,7 +5,6 @@ permalink: keynotes_L3_senior_6_logging_1_logging_overview.html
 sidebar: keynotes_L3_senior_sidebar
 typora-copy-images-to: ./pics/1_logging_overview
 typora-root-url: ../../../../../cloudnative365.github.io
-
 ---
 
 ## 1. 日志系统
