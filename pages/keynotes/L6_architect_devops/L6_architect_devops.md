@@ -1,24 +1,29 @@
 ---
-title: 基础课程
-keywords: keynotes, basic, 
-permalink: keynotes_L5_architect_observability.html
-sidebar: keynotes_L5_architect_observability_sidebar
-typora-copy-images-to: ./pics/L5_architect_observability
+title: 课程大纲
+keywords: keynotes, architect, devops
+permalink: keynotes_L6_architect_devops.html
+sidebar: keynotes_L6_architect_devops_sidebar
+typora-copy-images-to: ./pics/L6_architect_devops
 typora-root-url: ../../../cloudnative365.github.io
-
-
 ---
 
 ## 课程大纲
 
-### Metrics
+### 自动化
 
-+ Thanos
++ ansible
++ terraform
 
-### Logging
+### 仓库
 
-+ OpenSearch
++ gitlab
++ harbor
 
-### Tracing
+### DevOps
 
-+ OpenTelemetry
++ Jenkins
++ Spinnaker
++ Tekton
++ ArgoCD
+
+### IaC

@@ -2,7 +2,7 @@
 
 entries:
 - title: sidebar
-  product: 架构师课程-服务可观测
+  product: 架构师课程-DevOps方向
   version: 
   folders:
 
@@ -19,50 +19,27 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: 第一章 Metrics指标监控
+  - title: 第一章 自动化
     output: web, pdf
     folderitems:
 
-    - title: Metrics指标监控概述
-      url: /L5_architect_observability_metric_overview.html
+    - title: 自动化概述
+      url: /L6_architect_devops_automation_overview.html
       output: web, pdf
       type: homepage
 
       subfolders:
-      - title: Thanos
+      - title: ansible
         output: web, pdf
         subfolderitems:
-        - title: Thanos概述
-          url: /L5_architect_observability_thanos_overview.html
+        - title: ansible概述
+          url: /L6_architect_devops_automation_overview.html
           output: web, pdf
 
-        - title: Thanos概念
-          url: /L5_architect_observability_thanos_conception.html
+        - title: AWX和ansible-tower
+          url: /L6_architect_devops_automation_AWX_ansible.html
           output: web, pdf
 
-        - title: Thanos存储
-          url: /L5_architect_observability_thanos_store.html
-          output: web, pdf
-
-        - title: Thanos前端缓存
-          url: /L5_architect_observability_thanos_frontend.html
-          output: web, pdf
-
-        - title: Consul集群
-          url: /L5_architect_observability_thanos_consul.html
-          output: web, pdf
-
-        - title: Thanos报警
-          url: /L5_architect_observability_thanos_ruler.html
-          output: web, pdf
-
-        - title: Thanos接受请求
-          url: /L5_architect_observability_thanos_receive.html
-          output: web, pdf
-
-        - title: 夜莺
-          url: /L5_architect_observability_thanos_nightingale.html
-          output: web, pdf
 
   - title: 第二章 Logging日志监控
     output: web, pdf
