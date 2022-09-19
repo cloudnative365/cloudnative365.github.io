@@ -2,7 +2,7 @@
 
 entries:
 - title: sidebar
-  product: 架构师课程-服务可观测
+  product: 架构师课程-存储方向
   version: 
   folders:
 
@@ -19,7 +19,7 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: 第一章 Metrics指标监控
+  - title: 第一章 对象存储
     output: web, pdf
     folderitems:
 

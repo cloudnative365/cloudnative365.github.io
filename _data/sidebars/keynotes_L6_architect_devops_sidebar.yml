@@ -24,7 +24,7 @@ entries:
     folderitems:
 
     - title: 自动化概述
-      url: /L6_architect_devops_automation_overview.html
+      url: /keynotes_L6_architect_devops_automation_overview.html
       output: web, pdf
       type: homepage
 
@@ -33,19 +33,26 @@ entries:
         output: web, pdf
         subfolderitems:
         - title: ansible概述
-          url: /L6_architect_devops_automation_overview.html
+          url: /keynotes_L6_architect_devops_automation_overview.html
           output: web, pdf
 
         - title: AWX和ansible-tower
-          url: /L6_architect_devops_automation_AWX_ansible.html
+          url: /keynotes_L6_architect_devops_automation_AWX_ansible.html
           output: web, pdf
 
+      - title: Terraform
+        output: web, pdf
+        subfolderitems:
 
-  - title: 第二章 Logging日志监控
+        - title: Terraform概述
+          url: /keynotes_L6_architect_devops_automation_2_log_3_1_loki_basic.html
+          output: web, pdf
+
+  - title: 第二章 仓库
     output: web, pdf
     folderitems:
 
-    - title: Logging日志监控概述
+    - title: 仓库概述
       url: /keynotes_L5_architect_observability_2_log_0_log_overview.html
       output: web, pdf
 

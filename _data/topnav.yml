@@ -25,7 +25,7 @@ topnav_dropdowns:
           url: /keynotes_L6_architect_devops.html
         - title: 架构师课程-存储方向
           url: /keynotes_L7_architect_storage.html
-        - title: 架构师课程-网格计算方向
+        - title: 架构师课程-服务网格方向
           url: /keynotes_L8_architect_servicemesh.html
         - title: 架构师课程-安全方向
           url: /keynotes_L9_architect_security.html
