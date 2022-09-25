@@ -17,17 +17,17 @@ topnav_dropdowns:
           url: /keynotes_L2_advanced.html
         - title: 高级课程
           url: /keynotes_L3_senior.html
-        - title: 架构师课程-K8s方向
+        - title: 架构师-kubernetes
           url: /keynotes_L4_architect.html
-        - title: 架构师课程-可观测性方向
+        - title: 架构师-可观测性
           url: /keynotes_L5_architect_observability.html
-        - title: 架构师课程-DevOps方向
+        - title: 架构师-DevOps
           url: /keynotes_L6_architect_devops.html
-        - title: 架构师课程-存储方向
+        - title: 架构师-存储
           url: /keynotes_L7_architect_storage.html
-        - title: 架构师课程-服务网格方向
+        - title: 架构师-服务网格
           url: /keynotes_L8_architect_servicemesh.html
-        - title: 架构师课程-安全方向
+        - title: 架构师-安全
           url: /keynotes_L9_architect_security.html
 
     - title: 课堂风采

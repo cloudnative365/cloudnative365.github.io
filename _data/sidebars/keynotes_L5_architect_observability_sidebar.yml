@@ -99,8 +99,16 @@ entries:
         output: web, pdf
         subfolderitems:
 
-        - title: loki初体验
+        - title: Loki初体验
           url: /keynotes_L5_architect_observability_2_log_3_1_loki_basic.html
+          output: web, pdf
+
+      - title: Graylog
+        output: web, pdf
+        subfolderitems:
+
+        - title: Graylog
+          url: /keynotes_L5_architect_observability_2_log_4_1_graylog_basic.html
           output: web, pdf
 
   - title: 第三章 Tracing链路追踪
