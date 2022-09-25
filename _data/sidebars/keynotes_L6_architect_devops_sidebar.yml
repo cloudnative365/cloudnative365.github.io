@@ -52,64 +52,53 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: 仓库概述
+    - title: 代码仓库
       url: /keynotes_L5_architect_observability_2_log_0_log_overview.html
       output: web, pdf
 
       subfolders:
-      - title: OpenSearch
+      - title: Gitlab
         output: web, pdf
         subfolderitems:
-        - title: OpenSearch
+        - title: Gitlab初体验
           url: /keynotes_L5_architect_observability_2_log_1_1_opensearch.html
           output: web, pdf
 
-        - title: 生产级别的OpenSearch
-          url: /keynotes_L5_architect_observability_2_log_1_2_opensearch_in_production.html
-          output: web, pdf
+    - title: 镜像仓库
+      url: /keynotes_L5_architect_observability_2_log_0_log_overview.html
+      output: web, pdf
 
-      - title: Fluentd
+      subfolders:
+      - title: Harbor
         output: web, pdf
         subfolderitems:
-        - title: Fluentd概念
-          url: /keynotes_L5_architect_observability_2_log_2_1_fluentd_overview.html
+        - title: Harbor初体验
+          url: /keynotes_L5_architect_observability_2_log_1_1_opensearch.html
           output: web, pdf
 
-        - title: Fluentd基础配置
-          url: /keynotes_L5_architect_observability_2_log_2_2_fluentd_basic.html
-          output: web, pdf
-
-      - title: Loki
-        output: web, pdf
-        subfolderitems:
-
-        - title: loki初体验
-          url: /keynotes_L5_architect_observability_2_log_3_1_loki_basic.html
-          output: web, pdf
-
-  - title: 第三章 Tracing链路追踪
+  - title: 第三章 DevOps
     output: web, pdf
     folderitems:
   
-    - title: Tracing链路追踪概述
+    - title: CI概述
       url: /index.html
       output: web, pdf
   
       subfolders:
-      - title: SkyWalking
+      - title: Jenkins
         output: web, pdf
         subfolderitems:
   
-        - title: SkyWwalking概述
+        - title: Jenkins初体验
           url: /mydoc_supported_features.html
           output: web, pdf
         
       
       subfolders:
-      - title: OpenTelmetry
+      - title: Tekton
         output: web, pdf
         subfolderitems:
       
-        - title: OpenTelmetry概述
+        - title: Tekton初体验
           url: /mydoc_supported_features.html
           output: web, pd

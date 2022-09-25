@@ -23,109 +23,31 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: Metrics指标监控概述
+    - title: Ingress概述
       url: /L5_architect_observability_metric_overview.html
       output: web, pdf
       type: homepage
 
       subfolders:
-      - title: Thanos
+      - title: Envoy
         output: web, pdf
         subfolderitems:
-        - title: Thanos概述
+        - title: Envoy概述
           url: /L5_architect_observability_thanos_overview.html
           output: web, pdf
 
-        - title: Thanos概念
-          url: /L5_architect_observability_thanos_conception.html
-          output: web, pdf
-
-        - title: Thanos存储
-          url: /L5_architect_observability_thanos_store.html
-          output: web, pdf
-
-        - title: Thanos前端缓存
-          url: /L5_architect_observability_thanos_frontend.html
-          output: web, pdf
-
-        - title: Consul集群
-          url: /L5_architect_observability_thanos_consul.html
-          output: web, pdf
-
-        - title: Thanos报警
-          url: /L5_architect_observability_thanos_ruler.html
-          output: web, pdf
-
-        - title: Thanos接受请求
-          url: /L5_architect_observability_thanos_receive.html
-          output: web, pdf
-
-        - title: 夜莺
-          url: /L5_architect_observability_thanos_nightingale.html
-          output: web, pdf
-
-  - title: 第二章 Logging日志监控
+  - title: 第二章 ServiceMesh
     output: web, pdf
     folderitems:
 
-    - title: Logging日志监控概述
+    - title: ServiceMesh概述
       url: /keynotes_L5_architect_observability_2_log_0_log_overview.html
       output: web, pdf
 
       subfolders:
-      - title: OpenSearch
+      - title: Istio
         output: web, pdf
         subfolderitems:
-        - title: OpenSearch
+        - title: Istio概述
           url: /keynotes_L5_architect_observability_2_log_1_1_opensearch.html
           output: web, pdf
-
-        - title: 生产级别的OpenSearch
-          url: /keynotes_L5_architect_observability_2_log_1_2_opensearch_in_production.html
-          output: web, pdf
-
-      - title: Fluentd
-        output: web, pdf
-        subfolderitems:
-        - title: Fluentd概念
-          url: /keynotes_L5_architect_observability_2_log_2_1_fluentd_overview.html
-          output: web, pdf
-
-        - title: Fluentd基础配置
-          url: /keynotes_L5_architect_observability_2_log_2_2_fluentd_basic.html
-          output: web, pdf
-
-      - title: Loki
-        output: web, pdf
-        subfolderitems:
-
-        - title: loki初体验
-          url: /keynotes_L5_architect_observability_2_log_3_1_loki_basic.html
-          output: web, pdf
-
-  - title: 第三章 Tracing链路追踪
-    output: web, pdf
-    folderitems:
-  
-    - title: Tracing链路追踪概述
-      url: /index.html
-      output: web, pdf
-  
-      subfolders:
-      - title: SkyWalking
-        output: web, pdf
-        subfolderitems:
-  
-        - title: SkyWwalking概述
-          url: /mydoc_supported_features.html
-          output: web, pdf
-        
-      
-      subfolders:
-      - title: OpenTelmetry
-        output: web, pdf
-        subfolderitems:
-      
-        - title: OpenTelmetry概述
-          url: /mydoc_supported_features.html
-          output: web, pd
