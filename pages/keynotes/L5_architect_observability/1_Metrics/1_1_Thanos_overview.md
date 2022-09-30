@@ -1,7 +1,7 @@
 ---
 title: Thano概述
 keywords: keynotes, architect, observability, thanos, overview
-permalink: L5_architect_observability_thanos_overview.html
+permalink: L5_architect_observability_1_metrics_1_1_thanos_overview.html
 sidebar: keynotes_L5_architect_observability_sidebar
 typora-copy-images-to: ./pics/1_1_Thanos_overview
 typora-root-url: ../../../../../cloudnative365.github.io

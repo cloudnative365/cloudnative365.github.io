@@ -1,9 +1,9 @@
 ---
 title: telegraf
-keywords: keynotes, L4_architect, monitoring, 23_telegraf
-permalink: keynotes_L4_architect_2_monitoring_23_telegraf.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/23_telegraf
+keywords: keynotes, architect, observability, telegraf
+permalink: L5_architect_observability_1_metrics_2_2_telegraf.html
+sidebar: keynotes_L5_architect_observability_sidebar
+typora-copy-images-to: ./pics/2_2_telegraf
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 

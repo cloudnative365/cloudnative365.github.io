@@ -1,11 +1,10 @@
 ---
 title: Zabbix5.0尝鲜
-keywords: keynotes, architect, monitoring, complex_query
-permalink: keynotes_L4_architect_2_monitoring_8_zabbix.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/8_zabbix
+keywords: keynotes, architect, observability, zabbix_basic
+permalink: L5_architect_observability_1_metrics_3_1_zabbix_basic.html
+sidebar: keynotes_L5_architect_observability_sidebar
+typora-copy-images-to: ./pics/3_1_zabbix_basic
 typora-root-url: ../../../../../cloudnative365.github.io
-
 ---
 
 ## 学习目标
@@ -28,7 +27,7 @@ Zabbix在开源监控界算是比较知名的，主要是他的社区活跃，�
 
 目前官方列出的新特性如下，转自官方网站https://www.zabbix.com/cn/whats_new_5_0
 
-![image-20200816202811661](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816202811661.png)
+![image-20200816202811661](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816202811661.png)
 
 我们可以看到，他支持一些新版本的系统了，比如CentOS/RHEL8，Ubuntu20.04和Suse15。这些都是2019年年底或者是2020年上半年才发布的操作系统。其实最令我兴奋的是，他开始支持ARM架构的CPU了（红色方框），也就是说，我们的监控可以部署在树莓派或者其他开发板上部署了。
 
@@ -36,79 +35,79 @@ Zabbix在开源监控界算是比较知名的，主要是他的社区活跃，�
 
 
 
-![image-20200816203628508](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816203628508.png)
+![image-20200816203628508](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816203628508.png)
 
 这个主要说的是我们可以在云上直接使用，比如AWS的market place中直接拖拽镜像来在云上部署，而docker和openshift则是通过docker镜像来实现一键部署的
 
 
 
-![image-20200816204104500](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816204104500.png)
+![image-20200816204104500](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816204104500.png)
 
 SAML的全称是安全断言标记语言（英语：Security Assertion Markup Language，简称*SAML*，发音sam-el）是一个基于XML的开源标准数据格式，它在当事方之间交换身份验证和授权数据，尤其是在身份提供者和服务提供者之间交换。我们可以简单理解为我们登陆时，账户的验证，授权等可以有更多的方式了。
 
 
 
-![image-20200816204331592](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816204331592.png)
+![image-20200816204331592](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816204331592.png)
 
 这边是对于安全方面改进，增加了数据库的传输加密，所有的组件都可以配置加密，包括agent，proxy，还有webhook
 
 
 
-![image-20200816204544922](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816204544922.png)
+![image-20200816204544922](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816204544922.png)
 
 密码从小圆点变成了锁。。。。
 
 
 
-![image-20200816204640079](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816204640079.png)
+![image-20200816204640079](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816204640079.png)
 
 zabbix的内置的是TimescaleDB，数据的分区功能对于查询热点数据的速度很有帮助，高性能和可扩展性也得到了加强，但是，和新时代的监控比起来依然很慢。
 
 
 
-![image-20200816204902585](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816204902585.png)
+![image-20200816204902585](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816204902585.png)
 
 新的agent由golang编写，更轻量了，速度更快，资源使用更小，可以直接从4.xx的agent升级到5.xx，不需要卸载，直接覆盖
 
 
 
-![image-20200816205037997](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816205037997.png)
+![image-20200816205037997](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816205037997.png)
 
 这是一些使用上的改进
 
 
 
-![image-20200816205141892](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816205141892.png)
+![image-20200816205141892](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816205141892.png)
 
 trigger更复杂了。。。
 
 
 
-![image-20200816205216199](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816205216199.png)
+![image-20200816205216199](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816205216199.png)
 
 卖点功能更强大
 
 
 
-![image-20200816205249594](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816205249594.png)
+![image-20200816205249594](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816205249594.png)
 
 界面改了一些，不过图形依然很low
 
 
 
-![image-20200816205338652](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816205338652.png)
+![image-20200816205338652](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816205338652.png)
 
 支持自动开工单，不过要使用webhook的方式
 
 
 
-![image-20200816205412593](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816205412593.png)
+![image-20200816205412593](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816205412593.png)
 
 支持的报警方式更多了
 
 
 
-![image-20200816205446556](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200816205446556.png)
+![image-20200816205446556](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200816205446556.png)
 
 模板升级了，更多了，这也是运维喜欢使用zabbix的原因之一，监控模板非常丰富，基本满足我们的需求了
 
@@ -116,11 +115,11 @@ trigger更复杂了。。。
 
 3.1. 官方文档：[点这里](https://www.zabbix.com/cn/download)
 
-![image-20200817222548186](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200817222548186.png)
+![image-20200817222548186](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200817222548186.png)
 
 上面的是选择安装方式，但是并没有proxy-server的安装方式，我们后面会讲一下
 
-![image-20200817222702312](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200817222702312.png)
+![image-20200817222702312](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200817222702312.png)
 
 下面是一个选择界面，通过选择不同的组合，下面会生成对应的安装方式。
 
@@ -134,7 +133,7 @@ trigger更复杂了。。。
 
 这个说来简单，实现的方式有两种，一种是在负载均衡器，比如：nginx上做，但是nginx的负载均衡是没有办法区分GET,PUT和UPDATE请求的，我们需要借助LUA插件来实现，或者干脆使用openresty。另外一种是让zabbix-server在连接数据库的时候，选择不同的库，zabbix-server的采集或者拉取功能全部去主库，而zabbix-server和grafana集成做展示的时候，让另外一台zabbix-server去备库拿信息。
 
-![image-20200817225122944](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200817225122944.png)
+![image-20200817225122944](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200817225122944.png)
 
 当然，这个方式还有个要求，那就是高可用的要求，也就是说，我们还是需要借助nginx，只不过我们在upstream的时候会选择一个机器作为backup机器，只有当主机器down了的时候，我们才会去backup机器。
 
@@ -300,35 +299,35 @@ netstat -untlp
 
 输入我们刚才在nginx中配置的`server_name`，http://zabbix.jormun.com，就可以看到欢迎界面了。
 
-![image-20200818071805355](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200818071805355.png)
+![image-20200818071805355](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200818071805355.png)
 
 如果是使用yum安装的，基本不会有啥问题
 
-![image-20200818071855331](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200818071855331.png)
+![image-20200818071855331](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200818071855331.png)
 
 这边只需要填写密码zabbix，然后会报错，报错后会让我们输入schema的名字
 
-![image-20200818140016260](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200818140016260.png)
+![image-20200818140016260](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200818140016260.png)
 
 host这里改成机器的名字，防止后面日志报错
 
-![image-20200818140139023](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200818140139023.png)
+![image-20200818140139023](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200818140139023.png)
 
 确认无误
 
-![image-20200818140206637](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200818140206637.png)
+![image-20200818140206637](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200818140206637.png)
 
 配置成功
 
-![image-20200818140240830](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200818140240830.png)
+![image-20200818140240830](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200818140240830.png)
 
 使用默认的用户名和密码登录 Admin/zabbix
 
-![image-20200818140502450](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200818140502450.png)
+![image-20200818140502450](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200818140502450.png)
 
 新版的zabbix就长这个样子了
 
-![image-20200818140607229](/pages/keynotes/L4_architect/2_monitoring/pics/8_zabbix/image-20200818140607229.png)
+![image-20200818140607229](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_1_zabbix_basic/image-20200818140607229.png)
 
 ## 4. 配置
 

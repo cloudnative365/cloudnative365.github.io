@@ -1,7 +1,7 @@
 ---
 title: Consul集群
 keywords: keynotes, architect, observability, thanos, consul
-permalink: L5_architect_observability_thanos_consul.html
+permalink: L5_architect_observability_1_metrics_1_5_thanos_consul.html
 sidebar: keynotes_L5_architect_observability_sidebar
 typora-copy-images-to: ./pics/1_5_Thanos_consul
 typora-root-url: ../../../../../cloudnative365.github.io

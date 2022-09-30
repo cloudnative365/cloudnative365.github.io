@@ -1,11 +1,10 @@
 ---
 title: Zabbix5.0自动发现
-keywords: keynotes, architect, monitoring, zabbix_operations
-permalink: keynotes_L4_architect_2_monitoring_9_zabbix_operations.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/9_zabbix_operations
+keywords: keynotes, architect, observability, zabbix_auto_discovery
+permalink: L5_architect_observability_1_metrics_3_2_zabbix_auto_discovery.html
+sidebar: keynotes_L5_architect_observability_sidebar
+typora-copy-images-to: ./pics/3_2_zabbix_auto_discovery
 typora-root-url: ../../../../../cloudnative365.github.io
-
 ---
 
 ## 学习目标
@@ -51,7 +50,7 @@ zabbix的亮点之一就是自动发现，配置起来比较简单，而且通�
 
   点击右上角的`Create discovery rule`按钮，进入配置界面
 
-  ![image-20200825230148559](/pages/keynotes/L4_architect/2_monitoring/pics/9_zabbix_operations/image-20200825230148559.png)
+  ![image-20200825230148559](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_2_zabbix_auto_discovery/image-20200825230148559.png)
 
   + name：随便起一个名字
 
@@ -61,11 +60,11 @@ zabbix的亮点之一就是自动发现，配置起来比较简单，而且通�
 
   + Check：列出了一些检查的条件，我们添加一个zabbix agent的check，key使用system.uname
 
-    ​	![image-20200825230305802](/pages/keynotes/L4_architect/2_monitoring/pics/9_zabbix_operations/image-20200825230305802.png)
+    ​	![image-20200825230305802](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_2_zabbix_auto_discovery/image-20200825230305802.png)
 
   + 完成后，下面的几个选项就会发生变化
 
-  ![image-20200825230245512](/pages/keynotes/L4_architect/2_monitoring/pics/9_zabbix_operations/image-20200825230245512.png)
+  ![image-20200825230245512](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_2_zabbix_auto_discovery/image-20200825230245512.png)
 
   + Device uniqueness criteria：设备唯一标识，我们选ip，这是这个设备注册在zabbix中的唯一标识
   + Host name：依然选IP，因为服务器会去探测host name的10050端口，如果有正向解析，也可以选DNS name
@@ -121,7 +120,7 @@ ldapsearch -x 'memberof=CN=rol-infra-infra-s-g,OU=rol,OU=SecurityGroup,DC=UBRMB,
 
 最后在界面上配置
 
-![image-20200904153149077](/pages/keynotes/L4_architect/2_monitoring/pics/9_zabbix_operations/image-20200904153149077.png)
+![image-20200904153149077](/pages/keynotes/L5_architect_observability/1_Metrics/pics/3_2_zabbix_auto_discovery/image-20200904153149077.png)
 
 ### 3.2. 配置ldap同步脚本
 

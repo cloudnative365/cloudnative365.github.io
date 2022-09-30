@@ -1,7 +1,7 @@
 ---
 title: Metrics指标监控概述
 keywords: keynotes, architect, observability, overview
-permalink: L5_architect_observability_metric_overview.html
+permalink: L5_architect_observability_0_metric_overview.html
 sidebar: keynotes_L5_architect_observability_sidebar
 typora-copy-images-to: ./pics/0_metric_overview
 typora-root-url: ../../../../../cloudnative365.github.io

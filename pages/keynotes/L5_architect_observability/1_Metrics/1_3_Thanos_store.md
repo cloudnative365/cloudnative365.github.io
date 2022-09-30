@@ -1,7 +1,7 @@
 ---
 title: Thanos存储
 keywords: keynotes, architect, observability, thanos, store
-permalink: L5_architect_observability_thanos_store.html
+permalink: L5_architect_observability_1_metrics_1_3_thanos_store.html
 sidebar: keynotes_L5_architect_observability_sidebar
 typora-copy-images-to: ./pics/1_3_Thanos_store
 typora-root-url: ../../../../../cloudnative365.github.io

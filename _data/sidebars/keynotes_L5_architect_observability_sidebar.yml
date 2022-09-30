@@ -24,7 +24,7 @@ entries:
     folderitems:
 
     - title: Metrics指标监控概述
-      url: /L5_architect_observability_metric_overview.html
+      url: /L5_architect_observability_0_metric_overview.html
       output: web, pdf
       type: homepage
 
@@ -33,35 +33,53 @@ entries:
         output: web, pdf
         subfolderitems:
         - title: Thanos概述
-          url: /L5_architect_observability_thanos_overview.html
+          url: /L5_architect_observability_1_metrics_1_1_thanos_overview.html
           output: web, pdf
 
         - title: Thanos概念
-          url: /L5_architect_observability_thanos_conception.html
+          url: /L5_architect_observability_1_metrics_1_2_thanos_conception.html
           output: web, pdf
 
         - title: Thanos存储
-          url: /L5_architect_observability_thanos_store.html
+          url: /L5_architect_observability_1_metrics_1_3_thanos_store.html
           output: web, pdf
 
         - title: Thanos前端缓存
-          url: /L5_architect_observability_thanos_frontend.html
+          url: /L5_architect_observability_1_metrics_1_4_thanos_frontend.html
           output: web, pdf
 
         - title: Consul集群
-          url: /L5_architect_observability_thanos_consul.html
+          url: /L5_architect_observability_1_metrics_1_5_thanos_consul.html
           output: web, pdf
 
         - title: Thanos报警
-          url: /L5_architect_observability_thanos_ruler.html
+          url: /L5_architect_observability_1_metrics_1_6_thanos_ruler.html
           output: web, pdf
 
         - title: Thanos接受请求
-          url: /L5_architect_observability_thanos_receive.html
+          url: /L5_architect_observability_1_metrics_1_7_thanos_receive.html
           output: web, pdf
 
-        - title: 夜莺
-          url: /L5_architect_observability_thanos_nightingale.html
+      - title: InfluxDB
+        output: web, pdf
+        subfolderitems:
+        - title: TIGK
+          url: /L5_architect_observability_1_metrics_2_1_TIGK.html
+          output: web, pdf
+
+        - title: telegraf
+          url: /L5_architect_observability_1_metrics_2_2_telegraf.html
+          output: web, pdf
+
+      - title: Zabbix
+        output: web, pdf
+        subfolderitems:
+        - title: Zabbix尝鲜
+          url: /L5_architect_observability_1_metrics_3_1_zabbix_basic.html
+          output: web, pdf
+
+        - title: Zabbix自动发现
+          url: /L5_architect_observability_1_metrics_3_2_zabbix_auto_discovery.html
           output: web, pdf
 
   - title: 第二章 Logging日志监控
@@ -107,8 +125,12 @@ entries:
         output: web, pdf
         subfolderitems:
 
-        - title: Graylog
+        - title: Graylog初体验
           url: /keynotes_L5_architect_observability_2_log_4_1_graylog_basic.html
+          output: web, pdf
+
+        - title: Graylog安全配置
+          url: /keynotes_L5_architect_observability_2_log_4_2_graylog_security.html
           output: web, pdf
 
   - title: 第三章 Tracing链路追踪

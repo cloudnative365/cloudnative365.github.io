@@ -1,7 +1,7 @@
 ---
 title: Thanos接受请求
 keywords: keynotes, architect, observability, thanos, receive
-permalink: L5_architect_observability_thanos_receive.html
+permalink: L5_architect_observability_1_metrics_1_7_thanos_receive.html
 sidebar: keynotes_L5_architect_observability_sidebar
 typora-copy-images-to: ./pics/1_7_Thanos_receive
 typora-root-url: ../../../../../cloudnative365.github.io

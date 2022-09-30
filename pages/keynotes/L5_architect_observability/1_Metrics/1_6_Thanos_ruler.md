@@ -1,7 +1,7 @@
 ---
 title: Thanos报警
 keywords: keynotes, architect, observability, thanos, ruler
-permalink: L5_architect_observability_thanos_ruler.html
+permalink: L5_architect_observability_1_metrics_1_6_thanos_ruler.html
 sidebar: keynotes_L5_architect_observability_sidebar
 typora-copy-images-to: ./pics/1_6_Thanos_ruler
 typora-root-url: ../../../../../cloudnative365.github.io
