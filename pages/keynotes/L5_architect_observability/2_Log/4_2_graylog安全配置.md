@@ -9,11 +9,19 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 1. 引言
 
-作为一款日志产品，就不得不在意他的安全相关的配置。主要有两个方面的安全，数据存储的安全和数据在传输过程中的安全。
+作为一款日志产品，就不得不在意他的安全相关的配置。主要有两个方面的安全，数据存储的安全和数据在传输过程中的安全。安全又涉及到了TLS加密，认证和审计。审计是产品自身的功能，基本都是通过开启审计日志，然后通过审计软件，比如ES，Splunk等来分析日志做到审计的功能，我们还需要另外一套审计中心来审计日志，这个架构太庞大了，有兴趣的可以在我们的基础之上再做一下实现，我们这里只说一下TLS加密和认证的配置。
 
 ## 2. 架构图
 
+![image-20221007125259393](/pages/keynotes/L5_architect_observability/2_Log/pics/4_2_graylog_security/image-20221007125259393.png)
 
+每个组件之间都需要数据加密和认证机制，如果可以配置mTLS当然是最好，如果有一些部分不能进行双向认证，比如用户和GrayLog Server之间的认证，只能在GrayLog Server上配置，从架构上也是说的通的。
+
+这篇文章配置了三个单方向的数据安全
+
++ 用户访问GrayLog Server（GrayLog Server上配置证书）
++ GrayLog Server访问ES/OpenSearch（ES上配置证书）
++ GrayLog Server访问MongoDB（MongoDB上配置证书）
 
 ## 3. 单机版安装和配置
 
