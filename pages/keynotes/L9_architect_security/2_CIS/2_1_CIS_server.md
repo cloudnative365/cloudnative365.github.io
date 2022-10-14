@@ -172,6 +172,14 @@ typora-root-url: ../../../../../cloudnative365.github.io
   systemctl disable firewalld
   ```
 
++ 我们也可以直接使用下面的命令
+
+  ``` bash
+  ansible-playbook -l local --skip-tags package_firewalld,service_firewalld_enabled,package_libselinux_installed,grub2_enable_selinux,selinux_policytype,selinux_state rhel7-playbook-cis_server_l1.yml
+  ```
+  
+  
+  
 + 重启机器，之后用jormun用户登录
 
   ``` bash
