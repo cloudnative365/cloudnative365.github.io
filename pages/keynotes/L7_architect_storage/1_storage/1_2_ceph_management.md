@@ -1,9 +1,9 @@
 ---
-title: Ceph管理
-keywords: keynotes, architecture, BOS, management
-permalink: keynotes_L4_architect_9_BOS_3_ceph_management.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/3_ceph_management
+title: Ceph高可用
+keywords: keynotes, architecture, storage, object_storage, ceph_HA
+permalink: keynotes_L7_architect_storage_1_storage_1_2_ceph_HA.html
+sidebar: keynotes_L7_architect_sidebar
+typora-copy-images-to: ./pics/1_2_ceph_HA
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 

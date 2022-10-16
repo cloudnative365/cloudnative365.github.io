@@ -9,12 +9,18 @@ typora-root-url: ../../../cloudnative365.github.io
 
 ## 课程大纲
 
-### 对象存储
+### 存储
 
 + Ceph
 + MinIO
-
-### 云原生存储
-
-+ Ceph
++ Rook
 + OpenEBS
+
+### 数据库
+
++ mysql
++ postgresql
+
+### 备份
+
++ Veaam

@@ -1,9 +1,9 @@
 ---
-title: postgresql高可用
-keywords: keynotes, architect, monitoring, thanos
-permalink: keynotes_L4_architect_2_monitoring_24_postgresql_HA.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/24_postgresql_HA
+title: postgresql@12高可用
+keywords: keynotes, architect, storage, database,postgresql
+permalink: keynotes_L7_architect_storage_2_database_2_2_postgresql_HA.html
+sidebar: keynotes_L7_architect_sidebar
+typora-copy-images-to: ./pics/2_2_postgresql_HA
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 
@@ -17,7 +17,7 @@ postgresql也是非常稳定的一款关系型数据库，他是早期伯克利�
 
 关于postgresql的高可用方案真的是太多了，主要还是由于社区的活跃，wiki上列出的[集群方案比较](https://wiki.postgresql.org/wiki/Replication,_Clustering,_and_Connection_Pooling)
 
-![image-20200921103245533](/pages/keynotes/L4_architect/2_monitoring/pics/23_postgresql_HA/image-20200921103245533.png)
+![image-20200921103245533](/pages/keynotes/L7_architect_storage/2_database/pics/2_2_postgresql_HA/image-20200921103245533.png)
 
 我们这里使用的是第二象限公司推出的流复制管理工具repmgr。
 
@@ -38,7 +38,7 @@ repmgr管理命令有repmgr和repmgrd两个命令。
 
 ### 2.3. 架构图
 
-![preview](/pages/keynotes/L4_architect/2_monitoring/pics/23_postgresql_HA/view.png)
+![preview](/pages/keynotes/L7_architect_storage/2_database/pics/2_2_postgresql_HA/view.png)
 
 repmgr管理工具对集群节点的管理是基于一个分布式的管理系统。每个节点都有自己的repmgr.conf配置文件，文件中会来记录本节点的ID，节点名称，连接，数据库目录等信息。
 

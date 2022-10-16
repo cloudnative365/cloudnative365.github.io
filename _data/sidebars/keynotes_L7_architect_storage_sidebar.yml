@@ -24,7 +24,7 @@ entries:
     folderitems:
 
     - title: 对象存储概述
-      url: /L5_architect_observability_metric_overview.html
+      url: /keynotes_L7_architect_storage_1_storage_0_object_overview.html
       output: web, pdf
       type: homepage
 
