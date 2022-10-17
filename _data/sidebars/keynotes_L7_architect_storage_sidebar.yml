@@ -19,7 +19,7 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: 第一章 对象存储
+  - title: 第一章 存储
     output: web, pdf
     folderitems:
 
@@ -33,42 +33,54 @@ entries:
         output: web, pdf
         subfolderitems:
         - title: Ceph概述
-          url: /L5_architect_observability_thanos_overview.html
+          url: /keynotes_L7_architect_storage_1_storage_1_1_ceph_overview.html
           output: web, pdf
 
       - title: MinIO
         output: web, pdf
         subfolderitems:
         - title: MinIO概述
-          url: /L5_architect_observability_thanos_overview.html
+          url: /keynotes_L7_architect_storage_1_storage_2_1_minio_overview.html
           output: web, pdf
 
-  - title: 第二章 云原生存储
+  - title: 第二章 数据库
     output: web, pdf
     folderitems:
 
-    - title: 云原生存储概述
-      url: /keynotes_L5_architect_observability_2_log_0_log_overview.html
+    - title: 数据库概述
+      url: /keynotes_L7_architect_storage_2_database_0_database_overview.html
       output: web, pdf
 
       subfolders:
-      - title: OpenEBS
+      - title: mysql
         output: web, pdf
         subfolderitems:
         - title: OpenEBS初体验
-          url: /keynotes_L5_architect_observability_2_log_1_1_opensearch.html
+          url: /keynotes_L7_architect_storage_2_database_1_1_mysql_overview.html
           output: web, pdf
 
-      - title: Rook
+      - title: postgresql
         output: web, pdf
         subfolderitems:
-        - title: Rook初体验
-          url: /keynotes_L5_architect_observability_2_log_2_1_fluentd_overview.html
+        - title: postgresql概述
+          url: /keynotes_L7_architect_storage_2_database_2_1_postgresql_overview.html
           output: web, pdf
 
-      - title: LongHorn
+        - title: postgresql@12 with repmgr高可用
+          url: /keynotes_L7_architect_storage_2_database_2_2_postgresql_HA.html
+          output: web, pdf
+
+  - title: 第三章 备份
+    output: web, pdf
+    folderitems:
+    - title: 备份概述
+      url: /keynotes_L7_architect_storage_3_backup_0_backup_overview.html
+      output: web, pdf
+
+      subfolders:
+      - title: veaam概述
         output: web, pdf
         subfolderitems:
-        - title: LongHorn初体验
-          url: /keynotes_L5_architect_observability_2_log_3_1_loki_basic.html
+        - title: veaam概述
+          url: /keynotes_L7_architect_storage_3_backup_1_1_veaam_overview.html
           output: web, pdf

@@ -23,7 +23,7 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: Metrics指标监控概述
+    - title: 认证和授权概述
       url: /L5_architect_observability_metric_overview.html
       output: web, pdf
       type: homepage
