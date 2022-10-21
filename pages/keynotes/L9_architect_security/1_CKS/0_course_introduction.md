@@ -1,7 +1,7 @@
 ---
 title: CKS考试心得
 keywords: keynotes, advanced, kubernetes, CKS, CKS_CERTIFICATE_GUIID
-permalink: keynotes_L2_advanced_1_kubernetes_1_CKS_1_CKS_CERTIFICATE_GUIID.html
+permalink: keynotes_L9_architect_security_1_kubernetes_1_CKS_1_CKS_CERTIFICATE_GUIID.html
 sidebar: keynotes_L2_advanced_sidebar
 typora-copy-images-to: ./pics/1_CKS_CERTIFICATE_GUIID
 typora-root-url: ../../../../../cloudnative365.github.io

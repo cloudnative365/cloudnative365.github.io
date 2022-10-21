@@ -27,3 +27,17 @@ typora-root-url: ../../../cloudnative365.github.io
 + ArgoCD
 
 ### IaC
+
+
+
+标准化：standardization
+
+流程化：procedure
+
+系统化：systemized
+
+自动化：automation
+
+对于目前任何的运维体系来说，这四个步骤都是不可或缺的。可以说是一套
+
+标准化是建立运维体系的第一步，标准化用一句话来说
