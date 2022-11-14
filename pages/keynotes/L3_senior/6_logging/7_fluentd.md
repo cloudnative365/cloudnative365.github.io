@@ -113,3 +113,5 @@ systemctl start td-agent
 ```
 
 ### 2.2. 使用Fluentd代替logstash挖日志
+
+这个时候我们就可以使用fluentd来挖日志了，我们继续使用2_install_elk的环境

@@ -23,7 +23,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 + 下载页面上的版本和ES的版本基本对应，但是对于非常新的版本可能会有一定延迟
 
-  ![image-20200826100253036](/pages/keynotes/L3_senior/6_logging/pics/3_install_plugins/image-20200826100253036.png)
+  ![image-20200826100253036](/pages/keynotes/L3_senior/6_logging/pics/4_install_searchguard/image-20200826100253036.png)
 
 + 安装：
 
@@ -237,7 +237,3 @@ SG有三个版本，社区版（community edition），专业版（enterprise ed
 ### 1.7. sgadmin的使用
 
 详细请参考[官方文档](https://docs.search-guard.com/latest/sgadmin-basic-usage)
-
-## 2. 分词器系列
-
-分词器是ES的特色之一，简单来说，分词器就是告诉ES怎样拆分一个句子中的词语，从而构建搜索的关键字的。比如，我们是小学生，那么分词器会把我们，小学生，作为搜索关键字来储存。一般来说，中文是需要中文的分词器的。而张三是小学生，就没办法识别，因为张三本身不是一个词，是一个名字，名字就无法被认为是一个词，而在实际生活中，明星的名字很有可能就是一个关键词，我们就需要手动为分词器添加关键字，也就是支持自定义关键字的分词器。比较常见的分词器有IK分词器，pinyin分词器。大家可以自己到[这里](https://github.com/medcl/)去下载，使用教程也比较详细，我们不着重说了。

@@ -23,9 +23,9 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 日志的格式基本都是以文本为主，所以搜索引擎首当其冲作为检索的工具是比较合适的，我们常见的开源搜索引擎有
 
-+ lucene
-+ ElasticSearch
-+ Solr
++ lucene：apache，只针对搜索引擎进行了实现
++ ElasticSearch：基于lucence，Java，实现了server，数据库，搜索引擎
++ Solr：基于lucence
 
 但是，搜索引擎是日志系统的一部分，也是比较核心的部分，但是，**搜索引擎不等于日志系统**。日志系统是包含了搜索引擎在内的非常多的组件组合而成的，只不过有些产品，以搜索引擎为核心，配套了很多的周边，形成了一套日志收集系统，比如我们下面要说的elasticsearch就是搜索引擎，他和周边很多产品才构成了我们的日志系统。
 
@@ -49,7 +49,7 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 + Beats：相当于agent，里面包含了相当多的beats。下面会解释
 + Logstash：可以当agent用，但是比agent增加了很多数据转换的功能
-+ APM：监控系统，收费功能
++ APM：监控系统，可观测性系统，收费功能
 + Elastic企业搜索：SaaS产品，包含全套组件，官方的cloud
 + Elastic Cloud：云托管，比如阿里云，腾讯云
 + Elastic Cloud Enterprise：把SaaS产品下载到自己的机房
@@ -115,3 +115,4 @@ Loki是grafana lab的另外一款产品，他专注的是日志的检索功能�
 既然是grafana的产品，不给他单独做一个dashboard就不太合适了，他的dashboard和ES差不多，同样是提供一个输入框，下面可以展示结果。
 
 ![See the source image](/pages/keynotes/L3_senior/6_logging/pics/1_logging_overview/loki_grafana_filtering.png)
+

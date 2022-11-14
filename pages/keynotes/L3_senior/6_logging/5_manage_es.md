@@ -25,6 +25,13 @@ curl http://localhost:9200/_cluster/health
 curl -k -u admin:admin --cert my.cert --key my.key --cacert my.pem https://localhost:9200/_cluster/health
 ```
 
+前面我们学过了很多种的方式来安装es，这里我们使用mac的[brew](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/brew.html)来做一下，各位也可以使用其他的方式来做
+
+``` bash
+brew tap elastic/tap
+brew install elastic/tap/elasticsearch-full
+```
+
 ## 1. 集群级别的操作
 
 ``` bash
@@ -352,4 +359,23 @@ GET order_stpprdinf_2019-12/_delete_by_query?conflicts=proceed
 }
 ```
 
-## 5. 备份和恢复
+## 4. 概念
+
+### 4.1. 集群Cluster
+
+### 4.2. 节点Node
+
+### 4.3. 索引Index
+
+数据库
+
+### 4.4. 类型type
+
+表
+
+### 4.5. 文档Document
+
+行
+
+### 4.6. 字段Field
+

@@ -7,13 +7,9 @@ typora-copy-images-to: ./pics/2_1_fluentd_overview
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 
-## 课程目标
-
-+ 认识fluentd，搭建fluentd服务
-
 ## 1. fluentd
 
-fluentd是一款开源的数据收集器，支持统一数据收集和使用，从而更好的利用和理解数据
+官方对于fluentd是这样说的：fluentd是一款开源的数据收集器，支持统一数据收集和使用，从而更好的利用和理解数据
 
 ``` bash
 Fluentd is an open source data collector, which lets you unify the data collection and consumption for a better use and understanding of data.

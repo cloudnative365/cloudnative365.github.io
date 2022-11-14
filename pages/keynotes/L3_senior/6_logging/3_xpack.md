@@ -30,7 +30,7 @@ elastic stack免费版提供的安全功能是非常有限的，在官方文档�
 
 ## 1. 开启安全认证
 
-在ES的7.x版本中，basic认证是免费的功能，我们只需要在elasticsearch的配置文件中添加下面的配置就可以了
+[官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/7.16/security-basic-setup.html#generate-certificates)，在ES的7.x版本中，basic认证是免费的功能，我们只需要在elasticsearch的配置文件中添加下面的配置就可以了
 
 ``` bash
 # x-pack security configuration
@@ -54,7 +54,7 @@ xpack.security.transport.ssl.enabled: true
 但是启动了ssl之后，需要我们生成证书
 
 ``` bash
-elasticsearch-certutil ca
+$ bin/elasticsearch-certutil ca
 .
 .
 .
@@ -153,5 +153,67 @@ kibana-keystore remove xxx
 
 再次登录kibana界面，使用elastic用户进入控制台就好了
 
-## 4. 配置Elasticsearch和kibana的ssl通信
+## 4. 配置Elasticsearch和kibana的ssl/tls通信
+
+[官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/7.16/security-basic-setup-https.html)，我们需要对es的api进行https加密，使用下面的命令，通过向导来生成证书
+
+``` bash
+./bin/elasticsearch-certutil http
+```
+
+按照下面的要求来做
+
+- When asked if you want to generate a CSR, enter `n`.
+
+- When asked if you want to use an existing CA, enter `y`.
+
+- Enter the path to your CA. This is the absolute path to the `elastic-stack-ca.p12` file that you generated for your cluster.
+
+- Enter the password for your CA.
+
+- Enter an expiration value for your certificate. You can enter the validity period in years, months, or days. For example, enter `90D` for 90 days.
+
+- When asked if you want to generate one certificate per node, enter `y`.
+
+  Each certificate will have its own private key, and will be issued for a specific hostname or IP address.
+
+- When prompted, enter the name of the first node in your cluster. Use the same node name that you used when [generating node certificates](https://www.elastic.co/guide/en/elasticsearch/reference/7.16/security-basic-setup.html#generate-certificates).
+
+- Enter all hostnames used to connect to your first node. These hostnames will be added as DNS names in the Subject Alternative Name (SAN) field in your certificate.
+
+  List every hostname and variant used to connect to your cluster over HTTPS.
+
+- Enter the IP addresses that clients can use to connect to your node.
+
+- Repeat these steps for each additional node in your cluster.
+
+最后会生成一个`elasticsearch-ssl-http.zip`。解压他就可以找到证书了，他包含了es和kibana的证书
+
+``` bash
+/elasticsearch
+|_ README.txt
+|_ http.p12
+|_ sample-elasticsearch.yml
+```
+
+``` bash
+/kibana
+|_ README.txt
+|_ elasticsearch-ca.pem
+|_ sample-kibana.yml
+```
+
+我们把配置文件修改一下，加入下面两行
+
+``` bash
+xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.keystore.path: http.p12
+```
+
+启动es就可以了，同时，让kibana忽略证书
+
+``` bash
+elasticsearch.hosts: ["https://localhost:9200"]
+elasticsearch.ssl.verificationMode: none
+```
 

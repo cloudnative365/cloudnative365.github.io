@@ -7,23 +7,13 @@ typora-copy-images-to: ./pics/2_install_elk
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 
-## 学习目标
-
-安装elasticsearch
-
-安装kibana
-
-安装logstash
-
-安装插件
-
 ## 概述
 
 我们看到很多教程都是使用一台机器安装elasticsearch，然后kibana，然后各种组件全部怼到了一台机器上。有的教育机构资源比较丰富的，会找三个节点来安装一个小集群。他们主要是教大家怎样入门elasticsearch，但是我们的教程是生产级的，又是保姆级的，我们会教大家搭建一个相对稳定的架构，并且教大家怎样维护他，就像给客户做了一个完整的项目一样。但是，不积跬步无以至千里，我们要先从最基本的学起，这篇我们Demo一下单节点，三节点和一些工具的安装和配置
 
 ## 1. 单节点elasticsearch
 
-+ JDK：运行elasticsearch需要jvm，所以我们需要在机器上安装java。java的版本需要在1.8之上，如果我们从官网链接跳转下载地址，是会下载自带jdk的elasticsearch的。
++ JDK：运行elasticsearch需要jvm，所以我们需要在机器上安装java。java的 版本需要在1.8之上，如果我们从官网链接跳转下载地址，是会下载自带jdk的elasticsearch的。
 
   + 下载地址：https://www.elastic.co/cn/downloads/elasticsearch
   + 不带jdk的：https://www.elastic.co/cn/downloads/elasticsearch-no-jdk
@@ -85,7 +75,6 @@ typora-root-url: ../../../../../cloudnative365.github.io
   systemctl restart elasticsearch
   ```
 
-  
 
 ## 2. 单节点kibana
 
@@ -137,68 +126,40 @@ typora-root-url: ../../../../../cloudnative365.github.io
 + master1上的/etc/elasticsearch/elasticsearch.yml
 
   ``` bash
-  
-  ```
-
-# 集群需要一个名字（必须的）
-
+  # 集群需要一个名字（必须的）
   cluster.name: es-enterprise-demo
-
   # 节点也需要一个名字
-
   node.name: master1
-
   # 节点的属性，我们可以认为是标签
-
   node.attr.dc: 803
   node.attr.row: 2
   node.attr.enclosure: 3
   node.attr.rack: r1
-
   # 存数据的目录
-
   path.data: /data/es/data
-
   # 存日志的目录（是es系统的日志，不是存放在es中的数据的日志）
-
   path.logs: /data/es/logs
-
   # 在系统启动的时候，是否首先分配所有的内存，如果我们的堆内存heap配置为系统的一半的时候，就把这个选项打开，生产环境建议打开
-
   bootstrap.memory_lock: true
-
   # 监听的端口，建议每个机器有两个网口，这个用于通讯的使用万兆光纤
-
   network.host: 172.16.220.11
-
   # 服务的监听端口
-
   http.port: 9200
-
   # 集群发现的地址
-
   discovery.seed_hosts: ["172.16.220.11", "172.16.220.12", "172.16.220.13"]
-
   # 集群启动的时候发现集群的地址，如果没有指定，会去整个网段扫描
-
   cluster.initial_master_nodes: ["172.16.220.11", "172.16.220.12", "172.16.220.13"]
-
   # 一个集群中的N个节点启动后,才允许进行数据恢复处理
-
   gateway.recover_after_nodes: 3
-
   # 设置是否可以通过正则或者_all删除或者关闭索引库，默认true表示必须需要显式指定索引库名称
-
   # 生产环境建议设置为true，删除索引库的时候必须显式指定，否则可能会误删索引库中的索引库。
-
   action.destructive_requires_name: true
-
   ```
-  
-  master2上的/etc/elasticsearch/elasticsearch.yml
+
++ master2上的/etc/elasticsearch/elasticsearch.yml
 
   ``` bash
-# 集群需要一个名字（必须的）
+  # 集群需要一个名字（必须的）
   cluster.name: es-enterprise-demo
   # 节点也需要一个名字
   node.name: master2
@@ -228,10 +189,10 @@ typora-root-url: ../../../../../cloudnative365.github.io
   action.destructive_requires_name: true
   ```
 
-  master3上的/etc/elasticsearch/elasticsearch.yml
++ master3上的/etc/elasticsearch/elasticsearch.yml
 
   ``` bash
-# 集群需要一个名字（必须的）
+  # 集群需要一个名字（必须的）
   cluster.name: es-enterprise-demo
   # 节点也需要一个名字
   node.name: master3
@@ -302,6 +263,23 @@ typora-root-url: ../../../../../cloudnative365.github.io
 ## 5. logstash简单使用
 
 + 下载地址：
+
++ 修改配置文件
+
+  ``` bash
+  input {
+      file {
+          path => "/var/log/nginx/access.log"
+      }
+  }
+  output {
+      elasticsearch {
+          hosts => [ "localhost:9200" ]
+      }
+  }
+  ```
+
+  
 
 ## 6. 怎样安装插件
 
