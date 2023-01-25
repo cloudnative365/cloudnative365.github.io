@@ -1,6 +1,6 @@
 ---
 title: postgresql@12高可用
-keywords: keynotes, architect, storage, database,postgresql
+keywords: keynotes, architect, storage, database, postgresql
 permalink: keynotes_L7_architect_storage_2_database_2_2_postgresql_HA.html
 sidebar: keynotes_L7_architect_sidebar
 typora-copy-images-to: ./pics/2_2_postgresql_HA

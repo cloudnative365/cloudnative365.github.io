@@ -1,9 +1,9 @@
 ---
-title: fluent-bit
-keywords: keynotes, architect, logging, fluent-bit
-permalink: keynotes_L3_senior_6_logging_8_fluentbit.html
-sidebar: keynotes_L4_architect_sidebar
-typora-copy-images-to: ./pics/8_fluentbit
+title: fluent-bit基础配置
+keywords: keynotes, architect, observability, log, fluentd, fluentd_basic
+permalink: keynotes_L5_architect_observability_2_log_2_3_fluentdbit_basic.html
+sidebar: keynotes_L5_architect_observability_sidebar
+typora-copy-images-to: ./pics/2_3_fluentbit_basic
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 

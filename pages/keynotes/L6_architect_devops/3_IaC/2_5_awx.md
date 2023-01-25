@@ -13,7 +13,17 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 2. 安装与配置
 
+早期的版本（17版本之前）是使用docker方式安装的，目前最新的是18版本，官方建议使用operator的方式来安装。
+
+https://www.server-world.info/en/note?os=CentOS_Stream_9&p=ansible&f=9
+
+### 2.1. 安装准备
+
++ 一个准备好的k8s集群
 
 
 
+## 3. AWX（ansible-tower）的API
+
+https://docs.ansible.com/ansible-tower/latest/html/towerapi/api_ref.html#/
 

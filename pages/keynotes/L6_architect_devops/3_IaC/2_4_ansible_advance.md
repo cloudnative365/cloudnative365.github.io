@@ -78,19 +78,45 @@ typora-root-url: ../../../../../cloudnative365.github.io
           var_ansible_server_user: !!str ansible-server
           var_ansible_client_user: !!str ansible-client
           var_ansible_server_host: !!str ansible-host
+          var_sudo_user_group: !!str wheel
     
        tasks:
-        - name: add user ansible-client
+        - name: user '{{ var_ansible_client_user }}' should be exist
           block:
           
-          - name: verify if the user is exist
+          - name: verify if the user '{{ var_ansible_client_user }}' is exist
             user:
-              name: ansible-client
+              name: '{{ var_ansible_client_user }}'
               state: present
-          
+              comment: 'AnsibleUserForConfigureSystem'
+              groups: '{{ var_sudo_user_group }}'
+              append: yes # append参数会让groups中的两个组成为用户的附加组
+    
+          - name: add ssh key for user '{{ var_ansible_client_user }}'
+            authorized_key:
+              user: '{{ var_ansible_client_user }}'
+              state: present
+              key: '{{ var_ssh_id_pub }}'
           
           tags:
           - add_user
+    
+        - name: let '{{ var_sudo_user_group }}' group users have the privilege
+          block:
+    
+          - name: make sure '{{ var_sudo_user_group }}' under /etc/sudoer.d is exist
+            file:
+              path: /etc/sudoers.d/{{ var_sudo_user_group }}
+              state: touch
+    
+        - name: modify sudoers to allow group "{{ var_sudo_user_group }}" switch to root without password
+          copy:
+            content: "%{{ var_sudo_user_group }} ALL=(ALL) NOPASSWD: ALL"
+            dest: /etc/sudoers.d/{{ var_sudo_user_group }}
+            mode: 0440
+    
+          tags:
+          - grant_sudo_root_privilege
     ```
-  
+    
     
