@@ -36,11 +36,19 @@ entries:
           url: /keynotes_L7_architect_storage_1_storage_1_1_ceph_overview.html
           output: web, pdf
 
+        - title: Ceph高可用
+          url: /keynotes_L7_architect_storage_1_storage_1_2_ceph_cluster.html
+          output: web, pdf
+
       - title: MinIO
         output: web, pdf
         subfolderitems:
         - title: MinIO概述
           url: /keynotes_L7_architect_storage_1_storage_2_1_minio_overview.html
+          output: web, pdf
+
+        - title: MinIO高可用
+          url: /keynotes_L7_architect_storage_1_storage_2_2_minio_cluster.html
           output: web, pdf
 
   - title: 第二章 数据库
