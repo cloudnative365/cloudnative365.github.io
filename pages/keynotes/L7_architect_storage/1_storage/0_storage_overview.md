@@ -2,7 +2,7 @@
 title: 存储概述
 keywords: keynotes, architecture, storage, overview
 permalink: keynotes_L7_architect_storage_1_storage_0_storage_overview.html
-sidebar: keynotes_L7_architect_sidebar
+sidebar: keynotes_L7_architect_storage_sidebar
 typora-copy-images-to: ./pics/0_storage_overview
 typora-root-url: ../../../../../cloudnative365.github.io
 ---

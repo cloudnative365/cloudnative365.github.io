@@ -2,7 +2,7 @@
 title: MinIO概述
 keywords: keynotes, architecture, storage, object_overview
 permalink: keynotes_L7_architect_storage_1_storage_2_1_minio_overview.html
-sidebar: keynotes_L7_architect_sidebar
+sidebar: keynotes_L7_architect_storage_sidebar
 typora-copy-images-to: ./pics/2_1_object_overview
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
@@ -54,3 +54,145 @@ MinIO 基于Apache V2 license 100% 开放源代码 。 这就意味着 MinIO的�
 ![img](/pages/keynotes/L7_architect_storage/1_storage/pics/2_1_object_overview/simplicity.gif)
 
 极简主义是MinIO的指导性设计原则。简单性减少了出错的机会，提高了正常运行时间，提供了可靠性，同时简单性又是性能的基础。 只需下载一个二进制文件然后执行，即可在几分钟内安装和配置MinIO。 配置选项和变体的数量保持在最低限度，这样让失败的配置概率降低到接近于0的水平。 MinIO升级是通过一个简单命令完成的，这个命令可以无中断的完成MinIO的升级，并且不需要停机即可完成升级操作 - 降低总使用和运维成本。
+
+## 2. 社区
+
+### 2.1. Git
+
+Git地址：https://github.com/minio/minio。遵循[AGPL-3.0 license](https://github.com/minio/minio/blob/master/LICENSE)。从2016年2月8日第一个Release到现在2023年1月30日总共Stars：37.2K，Forks：4.4K，release了大小381个版本。可以说社区是非常活跃的。
+
+### 2.2. 网站
+
+国际站：https://min.io/。国内站：https://www.minio.org.cn/。国内站的很多东西是从国际站机器翻译过来的，而且会有版本的延迟。
+
+## 3. 初体验
+
+在1.6章那个动态gif其实已经把过程给大家了，这里咱们再重现一次
+
+``` bash
+wget   http://dl.minio.org.cn/server/minio/release/linux-amd64/minio
+chmod +x minio
+mv minio /usr/local/sbin
+
+mkdir /data/minio
+chmod -R 775 /data/minio
+export MINIO_ROOT_USER=admin
+export MINIO_ROOT_PASSWORD=Passw0rd
+export MINIO_KMS_SECRET_KEY=my-minio-encryption-key:bXltaW5pb2VuY3J5cHRpb25rZXljaGFuZ2VtZTEyMwo=
+
+minio server /data/minio
+```
+
+然后我们就可以登陆web界面来进行管理了，http://你的IP:9000。用户名是$MINIO_ROOT_USER，密码是$MINIO_ROOT_PASSWORD。
+
+![image-20230130093530752](/pages/keynotes/L7_architect_storage/1_storage/pics/2_1_object_overview/image-20230130093530752.png)
+
+登陆后就可以看到一些我们熟悉的概念了，比如bucket，AK，IAM policy之类，我们可以试着创建桶并且给与特定用户一些权限，这些和AWS的S3完全兼容且一致。
+
+## 4. 总结
+
+### 4.1. 管理方式
+
+MinIO除了拥有图形界面，还有一个命令行工具叫mc。界面上可以做的，命令行工具完全可以实现，界面上不能做的，命令行也可以做。
+
+``` bash
+wget    http://dl.minio.org.cn/client/mc/release/linux-amd64/mc
+chmod +x mc
+mv mc /usr/local/sbin
+```
+
+当然，对象存储最重要的功能之一就是要支持程序直接访问，SDK目前支持Java, Go, Node.js, Python, .NET, Haskell
+
+### 4.2. 常用的功能
+
+从图形界面上，我们可以看到还有很多常用的功能
+
+![image-20230130094419245](/pages/keynotes/L7_architect_storage/1_storage/pics/2_1_object_overview/image-20230130094419245.png)
+
+我们企业级别能用到的功能，我们后面会说的，比如：
+
++ Site Replication，这个是集群功能，分片，高可用之类的都是集群功能。
++ Identify，管理用户，组和他们的权限，并且可以和其他认证系统，比如ldap之类的集成。
++ Notifications，这个是报警功能。
++ Tier，可以把其他的对象存储通过MinIO进行整合。
+
+### 4.3. systemd管理
+
+为了方便我们后面的实验，我们用systemd来对MinIO服务进行管理，修改`/etc/systemd/system/minio.service`文件
+
+``` bash
+[Unit]
+Description=MinIO
+Documentation=https://min.io/docs/minio/linux/index.html
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/usr/local/sbin/minio
+
+[Service]
+WorkingDirectory=/usr/local
+
+User=minio
+Group=minio
+ProtectProc=invisible
+
+EnvironmentFile=-/etc/default/minio
+ExecStartPre=/bin/bash -c "if [ -z \"${MINIO_VOLUMES}\" ]; then echo \"Variable MINIO_VOLUMES not set in /etc/default/minio\"; exit 1; fi"
+ExecStart=/usr/local/sbin/minio server $MINIO_OPTS $MINIO_VOLUMES
+
+# Let systemd restart this service always
+Restart=always
+
+# Specifies the maximum file descriptor number that can be opened by this process
+LimitNOFILE=65536
+
+# Specifies the maximum number of threads this process can create
+TasksMax=infinity
+
+# Disable timeout logic and wait until process is stopped
+TimeoutStopSec=infinity
+SendSIGKILL=no
+
+[Install]
+WantedBy=multi-user.target
+
+# Built for ${project.name}-${project.version} (${project.name})
+```
+
+为了使用minio用户启动服务，我们还需要创建minio用户并且给文件夹对应的权限
+
+``` bash
+useradd minio
+chown minio:minio -R /data/minio
+```
+
+我们的配置文件用环境变量文件/etc/default/minio来存储
+
+``` bash
+# MINIO_ROOT_USER and MINIO_ROOT_PASSWORD sets the root account for the MinIO server.
+# This user has unrestricted permissions to perform S3 and administrative API operations on any resource in the deployment.
+# Omit to use the default values 'minioadmin:minioadmin'.
+# MinIO recommends setting non-default values as a best practice, regardless of environment
+
+MINIO_ROOT_USER=admin
+MINIO_ROOT_PASSWORD=Passw0rd
+
+# MINIO_VOLUMES sets the storage volume or path to use for the MinIO server.
+
+MINIO_VOLUMES="/data/minio"
+
+# MINIO_SERVER_URL sets the hostname of the local machine for use with the MinIO Server
+# MinIO assumes your network control plane can correctly resolve this hostname to the local machine
+
+# Uncomment the following line and replace the value with the correct hostname for the local machine.
+
+#MINIO_SERVER_URL="http://minio.example.net"
+
+# Set all MinIO server options
+# #
+# # The following explicitly sets the MinIO Console listen address to
+# # port 9001 on all network interfaces. The default behavior is dynamic
+# # port selection.
+#
+MINIO_OPTS="--console-address 10.39.64.234:9001"
+```
+
