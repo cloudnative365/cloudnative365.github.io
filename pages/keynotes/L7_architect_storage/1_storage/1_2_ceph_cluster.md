@@ -7,12 +7,6 @@ typora-copy-images-to: ./pics/1_2_ceph_cluster
 typora-root-url: ../../../../../cloudnative365.github.io
 ---
 
-## 课程目标
-
-Ceph安装
-
-
-
 ## 1. Ceph安装
 
 Ceph是集群架构的，[官方文档](https://docs.ceph.com/en/latest/install/get-packages/?spm=a2c6h.13651104.0.0.4b6622d15f37Ih)

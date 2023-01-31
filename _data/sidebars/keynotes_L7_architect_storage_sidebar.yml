@@ -40,6 +40,10 @@ entries:
           url: /keynotes_L7_architect_storage_1_storage_1_2_ceph_cluster.html
           output: web, pdf
 
+        - title: Ceph管理
+          url: /keynotes_L7_architect_storage_1_storage_1_3_ceph_management.html
+          output: web, pdf
+
       - title: MinIO
         output: web, pdf
         subfolderitems:
@@ -49,6 +53,17 @@ entries:
 
         - title: MinIO高可用
           url: /keynotes_L7_architect_storage_1_storage_2_2_minio_cluster.html
+          output: web, pdf
+
+        - title: MinIO高可用
+          url: /keynotes_L7_architect_storage_1_storage_2_3_minio_management.html
+          output: web, pdf
+
+      - title: NAS
+        output: web, pdf
+        subfolderitems:
+        - title: NAS概述
+          url: /keynotes_L7_architect_storage_1_storage_3_1_nas_overview.html
           output: web, pdf
 
   - title: 第二章 数据库
