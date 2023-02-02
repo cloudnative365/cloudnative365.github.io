@@ -61,7 +61,7 @@ OpenSearch 2.x和1.x的架构和组件完全一致，可以参考我上一篇文
 + 修改/etc/sysctl.conf
 
   ``` bash
-  cat >/etc/sysctl.conf<<EOF
+  cat >> /etc/sysctl.conf<<EOF
   vm.max_map_count=262144
   EOF
   sysctl -p
@@ -260,7 +260,7 @@ node.max_local_storage_nodes: 3
 
 #### 3.4.2. OpenSearch-Dashboard
 
-Dashboard本身是由nodejs开发的，我们可以看到非常清晰的npm的痕迹。配置文件在/opensearch/app/opensearch-dashboards-1.2.0-linux-x64/config下面。
+Dashboard本身是由nodejs开发的，我们可以看到非常清晰的npm的痕迹。配置文件在/app/opensearch-dashboards/opensearch-dashboards-2.4.1/config下面。
 
 ``` bash
 opensearch.hosts: ["https://10.39.64.243:9200","https://10.39.64.233:9200","https://10.39.64.242:9200"]
@@ -272,11 +272,11 @@ opensearch_security.multitenancy.enabled: true
 opensearch_security.multitenancy.tenants.preferred: ["Private", "Global"]
 opensearch_security.readonly_mode.roles: ["kibana_read_only"]
 opensearch_security.cookie.secure: false
-server.host: 10.114.2.129
+server.host: 10.39.64.243
 server.port: 5601
 
 #指定日志目录
-logging.dest: /opensearch/logs/opensearch
+logging.dest: /app/opensearch-dashboards/logs
 ```
 
 我们注意到，实际上nodejs的配置文件中并没有指定数据目录，而日志默认是打到stdout上的，所以不太利于定位问题，我们可以选择把日志打到systemd上，用journalctl来看，也可以像我这样配置到某一个文件中。
@@ -288,13 +288,12 @@ opensearch-dashboard如果想创建多个节点，就在每个服务器上启动
 启动opensearch，需要在每个node上执行
 
 ``` bash
-su - opensearch -c "/opensearch/app/opensearch-dashboards-1.2.0-linux-x64/bin/opensearch-dashboards" &
+su - opensearch -c "/app/opensearch/opensearch-2.4.1/bin/opensearch" &
 ```
 
 启动opensearch-dashboard
 
 ``` bash
-su - opensearch -c "/opensearch/app/opensearch-dashboards-1.2.0-linux-x64/bin/opensearch-dashboards" &
+su - opensearch -c "/app/opensearch-dashboards/opensearch-dashboards-2.4.1/bin/opensearch-dashboards" &
 ```
 
-## 

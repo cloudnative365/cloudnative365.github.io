@@ -23,7 +23,7 @@ topnav_dropdowns:
           url: /keynotes_L5_architect_observability.html
         - title: 架构师-DevOps
           url: /keynotes_L6_architect_devops.html
-        - title: 架构师-存储
+        - title: 架构师-存储，数据库，备份
           url: /keynotes_L7_architect_storage.html
         - title: 架构师-服务网格
           url: /keynotes_L8_architect_servicemesh.html
