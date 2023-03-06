@@ -1,6 +1,6 @@
 ---
 title: NAS概述
-keywords: keynotes, architecture, storage, object_storage, nas_overview
+keywords: keynotes, architecture, storage, nas, nas_overview
 permalink: keynotes_L7_architect_storage_1_storage_3_1_nas_overview.html
 sidebar: keynotes_L7_architect_storage_sidebar
 typora-copy-images-to: ./pics/3_1_minio_cluster
@@ -72,3 +72,15 @@ AAG对于RWO，ROM，RWM都有对应的方案，国内的除了阿里云还算�
 + 存储本身的支持
 + 虚拟化层的支持，我就见到过RHV平台无法透传FC协议实现存储RWM导致架构高可用上的缺陷
 + kubernetes以及CSI对于上面的支持
+
+## 8. NAS性能：NFS，Samba和GlusterFS
+
+简而言之：对于小型文件写入，Samba的速度比NFS和GlusterFS快得多。
+
+- GlusterFS复制2：**32-35秒**，高CPU负载
+- GlusterFS单：**14-16秒**，高CPU负载
+- GlusterFS + NFS客户端：**16-19秒**，高CPU负载
+- NFS内核服务器+ NFS客户端（同步）：**32-36秒**，非常低的CPU负载
+- NFS内核服务器+ NFS客户端（异步）：**3-4秒**，非常低的CPU负载
+- Samba：**4到7秒**，中等CPU负载
+- 直接磁盘：**<1**秒

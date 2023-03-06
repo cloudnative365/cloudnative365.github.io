@@ -37,13 +37,13 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 在实例上部署：
 
-![image-20211102114231598](/pages/keynotes/L5_architect_observability/2_log/pics/1_2_opensearch_in_production/image-20211102114231598.png)
+![image-20211102114231598](/pages/keynotes/L5_architect_observability/2_Log/pics/1_2_opensearch_in_production/image-20211102114231598-6873774.png)
 
 在k8s上部署
 
-![image-20211102105336099](/pages/keynotes/L5_architect_observability/2_log/pics/1_2_opensearch_in_production/image-20211102105336099.png)
+![image-20211102105336099](/pages/keynotes/L5_architect_observability/2_Log/pics/1_2_opensearch_in_production/image-20211102105336099-6882584.png)
 
-![image-20211102105344439](/pages/keynotes/L5_architect_observability/2_log/pics/1_2_opensearch_in_production/image-20211102105344439.png)
+![image-20211102105344439](/pages/keynotes/L5_architect_observability/2_Log/pics/1_2_opensearch_in_production/image-20211102105344439-6882591.png)
 
 ## 3. 安装集群
 

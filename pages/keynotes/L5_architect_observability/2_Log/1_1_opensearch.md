@@ -41,13 +41,13 @@ SSPL 是由 MongoDB 制定的源代码许可。针对云服务提供商做出了
 
 AWS 介绍称，他们推出的 OpenSearch 删除了 Elasticsearch 中受 Elastic 商业许可证限制的功能、代码和商标，以兼容 Apache License 2.0，自称这是每个人都可以构建和创新的基础，任何人无需签署 CLA (Contributor License Agreement) 即可为项目贡献代码。
 
-![img](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/2021-opensearch-service-2.png)
+![img](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/2021-opensearch-service-2-6882604.png)
 
 ### 1.2. RoadMap
 
 OpenSearch的1.0版本GA是在2021年7月14日。
 
-![Prospective OpenSearch Release Schedule](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/1.png)
+![Prospective OpenSearch Release Schedule](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/1-6882610.png)
 
 | OpenSearch version                                           | Release highlights                                           | Release date     |
 | :----------------------------------------------------------- | :----------------------------------------------------------- | :--------------- |
@@ -61,7 +61,7 @@ OpenSearch的1.0版本GA是在2021年7月14日。
 
 关于项目今后的一些计划，我们可以关注[github](https://github.com/orgs/opensearch-project/projects/1)
 
-![image-20211026145514433](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/image-20211026145514433.png)
+![image-20211026145514433](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/image-20211026145514433-6882615.png)
 
 
 
@@ -71,7 +71,7 @@ OpenSearch的1.0版本GA是在2021年7月14日。
 
 我们可以参考这个[网站](https://www.libhunt.com/compare-OpenSearch-vs-elasticsearch)
 
-![image-20211026162443499](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/image-20211026162443499.png)
+![image-20211026162443499](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/image-20211026162443499-6882619.png)
 
 ### 2.2. OpenSearch的功能
 
@@ -94,15 +94,15 @@ OpenSearch提供了很多开源ES中不可用的功能
 
 ### 2.3. 组件的对比
 
-![OpenSearch Projects](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/22.png)
+![OpenSearch Projects](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/22-6882624.png)
 
 从图上可以看出，原来的ES实例，就是OpenSearch实例。而Kibana在OpenSearch体系里面叫做OpenSearch Dashboards。原来为ES开发的插件OpenDistro完全变成了OpenSearch的插件，来实现我们刚才说的那些功能，且完全免费。
 
-![img](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/1HrKE3nPzZSjCRKplfJySHg.png)
+![img](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/1HrKE3nPzZSjCRKplfJySHg-6882628.png)
 
 以X-Pack为例，在OpenSearch中叫做OpenSearch-security，以plugin的形式随着二进制包一起被下载。
 
-![img](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/1_u3TYQ5-_1IZJEiM_Umipg.png)
+![img](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/1_u3TYQ5-_1IZJEiM_Umipg-6882633.png)
 
 ## 3. 体验OpenSearch
 
@@ -237,13 +237,13 @@ OpenSearch提供了很多开源ES中不可用的功能
 
 + 验证
 
-  ![img](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/ZmFuZ3poZW5naGVpdGkw.png)
+  ![img](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/ZmFuZ3poZW5naGVpdGkw-6882638.png)
 
 ## 4. OpenSearch最佳实践
 
 ### 4.1. 集群
 
-![multi-node cluster architecture diagram](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/cluster.png)
+![multi-node cluster architecture diagram](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/cluster-6882642.png)
 
 和ES一样，OpenSearch节点有多种功能，配置可以看[这里](https://opensearch.org/docs/latest/opensearch/cluster/)
 
@@ -279,11 +279,11 @@ ssl证书的作用不仅仅是加密了访问端口，并且对于数据，也�
 
 我们可以从这个[网站](https://stackshare.io/elk/alternatives)来看elk同类的产品，这个网站有免费，也有收费产品
 
-![image-20211027114328790](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/image-20211027114328790.png)
+![image-20211027114328790](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/image-20211027114328790-6882647.png)
 
 如果要CNCF认证的产品，我们可以到[cncf网站](https://landscape.cncf.io/)去找，找到[logging](https://landscape.cncf.io/card-mode?category=logging&grouping=category)这一栏
 
-![image-20211027114750971](/pages/keynotes/L5_architect_observability/2_log/pics/1_1_opensearch/image-20211027114750971.png)
+![image-20211027114750971](/pages/keynotes/L5_architect_observability/2_Log/pics/1_1_opensearch/image-20211027114750971-6882652.png)
 
 ### 5.2. OpenSearch vs Loki vs Splunk
 
