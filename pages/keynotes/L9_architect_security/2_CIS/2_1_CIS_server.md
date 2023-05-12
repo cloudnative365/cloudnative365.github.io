@@ -9,7 +9,11 @@ typora-root-url: ../../../../../cloudnative365.github.io
 
 ## 1. 主机CIS
 
+在github上有一个开源的项目https://github.com/ansible-lockdown，这个项目中包含了大部分的linux发行版的CIS标准化的ansible脚本，比如我们常见的RHEL,CENTOS和Ubuntu，甚至连windows也包括了。
 
+我们可以通过git clone的方式把脚本下载到本地
+
+由于是redhat和cis合作的项目，redhat也把这个功能集中在了yum中，我们可以通过yum直接安装ansible和对应的脚本包来实现CIS标准化。
 
 ## 2. Ansible-CIS
 
@@ -23,6 +27,13 @@ typora-root-url: ../../../../../cloudnative365.github.io
   yum install -y ansible scap-security-guide
   ```
 
++ 其他插件：由于ansible是依赖插件的，在安装过程中可能会报错，我们就使用ansible-galaxy命令来安装
+
+  ``` bash
+  ansible-galaxy collection install community.general
+  ansible-galaxy collection install ansible.posix
+  ```
+  
 + 配置ssh免密登录
 
   ``` bash
