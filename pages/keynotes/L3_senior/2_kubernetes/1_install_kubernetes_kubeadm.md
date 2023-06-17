@@ -5,7 +5,6 @@ permalink: keynotes_L3_senior_2_kubernetes_1_install_kubernetes_kubeadm.html
 sidebar: keynotes_L3_senior_sidebar
 typora-copy-images-to: ./pics/1_install_kubernetes_kubeadm
 typora-root-url: ../../../../../cloudnative365.github.io
-
 ---
 
 ## 课程目标

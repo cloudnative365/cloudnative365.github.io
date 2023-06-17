@@ -90,7 +90,11 @@ entries:
           output: web, pdf
 
         - title: postgresql@12 with repmgr高可用
-          url: /keynotes_L7_architect_storage_2_database_2_2_postgresql_HA.html
+          url: /keynotes_L7_architect_storage_2_database_2_2_pg12_repmgr.html
+          output: web, pdf
+
+        - title: postgresql@13 with repmgr高可用
+          url: /keynotes_L7_architect_storage_2_database_2_3_postgresql_13_HA.html
           output: web, pdf
 
   - title: 第三章 备份
