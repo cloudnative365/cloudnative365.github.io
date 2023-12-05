@@ -199,7 +199,7 @@ groups:
       description: "CPU usage of {{ $labels.instance }} is too much for more than 15 minutes. (current value: {{ $value }}%"
 
   # Alert for any instance that has a median request latency >1s.
-  # dd if=/dev/zero of=test bs=1024M count=40
+    # dd if=/dev/zero of=test bs=1024M count=40
   - alert: FileSysystemUsage
     expr: round((node_filesystem_size_bytes{job="consul-node-exporter",device!="tmpfs",project="monitoring"}-node_filesystem_free_bytes{job="consul-node-exporter",device!="tmpfs",project="monitoring"})/node_filesystem_size_bytes{job="consul-node-exporter",device!="tmpfs",project="monitoring"} * 100) > 80
     for: 30s
